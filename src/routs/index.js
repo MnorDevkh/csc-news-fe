@@ -1,12 +1,13 @@
+import ArticleDetailsPage from '@/components/view/ArticleDetailsPage.vue'
+import CategoryViewPage from '@/components/view/CategoryViewPage.vue'
+import GalleryGridViewPage from '@/components/view/GalleryGridViewPage.vue'
+import GalleryItemDetailsPage from '@/components/view/GalleryItemDetailsPage.vue'
+import HomePage from '@/components/view/HomePage.vue'
+import ReadingListPage from '@/components/view/ReadingListPage.vue'
+import SearchResultsPage from '@/components/view/SearchResultsPage.vue'
+import SingleGalleryViewPage from '@/components/view/SingleGalleryViewPage.vue'
 import { createRouter, createWebHistory } from 'vue-router'
-import HomePage from '../views/HomePage.vue'
-import ArticleDetailsPage from '../views/ArticleDetailsPage.vue'
-import SearchResultsPage from '../views/SearchResultsPage.vue'
-import CategoryViewPage from '../views/CategoryViewPage.vue'
-import GalleryGridViewPage from '../views/GalleryGridViewPage.vue'
-import SingleGalleryViewPage from '../views/SingleGalleryViewPage.vue'
-import GalleryItemDetailsPage from '../views/GalleryItemDetailsPage.vue'
-import ReadingListPage from '../views/ReadingListPage.vue'
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),

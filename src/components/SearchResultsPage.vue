@@ -1,89 +1,109 @@
 <script setup>
-import { ref, watch, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
+import { ref, computed, watch } from 'vue';
+import { NewsService } from './NewsService.js';
+import { RouterLink } from 'vue-router';
 
 const route = useRoute();
-const searchQuery = ref('');
-const searchResults = ref([]);
+const query = computed(() => route.query.q);
 
-const performSearch = (query) => {
-  // In a real app, you would fetch search results based on the query.
-  searchResults.value = [
-    { id: 101, title: `Result for "${query}" - Item 1`, snippet: 'A short snippet of the first search result.', date: '2023-10-26', thumbnail: 'https://via.placeholder.com/100x80?text=Result1' },
-    { id: 102, title: `Result for "${query}" - Item 2`, snippet: 'Another short snippet for the second result.', date: '2023-10-25', thumbnail: 'https://via.placeholder.com/100x80?text=Result2' },
-  ];
+const searchResults = ref([]);
+const isLoading = ref(false);
+
+const fetchResults = async (searchQuery) => {
+  if (!searchQuery) {
+    searchResults.value = [];
+    return;
+  }
+  isLoading.value = true;
+  try {
+    searchResults.value = await NewsService.searchArticles(searchQuery);
+  } catch (error) {
+    console.error("Failed to fetch search results:", error);
+    searchResults.value = [];
+  } finally {
+    isLoading.value = false;
+  }
 };
 
-onMounted(() => {
-  searchQuery.value = route.query.q || '';
-  if (searchQuery.value) {
-    performSearch(searchQuery.value);
-  }
-});
+// Watch for changes in the route query and fetch new results
+watch(query, (newQuery) => {
+  fetchResults(newQuery);
+}, { immediate: true }); // `immediate: true` runs the watcher on component load
 
-watch(() => route.query.q, (newQuery) => {
-  searchQuery.value = newQuery || '';
-  performSearch(searchQuery.value);
-});
 </script>
 
 <template>
   <div class="search-results-page">
-    <h1>Search Results for "{{ searchQuery }}"</h1>
-    <div v-if="searchResults.length">
-      <div v-for="result in searchResults" :key="result.id" class="search-result-item">
-        <img :src="result.thumbnail" :alt="result.title" class="thumbnail" />
-        <div class="details">
-          <h3>{{ result.title }}</h3>
-          <p>{{ result.snippet }}</p>
-          <span class="date">{{ result.date }}</span>
-        </div>
-      </div>
+    <h1>Search Results for: "{{ query }}"</h1>
+
+    <div v-if="isLoading" class="loading">
+      <p>Searching...</p>
     </div>
-    <p v-else>No results found.</p>
-    <!-- Placeholder for pagination and filtering options -->
+    <div v-else-if="searchResults.length > 0" class="results-list">
+      <ul>
+        <li v-for="article in searchResults" :key="article.id">
+          <RouterLink :to="{ name: 'articleDetails', params: { id: article.id } }">
+            <span class="article-title">{{ article.title }}</span>
+            <span class="category-tag">{{ article.category }}</span>
+          </RouterLink>
+        </li>
+      </ul>
+    </div>
+    <div v-else class="no-results">
+      <p>No articles found matching your search.</p>
+    </div>
   </div>
 </template>
 
 <style scoped>
 .search-results-page {
+  padding: 2rem;
   max-width: 900px;
   margin: 0 auto;
-  padding: 2rem;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
-h1 {
-  color: #007bff;
-  margin-bottom: 1.5rem;
-}
-.search-result-item {
-  display: flex;
-  align-items: flex-start;
-  margin-bottom: 1.5rem;
-  padding-bottom: 1.5rem;
-  border-bottom: 1px solid #eee;
-}
-.thumbnail {
-  width: 100px;
-  height: 80px;
-  object-fit: cover;
-  margin-right: 1rem;
-  border-radius: 4px;
-}
-.details h3 {
-  margin-top: 0;
-  font-size: 1.1rem;
-  color: #333;
-}
-.details p {
-  font-size: 0.9rem;
+
+.loading, .no-results {
+  text-align: center;
+  margin-top: 2rem;
   color: #666;
-  margin-bottom: 0.5rem;
 }
-.details .date {
+
+.results-list ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 2rem;
+}
+
+.results-list li a {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  text-decoration: none;
+  color: #333;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.results-list li a:hover {
+  border-color: #ddd;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.article-title {
+  font-weight: 500;
+}
+
+.category-tag {
+  background-color: #f0f0f0;
+  color: #555;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
   font-size: 0.8rem;
-  color: #999;
+  white-space: nowrap;
+  margin-left: 1rem;
 }
 </style>
