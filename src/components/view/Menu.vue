@@ -27,7 +27,7 @@ onMounted(async () => {
 
 <template>
   <div class="homepage">
-    <header class="relative flex flex-wrap items-center justify-between border-b border-gray-200 bg-white px-8 py-4">
+    <header class="sticky top-0 z-50 flex flex-wrap items-center justify-between border-b border-gray-200/80 bg-white/80 px-8 py-4 backdrop-blur-md transition-all duration-300">
       <div class="logo">
         <h1 class="text-2xl ">CSC News</h1>
       </div>
@@ -36,9 +36,10 @@ onMounted(async () => {
         <span class="my-1.5 block h-0.5 w-6 bg-gray-800 transition-all duration-300" :class="{ 'opacity-0': isMobileMenuOpen }"></span>
         <span class="block h-0.5 w-6 bg-gray-800 transition-all duration-300" :class="{ '-translate-y-1.5 -rotate-45': isMobileMenuOpen }"></span>
       </button>
-      <div class="absolute left-0 top-full w-full flex-col items-start gap-4 bg-white p-8 shadow-md lg:relative lg:top-auto lg:flex lg:w-auto lg:flex-row lg:items-center lg:gap-6 lg:p-0 lg:shadow-none" :class="{ 'flex': isMobileMenuOpen, 'hidden': !isMobileMenuOpen }">
+      <div class="absolute left-0 top-full w-full flex-col items-start gap-4 bg-white/95 p-8 shadow-md backdrop-blur-md lg:relative lg:top-auto lg:flex lg:w-auto lg:flex-row lg:items-center lg:gap-6 lg:p-0 lg:shadow-none" :class="{ 'flex': isMobileMenuOpen, 'hidden': !isMobileMenuOpen }">
         <nav class="flex w-full flex-col items-start gap-2 lg:w-auto lg:flex-row lg:items-center lg:gap-0">
           <RouterLink :to="{ name: 'home' }" @click="isMobileMenuOpen = false" class="w-full border-b border-gray-200 py-2 font-medium text-gray-600 hover:text-blue-500 lg:mx-4 lg:w-auto lg:border-none lg:py-0">Home</RouterLink>
+          <RouterLink :to="{ name: 'bible' }" @click="isMobileMenuOpen = false" class="w-full border-b border-gray-200 py-2 font-medium text-gray-600 hover:text-blue-500 lg:mx-4 lg:w-auto lg:border-none lg:py-0">Bible</RouterLink>
           <RouterLink 
             v-for="category in newsCategories.slice(0, 4)" 
             :key="category" 
