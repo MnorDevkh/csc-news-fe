@@ -1,9 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Kantumruy+Pro:ital,wght@0,100..700;1,100..700&family=Khmer&family=Koh+Santepheap:wght@100;300;400;700;900&display=swap');
 @import './base.css';
 @import "tailwindcss";
 
+* {
+  font-family: 'Kantumruy Pro', 'Khmer', 'Koh Santepheap', sans-serif;
+}
+
+html, body {
+  font-family: 'Kantumruy Pro', 'Khmer', 'Koh Santepheap', sans-serif;
+}
+
 #app {
-  max-width: 1280px;
+  min-height: 100vh;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 1rem;
   font-weight: normal;
+  background-color: rgb(243, 247, 248);
+  font-family: 'Kantumruy Pro', 'Khmer', 'Koh Santepheap', sans-serif;
 }

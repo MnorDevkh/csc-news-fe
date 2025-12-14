@@ -1,64 +1,113 @@
-<script setup>
-import { ref, onMounted } from 'vue';
-import { RouterLink, useRouter } from 'vue-router';
-import { NewsService } from '../../services/NewsService';
-
-
-const newsCategories = ref([]);
-const searchQuery = ref('');
-const isMobileMenuOpen = ref(false);
+<template>
+    <nav class="navbar">
+        <div class="">
+            <div clas="bg-transparent px-8 flex w-[1400px]">
+                <section class="flex justify-between items-center p-2 border-b-1 border-blue-500 ">
+                    <div class="">
+                        <h2 class=" text-4xl font-bold text-blue-500">CSC NEWS</h2>
+                        <h2 class=" text-2xl font-bold text-blue-500">Chatholic cambodia</h2>
+                    </div>
+                    <div>
+                        <h2 class="mb-6 border-b-2 border-blue-500 pb-2 text-2xl font-bold text-blue-500">ស្វែងរកព័ត៌មាន
+                        </h2>
+                        <div class="flex">
+                            <input v-model="searchQuery" @keyup.enter="performSearch" type="text"
+                                placeholder="ស្វែងរកអត្ថបទ..."
+                                class="w-full rounded-l border border-gray-300 p-2 focus:border-blue-500 focus:outline-none" />
+                            <button @click="performSearch"
+                                class="rounded-r bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-600">Search</button>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <section>
+                <a-menu :selected-keys="current" mode="horizontal" :items="items" @click="handleClick"
+                    class="bg-transparent !bg-transparent border-0" />
+            </section>
+        </div>
+    </nav>
+</template>
+<script lang="ts" setup>
+import { h, ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { MailOutlined, HomeOutlined, ReadOutlined, SettingOutlined } from '@ant-design/icons-vue';
+import { MenuProps } from 'ant-design-vue';
+const searchQuery = ref('')
 const router = useRouter();
+const current = ref<string[]>(['']);
 
 const performSearch = () => {
-  if (searchQuery.value.trim()) {
-    router.push({ name: 'searchResults', query: { q: searchQuery.value } });
-
-  }
+    if (searchQuery.value.trim()) {
+        router.push({ name: 'searchResults', query: { q: searchQuery.value } });
+    }
 };
 
-onMounted(async () => {
-  try {
-    newsCategories.value = await NewsService.getNewsCategories();
-  } catch (error) {
-    console.error("Failed to fetch news categories:", error);
-  }
-});
+const handleClick: MenuProps['onClick'] = (e) => {
+    // Prevent router navigation for external links (handled by <a> tag in label)
+    if (e.key === 'alipay') return;
+
+    // Navigate based on key
+    if (e.key === '') {
+        router.push('/');
+    } else {
+        // Assumes other keys match your route paths or names
+        router.push(e.key as string);
+    }
+};
+
+const items = ref<MenuProps['items']>([
+    {
+        key: '/',
+        icon: () => h(HomeOutlined),
+        label: 'ទំព័រដើម',
+        title: 'ទំព័រដើម',
+    },
+    {
+        key: '/bible',
+        icon: () => h(ReadOutlined),
+        label: 'ព្រះគម្ពីរ',
+        title: 'ព្រះគម្ពីរ',
+    },
+    {
+        key: 'sub1',
+        icon: () => h(SettingOutlined),
+        label: 'Navigation Three - Submenu',
+        title: 'Navigation Three - Submenu',
+        children: [
+            {
+                type: 'group',
+                label: 'Item 1',
+                children: [
+                    {
+                        label: 'Option 1',
+                        key: 'setting:1',
+                    },
+                    {
+                        label: 'Option 2',
+                        key: 'setting:2',
+                    },
+                ],
+            },
+            {
+                type: 'group',
+                label: 'Item 2',
+                children: [
+                    {
+                        label: 'Option 3',
+                        key: 'setting:3',
+                    },
+                    {
+                        label: 'Option 4',
+                        key: 'setting:4',
+                    },
+                ],
+            },
+        ],
+    },
+    {
+        key: 'alipay',
+        label: h('a', { href: 'https://antdv.com', target: '_blank' }, 'Navigation Four - Link'),
+        title: 'Navigation Four - Link',
+    },
+]);
 </script>
-
-<template>
-  <div class="homepage">
-    <header class="sticky top-0 z-50 flex flex-wrap items-center justify-between border-b border-gray-200/80 bg-white/80 px-8 py-4 backdrop-blur-md transition-all duration-300">
-      <div class="logo">
-        <h1 class="text-2xl ">CSC News</h1>
-      </div>
-      <button class="z-50 block cursor-pointer p-2 lg:hidden" @click="isMobileMenuOpen = !isMobileMenuOpen" aria-label="Toggle menu">
-        <span class="block h-0.5 w-6 bg-gray-800 transition-all duration-300" :class="{ 'translate-y-1.5 rotate-45': isMobileMenuOpen }"></span>
-        <span class="my-1.5 block h-0.5 w-6 bg-gray-800 transition-all duration-300" :class="{ 'opacity-0': isMobileMenuOpen }"></span>
-        <span class="block h-0.5 w-6 bg-gray-800 transition-all duration-300" :class="{ '-translate-y-1.5 -rotate-45': isMobileMenuOpen }"></span>
-      </button>
-      <div class="absolute left-0 top-full w-full flex-col items-start gap-4 bg-white/95 p-8 shadow-md backdrop-blur-md lg:relative lg:top-auto lg:flex lg:w-auto lg:flex-row lg:items-center lg:gap-6 lg:p-0 lg:shadow-none" :class="{ 'flex': isMobileMenuOpen, 'hidden': !isMobileMenuOpen }">
-        <nav class="flex w-full flex-col items-start gap-2 lg:w-auto lg:flex-row lg:items-center lg:gap-0">
-          <RouterLink :to="{ name: 'home' }" @click="isMobileMenuOpen = false" class="w-full border-b border-gray-200 py-2 font-medium text-gray-600 hover:text-blue-500 lg:mx-4 lg:w-auto lg:border-none lg:py-0">Home</RouterLink>
-          <RouterLink :to="{ name: 'bible' }" @click="isMobileMenuOpen = false" class="w-full border-b border-gray-200 py-2 font-medium text-gray-600 hover:text-blue-500 lg:mx-4 lg:w-auto lg:border-none lg:py-0">Bible</RouterLink>
-          <RouterLink 
-            v-for="category in newsCategories.slice(0, 4)" 
-            :key="category" 
-            :to="{ name: 'categoryView', params: { name: category } }"
-            @click="isMobileMenuOpen = false"
-            class="w-full border-b border-gray-200 py-2 font-medium text-gray-600 hover:text-blue-500 lg:mx-4 lg:w-auto lg:border-none lg:py-0 px-3"
-          >
-            {{ category }}
-          </RouterLink>
-        </nav>
-        <form class="flex w-full items-center lg:w-auto" @submit.prevent="performSearch">
-          <input type="search" v-model="searchQuery" placeholder="Search for news..." class="flex-grow rounded-l-md border border-r-0 border-gray-300 p-2" />
-          <button type="submit" class="cursor-pointer rounded-r-md border border-blue-500 bg-blue-500 px-4 py-2 text-white">Search</button>
-        </form>
-      </div>
-    </header>
-  </div>
-</template>
-
-<style scoped>
-/* The scoped styles have been replaced with Tailwind CSS classes in the template. */
-</style>
