@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router';
 import { RouterLink } from 'vue-router';
 import { NewsService } from '../../services/NewsService';
 import GalleryGridViewPage from './GalleryGridViewPage.vue';
+import Goodbye from './Goodbye.vue';
 
 
 
@@ -113,6 +114,38 @@ onMounted(async () => {
         <section class="md:col-span-3">
           <div class="mb-6 border-b-2 border-blue-500 pb-2 text-2xl font-bold text-blue-500 justify-between flex">
             <h2>កម្រងរូបភាព</h2>
+            <button>មើលបន្ថែម</button>
+
+          </div>
+          <div>
+            <GalleryGridViewPage />
+          </div>
+        </section>
+
+        <section class="md:col-span-3">
+          <div class="mb-6 border-b-2 border-blue-500 pb-2 text-2xl font-bold text-blue-500 justify-between flex">
+            <h2>សន្តសន្តី</h2>
+            <button>មើលបន្ថែម</button>
+          </div>
+          <div>
+            <Goodbye />
+          </div>
+        </section>
+
+
+        <section class="md:col-span-3">
+          <div class="mb-6 border-b-2 border-blue-500 pb-2 text-2xl font-bold text-blue-500 justify-between flex">
+            <h2>អត្ថបទព្រះគម្ពីរប្រចាំថ្ងៃ</h2>
+            <button>មើលបន្ថែម</button>
+
+          </div>
+          <div>
+            <GalleryGridViewPage />
+          </div>
+        </section>
+        <section class="md:col-span-3">
+          <div class="mb-6 border-b-2 border-blue-500 pb-2 text-2xl font-bold text-blue-500 justify-between flex">
+            <h2>ធម្មទេសនា​ប្រចាំថ្ងៃ</h2>
             <button>មើលបន្ថែម</button>
 
           </div>
