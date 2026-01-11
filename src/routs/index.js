@@ -14,6 +14,8 @@ import DashboardLayout from '@/assets/DashboardLayout.vue'
 import Dashboard from '@/assets/Dashboard.vue'
 import AdminPanel from '@/assets/AdminPanel.vue'
 import { createRouter, createWebHistory } from 'vue-router'
+import BibleDetail from '@/components/view/BibleDetail.vue'
+import BibleChapterDetail from '@/components/view/BibleChapterDetail.vue'
 
 
 const router = createRouter({
@@ -25,9 +27,24 @@ const router = createRouter({
       component: HomePage
     },
     {
+      path: '/bible/types',
+      name: 'bible-types',
+      component: () => import('@/components/view/TypeBibleComponent.vue')
+    },
+    {
       path: '/bible',
       name: 'bible',
       component: BiblePage
+    },
+    {
+      path: '/bible/:id',
+      name: 'bible-detail',
+      component: BibleDetail,
+    },
+    {
+      path: '/chapter/:id',
+      name: 'chapter-detail',
+      component: BibleChapterDetail,
     },
     {
       path: '/article/:id',

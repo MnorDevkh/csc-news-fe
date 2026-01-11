@@ -1,5 +1,4 @@
 <script setup>
-import { BibleService } from '@/services/BibleService';
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -8,21 +7,28 @@ const router = useRouter();
 
 onMounted(async () => {
   try {
-    const response = await BibleService.getBibleList('KM', 'NT', 'chapter_number');
-    const data = response.data || response;
+    const response = await fetch('http://127.0.0.1:8000/api/v1/bibles/types', {
+      headers: {
+        'accept': 'application/json'
+      }
+    });
+    const data = await response.json();
 
-    if (data && Array.isArray(data.items)) {
-      bibleItems.value = data.items.map(item => ({
-        id: item.id,
-        slug: item.slug,
-        name: item.name,
-        description: item.description || 'No description available',
-        thumbnail: item.thumbnail,
-        create_at: item.create_at
+    if (Array.isArray(data)) {
+      bibleItems.value = data.map(item => ({
+        id: item,
+        slug: item,
+        name: item === 'ព្រះគម្ពីរសញ្ញាថ្មី' ? 'សម្ព' : 'ព្រះគម្ពីរសញ្ញាចាស់',
+        description: item === 'NT' 
+          ? 'ព្រះគម្ពីរសញ្ញាថ្មីពិភាក្សាអំពីការបង្រៀន និងបុគ្គលរបស់ព្រះយេស៊ូវ ក៏ដូចជាព្រឹត្តិការណ៍នានានៅក្នុងសាសនាគ្រឹស្តនៅសតវត្សរ៍ទីមួយ។' 
+          : 'ព្រះគម្ពីរសញ្ញាចាស់ គឺជាផ្នែកទីមួយនៃគម្ពីរសញ្ញាចាស់របស់គ្រិស្តសាសនា ដែលផ្អែកលើព្រះគម្ពីរហេព្រើរជាចម្បង។',
+        thumbnail: item === 'NT'
+          ? 'https://images.unsplash.com/photo-1504052434569-70ad5836ab65?q=80&w=2070&auto=format&fit=crop'
+          : 'https://images.unsplash.com/photo-1499652848871-1527a310b13a?q=80&w=1974&auto=format&fit=crop'
       }));
     }
   } catch (error) {
-    console.error("Failed to fetch bible list:", error);
+    console.error("Failed to fetch testaments:", error);
   }
 });
 
@@ -36,7 +42,7 @@ const formatDate = (dateString) => {
 };
 
 const navigateToDetail = (id) => {
-  router.push({ name: 'bible-detail', params: { id } });
+  router.push({ name: 'bible', params: { id } });
 };
 </script>
 
@@ -44,7 +50,7 @@ const navigateToDetail = (id) => {
   <div class="min-h-screen bg-gray-50 py-12">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div class="text-center">
-        <h1 class="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-4xl font-extrabold tracking-tight text-transparent sm:text-5xl">Bible Resourcesss</h1>
+        <h1 class="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-4xl font-extrabold tracking-tight text-transparent sm:text-5xl">Bible Resources</h1>
       </div>
       <div class="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
         <div v-for="(item, index) in bibleItems" :key="index" @click="navigateToDetail(item.id)" class="group flex flex-col overflow-hidden rounded-2xl bg-white shadow-md transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl cursor-pointer">

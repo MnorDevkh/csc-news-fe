@@ -63,7 +63,7 @@ const items = ref<MenuProps['items']>([
         title: 'ទំព័រដើម',
     },
     {
-        key: '/bible',
+        key: '/bible/types',
         icon: () => h(ReadOutlined),
         label: 'ព្រះគម្ពីរ',
         title: 'ព្រះគម្ពីរ',
