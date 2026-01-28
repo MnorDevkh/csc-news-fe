@@ -1,9 +1,9 @@
-import ArticleDetailsPage from '@/components/view/ArticleDetailsPage.vue'
-import BiblePage from '@/components/view/BiblePage.vue'
-import CategoryViewPage from '@/components/view/CategoryViewPage.vue'
-import GalleryGridViewPage from '@/components/view/GalleryGridViewPage.vue'
-import GalleryItemDetailsPage from '@/components/view/GalleryItemDetailsPage.vue'
-import HomePage from '@/components/view/HomePage.vue'
+import ArticleDetailsPage from '@/components/view/homepage/ArticleDetailsPage.vue'
+import BiblePage from '@/components/view/bible/BiblePage.vue'
+import CategoryViewPage from '@/components/view/homepage/CategoryViewPage.vue'
+import GalleryGridViewPage from '@/components/view/homepage/GalleryGridViewPage.vue'
+import GalleryItemDetailsPage from '@/components/view/homepage/GalleryItemDetailsPage.vue'
+import HomePage from '@/components/view/homepage/HomePage.vue'
 import ReadingListPage from '@/components/view/ReadingListPage.vue'
 import SearchResultsPage from '@/components/view/SearchResultsPage.vue'
 import SingleGalleryViewPage from '@/components/view/SingleGalleryViewPage.vue'
@@ -14,8 +14,9 @@ import DashboardLayout from '@/assets/DashboardLayout.vue'
 import Dashboard from '@/assets/Dashboard.vue'
 import AdminPanel from '@/assets/AdminPanel.vue'
 import { createRouter, createWebHistory } from 'vue-router'
-import BibleDetail from '@/components/view/BibleDetail.vue'
-import BibleChapterDetail from '@/components/view/BibleChapterDetail.vue'
+import BibleDetail from '@/components/view/bible/BibleDetail.vue'
+import BibleChapterDetail from '@/components/view/bible/BibleChapterDetail.vue'
+import TypeBibleComponent from '@/components/view/bible/TypeBibleComponent.vue'
 
 
 const router = createRouter({
@@ -29,7 +30,29 @@ const router = createRouter({
     {
       path: '/bible/types',
       name: 'bible-types',
-      component: () => import('@/components/view/TypeBibleComponent.vue')
+      component: () => TypeBibleComponent
+    },
+    {
+      path: '/daily-bible',
+      name: 'dailyBibleList',
+      component: () => import('@/components/view/bible/DailyBibleListPage.vue')
+    },
+    {
+      path: '/daily-bible/:id',
+      name: 'dailyBibleDetail',
+      component: () => import('@/components/view/bible/DailyBibleDetail.vue'),
+      props: true
+    },
+    {
+      path: '/daily-sermon',
+      name: 'dailySermonList',
+      component: () => import('@/components/view/sermon/DailySermonListPage.vue')
+    },
+    {
+      path: '/daily-sermon/:id',
+      name: 'dailySermonDetail',
+      component: () => import('@/components/view/sermon/DailySermonDetail.vue'),
+      props: true
     },
     {
       path: '/bible',
@@ -85,6 +108,11 @@ const router = createRouter({
       path: '/reading-list',
       name: 'readingList',
       component: ReadingListPage
+    },
+    {
+      path: '/saints',
+      name: 'saintList',
+      component: () => import('@/components/view/homepage/SaintListPage.vue')
     },
     // New Routes for modern UI
     {

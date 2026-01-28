@@ -20,9 +20,8 @@
                     </div>
                 </section>
             </div>
-            <section>
-                <a-menu :selected-keys="current" mode="horizontal" :items="items" @click="handleClick"
-                    class="bg-transparent !bg-transparent border-0" />
+            <section class="bg-blue-500">
+                <a-menu :selected-keys="current" mode="horizontal" :items="items" @click="handleClick" style="background-color: #3b82f6; color: white;"/>
             </section>
         </div>
     </nav>
@@ -69,14 +68,32 @@ const items = ref<MenuProps['items']>([
         title: 'ព្រះគម្ពីរ',
     },
     {
-        key: 'sub1',
+        key: '/bible/types',
         icon: () => h(SettingOutlined),
-        label: 'Navigation Three - Submenu',
+        label: 'ពត៌មាន',
         title: 'Navigation Three - Submenu',
         children: [
+             {
+                type: 'group',
+                label: 'ពត៌មានភូមិភាគ',
+                children: [
+                    {
+                        label: 'ពត៌មានភូមិភាគភ្នំពេញ',
+                        key: 'setting:1',
+                    },
+                    {
+                        label: 'ពត៌មានភូមិភាគកំពង់ចាម',
+                        key: 'setting:2',
+                    },
+                    {
+                        label: 'ពពត៌មានភូមិភាគបាត់ដំបង',
+                        key: 'setting:2',
+                    },
+                ],
+            },
             {
                 type: 'group',
-                label: 'Item 1',
+                label: 'ពត៌មានភូមិភាគកំពង់ចាម',
                 children: [
                     {
                         label: 'Option 1',
@@ -85,20 +102,6 @@ const items = ref<MenuProps['items']>([
                     {
                         label: 'Option 2',
                         key: 'setting:2',
-                    },
-                ],
-            },
-            {
-                type: 'group',
-                label: 'Item 2',
-                children: [
-                    {
-                        label: 'Option 3',
-                        key: 'setting:3',
-                    },
-                    {
-                        label: 'Option 4',
-                        key: 'setting:4',
                     },
                 ],
             },

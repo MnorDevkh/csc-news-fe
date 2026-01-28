@@ -2,8 +2,8 @@
 import { ref, onMounted, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { Pagination as APagination } from 'ant-design-vue';
-import ChapterService from '../../services/ChapterService';
-import VerseService from '../../services/VerseService';
+import ChapterService from '../../../services/ChapterService';
+import VerseService from '../../../services/VerseService';
 
 const route = useRoute();
 const router = useRouter();

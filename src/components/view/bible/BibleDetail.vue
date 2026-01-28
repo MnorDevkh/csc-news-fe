@@ -1,8 +1,8 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { BibleService } from '../../services/BibleService';
-import ChapterService from '../../services/ChapterService';
+import { BibleService } from '../../../services/BibleService';
+import ChapterService from '../../../services/ChapterService';
 import { Pagination as APagination } from 'ant-design-vue';
 
 const route = useRoute();
