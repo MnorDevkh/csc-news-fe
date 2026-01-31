@@ -1,39 +1,47 @@
 <template>
-    <nav class="navbar">
-        <div class="">
-            <div clas="bg-transparent px-8 flex w-[1400px]">
-                <section class="flex justify-between items-center p-2 border-b-1 border-blue-500 ">
-                    <div class="">
-                        <h2 class=" text-4xl font-bold text-blue-500">CSC NEWS</h2>
-                        <h2 class=" text-2xl font-bold text-blue-500">Chatholic cambodia</h2>
-                    </div>
+    <nav class="bg-white shadow-sm font-sans mb-4 sticky top-0 z-50">
+        <div class="max-w-[1400px] mx-auto">
+            <!-- Top Header Section -->
+            <div class="flex flex-col md:flex-row justify-between items-center py-4 px-6 gap-4">
+                <!-- Logo Section -->
+                <div class="flex flex-col md:flex-row items-center md:items-end gap-3 text-center md:text-left cursor-pointer"
+                    @click="router.push('/')">
+                    <!-- You could add an image logo here if available -->
                     <div>
-                        <h2 class="mb-6 border-b-2 border-blue-500 pb-2 text-2xl font-bold text-blue-500">ស្វែងរកព័ត៌មាន
-                        </h2>
-                        <div class="flex">
-                            <input v-model="searchQuery" @keyup.enter="performSearch" type="text"
-                                placeholder="ស្វែងរកអត្ថបទ..."
-                                class="w-full rounded-l border border-gray-300 p-2 focus:border-blue-500 focus:outline-none" />
-                            <button @click="performSearch"
-                                class="rounded-r bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-600">Search</button>
-                        </div>
+                        <h1 class="text-4xl font-extrabold tracking-tight text-blue-600 m-0 leading-none">CSC NEWS</h1>
+                        <p class="text-lg font-medium text-gray-500 m-0 tracking-wide uppercase">Catholic Cambodia</p>
                     </div>
-                </section>
+                </div>
+
+                <!-- Search Section -->
+                <div class="w-full md:w-1/3">
+                    <div class="flex flex-col gap-1">
+                        <span
+                            class="text-xs font-bold text-blue-600 uppercase tracking-wider mb-1">ស្វែងរកព័ត៌មាន</span>
+                        <a-input-search v-model:value="searchQuery" placeholder="ស្វែងរកអត្ថបទ..." enter-button="Search"
+                            size="large" @search="performSearch" class="w-full" />
+                    </div>
+                </div>
             </div>
-            <section class="bg-blue-500">
-                <a-menu :selected-keys="current" mode="horizontal" :items="items" @click="handleClick" style="background-color: #3b82f6; color: white;"/>
-            </section>
+
+            <!-- Navigation Menu -->
+            <div class="border-t border-gray-100">
+                <a-menu v-model:selectedKeys="current" mode="horizontal" :items="items" @click="handleClick"
+                    class="justify-center md:justify-start border-none text-base font-medium" />
+            </div>
         </div>
     </nav>
 </template>
+
 <script lang="ts" setup>
 import { h, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { MailOutlined, HomeOutlined, ReadOutlined, SettingOutlined } from '@ant-design/icons-vue';
 import { MenuProps } from 'ant-design-vue';
-const searchQuery = ref('')
+
+const searchQuery = ref('');
 const router = useRouter();
-const current = ref<string[]>(['']);
+const current = ref<string[]>(['/']);
 
 const performSearch = () => {
     if (searchQuery.value.trim()) {
@@ -46,10 +54,7 @@ const handleClick: MenuProps['onClick'] = (e) => {
     if (e.key === 'alipay') return;
 
     // Navigate based on key
-    if (e.key === '') {
-        router.push('/');
-    } else {
-        // Assumes other keys match your route paths or names
+    if (e.key) {
         router.push(e.key as string);
     }
 };
@@ -68,40 +73,40 @@ const items = ref<MenuProps['items']>([
         title: 'ព្រះគម្ពីរ',
     },
     {
-        key: '/bible/types',
+        key: '/news', // Changed duplicate key to unique
         icon: () => h(SettingOutlined),
         label: 'ពត៌មាន',
-        title: 'Navigation Three - Submenu',
+        title: 'News',
         children: [
-             {
+            {
                 type: 'group',
                 label: 'ពត៌មានភូមិភាគ',
                 children: [
                     {
                         label: 'ពត៌មានភូមិភាគភ្នំពេញ',
-                        key: 'setting:1',
+                        key: 'news:phnompenh',
                     },
                     {
                         label: 'ពត៌មានភូមិភាគកំពង់ចាម',
-                        key: 'setting:2',
+                        key: 'news:kampongcham',
                     },
                     {
-                        label: 'ពពត៌មានភូមិភាគបាត់ដំបង',
-                        key: 'setting:2',
+                        label: 'ពត៌មានភូមិភាគបាត់ដំបង',
+                        key: 'news:battambang',
                     },
                 ],
             },
             {
                 type: 'group',
-                label: 'ពត៌មានភូមិភាគកំពង់ចាម',
+                label: 'ពត៌មានផ្សេងៗ',
                 children: [
                     {
                         label: 'Option 1',
-                        key: 'setting:1',
+                        key: 'other:1',
                     },
                     {
                         label: 'Option 2',
-                        key: 'setting:2',
+                        key: 'other:2',
                     },
                 ],
             },
@@ -109,8 +114,32 @@ const items = ref<MenuProps['items']>([
     },
     {
         key: 'alipay',
-        label: h('a', { href: 'https://antdv.com', target: '_blank' }, 'Navigation Four - Link'),
-        title: 'Navigation Four - Link',
+        label: h('a', { href: 'https://antdv.com', target: '_blank' }, 'Links'),
+        title: 'Links',
     },
 ]);
 </script>
+
+<style scoped>
+/* Custom overrides for Ant Design Menu to match the modern look */
+:deep(.ant-menu-horizontal) {
+    border-bottom: none;
+    line-height: 46px;
+}
+
+:deep(.ant-menu-item) {
+    padding: 0 24px;
+}
+
+:deep(.ant-menu-item-selected),
+:deep(.ant-menu-submenu-selected) {
+    color: #2563eb !important;
+    /* Tailwind blue-600 */
+}
+
+:deep(.ant-menu-item::after),
+:deep(.ant-menu-submenu::after) {
+    border-bottom-width: 2px !important;
+    border-bottom-color: #2563eb !important;
+}
+</style>

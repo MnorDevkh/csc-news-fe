@@ -10,7 +10,7 @@
             <p class="text-sm font-medium text-gray-500">Total Revenue</p>
             <p class="text-2xl font-bold text-gray-900">$45,231.89</p>
           </div>
-          <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-primary-light/30 text-primary">
+          <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-100 text-blue-600">
             <i class="fas fa-dollar-sign text-xl"></i>
           </div>
         </div>
@@ -22,7 +22,7 @@
             <p class="text-sm font-medium text-gray-500">Subscriptions</p>
             <p class="text-2xl font-bold text-gray-900">+2350</p>
           </div>
-          <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-secondary/20 text-secondary">
+          <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-purple-100 text-purple-600">
             <i class="fas fa-users text-xl"></i>
           </div>
         </div>
@@ -34,7 +34,7 @@
             <p class="text-sm font-medium text-gray-500">Sales</p>
             <p class="text-2xl font-bold text-gray-900">+12,234</p>
           </div>
-          <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/20 text-accent">
+          <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-orange-100 text-orange-600">
             <i class="fas fa-shopping-cart text-xl"></i>
           </div>
         </div>
@@ -86,7 +86,7 @@
     <div class="mt-8 rounded-2xl bg-white p-6 shadow-lg">
       <div class="flex items-center justify-between">
         <h3 class="text-lg font-semibold">Recent Orders</h3>
-        <button class="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white hover:bg-primary-dark">
+        <button class="rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700">
           View All
         </button>
       </div>

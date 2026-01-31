@@ -27,19 +27,23 @@ watch(() => route.params.name, (newName) => {
 </script>
 
 <template>
-  <div class="mx-auto max-w-6xl rounded-lg bg-white p-8 ">
-    <h1 class="mb-6 text-3xl font-bold text-blue-500">Category: {{ categoryName }}</h1>
-    <div v-if="articles.length">
+  <div class="mx-auto max-w-6xl rounded-lg bg-white p-4 sm:p-8">
+    <h1 class="mb-6 text-2xl sm:text-3xl font-bold text-blue-600">Category: {{ categoryName }}</h1>
+    <div v-if="articles.length" class="space-y-4">
       <RouterLink v-for="article in articles" :key="article.id"
         :to="{ name: 'articleDetails', params: { id: article.id } }"
-        class="mb-4 flex gap-6 rounded-lg border-b border-gray-200 p-4 text-inherit no-underline transition-all duration-200 ease-in-out hover:bg-gray-50 hover:shadow-md">
-        <div class="flex-1">
-          <h3 class="mt-0 text-xl font-medium text-gray-800">{{ article.title }}</h3>
-          <p class="mb-2 text-sm text-gray-600">{{ article.snippet }}</p>
-          <span class="text-xs text-gray-500">{{ article.date }}</span>
+        class="flex flex-col sm:flex-row gap-6 rounded-lg border border-gray-100 p-4 transition-all duration-200 hover:shadow-lg hover:border-blue-100 group">
+        <div class="w-full sm:w-48 flex-shrink-0">
+          <img :src="article.image" :alt="article.title"
+            class="h-48 sm:h-32 w-full rounded-lg object-cover group-hover:scale-105 transition-transform duration-500" />
         </div>
-        <div>
-          <img :src="article.image" :alt="article.title" class="h-24 w-36 rounded-md object-cover" />
+        <div class="flex-1 flex flex-col justify-between">
+          <div>
+            <h3 class="text-xl font-bold text-gray-800 mb-2 group-hover:text-blue-600 transition-colors">{{
+              article.title }}</h3>
+            <p class="text-gray-600 line-clamp-2 mb-2">{{ article.snippet }}</p>
+          </div>
+          <span class="text-xs text-gray-400 font-medium">{{ article.date }}</span>
         </div>
       </RouterLink>
     </div>

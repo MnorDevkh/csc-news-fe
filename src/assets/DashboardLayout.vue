@@ -1,20 +1,24 @@
 <template>
-  <div class="flex h-screen bg-neutral-background text-gray-800">
+  <div class="flex h-screen bg-gray-50 text-gray-800">
     <!-- Sidebar -->
-    <aside class="flex w-64 flex-col space-y-6 bg-white p-4 shadow-lg">
+    <aside class="hidden md:flex w-64 flex-col space-y-6 bg-white p-4 shadow-lg">
       <div class="flex items-center gap-3 px-2">
-        <div class="h-10 w-10 rounded-lg bg-primary flex items-center justify-center text-white font-bold text-xl">
+        <div class="h-10 w-10 rounded-lg bg-blue-600 flex items-center justify-center text-white font-bold text-xl">
           A
         </div>
         <h1 class="text-xl font-bold text-gray-800">Admin Corp.</h1>
       </div>
 
       <nav class="flex-1 space-y-2">
-        <router-link :to="{ name: 'dashboard' }" class="flex items-center gap-3 rounded-lg px-4 py-2.5 text-gray-600 hover:bg-gray-100" active-class="bg-primary/10 text-primary font-semibold">
+        <router-link :to="{ name: 'dashboard' }"
+          class="flex items-center gap-3 rounded-lg px-4 py-2.5 text-gray-600 hover:bg-gray-100"
+          active-class="bg-blue-50 text-blue-600 font-semibold">
           <i class="fas fa-home w-5 text-center"></i>
           <span>Dashboard</span>
         </router-link>
-        <router-link :to="{ name: 'adminPanel' }" class="flex items-center gap-3 rounded-lg px-4 py-2.5 text-gray-600 hover:bg-gray-100" active-class="bg-primary/10 text-primary font-semibold">
+        <router-link :to="{ name: 'adminPanel' }"
+          class="flex items-center gap-3 rounded-lg px-4 py-2.5 text-gray-600 hover:bg-gray-100"
+          active-class="bg-blue-50 text-blue-600 font-semibold">
           <i class="fas fa-users-cog w-5 text-center"></i>
           <span>Admin</span>
         </router-link>
@@ -29,7 +33,7 @@
       </nav>
 
       <div class="space-y-2">
-         <a href="#" class="flex items-center gap-3 rounded-lg px-4 py-2.5 text-gray-600 hover:bg-gray-100">
+        <a href="#" class="flex items-center gap-3 rounded-lg px-4 py-2.5 text-gray-600 hover:bg-gray-100">
           <i class="fas fa-question-circle w-5 text-center"></i>
           <span>Help</span>
         </a>
@@ -47,14 +51,15 @@
         <div class="flex items-center gap-4">
           <div class="relative">
             <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
-            <input type="text" placeholder="Search..." class="w-full rounded-lg border border-gray-300 py-2 pl-10 pr-4 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary">
+            <input type="text" placeholder="Search..."
+              class="w-full rounded-lg border border-gray-300 py-2 pl-10 pr-4 focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600">
           </div>
         </div>
         <div class="flex items-center gap-6">
-          <button class="text-gray-500 hover:text-primary">
+          <button class="text-gray-500 hover:text-blue-600">
             <i class="fas fa-bell"></i>
           </button>
-          <button class="text-gray-500 hover:text-primary">
+          <button class="text-gray-500 hover:text-blue-600">
             <i class="fas fa-envelope"></i>
           </button>
           <div class="flex items-center gap-3">

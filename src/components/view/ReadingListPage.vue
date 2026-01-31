@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, watch, computed } from 'vue';
+import { DeleteOutlined, BookOutlined } from '@ant-design/icons-vue';
 
 // Define a type for a reading list item for better type safety
 interface ReadingListItem {
@@ -28,7 +29,6 @@ onMounted(() => {
       { id: 403, title: 'Sample Article 3: Breakthrough in Quantum Computing', date: '2023-10-15', read: false },
     ];
   }
-  applyFilter(); // Apply filter after loading data
 });
 
 // Watch for changes in readingList and save to local storage
@@ -38,21 +38,11 @@ watch(readingList, (newValue) => {
 
 const removeArticle = (id: number) => {
   readingList.value = readingList.value.filter(item => item.id !== id);
-  applyFilter();
 };
 
 const toggleReadStatus = (id: number) => {
   const item = readingList.value.find(item => item.id === id);
   if (item) item.read = !item.read;
-  applyFilter();
-};
-
-const filteredReadingList = ref([]);
-
-const applyFilter = () => {
-  filteredReadingList.value = readingList.value.filter(item =>
-    item.title.toLowerCase().includes(filterText.value.toLowerCase())
-  );
 };
 
 // Use a computed property for filtered list to reactively update when readingList or filterText changes
@@ -63,120 +53,62 @@ const currentFilteredList = computed(() => {
   );
 });
 
-// Watch filterText to re-apply filter
-watch(filterText, () => {
-  applyFilter();
-});
 </script>
 
 <template>
-  <div class="reading-list-page">
-    <h1>My Reading List</h1>
-    <div class="filter-section">
-      <input type="text" v-model="filterText" @input="applyFilter" placeholder="Filter articles..." />
-      <button @click="applyFilter">Search</button>
-    </div>
-    <div v-if="currentFilteredList.length">
-      <div v-for="item in currentFilteredList" :key="item.id" class="reading-list-item">
-        <h3>{{ item.title }}</h3>
-        <div class="item-meta">
-          <span class="date">{{ item.date }}</span>
-          <span :class="['status-tag', { read: item.read }]">{{ item.read ? 'Read' : 'Unread' }}</span>
-        </div>
-        <div class="item-actions">
-          <button @click="toggleReadStatus(item.id)" :class="['action-btn', { 'mark-unread': item.read }]">
-            {{ item.read ? 'Mark Unread' : 'Mark Read' }}
-          </button>
-          <button @click="removeArticle(item.id)" class="action-btn remove-btn">Remove</button>
+  <div class="min-h-screen bg-gray-50 py-12 font-sans">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+        <h1 class="text-3xl font-bold text-gray-900 flex items-center gap-2">
+          <BookOutlined class="text-blue-600" />
+          My Reading List
+        </h1>
+        <div class="relative max-w-md w-full md:w-auto">
+          <input type="text" v-model="filterText" placeholder="Filter articles..."
+            class="w-full pl-4 pr-10 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all" />
         </div>
       </div>
+
+      <div v-if="currentFilteredList.length" class="space-y-4">
+        <div v-for="item in currentFilteredList" :key="item.id"
+          class="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-gray-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-all hover:shadow-md">
+
+          <div class="flex-1">
+            <h3 class="text-lg font-bold text-gray-800 mb-2" :class="{ 'line-through text-gray-400': item.read }">
+              {{ item.title }}
+            </h3>
+            <div class="flex items-center gap-3 text-sm">
+              <span class="text-gray-500">{{ item.date }}</span>
+              <span class="px-2 py-0.5 rounded-full text-xs font-semibold"
+                :class="item.read ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'">
+                {{ item.read ? 'Read' : 'Unread' }}
+              </span>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2 self-start sm:self-center">
+            <button @click="toggleReadStatus(item.id)"
+              class="px-4 py-2 rounded-lg text-sm font-medium transition-colors border"
+              :class="item.read ? 'bg-gray-50 text-gray-600 border-gray-200 hover:bg-gray-100' : 'bg-blue-50 text-blue-600 border-blue-100 hover:bg-blue-100'">
+              {{ item.read ? 'Mark Unread' : 'Mark Read' }}
+            </button>
+            <button @click="removeArticle(item.id)"
+              class="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors" title="Remove">
+              <DeleteOutlined />
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div v-else class="text-center py-20 bg-white rounded-xl shadow-sm border border-gray-100">
+        <BookOutlined class="text-6xl text-gray-200 mb-4" />
+        <h3 class="text-xl font-medium text-gray-500">Your list is empty</h3>
+        <p class="text-gray-400 mt-1">Bookmark articles to read them later.</p>
+      </div>
+
     </div>
-    <p v-else>Your reading list is empty or no matching articles found.</p>
   </div>
 </template>
 
-<style scoped>
-.reading-list-page {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 2rem;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-h1 {
-  color: #007bff;
-  margin-bottom: 1.5rem;
-}
-.filter-section {
-  margin-bottom: 1.5rem;
-}
-.filter-section input {
-  padding: 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  margin-right: 0.5rem;
-}
-.filter-section button {
-  padding: 0.5rem 1rem;
-  border: none;
-  background-color: #007bff;
-  color: white;
-  border-radius: 4px;
-  cursor: pointer;
-}
-.reading-list-item {
-  margin-bottom: 1rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid #eee;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.reading-list-item h3 { /* Adjusted for better spacing */
-  margin: 0;
-  font-size: 1.1rem;
-  color: #333;
-}
-.item-meta {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-.item-meta .date {
-  font-size: 0.85rem;
-  color: #666;
-}
-.item-meta .status-tag {
-  padding: 0.3rem 0.6rem;
-  border-radius: 12px;
-  font-size: 0.75rem;
-  font-weight: bold;
-  color: white;
-}
-.item-meta .status-tag.read {
-  background-color: #28a745; /* Green */
-}
-.item-meta .status-tag:not(.read) {
-  background-color: #ffc107; /* Yellow/Orange */
-}
-.item-actions {
-  display: flex;
-  gap: 0.5rem;
-}
-.action-btn {
-  padding: 0.4rem 0.8rem;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  background-color: #007bff;
-  color: white;
-  font-size: 0.85rem;
-}
-.action-btn.mark-unread {
-  background-color: #6c757d; /* Grey for unread action */
-}
-.action-btn.remove-btn {
-  background-color: #dc3545; /* Red for remove */
-}
-</style>
+<style scoped></style>
