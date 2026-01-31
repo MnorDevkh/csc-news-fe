@@ -6,15 +6,30 @@
   font-family: 'Kantumruy Pro', 'Khmer', 'Koh Santepheap', sans-serif;
 }
 
-html, body {
+html,
+body {
   font-family: 'Kantumruy Pro', 'Khmer', 'Koh Santepheap', sans-serif;
 }
 
 #app {
   min-height: 100vh;
-  margin: 0 auto;
-  padding: 1rem;
+  margin: 0;
+  padding: 0;
+  width: 100%;
   font-weight: normal;
-  background-color: rgb(243, 247, 248);
+  background-color: transparent;
+  font-family: 'Kantumruy Pro', 'Khmer', 'Koh Santepheap', sans-serif;
+}
+
+body {
+  color: var(--color-text);
+  margin: 0;
+  padding: 0;
+  display: block;
+  width: 100%;
+  min-height: 100vh;
+  justify-content: center;
+  align-items: center;
+  line-height: 1.6;
   font-family: 'Kantumruy Pro', 'Khmer', 'Koh Santepheap', sans-serif;
 }

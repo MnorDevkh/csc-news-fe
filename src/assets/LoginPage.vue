@@ -1,57 +1,178 @@
 <template>
-  <div class="relative flex min-h-screen items-center justify-center overflow-hidden bg-neutral-background">
-    <!-- Abstract Shapes -->
-    <div class="absolute -left-32 -top-32 h-96 w-96 rounded-full bg-blue-100 blur-3xl"></div>
-    <div class="absolute -bottom-48 -right-32 h-96 w-96 rounded-full bg-blue-200 blur-3xl"></div>
+  <div class="relative min-h-screen w-full font-sans overflow-hidden flex items-center justify-center">
 
-    <div class="relative z-10 w-full max-w-md space-y-8 rounded-2xl bg-white p-10 shadow-xl">
-      <div>
-        <h2 class="text-center text-3xl font-bold tracking-tight text-gray-900">
-          Sign in to your account
-        </h2>
-      </div>
-      <form class="mt-8 space-y-6" @submit.prevent="handleLogin">
-        <div class="space-y-4 rounded-md">
-          <div>
-            <label for="email-address" class="sr-only">Email address</label>
-            <input id="email-address" name="email" type="email" autocomplete="email" required
-              class="relative block w-full appearance-none rounded-xl border border-gray-300 px-3 py-3 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-blue-600 focus:outline-none focus:ring-blue-600 sm:text-sm"
-              placeholder="Email address">
-          </div>
-          <div>
-            <label for="password" class="sr-only">Password</label>
-            <input id="password" name="password" type="password" autocomplete="current-password" required
-              class="relative block w-full appearance-none rounded-xl border border-gray-300 px-3 py-3 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-blue-600 focus:outline-none focus:ring-blue-600 sm:text-sm"
-              placeholder="Password">
-          </div>
-        </div>
+    <!-- Background: Night Sky Gradient & Mountains -->
+    <div class="absolute inset-0 bg-gradient-to-b from-indigo-900 via-purple-900 to-indigo-950"></div>
 
-        <div class="flex items-center justify-between">
-          <div class="flex items-center">
-            <input id="remember-me" name="remember-me" type="checkbox"
-              class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-600">
-            <label for="remember-me" class="ml-2 block text-sm text-gray-900">Remember me</label>
-          </div>
+    <!-- Stars (Simulated with simple dots) -->
+    <div class="absolute top-10 left-10 w-1 h-1 bg-white rounded-full opacity-70 animate-pulse"></div>
+    <div class="absolute top-20 right-20 w-1.5 h-1.5 bg-white rounded-full opacity-60 animate-pulse delay-500"></div>
+    <div class="absolute top-1/3 left-1/4 w-1 h-1 bg-white rounded-full opacity-50"></div>
+    <div class="absolute top-1/4 right-1/3 w-0.5 h-0.5 bg-white rounded-full opacity-80"></div>
 
-          <div class="text-sm">
-            <a href="#" class="font-medium text-blue-600 hover:text-blue-700">Forgot your password?</a>
-          </div>
-        </div>
-
-        <div>
-          <button type="submit"
-            class="group relative flex w-full justify-center rounded-xl border border-transparent bg-blue-600 px-4 py-3 text-sm font-semibold text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2">
-            Sign in
-          </button>
-        </div>
-      </form>
+    <!-- Shooting Star (CSS Animation) -->
+    <div
+      class="absolute top-0 right-1/3 w-32 h-0.5 bg-gradient-to-l from-transparent to-white opacity-0 animate-shooting-star transform -rotate-45 origin-right">
     </div>
+
+
+    <!-- Mountains Silhouette (CSS Shapes) -->
+    <div class="absolute bottom-0 left-0 right-0 h-1/3 z-0">
+      <!-- Back Mountains -->
+      <svg class="absolute bottom-0 w-full h-full text-indigo-800 opacity-60" viewBox="0 0 1440 320"
+        preserveAspectRatio="none">
+        <path fill="currentColor"
+          d="M0,192L48,197.3C96,203,192,213,288,229.3C384,245,480,267,576,250.7C672,235,768,181,864,181.3C960,181,1056,235,1152,234.7C1248,235,1344,181,1392,154.7L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z">
+        </path>
+      </svg>
+      <!-- Middle Mountains -->
+      <svg class="absolute bottom-0 w-full h-3/4 text-indigo-900 opacity-80" viewBox="0 0 1440 320"
+        preserveAspectRatio="none">
+        <path fill="currentColor"
+          d="M0,224L48,213.3C96,203,192,181,288,181.3C384,181,480,203,576,224C672,245,768,267,864,261.3C960,256,1056,224,1152,197.3C1248,171,1344,149,1392,138.7L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z">
+        </path>
+      </svg>
+      <!-- Front Mountains -->
+      <svg class="absolute bottom-0 w-full h-1/2 text-indigo-950" viewBox="0 0 1440 320" preserveAspectRatio="none">
+        <path fill="currentColor"
+          d="M0,96L48,112C96,128,192,160,288,186.7C384,213,480,235,576,213.3C672,192,768,128,864,128C960,128,1056,192,1152,208C1248,224,1344,192,1392,176L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z">
+        </path>
+      </svg>
+    </div>
+
+    <!-- Login Card -->
+    <div class="relative z-10 bg-white w-full max-w-sm rounded-lg overflow-hidden shadow-2xl animate-fade-in-up">
+
+      <!-- Header Gradient -->
+      <div
+        class="bg-gradient-to-b from-indigo-900 via-purple-800 to-blue-500 h-48 flex flex-col items-center justify-center text-center p-6 relative overflow-hidden">
+        <!-- Stars in Header -->
+        <div class="absolute top-4 left-10 w-0.5 h-0.5 bg-white opacity-80"></div>
+        <div class="absolute bottom-10 right-10 w-0.5 h-0.5 bg-white opacity-60"></div>
+
+        <h2 class="text-white text-xl font-light tracking-widest uppercase mb-4">Hello & Welcome</h2>
+        <p class="text-blue-100 text-xs px-8 leading-relaxed opacity-80">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet
+          dolore.
+        </p>
+      </div>
+
+      <!-- Form Section -->
+      <div class="p-8 pb-10 bg-white">
+        <h3 class="text-center text-gray-700 text-lg font-bold tracking-widest uppercase mb-8">User Login</h3>
+
+        <!-- Error Alert -->
+        <div v-if="error" class="mb-4 text-xs text-center text-red-500 bg-red-50 p-2 rounded">
+          {{ error }}
+        </div>
+
+        <form @submit.prevent="handleSubmit" class="space-y-4">
+
+          <!-- Username -->
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <UserOutlined class="text-gray-400" />
+            </div>
+            <input v-model="email" type="text" placeholder="Username"
+              class="w-full pl-10 pr-4 py-3 bg-gray-200 border-none rounded-full text-sm text-gray-700 placeholder-gray-400 focus:ring-2 focus:ring-blue-400 focus:bg-white transition-colors outline-none">
+          </div>
+
+          <!-- Password -->
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <LockOutlined class="text-gray-400" />
+            </div>
+            <input v-model="password" type="password" placeholder="Password"
+              class="w-full pl-10 pr-4 py-3 bg-gray-200 border-none rounded-full text-sm text-gray-700 placeholder-gray-400 focus:ring-2 focus:ring-blue-400 focus:bg-white transition-colors outline-none">
+          </div>
+
+          <!-- Extras -->
+          <div class="flex items-center justify-between text-xs text-gray-500 px-1">
+            <div class="flex items-center">
+              <input type="checkbox" id="remember" class="mr-1 rounded text-purple-600 focus:ring-purple-500">
+              <label for="remember">Remember</label>
+            </div>
+            <a href="#" class="hover:text-purple-600">Forget Password ?</a>
+          </div>
+
+          <!-- Button -->
+          <button type="submit" :disabled="loading"
+            class="w-full mt-6 bg-gradient-to-r from-indigo-900 to-blue-600 text-white font-bold py-3 rounded-full shadow-lg hover:shadow-xl hover:scale-[1.02] transform transition-all duration-200 disabled:opacity-70 text-xs tracking-wider uppercase">
+            <span v-if="loading">Logging in...</span>
+            <span v-else>Login</span>
+          </button>
+
+        </form>
+      </div>
+
+    </div>
+
+    <!-- Footer Credit -->
+    <div class="absolute bottom-4 text-white/30 text-xs">
+      designed by FlexiGen
+    </div>
+
   </div>
 </template>
 
 <script setup>
-const handleLogin = () => {
-  console.log('Logging in...');
-  // Handle login logic here
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { MailOutlined, LockOutlined, UserOutlined, ArrowRightOutlined, WarningOutlined } from '@ant-design/icons-vue';
+import { useAuth } from '../composables/useAuth';
+
+const email = ref('admin@gmail.com');
+const password = ref('123');
+const router = useRouter();
+
+const { login, loading, error } = useAuth(); // 使用 useAuth
+
+const handleSubmit = async () => {
+  const success = await login(email.value, password.value);
+  if (success) {
+    router.push('/admin/dashboard');
+  }
 };
 </script>
+
+
+<style scoped>
+/* Ensure mountains stay at bottom */
+.mountains-container svg {
+  display: block;
+}
+
+/* Custom Animations */
+@keyframes shooting-star {
+  0% {
+    transform: translateX(0) translateY(0) rotate(-45deg) scale(1);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateX(-200px) translateY(200px) rotate(-45deg) scale(0);
+    opacity: 0;
+  }
+}
+
+.animate-shooting-star {
+  animation: shooting-star 3s ease-in-out infinite;
+  animation-delay: 2s;
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.8s ease-out forwards;
+}
+</style>

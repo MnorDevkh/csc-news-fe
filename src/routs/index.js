@@ -121,18 +121,48 @@ const router = createRouter({
       component: LoginPage,
     },
     {
-      path: '/app', // Using a prefix for the new layout
+      path: '/admin',
       component: DashboardLayout,
       children: [
+        {
+          path: '', // Default to dashboard
+          redirect: { name: 'dashboard' }
+        },
         {
           path: 'dashboard',
           name: 'dashboard',
           component: Dashboard,
         },
         {
-          path: 'admin',
+          path: 'users',
           name: 'adminPanel',
           component: AdminPanel,
+        },
+        // Content Management Routes
+        {
+          path: 'news',
+          name: 'adminNews',
+          component: () => import('@/components/view/admin/news/NewsListComponent.vue'),
+        },
+        {
+          path: 'bible',
+          name: 'adminBible',
+          component: () => import('@/components/view/admin/bible/BibleListComponent.vue'),
+        },
+        {
+          path: 'sermons',
+          name: 'adminSermons',
+          component: () => import('@/components/view/admin/sermon/SermonListComponent.vue'),
+        },
+        {
+          path: 'gallery',
+          name: 'adminGallery',
+          component: () => import('@/components/view/admin/gallery/GalleryListComponent.vue'),
+        },
+        {
+          path: 'saints',
+          name: 'adminSaints',
+          component: () => import('@/components/view/admin/saints/SaintListComponent.vue'),
         },
       ],
     },
