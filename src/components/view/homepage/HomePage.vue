@@ -35,6 +35,16 @@ onMounted(async () => {
   }
 });
 
+const formatDate = (dateString) => {
+  if (!dateString) return '';
+  return new Date(dateString).toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric'
+  });
+};
+
+
 
 </script>
 <template>
@@ -46,11 +56,11 @@ onMounted(async () => {
         <a-carousel autoplay class="rounded-2xl overflow-hidden shadow-xl">
           <div v-for="article in featuredArticles.slice(0, 4)" :key="article.id"
             class="relative h-[500px] md:h-[600px] w-full">
-            <img :src="article.image" :alt="article.title" class="h-full w-full object-cover" />
+            <img :src="article.thumbnail" :alt="article.title" class="h-full w-full object-cover" />
             <div
               class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent flex flex-col justify-end p-8 md:p-12">
               <h3 class="text-2xl md:text-4xl font-bold text-white mb-2 drop-shadow-md">{{ article.title }}</h3>
-              <p class="text-gray-200 text-lg line-clamp-2 max-w-3xl drop-shadow-sm">{{ article.snippet }}</p>
+              <p class="text-gray-200 text-lg line-clamp-2 max-w-3xl drop-shadow-sm">{{ article.excerpt }}</p>
             </div>
           </div>
         </a-carousel>
@@ -131,9 +141,9 @@ onMounted(async () => {
                     <div class="flex items-center gap-2 mt-2">
                       <span
                         class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                        {{ headline.category }}
+                        {{ headline.category?.name }}
                       </span>
-                      <span class="text-xs text-gray-400">Today</span>
+                      <span class="text-xs text-gray-400">{{ formatDate(headline.publish_at) }}</span>
                     </div>
                   </div>
                 </RouterLink>
@@ -148,10 +158,10 @@ onMounted(async () => {
             <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 m-4">
               <h2 class="text-xl font-bold text-gray-800 mb-4 border-b pb-2">មាតិការ</h2>
               <ul class="space-y-2">
-                <li v-for="category in newsCategories" :key="category">
-                  <RouterLink :to="{ name: 'categoryView', params: { name: category } }"
+                <li v-for="category in newsCategories" :key="category.id">
+                  <RouterLink :to="{ name: 'categoryView', params: { name: category.name } }"
                     class="flex items-center justify-between p-2 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-600 transition-all duration-200 group">
-                    <span>{{ category }}</span>
+                    <span>{{ category.name }}</span>
                     <ArrowRightOutlined class="text-xs opacity-0 group-hover:opacity-100 transition-opacity" />
                   </RouterLink>
                 </li>

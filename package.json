@@ -13,6 +13,8 @@
   },
   "dependencies": {
     "@ant-design/icons-vue": "^7.0.1",
+    "@ckeditor/ckeditor5-build-classic": "^41.4.2",
+    "@ckeditor/ckeditor5-vue": "^7.3.0",
     "@primeuix/themes": "^2.0.2",
     "@tailwindcss/vite": "^4.1.16",
     "ant-design-vue": "^4.2.6",

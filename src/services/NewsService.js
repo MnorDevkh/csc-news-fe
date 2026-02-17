@@ -1,65 +1,96 @@
-// Mock data that would typically come from a backend API
+import BaseAPI from './BaseAPI';
 
-const featuredArticlesData = [
-  {
-    id: 1,
-    title: 'The Future of AI in Web Development',
-    snippet: 'Exploring how artificial intelligence is reshaping the way we build websites and applications.',
-    image: 'https://images.unsplash.com/photo-1677756119517-756a188d2d94?q=80&w=2070&auto=format&fit=crop'
-  },
-  {
-    id: 2,
-    title: 'City Wins Championship in Stunning Final',
-    snippet: 'A nail-biting conclusion to the season sees the local team lift the trophy.',
-    image: 'https://images.unsplash.com/photo-1562408784-819f065b0a35?q=80&w=2070&auto=format&fit=crop'
-  },
-  {
-    id: 3,
-    title: 'The Future of AI in Web Development',
-    snippet: 'Exploring how artificial intelligence is reshaping the way we build websites and applications.',
-    image: 'https://images.unsplash.com/photo-1677756119517-756a188d2d94?q=80&w=2070&auto=format&fit=crop'
-  },
-  {
-    id: 4,
-    title: 'City Wins Championship in Stunning Final',
-    snippet: 'A nail-biting conclusion to the season sees the local team lift the trophy.',
-    image: 'https://images.unsplash.com/photo-1562408784-819f065b0a35?q=80&w=2070&auto=format&fit=crop'
-  },
-];
-
-const latestHeadlinesData = [
-  { id: 3, title: 'Tech Giant Unveils New Smart Home Device', category: 'Technology' },
-  { id: 4, title: 'Global Markets React to Economic Summit', category: 'Business' },
-  { id: 5, title: 'Blockbuster Movie Smashes Box Office Records', category: 'Entertainment' },
-  { id: 6, title: 'New Environmental Policies Announced', category: 'Politics' },
-];
-
-const newsCategoriesData = [
-  'Technology',
-  'Sports',
-  'Politics',
-  'Business',
-  'Entertainment',
-  'Health',
-];
-
-// Simulate API calls
 export const NewsService = {
-  getFeaturedArticles() {
-    return new Promise(resolve => {
-      setTimeout(() => resolve(featuredArticlesData), 300); // Simulate network delay
-    });
+  async getFeaturedArticles() {
+    try {
+      const response = await BaseAPI.publicClient.get('/articles', {
+        params: {
+          is_featured: true,
+          limit: 4
+        }
+      });
+      // Handle the response structure from get_articles ({ items: [], ... })
+      return response.data.items || [];
+    } catch (error) {
+      console.error('Error fetching featured articles:', error);
+      return [];
+    }
   },
 
-  getLatestHeadlines() {
-    return new Promise(resolve => {
-      setTimeout(() => resolve(latestHeadlinesData), 400);
-    });
+  async getLatestHeadlines() {
+    try {
+      const response = await BaseAPI.publicClient.get('/articles', {
+        params: {
+          limit: 5 // Adjust limit as needed
+        }
+      });
+      return response.data.items || [];
+    } catch (error) {
+      console.error('Error fetching latest headlines:', error);
+      return [];
+    }
   },
 
-  getNewsCategories() {
-    return new Promise(resolve => {
-      setTimeout(() => resolve(newsCategoriesData), 500);
-    });
+  async getNewsCategories() {
+    try {
+      const response = await BaseAPI.publicClient.get('/categories');
+      // The API returns a list of category objects. 
+      // If the UI expects just names, we might need to map it, 
+      // but let's return the full objects and update the UI to handle it.
+      return response.data.items || [];
+    } catch (error) {
+      console.error('Error fetching news categories:', error);
+      return [];
+    }
+  },
+
+  async getAllArticles(params = {}) {
+    try {
+      const response = await BaseAPI.publicClient.get('/articles', { params });
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching articles:', error);
+      throw error;
+    }
+  },
+
+  async getArticleById(id) {
+    try {
+      const response = await BaseAPI.publicClient.get(`/articles/${id}`);
+      return response.data;
+    } catch (error) {
+      console.error(`Error fetching article ${id}:`, error);
+      throw error;
+    }
+  },
+
+  async createArticle(data) {
+    try {
+      const response = await BaseAPI.authClient.post('/articles/', data);
+      return response.data;
+    } catch (error) {
+      console.error('Error creating article:', error);
+      throw error;
+    }
+  },
+
+  async updateArticle(id, data) {
+    try {
+      const response = await BaseAPI.authClient.put(`/articles/${id}`, data);
+      return response.data;
+    } catch (error) {
+      console.error(`Error updating article ${id}:`, error);
+      throw error;
+    }
+  },
+
+  async deleteArticle(id) {
+    try {
+      const response = await BaseAPI.authClient.delete(`/articles/${id}`);
+      return response.data;
+    } catch (error) {
+      console.error(`Error deleting article ${id}:`, error);
+      throw error;
+    }
   }
 };

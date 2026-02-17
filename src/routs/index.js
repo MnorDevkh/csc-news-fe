@@ -141,8 +141,43 @@ const router = createRouter({
         // Content Management Routes
         {
           path: 'news',
-          name: 'adminNews',
-          component: () => import('@/components/view/admin/news/NewsListComponent.vue'),
+          children: [
+            {
+              path: '',
+              name: 'adminNews',
+              component: () => import('@/components/view/admin/news/NewsListComponent.vue'),
+            },
+            {
+              path: 'create',
+              name: 'createNews',
+              component: () => import('@/components/view/admin/news/NewsForm.vue'),
+            },
+            {
+              path: 'edit/:id',
+              name: 'editNews',
+              component: () => import('@/components/view/admin/news/NewsForm.vue'),
+            }
+          ]
+        },
+        {
+          path: 'categories',
+          children: [
+            {
+              path: '',
+              name: 'adminCategories',
+              component: () => import('@/components/view/admin/categories/CategoryListComponent.vue'),
+            },
+            {
+              path: 'create',
+              name: 'createCategory',
+              component: () => import('@/components/view/admin/categories/CategoryForm.vue'),
+            },
+            {
+              path: 'edit/:id',
+              name: 'editCategory',
+              component: () => import('@/components/view/admin/categories/CategoryForm.vue'),
+            }
+          ]
         },
         {
           path: 'bible',
