@@ -30,8 +30,8 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-gray-50 py-8 font-sans">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+  <div class="w-full min-h-screen flex justify-center items-start p-4 sm:p-6 lg:p-8 box-border bg-gray-50">
+    <div class="w-full max-w-4xl mx-auto py-8 px-4 sm:py-8 sm:px-6 lg:py-10 lg:px-8">
 
       <!-- Back Button -->
       <button @click="router.back()"
@@ -83,7 +83,3 @@ onMounted(() => {
     </div>
   </div>
 </template>
-
-<style scoped>
-/* Add any specific overrides here if needed */
-</style>

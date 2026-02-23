@@ -27,7 +27,8 @@ watch(() => route.params.name, (newName) => {
 </script>
 
 <template>
-  <div class="mx-auto max-w-6xl rounded-lg bg-white p-4 sm:p-8">
+  <div class="w-full min-h-screen flex justify-center items-start p-4 sm:p-6 lg:p-8 box-border bg-gray-50">
+    <div class="w-full max-w-4xl mx-auto rounded-lg bg-white p-4 sm:p-8 lg:p-8 lg:py-8">
     <h1 class="mb-6 text-2xl sm:text-3xl font-bold text-blue-600">Category: {{ categoryName }}</h1>
     <div v-if="articles.length" class="space-y-4">
       <RouterLink v-for="article in articles" :key="article.id"
@@ -49,9 +50,6 @@ watch(() => route.params.name, (newName) => {
     </div>
     <p v-else class="text-gray-500">No articles found in this category.</p>
     <!-- Placeholder for sorting options -->
+    </div>
   </div>
 </template>
-
-<style scoped>
-/* All styles have been converted to Tailwind CSS classes in the template. */
-</style>

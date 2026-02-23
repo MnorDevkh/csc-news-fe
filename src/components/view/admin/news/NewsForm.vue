@@ -47,7 +47,7 @@
       <!-- CKEditor Content -->
       <div>
         <label class="block text-sm font-medium text-gray-700 mb-1">Content</label>
-        <div class="prose max-w-none">
+        <div class="prose max-w-none [&_.ck-editor__editable]:min-h-[200px]">
           <ckeditor :editor="editor" v-model="form.content" :config="editorConfig"></ckeditor>
         </div>
       </div>
@@ -156,10 +156,3 @@ const handleSubmit = async () => {
   }
 };
 </script>
-
-<style>
-/* CKEditor overrides if necessary */
-.ck-editor__editable {
-  min-height: 200px;
-}
-</style>

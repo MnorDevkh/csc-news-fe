@@ -23,7 +23,7 @@ defineProps({
 
 <template>
   <RouterLink :to="{ name: 'dailySermonDetail', params: { id: id } }" class="block group">
-    <div class="sermon-card bg-white p-6 rounded-2xl shadow-sm border border-gray-100 transition-shadow duration-300 group-hover:shadow-md h-full">
+    <div class="flex flex-col bg-white p-6 rounded-2xl shadow-sm border border-gray-100 transition-shadow duration-300 group-hover:shadow-md h-full">
       <div class="flex flex-col justify-between h-full">
         <div>
           <h3 class="text-xl font-bold text-gray-800 group-hover:text-purple-600 transition-colors">{{ title }}</h3>
@@ -36,10 +36,3 @@ defineProps({
     </div>
   </RouterLink>
 </template>
-
-<style scoped>
-.sermon-card {
-  display: flex;
-  flex-direction: column;
-}
-</style>

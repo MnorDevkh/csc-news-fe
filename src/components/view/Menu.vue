@@ -1,5 +1,5 @@
 <template>
-    <nav class="bg-white shadow-sm font-sans mb-4 sticky top-0 z-50 flex justify-center w-full">
+    <nav class="bg-white shadow-sm font-sans mb-4 sticky top-0 z-50 flex justify-center w-full [&_.ant-menu-horizontal]:border-b-0 [&_.ant-menu-horizontal]:leading-[46px] [&_.ant-menu-item]:px-6 [&_.ant-menu-item-selected]:!text-blue-600 [&_.ant-menu-submenu-selected]:!text-blue-600 [&_.ant-menu-item::after]:!border-b-2 [&_.ant-menu-item::after]:!border-blue-600 [&_.ant-menu-submenu::after]:!border-b-2 [&_.ant-menu-submenu::after]:!border-blue-600 [&_.ant-menu-inline_.ant-menu-item]:h-[50px] [&_.ant-menu-inline_.ant-menu-item]:leading-[50px] [&_.ant-menu-inline_.ant-menu-item]:mb-2 [&_.ant-menu-inline]:border-r-0 [&_.ant-menu]:font-[Kantumruy_Pro,'Khmer','Koh_Santepheap',sans-serif] [&_.ant-menu-item]:font-[Kantumruy_Pro,'Khmer','Koh_Santepheap',sans-serif] [&_.ant-menu-submenu-title]:font-[Kantumruy_Pro,'Khmer','Koh_Santepheap',sans-serif]">
         <div class="w-full max-w-[1400px] px-4 sm:px-6 lg:px-8 mx-auto">
 
             <!-- Top Header Bar -->
@@ -18,11 +18,16 @@
                 </div>
 
                 <!-- Desktop Search & Actions -->
-                <div class="hidden md:flex flex-1 max-w-xl mx-8 justify-end">
-                    <div class="flex items-center gap-2 w-full">
+                <div class="hidden md:flex flex-1 max-w-xl mx-8 justify-end items-center gap-3">
+                    <div class="flex items-center gap-2 flex-1">
                         <a-input-search v-model:value="searchQuery" placeholder="ស្វែងរកអត្ថបទ..." enter-button="Search"
                             size="large" @search="performSearch" class="w-full" />
                     </div>
+                    <router-link v-if="isAuthenticated" :to="{ name: 'dashboard' }"
+                        class="flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700 transition-colors shrink-0">
+                        <DashboardOutlined />
+                        <span>Dashboard</span>
+                    </router-link>
                 </div>
 
                 <!-- Mobile Burger Button -->
@@ -75,6 +80,16 @@
                             @click="(e) => { handleClick(e); mobileMenuOpen = false; }" class="border-none text-lg" />
                     </div>
 
+                    <!-- Dashboard (when logged in) -->
+                    <div v-if="isAuthenticated" class="pt-4 border-t border-gray-100">
+                        <router-link :to="{ name: 'dashboard' }"
+                            class="flex items-center justify-center gap-2 w-full py-3 px-4 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700 transition-colors"
+                            @click="mobileMenuOpen = false">
+                            <DashboardOutlined />
+                            <span>Dashboard</span>
+                        </router-link>
+                    </div>
+
                     <!-- Footer / Extra Links -->
                     <div class="mt-auto pt-8 border-t border-gray-100">
                         <a href="#" class="block text-center text-gray-500 text-sm mb-2">Privacy Policy</a>
@@ -89,13 +104,19 @@
 </template>
 
 <script lang="ts" setup>
-import { h, ref } from 'vue';
+import { h, ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import { MailOutlined, HomeOutlined, ReadOutlined, SettingOutlined, MenuOutlined, CloseOutlined } from '@ant-design/icons-vue';
+import { MailOutlined, HomeOutlined, ReadOutlined, SettingOutlined, MenuOutlined, CloseOutlined, DashboardOutlined } from '@ant-design/icons-vue';
 import { MenuProps } from 'ant-design-vue';
+import { useAuth } from '@/composables/useAuth';
 
 const searchQuery = ref('');
 const router = useRouter();
+const { isAuthenticated, initAuth } = useAuth();
+
+onMounted(() => {
+    initAuth();
+});
 const current = ref<string[]>(['/']);
 const mobileMenuOpen = ref(false);
 
@@ -175,38 +196,3 @@ const items = ref<MenuProps['items']>([
     },
 ]);
 </script>
-
-<style scoped>
-/* Custom overrides for Ant Design Menu */
-:deep(.ant-menu-horizontal) {
-    border-bottom: none;
-    line-height: 46px;
-}
-
-:deep(.ant-menu-item) {
-    padding: 0 24px;
-}
-
-:deep(.ant-menu-item-selected),
-:deep(.ant-menu-submenu-selected) {
-    color: #2563eb !important;
-    /* Tailwind blue-600 */
-}
-
-:deep(.ant-menu-item::after),
-:deep(.ant-menu-submenu::after) {
-    border-bottom-width: 2px !important;
-    border-bottom-color: #2563eb !important;
-}
-
-/* Mobile Menu Overrides to make it look clean */
-:deep(.ant-menu-inline .ant-menu-item) {
-    height: 50px;
-    line-height: 50px;
-    margin-bottom: 8px;
-}
-
-:deep(.ant-menu-inline) {
-    border-right: none;
-}
-</style>

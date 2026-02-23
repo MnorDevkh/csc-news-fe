@@ -78,6 +78,3 @@ const navigateToDetail = (id) => {
     </div>
   </div>
 </template>
-
-<style scoped>
-</style>

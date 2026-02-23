@@ -140,7 +140,15 @@
       <!-- Content Area -->
       <main class="flex-1 overflow-y-auto bg-gray-50 p-6 md:p-8">
         <router-view v-slot="{ Component }">
-          <transition name="fade" mode="out-in">
+          <transition
+            enter-active-class="transition duration-200 ease-out"
+            enter-from-class="opacity-0"
+            enter-to-class="opacity-100"
+            leave-active-class="transition duration-200 ease-in"
+            leave-from-class="opacity-100"
+            leave-to-class="opacity-0"
+            mode="out-in"
+          >
             <component :is="Component" />
           </transition>
         </router-view>
@@ -175,15 +183,3 @@ onMounted(() => {
   initAuth();
 });
 </script>
-
-<style scoped>
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.2s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-</style>

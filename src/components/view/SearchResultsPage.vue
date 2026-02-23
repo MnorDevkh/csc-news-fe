@@ -30,8 +30,8 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-gray-50 py-12 font-sans">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+  <div class="w-full min-h-screen flex justify-center items-start p-4 sm:p-6 lg:p-8 box-border bg-gray-50">
+    <div class="w-full max-w-4xl mx-auto py-8 px-4 sm:py-10 sm:px-6 lg:py-12 lg:px-8">
 
       <div class="mb-8 text-center sm:text-left">
         <h1 class="text-3xl font-bold text-gray-900 mb-2">
@@ -81,5 +81,3 @@ onMounted(() => {
     </div>
   </div>
 </template>
-
-<style scoped></style>

@@ -79,5 +79,3 @@ const sermons = ref([
 ]);
 
 </script>
-
-<style scoped></style>

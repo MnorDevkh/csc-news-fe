@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-gray-50 py-12 font-sans">
+  <div class="min-h-screen bg-gray-50 py-12 font-sans bg-gray-500 mx-auto">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
 
       <!-- Back Button -->
@@ -9,7 +9,7 @@
         Back to Sermons
       </button>
 
-      <article class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+      <article class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden w-full max-w-4xl mx-auto">
 
         <!-- Video/Hero Section -->
         <div class="aspect-video bg-black relative flex items-center justify-center group cursor-pointer">
@@ -18,7 +18,7 @@
           <div class="absolute inset-0 flex items-center justify-center">
             <div
               class="h-20 w-20 bg-purple-600/90 rounded-full flex items-center justify-center shadow-2xl transition-transform group-hover:scale-110">
-              <CaretRightOutlined class="text-4xl text-white ml-1" />
+              <CaretRightOutlined class="text-4xl text-white" />
             </div>
           </div>
         </div>
@@ -91,6 +91,8 @@
 
 <script setup>
 import { ArrowLeftOutlined, CaretRightOutlined, UserOutlined, CalendarOutlined, ClockCircleOutlined, DownloadOutlined, FileTextOutlined, ShareAltOutlined } from '@ant-design/icons-vue';
-</script>
 
-<style scoped></style>
+defineProps({
+  id: { type: [String, Number], required: true }
+});
+</script>

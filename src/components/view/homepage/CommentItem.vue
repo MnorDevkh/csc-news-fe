@@ -32,83 +32,29 @@ const submitReply = () => {
 </script>
 
 <template>
-  <div class="comment-item">
-    <div class="comment-header">
-      <span class="comment-author">{{ comment.author }}</span>
-      <span class="comment-date">{{ comment.date }}</span>
+  <div class="border-l-2 border-gray-200 pl-6 mt-6">
+    <div class="flex justify-between items-center mb-2">
+      <span class="font-bold text-gray-800">{{ comment.author }}</span>
+      <span class="text-xs text-gray-500">{{ comment.date }}</span>
     </div>
     <div class="comment-body">
-      <p>{{ comment.text }}</p>
+      <p class="m-0 text-gray-600">{{ comment.text }}</p>
     </div>
-    <div class="comment-footer">
-      <button @click="showReplyForm = !showReplyForm" class="reply-btn">Reply</button>
-    </div>
-
-    <div v-if="showReplyForm" class="reply-form">
-      <textarea v-model="newReply" placeholder="Write a reply..."></textarea>
-      <button @click="submitReply">Submit Reply</button>
+    <div class="mt-2">
+      <button @click="showReplyForm = !showReplyForm" class="bg-transparent border-none text-blue-600 cursor-pointer text-sm hover:underline">
+        Reply
+      </button>
     </div>
 
-    <div v-if="comment.replies && comment.replies.length > 0" class="comment-replies">
+    <div v-if="showReplyForm" class="mt-4">
+      <textarea v-model="newReply" placeholder="Write a reply..." class="w-full min-h-[60px] p-2 border border-gray-300 rounded"></textarea>
+      <button @click="submitReply" class="mt-2 px-4 py-2 bg-blue-600 text-white border-none rounded cursor-pointer hover:bg-blue-700">
+        Submit Reply
+      </button>
+    </div>
+
+    <div v-if="comment.replies && comment.replies.length > 0" class="mt-4">
       <CommentItem v-for="reply in comment.replies" :key="reply.id" :comment="reply" />
     </div>
   </div>
 </template>
-
-<style scoped>
-.comment-item {
-  border-left: 2px solid #eee;
-  padding-left: 1.5rem;
-  margin-top: 1.5rem;
-}
-.comment-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 0.5rem;
-}
-.comment-author {
-  font-weight: bold;
-  color: #333;
-}
-.comment-date {
-  font-size: 0.8rem;
-  color: #888;
-}
-.comment-body p {
-  margin: 0;
-  color: #555;
-}
-.comment-footer {
-  margin-top: 0.5rem;
-}
-.reply-btn {
-  background: none;
-  border: none;
-  color: #007bff;
-  cursor: pointer;
-  font-size: 0.9rem;
-}
-.reply-form {
-  margin-top: 1rem;
-}
-.reply-form textarea {
-  width: 100%;
-  min-height: 60px;
-  padding: 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-.reply-form button {
-  margin-top: 0.5rem;
-  padding: 0.5rem 1rem;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-.comment-replies {
-  margin-top: 1rem;
-}
-</style>

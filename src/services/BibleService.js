@@ -1,7 +1,8 @@
 import { anyType } from "ant-design-vue/es/_util/type";
 
-const BASE_URL = 'http://127.0.0.1:8000/api/v1/bibles';
-const CHAPTER_URL = 'http://127.0.0.1:8000/api/v1/chapters';
+const apiBase = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8100/api/v1';
+const BASE_URL = `${apiBase}/bibles`;
+const CHAPTER_URL = `${apiBase}/chapters`;
 const language = 'KM';
 
 export const BibleService = {

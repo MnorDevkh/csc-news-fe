@@ -12,14 +12,18 @@ export default defineConfig({
     vue(),
     tailwindcss(),
     Components({
+      dts: false,
       resolvers: [
         AntDesignVueResolver({
-          importStyle: false, // css in js
+          importStyle: false,
         }),
       ],
     }),
 
   ],
+  server: {
+    port: 3000,
+  },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))

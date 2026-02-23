@@ -62,5 +62,3 @@ const openReading = (id) => {
   console.log("Open reading", id);
 };
 </script>
-
-<style scoped></style>

@@ -12,7 +12,8 @@
 
     <!-- Shooting Star (CSS Animation) -->
     <div
-      class="absolute top-0 right-1/3 w-32 h-0.5 bg-gradient-to-l from-transparent to-white opacity-0 animate-shooting-star transform -rotate-45 origin-right">
+      class="absolute top-0 right-1/3 w-32 h-0.5 bg-gradient-to-l from-transparent to-white opacity-0 -rotate-45 origin-right"
+      style="animation: shooting-star 3s ease-in-out infinite 2s">
     </div>
 
 
@@ -41,7 +42,7 @@
     </div>
 
     <!-- Login Card -->
-    <div class="relative z-10 bg-white w-full max-w-sm rounded-lg overflow-hidden shadow-2xl animate-fade-in-up">
+    <div class="relative z-10 bg-white w-full max-w-sm rounded-lg overflow-hidden shadow-2xl" style="animation: fade-in-up 0.8s ease-out forwards">
 
       <!-- Header Gradient -->
       <div
@@ -134,45 +135,3 @@ const handleSubmit = async () => {
   }
 };
 </script>
-
-
-<style scoped>
-/* Ensure mountains stay at bottom */
-.mountains-container svg {
-  display: block;
-}
-
-/* Custom Animations */
-@keyframes shooting-star {
-  0% {
-    transform: translateX(0) translateY(0) rotate(-45deg) scale(1);
-    opacity: 1;
-  }
-
-  100% {
-    transform: translateX(-200px) translateY(200px) rotate(-45deg) scale(0);
-    opacity: 0;
-  }
-}
-
-.animate-shooting-star {
-  animation: shooting-star 3s ease-in-out infinite;
-  animation-delay: 2s;
-}
-
-@keyframes fade-in-up {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-fade-in-up {
-  animation: fade-in-up 0.8s ease-out forwards;
-}
-</style>

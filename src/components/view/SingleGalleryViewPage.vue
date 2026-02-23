@@ -8,52 +8,62 @@ const gallery = ref(null);
 const loading = ref(true);
 
 onMounted(async () => {
-  const galleryId = Number(route.params.id);
+  const galleryId = route.params.id;
   gallery.value = await MediaService.getGalleryAlbumById(galleryId);
   loading.value = false;
 });
 </script>
 
 <template>
-  <div class="mx-auto p-8 bg-white rounded-lg shadow-sm max-w-7xl min-h-screen">
-    <div v-if="loading" class="flex justify-center items-center h-64">
-      <a-spin size="large" />
-    </div>
-    
-    <div v-else-if="gallery">
-      <div class="mb-8 border-b border-gray-200 pb-6">
-        <h1 class="text-3xl font-bold text-blue-600 mb-3">{{ gallery.title }}</h1>
-        <p class="text-lg text-gray-600 mb-2">{{ gallery.description }}</p>
-        <div class="flex items-center text-sm text-gray-400">
-          <span class="mr-4">{{ gallery.date }}</span>
-          <span>{{ gallery.itemCount }} items</span>
-        </div>
+  <div class="w-full min-h-screen flex justify-center items-start p-4 sm:p-6 lg:p-8 box-border">
+    <div class="w-full max-w-7xl mx-auto bg-white rounded-lg shadow-md p-6 sm:p-8 lg:px-12 lg:py-10">
+      <div v-if="loading" class="flex justify-center items-center min-h-64 w-full">
+        <a-spin size="large" />
       </div>
 
-      <div class="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-4 space-y-4">
-        <div v-for="item in gallery.itemList" :key="item.id" class="break-inside-avoid">
-          <div class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
-            <a-image
-              :src="item.imageUrl"
-              :alt="item.title"
-              class="w-full block"
-            />
+      <div v-else-if="gallery">
+        <header class="mb-8 pb-6 border-b border-gray-200 text-left">
+          <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-blue-600 mb-3 leading-tight">
+            {{ gallery.title }}
+          </h1>
+          <p class="text-[0.9375rem] sm:text-lg text-gray-600 mb-2 leading-relaxed">
+            {{ gallery.description }}
+          </p>
+          <div class="flex items-center justify-start gap-4 flex-wrap text-sm text-gray-400">
+            <span>{{ gallery.date }}</span>
+            <span>{{ gallery.itemCount }} items</span>
+          </div>
+        </header>
+
+        <div class="columns-1 gap-4 sm:columns-2 sm:gap-5 md:columns-3 md:gap-6 lg:columns-4 lg:gap-6">
+          <div
+            v-for="item in gallery.itemList"
+            :key="item.id"
+            class="break-inside-avoid mb-4 sm:mb-5 md:mb-6"
+          >
+            <div class="bg-white rounded-lg overflow-hidden shadow-md transition-shadow duration-300 hover:shadow-lg">
+              <div class="w-full [&_.ant-image-img]:w-full [&_.ant-image-img]:h-auto [&_.ant-image-img]:block">
+                <a-image
+                  :src="item.imageUrl"
+                  :alt="item.title"
+                />
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <div v-else class="text-center py-12">
-      <h2 class="text-2xl font-bold text-gray-700">Gallery not found</h2>
-      <router-link to="/galleries" class="text-blue-500 hover:underline mt-4 inline-block">Back to Galleries</router-link>
+      <div v-else class="text-center py-12 px-4">
+        <h2 class="text-xl sm:text-2xl font-bold text-gray-700 mb-4">
+          Gallery not found
+        </h2>
+        <router-link
+          to="/galleries"
+          class="text-blue-500 no-underline inline-block mt-2 hover:underline"
+        >
+          Back to Galleries
+        </router-link>
+      </div>
     </div>
   </div>
 </template>
-
-<style scoped>
-:deep(.ant-image-img) {
-  width: 100%;
-  height: auto;
-  display: block;
-}
-</style>

@@ -20,14 +20,3 @@ const isAdminOrLogin = computed(() => {
     </div>
   </div>
 </template>
-
-<style scoped>
-:deep(.ant-menu) {
-  font-family: 'Kantumruy Pro', 'Khmer', 'Koh Santepheap', sans-serif !important;
-}
-
-:deep(.ant-menu-item),
-:deep(.ant-menu-submenu-title) {
-  font-family: 'Kantumruy Pro', 'Khmer', 'Koh Santepheap', sans-serif !important;
-}
-</style>

@@ -7,7 +7,8 @@ const router = useRouter();
 
 onMounted(async () => {
   try {
-    const response = await fetch('http://127.0.0.1:8000/api/v1/bibles/types', {
+    const apiBase = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8100/api/v1';
+    const response = await fetch(`${apiBase}/bibles/types`, {
       headers: {
         'accept': 'application/json'
       }
@@ -84,6 +85,3 @@ const navigateToDetail = (id) => {
     </div>
   </div>
 </template>
-
-<style scoped>
-</style>

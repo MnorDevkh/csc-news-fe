@@ -73,5 +73,3 @@
 <script setup>
 import { ArrowLeftOutlined, ShareAltOutlined, BookOutlined } from '@ant-design/icons-vue';
 </script>
-
-<style scoped></style>

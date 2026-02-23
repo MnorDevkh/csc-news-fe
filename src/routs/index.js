@@ -7,6 +7,7 @@ import HomePage from '@/components/view/homepage/HomePage.vue'
 import ReadingListPage from '@/components/view/ReadingListPage.vue'
 import SearchResultsPage from '@/components/view/SearchResultsPage.vue'
 import SingleGalleryViewPage from '@/components/view/SingleGalleryViewPage.vue'
+import PhotoUploadPage from '@/components/view/PhotoUploadPage.vue'
 
 // New Views for modern UI design
 import LoginPage from '@/assets/LoginPage.vue'
@@ -105,6 +106,26 @@ const router = createRouter({
       props: true
     },
     {
+      path: '/photos/upload',
+      name: 'photoUpload',
+      component: PhotoUploadPage
+    },
+    {
+      path: '/news',
+      name: 'news',
+      redirect: '/'
+    },
+    {
+      path: '/daily-readings',
+      name: 'dailyReadings',
+      redirect: '/reading-list'
+    },
+    {
+      path: '/gallery',
+      name: 'gallery',
+      redirect: '/galleries'
+    },
+    {
       path: '/reading-list',
       name: 'readingList',
       component: ReadingListPage
@@ -188,6 +209,16 @@ const router = createRouter({
           path: 'sermons',
           name: 'adminSermons',
           component: () => import('@/components/view/admin/sermon/SermonListComponent.vue'),
+        },
+        {
+          path: 'gallery/create',
+          name: 'adminGalleryCreate',
+          component: () => import('@/components/view/admin/gallery/CreateAlbumPage.vue'),
+        },
+        {
+          path: 'gallery/edit/:id',
+          name: 'adminGalleryEdit',
+          component: () => import('@/components/view/admin/gallery/EditAlbumPage.vue'),
         },
         {
           path: 'gallery',

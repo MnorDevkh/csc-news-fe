@@ -52,7 +52,7 @@ const formatDate = (dateString) => {
     <main class="w-full max-w-[1400px] px-4  mx-auto">
 
       <!-- Hero Section -->
-      <section class="py-8">
+      <section class="py-8 [&_.slick-slide]:text-center [&_.slick-slide]:h-auto [&_.slick-slide]:leading-normal [&_.slick-slide]:overflow-hidden [&_.slick-slide_h3]:text-white">
         <a-carousel autoplay class="rounded-2xl overflow-hidden shadow-xl">
           <div v-for="article in featuredArticles.slice(0, 4)" :key="article.id"
             class="relative h-[500px] md:h-[600px] w-full">
@@ -252,7 +252,7 @@ const formatDate = (dateString) => {
         <!-- Gallery -->
         <section>
           <div class="flex items-center justify-between mb-8">
-            <h2 class="text-2xl font-bold text-gray-800 border-l-4 border-indigo-500 pl-4">អត្ថបទព្រះគម្ពីរប្រចាំថ្ងៃ
+            <h2 class="text-2xl font-bold text-gray-800 border-l-4 border-indigo-500 pl-4">កម្រងរូបភាព
             </h2>
             <RouterLink :to="{ name: 'galleryGridView' }"
               class="text-emerald-600 hover:text-emerald-800 font-medium flex items-center text-sm">
@@ -269,16 +269,3 @@ const formatDate = (dateString) => {
     </main>
   </div>
 </template>
-
-<style scoped>
-:deep(.slick-slide) {
-  text-align: center;
-  height: auto;
-  line-height: normal;
-  overflow: hidden;
-}
-
-:deep(.slick-slide h3) {
-  color: #fff;
-}
-</style>
