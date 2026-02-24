@@ -3,7 +3,7 @@ import BaseAPI from './BaseAPI';
 export const CategoryService = {
     async getAllCategories(params = {}) {
         try {
-            const response = await BaseAPI.publicClient.get('/categories', { params });
+            const response = await BaseAPI.publicClient.get('/categories/', { params });
             // Helper to consistently return items array if paginated, or data if list
             return response.data.items || response.data || [];
         } catch (error) {
