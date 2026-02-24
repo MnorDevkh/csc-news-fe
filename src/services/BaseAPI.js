@@ -3,7 +3,7 @@ import axios from 'axios';
 class BaseAPI {
   constructor() {
     // Define the base URL for all services
-    this.baseURL = import.meta.env.VITE_API_URL || 'https://csc-news-api.boeurnmnor.site/api/v1';
+    this.baseURL = import.meta.env.VITE_API_URL;
 
     // 1. Public Client: For requests that do not require authentication headers
     this.publicClient = axios.create({
