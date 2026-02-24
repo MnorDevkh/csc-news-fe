@@ -17,7 +17,9 @@ const api = axios.create({
 export async function uploadPhoto(file) {
   const formData = new FormData();
   formData.append('file', file);
-  const { data } = await axios.post(`${baseURL}/photos/upload`, formData);
+  const { data } = await api.post('/photos/upload', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' }
+  });
   return data;
 }
 
