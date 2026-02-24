@@ -179,10 +179,12 @@ import { useRoute, useRouter } from 'vue-router';
 import { CategoryService } from '@/services/CategoryService';
 import { getPhotos } from '@/services/PhotoUploadService';
 import { PictureOutlined } from '@ant-design/icons-vue';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { ClassicEditor, Essentials, Paragraph, Bold, Italic, Link, List } from 'ckeditor5';
 
 const editor = ClassicEditor;
 const editorConfig = {
+  licenseKey: 'GPL',
+  plugins: [ Essentials, Paragraph, Bold, Italic, Link, List ],
   toolbar: [ 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'undo', 'redo' ]
 };
 

@@ -83,11 +83,12 @@ import { ref, reactive, onMounted, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { NewsService } from '@/services/NewsService';
 import { CategoryService } from '@/services/CategoryService';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { ClassicEditor, Essentials, Paragraph, Bold, Italic, Link, List, Heading, BlockQuote, Table, TableToolbar } from 'ckeditor5';
 
 const editor = ClassicEditor;
 const editorConfig = {
-  // CKEditor configuration
+  licenseKey: 'GPL',
+  plugins: [ Essentials, Paragraph, Bold, Italic, Link, List, Heading, BlockQuote, Table, TableToolbar ],
   toolbar: [ 'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'insertTable', 'undo', 'redo' ]
 };
 
