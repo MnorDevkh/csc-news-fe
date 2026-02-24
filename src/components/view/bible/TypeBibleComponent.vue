@@ -7,7 +7,7 @@ const router = useRouter();
 
 onMounted(async () => {
   try {
-    const apiBase = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8100/api/v1';
+    const apiBase = import.meta.env.VITE_API_URL;
     const response = await fetch(`${apiBase}/bibles/types`, {
       headers: {
         'accept': 'application/json'
