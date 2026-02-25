@@ -1,98 +1,126 @@
 <template>
-  <div class="min-h-screen bg-gray-50 py-12 font-sans bg-gray-500 mx-auto">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+  <section class="pb-4">
+    <!-- Back Button -->
+    <button @click="$router.back()"
+      class="flex items-center text-gray-500 hover:text-purple-600 transition-colors mb-6 group text-sm">
+      <ArrowLeftOutlined class="mr-2 group-hover:-translate-x-1 transition-transform" />
+      Back to Sermons
+    </button>
 
-      <!-- Back Button -->
-      <button @click="$router.back()"
-        class="flex items-center text-gray-500 hover:text-purple-600 transition-colors mb-8 group">
-        <ArrowLeftOutlined class="mr-2 group-hover:-translate-x-1 transition-transform" />
-        Back to Sermons
-      </button>
+    <article class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
+      <!-- Video/Hero Section -->
+      <!-- <div class="aspect-video bg-black relative flex items-center justify-center group">
+        <img v-if="sermon.thumbnail" :src="sermon.thumbnail" :alt="sermon.title"
+          class="w-full h-full object-cover opacity-80" />
+        <div v-else
+          class="w-full h-full flex items-center justify-center bg-gradient-to-br from-purple-700 to-indigo-600 text-white text-xl font-semibold">
+          {{ sermon.title }}
+        </div>
+        <div v-if="sermon.media_url" class="absolute inset-0 flex items-center justify-center">
+          <div
+            class="h-20 w-20 bg-purple-600/90 rounded-full flex items-center justify-center shadow-2xl transition-transform group-hover:scale-110">
+            <CaretRightOutlined class="text-4xl text-white" />
+          </div>
+        </div>
+      </div> -->
 
-      <article class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden w-full max-w-4xl mx-auto">
+      <div class="p-6 sm:p-10">
+        <div class="flex flex-col items-start mb-4">
+          <div class="flex flex-wrap items-center gap-4 mb-3 text-sm text-gray-500">
+            <span v-if="sermon.preacher" class="flex items-center gap-1">
+              <UserOutlined /> {{ sermon.preacher }}
+            </span>
+            <span v-if="sermon.sermon_date" class="flex items-center gap-1">
+              <CalendarOutlined /> {{ formatDate(sermon.sermon_date) }}
+            </span>
+          </div>
 
-        <!-- Video/Hero Section -->
-        <div class="aspect-video bg-black relative flex items-center justify-center group cursor-pointer">
-          <img src="https://images.unsplash.com/photo-1438232992991-995b7058bbb3?q=80&w=2073&auto=format&fit=crop"
-            class="w-full h-full object-cover opacity-80" />
-          <div class="absolute inset-0 flex items-center justify-center">
-            <div
-              class="h-20 w-20 bg-purple-600/90 rounded-full flex items-center justify-center shadow-2xl transition-transform group-hover:scale-110">
-              <CaretRightOutlined class="text-4xl text-white" />
-            </div>
+          <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-4 leading-tight">
+            {{ sermon.title }}
+          </h1>
+        </div>
+
+        <div v-if="sermon.snippet" class="max-w-2xl mx-auto text-left text-gray-700 leading-relaxed mb-6">
+          <p>{{ sermon.snippet }}</p>
+        </div>
+
+        <div v-if="sermon.media_url" class="mt-6 max-w-2xl mx-auto">
+          <div v-if="sermon.media_type === 'video'" class="w-full">
+            <video :src="sermon.media_url" controls class="w-full rounded-2xl border border-gray-200 shadow-sm" />
+          </div>
+          <div v-else class="w-full">
+            <audio :src="sermon.media_url" controls class="w-full" />
           </div>
         </div>
 
-        <div class="p-6 sm:p-10">
-          <div class="flex flex-wrap items-center gap-4 mb-6 text-sm text-gray-500">
-            <span class="flex items-center gap-1">
-              <UserOutlined /> Fr. Sok Na
-            </span>
-            <span class="flex items-center gap-1">
-              <CalendarOutlined /> Jan 31, 2026
-            </span>
-            <span class="flex items-center gap-1">
-              <ClockCircleOutlined /> 45 mins
-            </span>
-          </div>
-
-          <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-6 leading-tight">Walking in Faith: Trusting God in
-            Uncertain Times</h1>
-
-          <div class="prose prose-lg prose-purple max-w-none text-gray-700 leading-relaxed">
-            <p>
-              Faith is often tested not when things are going well, but when the path ahead seems shrouded in mist.
-              In today's sermon, we explore the life of Abraham, who was called to leave his home for a land he did not
-              know.
-            </p>
-            <h3>Key Takeaways</h3>
-            <ul>
-              <li>God's definition of blessings often differs from ours.</li>
-              <li>Obedience often precedes understanding.</li>
-              <li>Trust is a daily decision, not a one-time event.</li>
-            </ul>
-            <p>
-              Join us as we dive deep into the scriptures and uncover the timeless truths that can guide us through our
-              own modern-day wildernesses.
-            </p>
-          </div>
-
-          <div class="mt-10 p-6 bg-purple-50 rounded-xl border border-purple-100">
-            <h3 class="font-bold text-purple-900 mb-2">Reflection Questions</h3>
-            <ul class="list-disc list-inside text-purple-800 space-y-2">
-              <li>Where is God asking you to step out in faith today?</li>
-              <li>What fears are holding you back from full obedience?</li>
-            </ul>
-          </div>
-
-          <!-- Actions -->
-          <div class="mt-10 pt-8 border-t border-gray-100 flex justify-between items-center">
-            <div class="flex gap-4">
-              <button
-                class="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-gray-700 font-medium transition-colors">
-                <DownloadOutlined class="mr-2" /> Audio MP3
-              </button>
-              <button
-                class="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-gray-700 font-medium transition-colors">
-                <FileTextOutlined class="mr-2" /> Transcript
-              </button>
-            </div>
-            <button class="text-purple-600 font-medium hover:text-purple-800 transition-colors">
-              <ShareAltOutlined class="mr-1" /> Share
-            </button>
-          </div>
-
+        <div class="mt-10 pt-6 border-t border-gray-100 flex justify-center text-xs text-gray-400">
+          <span v-if="sermon.status === 'inactive'">
+            This sermon is currently inactive.
+          </span>
+          <span v-else>
+            Thank you for listening.
+          </span>
         </div>
-      </article>
-
-    </div>
-  </div>
+      </div>
+    </article>
+  </section>
 </template>
 
 <script setup>
-import { ArrowLeftOutlined, CaretRightOutlined, UserOutlined, CalendarOutlined, ClockCircleOutlined, DownloadOutlined, FileTextOutlined, ShareAltOutlined } from '@ant-design/icons-vue';
+import { ref, onMounted } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import { ArrowLeftOutlined, CaretRightOutlined, UserOutlined, CalendarOutlined, ClockCircleOutlined } from '@ant-design/icons-vue';
+import { SermonService } from '@/services/SermonService';
 
-defineProps({
-  id: { type: [String, Number], required: true }
+const props = defineProps({
+  setPageMeta: {
+    type: Function,
+    default: null,
+  },
+});
+
+const route = useRoute();
+const router = useRouter();
+
+const sermon = ref({
+  title: '',
+  preacher: '',
+  sermon_date: '',
+  snippet: '',
+  thumbnail: '',
+  media_url: '',
+  media_type: '',
+  status: 'active',
+});
+
+function formatDate(value) {
+  if (!value) return '';
+  try {
+    const d = new Date(value);
+    return d.toLocaleDateString();
+  } catch {
+    return value;
+  }
+}
+
+async function loadSermon() {
+  try {
+    const data = await SermonService.getSermonById(route.params.id);
+    sermon.value = data;
+
+  } catch (error) {
+    console.error('Failed to load sermon', error);
+    router.push({ name: 'dailySermonList' });
+  }
+}
+
+onMounted(() => {
+  loadSermon();
+  if (props.setPageMeta) {
+    props.setPageMeta({
+      title: 'ធម្មទេសនា​ប្រចាំថ្ងៃ',
+      // subtitle: 'Short reflections to accompany your daily walk with God.',
+    });
+  }
 });
 </script>

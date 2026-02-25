@@ -3,6 +3,7 @@ import BiblePage from '@/components/view/bible/BiblePage.vue'
 import CategoryViewPage from '@/components/view/homepage/CategoryViewPage.vue'
 import GalleryGridViewPage from '@/components/view/homepage/GalleryGridViewPage.vue'
 import GalleryItemDetailsPage from '@/components/view/homepage/GalleryItemDetailsPage.vue'
+import FrontLayoutWithSidebar from '@/components/layout/FrontLayoutWithSidebar.vue'
 import HomePage from '@/components/view/homepage/HomePage.vue'
 import ReadingListPage from '@/components/view/ReadingListPage.vue'
 import SearchResultsPage from '@/components/view/SearchResultsPage.vue'
@@ -29,86 +30,102 @@ const router = createRouter({
       component: HomePage
     },
     {
-      path: '/bible/types',
-      name: 'bible-types',
-      component: () => TypeBibleComponent
-    },
-    {
-      path: '/daily-bible',
-      name: 'dailyBibleList',
-      component: () => import('@/components/view/bible/DailyBibleListPage.vue')
-    },
-    {
-      path: '/daily-bible/:id',
-      name: 'dailyBibleDetail',
-      component: () => import('@/components/view/bible/DailyBibleDetail.vue'),
-      props: true
-    },
-    {
-      path: '/daily-sermon',
-      name: 'dailySermonList',
-      component: () => import('@/components/view/sermon/DailySermonListPage.vue')
-    },
-    {
-      path: '/daily-sermon/:id',
-      name: 'dailySermonDetail',
-      component: () => import('@/components/view/sermon/DailySermonDetail.vue'),
-      props: true
-    },
-    {
-      path: '/bible',
-      name: 'bible',
-      component: BiblePage
-    },
-    {
-      path: '/bible/:id',
-      name: 'bible-detail',
-      component: BibleDetail,
-    },
-    {
-      path: '/chapter/:id',
-      name: 'chapter-detail',
-      component: BibleChapterDetail,
-    },
-    {
-      path: '/article/:id',
-      name: 'articleDetails',
-      component: ArticleDetailsPage,
-      props: true // Allows passing route params as props
-    },
-    {
-      path: '/search',
-      name: 'searchResults',
-      component: SearchResultsPage,
-      props: (route) => ({ query: route.query.q }) // Pass search query as prop
-    },
-    {
-      path: '/category/:name',
-      name: 'categoryView',
-      component: CategoryViewPage,
-      props: true
-    },
-    {
-      path: '/galleries',
-      name: 'galleryGridView',
-      component: GalleryGridViewPage
-    },
-    {
-      path: '/gallery/:id',
-      name: 'singleGalleryView',
-      component: SingleGalleryViewPage,
-      props: true
-    },
-    {
-      path: '/gallery/:galleryId/item/:itemId',
-      name: 'galleryItemDetails',
-      component: GalleryItemDetailsPage,
-      props: true
-    },
-    {
-      path: '/photos/upload',
-      name: 'photoUpload',
-      component: PhotoUploadPage
+      path: '/',
+      component: FrontLayoutWithSidebar,
+      children: [
+        {
+          path: 'bible/types',
+          name: 'bible-types',
+          component: () => TypeBibleComponent
+        },
+        {
+          path: 'bible',
+          name: 'bible',
+          component: BiblePage
+        },
+        {
+          path: 'bible/:id',
+          name: 'bible-detail',
+          component: BibleDetail,
+        },
+        {
+          path: 'chapter/:id',
+          name: 'chapter-detail',
+          component: BibleChapterDetail,
+        },
+        {
+          path: 'daily-bible',
+          name: 'dailyBibleList',
+          component: () => import('@/components/view/bible/DailyBibleListPage.vue')
+        },
+        {
+          path: 'daily-bible/:id',
+          name: 'dailyBibleDetail',
+          component: () => import('@/components/view/bible/DailyBibleDetail.vue'),
+          props: true
+        },
+        {
+          path: 'daily-sermon',
+          name: 'dailySermonList',
+          component: () => import('@/components/view/sermon/DailySermonListPage.vue')
+        },
+        {
+          path: 'daily-sermon/:id',
+          name: 'dailySermonDetail',
+          component: () => import('@/components/view/sermon/DailySermonDetail.vue'),
+          props: true
+        },
+        {
+          path: 'article/:id',
+          name: 'articleDetails',
+          component: ArticleDetailsPage,
+          props: true // Allows passing route params as props
+        },
+        {
+          path: 'search',
+          name: 'searchResults',
+          component: SearchResultsPage,
+          props: (route) => ({ query: route.query.q }) // Pass search query as prop
+        },
+        {
+          path: 'category/:name',
+          name: 'categoryView',
+          component: CategoryViewPage,
+          props: true
+        },
+        {
+          path: 'galleries',
+          name: 'galleryGridView',
+          component: GalleryGridViewPage
+        },
+        {
+          path: 'gallery/:id',
+          name: 'singleGalleryView',
+          component: SingleGalleryViewPage,
+          props: true
+        },
+        {
+          path: 'gallery/:galleryId/item/:itemId',
+          name: 'galleryItemDetails',
+          component: GalleryItemDetailsPage,
+          props: true
+        },
+        {
+          path: 'reading-list',
+          name: 'readingList',
+          component: ReadingListPage
+        },
+        {
+          path: 'saints',
+          name: 'saintList',
+          component: () => import('@/components/view/homepage/SaintListPage.vue')
+        },
+        {
+          path: 'photos/upload',
+          name: 'photoUpload',
+          component: PhotoUploadPage
+        },
+      ]
     },
     {
       path: '/news',
@@ -124,16 +141,6 @@ const router = createRouter({
       path: '/gallery',
       name: 'gallery',
       redirect: '/galleries'
-    },
-    {
-      path: '/reading-list',
-      name: 'readingList',
-      component: ReadingListPage
-    },
-    {
-      path: '/saints',
-      name: 'saintList',
-      component: () => import('@/components/view/homepage/SaintListPage.vue')
     },
     // New Routes for modern UI
     {
@@ -202,13 +209,43 @@ const router = createRouter({
         },
         {
           path: 'bible',
-          name: 'adminBible',
-          component: () => import('@/components/view/admin/bible/BibleListComponent.vue'),
+          children: [
+            {
+              path: '',
+              name: 'adminBible',
+              component: () => import('@/components/view/admin/bible/BibleListComponent.vue'),
+            },
+            {
+              path: 'daily-readings/create',
+              name: 'createDailyReading',
+              component: () => import('@/components/view/admin/bible/DailyReadingForm.vue'),
+            },
+            {
+              path: 'daily-readings/edit/:id',
+              name: 'editDailyReading',
+              component: () => import('@/components/view/admin/bible/DailyReadingForm.vue'),
+            },
+          ],
         },
         {
           path: 'sermons',
-          name: 'adminSermons',
-          component: () => import('@/components/view/admin/sermon/SermonListComponent.vue'),
+          children: [
+            {
+              path: '',
+              name: 'adminSermons',
+              component: () => import('@/components/view/admin/sermon/SermonListComponent.vue'),
+            },
+            {
+              path: 'create',
+              name: 'createSermon',
+              component: () => import('@/components/view/admin/sermon/SermonForm.vue'),
+            },
+            {
+              path: 'edit/:id',
+              name: 'editSermon',
+              component: () => import('@/components/view/admin/sermon/SermonForm.vue'),
+            },
+          ],
         },
         {
           path: 'gallery/create',

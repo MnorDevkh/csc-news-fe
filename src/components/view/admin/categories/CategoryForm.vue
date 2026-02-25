@@ -133,43 +133,13 @@
     </form>
 
     <!-- Thumbnail selection modal -->
-    <a-modal
+    <ImageSelectModal
       v-model:open="thumbnailModalOpen"
+      mode="single"
       title="Select thumbnail image"
-      width="720px"
-      :footer="null"
-    >
-      <div class="py-2 min-h-[280px]">
-        <div v-if="thumbnailPhotosLoading" class="flex justify-center py-12">
-          <a-spin size="large" />
-        </div>
-        <div v-else-if="!thumbnailPhotos.length" class="text-center py-12 text-gray-500">
-          No photos uploaded yet.
-        </div>
-        <div v-else class="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 gap-2 max-h-[320px] overflow-y-auto">
-          <div
-            v-for="item in thumbnailPhotos"
-            :key="item.key"
-            class="relative aspect-square rounded-lg overflow-hidden border-2 cursor-pointer transition-all flex-shrink-0"
-            :class="thumbnailKey === item.key ? 'border-blue-600 ring-2 ring-blue-200' : 'border-gray-200 hover:border-gray-300'"
-            @click="pickThumbnail(item)"
-          >
-            <img
-              :src="item.url"
-              :alt="item.filename || item.key"
-              class="w-full h-full object-cover"
-              loading="lazy"
-            />
-            <div
-              v-if="thumbnailKey === item.key"
-              class="absolute inset-0 flex items-center justify-center bg-blue-600/20"
-            >
-              <span class="bg-blue-600 text-white text-xs font-medium px-2 py-1 rounded">Selected</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </a-modal>
+      confirm-label="Select"
+      @confirm="onThumbnailSelected"
+    />
   </div>
 </template>
 
@@ -177,7 +147,7 @@
 import { ref, reactive, onMounted, computed, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { CategoryService } from '@/services/CategoryService';
-import { getPhotos } from '@/services/PhotoUploadService';
+import ImageSelectModal from '@/components/ImageSelectModal.vue';
 import { PictureOutlined } from '@ant-design/icons-vue';
 import { ClassicEditor, Essentials, Paragraph, Bold, Italic, Link, List } from 'ckeditor5';
 
@@ -202,8 +172,6 @@ const categories = ref([]);
 
 // Thumbnail picker state
 const thumbnailModalOpen = ref(false);
-const thumbnailPhotos = ref([]);
-const thumbnailPhotosLoading = ref(false);
 const thumbnailUrl = ref('');
 const thumbnailKey = ref('');
 
@@ -245,24 +213,17 @@ function showFeedback(msg, type = 'success') {
   }
 }
 
-async function openThumbnailModal() {
+function openThumbnailModal() {
   thumbnailModalOpen.value = true;
-  thumbnailPhotosLoading.value = true;
-  try {
-    thumbnailPhotos.value = await getPhotos();
-  } catch (e) {
-    console.error('Failed to load photos for thumbnail', e);
-    thumbnailPhotos.value = [];
-  } finally {
-    thumbnailPhotosLoading.value = false;
-  }
 }
 
-function pickThumbnail(item) {
-  thumbnailUrl.value = item.url;
-  thumbnailKey.value = item.key || '';
-  form.thumbnail = item.url;
-  thumbnailModalOpen.value = false;
+function onThumbnailSelected(items) {
+  const item = items[0];
+  if (item) {
+    thumbnailUrl.value = item.url;
+    thumbnailKey.value = item.key || '';
+    form.thumbnail = item.url;
+  }
 }
 
 function removeThumbnail() {

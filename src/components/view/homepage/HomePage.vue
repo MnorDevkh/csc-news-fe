@@ -35,6 +35,10 @@ onMounted(async () => {
   }
 });
 
+const activeCategories = computed(() =>
+  (newsCategories.value || []).filter((c) => c.status === 'active')
+);
+
 const formatDate = (dateString) => {
   if (!dateString) return '';
   return new Date(dateString).toLocaleDateString('en-US', {
@@ -158,7 +162,7 @@ const formatDate = (dateString) => {
             <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 m-4">
               <h2 class="text-xl font-bold text-gray-800 mb-4 border-b pb-2">មាតិការ</h2>
               <ul class="space-y-2">
-                <li v-for="category in newsCategories" :key="category.id">
+                <li v-for="category in activeCategories" :key="category.id">
                   <RouterLink :to="{ name: 'categoryView', params: { name: category.name } }"
                     class="flex items-center justify-between p-2 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-600 transition-all duration-200 group">
                     <span>{{ category.name }}</span>

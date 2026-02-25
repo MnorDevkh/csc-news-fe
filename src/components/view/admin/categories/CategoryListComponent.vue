@@ -35,7 +35,7 @@
                         </td>
                         <td class="px-6 py-4">
                             <div class="text-sm font-medium text-gray-900">{{ category.name }}</div>
-                            <div class="text-xs text-gray-500 max-w-xs truncate" :title="category.description">{{ category.description }}</div>
+                            <div class="text-xs text-gray-500 max-w-xs truncate" :title="stripHtml(category.description)">{{ stripHtml(category.description) }}</div>
                         </td>
                          <td class="px-6 py-4 text-sm text-gray-500">
                             {{ category.slug }}
@@ -90,6 +90,13 @@ const loadCategories = async () => {
     } catch (error) {
         console.error("Failed to load categories", error);
     }
+};
+
+const stripHtml = (html) => {
+    if (!html) return '';
+    const div = document.createElement('div');
+    div.innerHTML = html;
+    return div.textContent || div.innerText || '';
 };
 
 const deleteCategory = async (id) => {

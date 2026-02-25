@@ -116,178 +116,23 @@
     </form>
 
     <!-- Select photos modal -->
-    <a-modal
+    <ImageSelectModal
       v-model:open="selectModalOpen"
+      mode="multiple"
+      :existing-selected-keys="Array.from(selectedKeys)"
       title="Select photos"
-      width="720px"
-      :footer="null"
-    >
-      <div class="flex border-b border-gray-200 mb-4">
-        <button
-          type="button"
-          class="px-4 py-2 text-sm font-medium border-b-2 transition-colors"
-          :class="activeTab === 'existing' ? 'border-blue-600 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700'"
-          @click="activeTab = 'existing'"
-        >
-          From existing uploads
-        </button>
-        <button
-          type="button"
-          class="px-4 py-2 text-sm font-medium border-b-2 transition-colors"
-          :class="activeTab === 'upload' ? 'border-blue-600 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700'"
-          @click="activeTab = 'upload'"
-        >
-          Upload new
-        </button>
-      </div>
-
-      <div v-show="activeTab === 'existing'" class="py-2 min-h-[280px]">
-        <div v-if="existingLoading" class="flex justify-center py-12">
-          <a-spin size="large" />
-        </div>
-        <div v-else-if="!existingPhotos.length" class="text-center py-12 text-gray-500">
-          No photos uploaded yet. Use the "Upload new" tab to add images.
-        </div>
-        <div v-else class="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 gap-2 max-h-[320px] overflow-y-auto">
-          <div
-            v-for="item in existingPhotos"
-            :key="item.key"
-            class="relative aspect-square rounded-lg overflow-hidden border-2 transition-all flex-shrink-0"
-            :class="[
-              isAlreadyInAlbum(item)
-                ? 'border-green-500 ring-2 ring-green-200 cursor-default'
-                : isSelectedInModal(item)
-                  ? 'border-blue-600 ring-2 ring-blue-200 cursor-pointer'
-                  : 'border-gray-200 hover:border-gray-300 cursor-pointer'
-            ]"
-            @click="!isAlreadyInAlbum(item) && toggleModalSelection(item)"
-          >
-            <img
-              :src="item.url"
-              :alt="item.filename || item.key"
-              class="w-full h-full object-cover"
-              loading="lazy"
-            />
-            <div
-              v-if="isAlreadyInAlbum(item)"
-              class="absolute inset-0 flex items-center justify-center bg-green-600/20"
-            >
-              <span class="bg-green-600 text-white text-xs font-medium px-2 py-1 rounded">In album</span>
-            </div>
-            <div
-              v-else-if="isSelectedInModal(item)"
-              class="absolute inset-0 flex items-center justify-center bg-blue-600/20"
-            >
-              <span class="bg-blue-600 text-white text-xs font-medium px-2 py-1 rounded">Selected</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div v-show="activeTab === 'upload'" class="py-2 min-h-[280px]">
-        <input
-          ref="fileInputRef"
-          type="file"
-          accept="image/jpeg,image/png,image/webp"
-          multiple
-          class="hidden"
-          @change="onFileSelectInModal"
-        />
-        <button
-          type="button"
-          :disabled="uploading"
-          class="inline-flex items-center gap-2 bg-gray-100 hover:bg-gray-200 disabled:opacity-50 text-gray-800 px-4 py-2 rounded-lg font-medium transition-colors"
-          @click="fileInputRef?.click()"
-        >
-          <PlusOutlined />
-          {{ uploading ? 'Uploading…' : 'Choose files' }}
-        </button>
-        <p v-if="uploadError" class="mt-2 text-sm text-red-600">{{ uploadError }}</p>
-        <div v-if="uploadedInSession.length" class="mt-4">
-          <p class="text-sm text-gray-500 mb-2">Uploaded ({{ uploadedInSession.length }})</p>
-          <div class="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 gap-2 max-h-[240px] overflow-y-auto">
-            <div
-              v-for="item in uploadedInSession"
-              :key="item.key"
-              class="relative aspect-square rounded-lg overflow-hidden border-2 cursor-pointer transition-all flex-shrink-0"
-              :class="isSelectedInModal(item) ? 'border-blue-600 ring-2 ring-blue-200' : 'border-gray-200 hover:border-gray-300'"
-              @click="toggleModalSelection(item)"
-            >
-              <img
-                :src="item.url"
-                :alt="item.filename || item.key"
-                class="w-full h-full object-cover"
-              />
-              <div
-                v-if="isSelectedInModal(item)"
-                class="absolute inset-0 flex items-center justify-center bg-blue-600/20"
-              >
-                <span class="bg-blue-600 text-white text-xs font-medium px-2 py-1 rounded">Selected</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="flex justify-end gap-2 mt-4 pt-4 border-t border-gray-200">
-        <button
-          type="button"
-          class="inline-flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
-          @click="closeSelectModal"
-        >
-          <CloseOutlined />
-          Cancel
-        </button>
-        <button
-          type="button"
-          class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium disabled:opacity-50"
-          :disabled="!modalPendingList.length"
-          @click="addModalSelectionToAlbum"
-        >
-          <PlusOutlined />
-          Add to album ({{ modalPendingList.length }})
-        </button>
-      </div>
-    </a-modal>
+      confirm-label="Add to album"
+      @confirm="onAddPhotosToAlbum"
+    />
 
     <!-- Cover selection modal -->
-    <a-modal
+    <ImageSelectModal
       v-model:open="coverModalOpen"
+      mode="single"
       title="Select cover image"
-      width="720px"
-      :footer="null"
-    >
-      <div class="py-2 min-h-[280px]">
-        <div v-if="coverPhotosLoading" class="flex justify-center py-12">
-          <a-spin size="large" />
-        </div>
-        <div v-else-if="!coverPhotos.length" class="text-center py-12 text-gray-500">
-          No photos uploaded yet.
-        </div>
-        <div v-else class="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 gap-2 max-h-[320px] overflow-y-auto">
-          <div
-            v-for="item in coverPhotos"
-            :key="item.key"
-            class="relative aspect-square rounded-lg overflow-hidden border-2 cursor-pointer transition-all flex-shrink-0"
-            :class="coverKey === item.key ? 'border-blue-600 ring-2 ring-blue-200' : 'border-gray-200 hover:border-gray-300'"
-            @click="pickCover(item)"
-          >
-            <img
-              :src="item.url"
-              :alt="item.filename || item.key"
-              class="w-full h-full object-cover"
-              loading="lazy"
-            />
-            <div
-              v-if="coverKey === item.key"
-              class="absolute inset-0 flex items-center justify-center bg-blue-600/20"
-            >
-              <span class="bg-blue-600 text-white text-xs font-medium px-2 py-1 rounded">Cover</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </a-modal>
+      confirm-label="Select"
+      @confirm="onCoverSelected"
+    />
 
   </div>
 </template>
@@ -296,7 +141,7 @@
 import { ref, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { PictureOutlined, PlusOutlined, CloseOutlined, ArrowRightOutlined } from '@ant-design/icons-vue';
-import { getPhotos, uploadPhoto, getPhotoUrl } from '@/services/PhotoUploadService';
+import ImageSelectModal from '@/components/ImageSelectModal.vue';
 import { GalleryService } from '@/services/GalleryService';
 
 const router = useRouter();
@@ -306,25 +151,13 @@ const albumId = route.params.id;
 const pageLoading = ref(true);
 const selectModalOpen = ref(false);
 const coverModalOpen = ref(false);
-const coverPhotos = ref([]);
-const coverPhotosLoading = ref(false);
-const activeTab = ref('existing');
 const form = ref({ title: '', description: '' });
-const existingPhotos = ref([]);
-const existingLoading = ref(false);
 const selectedList = ref([]);
 const selectedKeys = ref(new Set());
 const coverUrl = ref('');
 const coverKey = ref('');
-const fileInputRef = ref(null);
-const uploading = ref(false);
-const uploadError = ref(null);
-const uploadedInSession = ref([]);
 const saving = ref(false);
 const submitError = ref(null);
-
-const modalPendingList = ref([]);
-const modalPendingKeys = ref(new Set());
 
 let nextId = 0;
 function nextSelectedId() {
@@ -363,113 +196,33 @@ async function loadAlbum() {
 }
 
 function openSelectModal() {
-  modalPendingList.value = [];
-  modalPendingKeys.value = new Set();
-  uploadedInSession.value = [];
-  uploadError.value = null;
-  activeTab.value = 'existing';
   selectModalOpen.value = true;
-  loadExistingPhotos();
 }
 
-async function openCoverModal() {
+function openCoverModal() {
   coverModalOpen.value = true;
-  coverPhotosLoading.value = true;
-  try {
-    coverPhotos.value = await getPhotos();
-  } catch (e) {
-    console.error('Failed to load photos for cover', e);
-    coverPhotos.value = [];
-  } finally {
-    coverPhotosLoading.value = false;
-  }
 }
 
-function pickCover(item) {
-  coverUrl.value = item.url;
-  coverKey.value = item.key || '';
-  coverModalOpen.value = false;
-}
-
-function closeSelectModal() {
-  selectModalOpen.value = false;
-  modalPendingList.value = [];
-  modalPendingKeys.value = new Set();
-}
-
-function isAlreadyInAlbum(item) {
-  return selectedKeys.value.has(item.key);
-}
-
-function isSelectedInModal(item) {
-  return modalPendingKeys.value.has(item.key);
-}
-
-function toggleModalSelection(item) {
-  if (modalPendingKeys.value.has(item.key)) {
-    modalPendingList.value = modalPendingList.value.filter((i) => i.key !== item.key);
-    modalPendingKeys.value = new Set([...modalPendingKeys.value].filter((k) => k !== item.key));
-  } else {
-    modalPendingList.value.push({
-      id: nextSelectedId(),
-      key: item.key,
-      url: item.url,
-      title: ''
-    });
-    modalPendingKeys.value = new Set([...modalPendingKeys.value, item.key]);
-  }
-}
-
-function addModalSelectionToAlbum() {
-  for (const item of modalPendingList.value) {
+function onAddPhotosToAlbum(items) {
+  for (const item of items) {
     if (selectedKeys.value.has(item.key)) continue;
-    selectedList.value.push({ ...item, id: nextSelectedId() });
+    selectedList.value.push({ ...item });
     selectedKeys.value = new Set([...selectedKeys.value, item.key]);
   }
-  closeSelectModal();
+}
+
+function onCoverSelected(items) {
+  const item = items[0];
+  if (item) {
+    coverUrl.value = item.url;
+    coverKey.value = item.key || '';
+  }
 }
 
 function removeSelected(idx) {
   const item = selectedList.value[idx];
   if (item.key) selectedKeys.value = new Set([...selectedKeys.value].filter((k) => k !== item.key));
   selectedList.value.splice(idx, 1);
-}
-
-async function loadExistingPhotos() {
-  existingLoading.value = true;
-  try {
-    existingPhotos.value = await getPhotos();
-  } catch (e) {
-    console.error('Failed to load photos', e);
-    existingPhotos.value = [];
-  } finally {
-    existingLoading.value = false;
-  }
-}
-
-async function onFileSelectInModal(e) {
-  const files = e.target.files;
-  if (!files?.length) return;
-  uploadError.value = null;
-  uploading.value = true;
-  const allowed = ['image/jpeg', 'image/png', 'image/webp'];
-  for (const file of Array.from(files)) {
-    if (!allowed.includes(file.type)) continue;
-    try {
-      const response = await uploadPhoto(file);
-      const key = response.key;
-      const url = await getPhotoUrl(key);
-      const id = nextSelectedId();
-      modalPendingList.value.push({ id, key, url, title: '' });
-      modalPendingKeys.value = new Set([...modalPendingKeys.value, key]);
-      uploadedInSession.value = [...uploadedInSession.value, { key, url, filename: file.name }];
-      existingPhotos.value = [...existingPhotos.value, { key, url, filename: file.name }];
-    } catch (err) {
-      uploadError.value = err.response?.data?.detail || err.message || 'Upload failed';
-    }
-  }
-  uploading.value = false;
-  e.target.value = '';
 }
 
 async function submitForm() {

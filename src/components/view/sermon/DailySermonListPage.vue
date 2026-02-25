@@ -1,81 +1,110 @@
 <template>
-  <div class="min-h-screen bg-gray-50 py-12 font-sans">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-12">
-        <h1 class="text-3xl font-extrabold text-purple-900 sm:text-4xl">Daily Sermons</h1>
-        <p class="mt-4 text-lg text-gray-500">Inspirational messages to guide your daily walk.</p>
-      </div>
-
-      <div class="space-y-6">
-        <div v-for="sermon in sermons" :key="sermon.id"
-          class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col md:flex-row hover:shadow-lg transition-all duration-300">
-
-          <div class="md:w-1/3 h-48 md:h-auto relative">
-            <img :src="sermon.thumbnail" :alt="sermon.title" class="w-full h-full object-cover">
-            <div class="absolute inset-0 bg-black/20 flex items-center justify-center">
-              <div
-                class="h-12 w-12 bg-white/90 rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-                <PlayCircleOutlined class="text-2xl text-purple-600 ml-1" />
-              </div>
-            </div>
+  <section>
+    <div class="space-y-4">
+      <div
+        v-for="sermon in sermons"
+        :key="sermon.id"
+        class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col md:flex-row hover:shadow-md transition-all duration-200"
+      >
+        <div class="md:w-1/3 h-40 md:h-auto relative bg-gray-100">
+          <img
+            v-if="sermon.thumbnail"
+            :src="sermon.thumbnail"
+            :alt="sermon.title"
+            class="w-full h-full object-cover"
+          >
+          <div
+            v-else
+            class="w-full h-full flex items-center justify-center bg-gradient-to-br from-purple-600 to-indigo-600 text-white text-lg font-semibold px-4 text-center"
+          >
+            {{ sermon.title }}
           </div>
+        </div>
 
-          <div class="p-6 md:w-2/3 flex flex-col justify-center">
-            <div class="flex items-center text-sm text-gray-400 mb-2">
-              <UserOutlined class="mr-2" /> {{ sermon.preacher }} &middot; <span class="ml-2">{{ sermon.date }}</span>
-            </div>
-            <h3 class="text-2xl font-bold text-gray-800 mb-3">{{ sermon.title }}</h3>
-            <p class="text-gray-600 mb-4 line-clamp-2">{{ sermon.snippet }}</p>
+        <div class="p-6 md:w-2/3 flex flex-col justify-center">
+          <div
+            class="flex items-center justify-center md:justify-start text-xs uppercase tracking-wide text-gray-400 mb-1"
+          >
+            <span v-if="sermon.preacher" class="flex items-center gap-1">
+              <UserOutlined class="text-[11px]" /> {{ sermon.preacher }}
+            </span>
+            <span
+              v-if="sermon.sermon_date"
+              class="flex items-center gap-1"
+              :class="sermon.preacher ? 'ml-3' : ''"
+            >
+              <span class="w-1 h-1 rounded-full bg-gray-300" v-if="sermon.preacher" />
+              {{ formatDate(sermon.sermon_date) }}
+            </span>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-2 text-center md:text-left">
+            <RouterLink
+              :to="{ name: 'dailySermonDetail', params: { id: sermon.id } }"
+              class="hover:text-purple-700 transition-colors"
+            >
+              {{ sermon.title }}
+            </RouterLink>
+          </h3>
+          <p class="text-gray-600 mb-4 line-clamp-2 text-center md:text-left">
+            {{ sermon.snippet }}
+          </p>
 
-            <button
-              class="self-start px-6 py-2 bg-purple-50 text-purple-700 rounded-lg font-medium hover:bg-purple-100 transition-colors flex items-center gap-2">
-              Listen Now
+          <div class="flex justify-center md:justify-start">
+            <RouterLink
+              :to="{ name: 'dailySermonDetail', params: { id: sermon.id } }"
+              class="inline-flex items-center gap-2 px-4 py-2 bg-purple-50 text-purple-700 rounded-full font-medium hover:bg-purple-100 transition-colors text-sm"
+            >
+              Listen now
               <SoundOutlined />
-            </button>
+            </RouterLink>
           </div>
         </div>
       </div>
-
-      <!-- Pagination Mock -->
-      <div class="flex justify-center mt-12">
-        <a-pagination v-model:current="current" :total="30" show-less-items />
-      </div>
-
     </div>
-  </div>
+  </section>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
+import { RouterLink } from 'vue-router';
 import { PlayCircleOutlined, UserOutlined, SoundOutlined } from '@ant-design/icons-vue';
+import { SermonService } from '@/services/SermonService';
 
-const current = ref(1);
+const props = defineProps({
+  setPageMeta: {
+    type: Function,
+    default: null,
+  },
+});
 
-const sermons = ref([
-  {
-    id: 1,
-    title: 'Walking in Faith',
-    preacher: 'Fr. Sok Na',
-    date: 'Jan 31, 2026',
-    snippet: 'Faith is not just believing, it is trusting in God even when the path is unclear. Today we explore the journey of Abraham.',
-    thumbnail: 'https://images.unsplash.com/photo-1438232992991-995b7058bbb3?q=80&w=2073&auto=format&fit=crop'
-  },
-  {
-    id: 2,
-    title: 'The Power of Forgiveness',
-    preacher: 'Bishop Ly',
-    date: 'Jan 30, 2026',
-    snippet: 'Forgiveness frees the forgiver more than the forgiven. Let us learn how to let go of bitterness and embrace peace.',
-    thumbnail: 'https://images.unsplash.com/photo-1507692049790-de58293a469d?q=80&w=2070&auto=format&fit=crop'
-  },
-  {
-    id: 3,
-    title: 'Living a Generous Life',
-    preacher: 'Fr. Dara',
-    date: 'Jan 29, 2026',
-    snippet: 'Generosity is not only about money, but about giving of our time, talents, and love to those around us.',
-    thumbnail: 'https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?q=80&w=2070&auto=format&fit=crop'
-  },
-]);
+const sermons = ref([]);
 
+function formatDate(value) {
+  if (!value) return '';
+  try {
+    const d = new Date(value);
+    return d.toLocaleDateString();
+  } catch {
+    return value;
+  }
+}
+
+async function loadSermons() {
+  try {
+    const data = await SermonService.getAllSermons({ limit: 20 });
+    sermons.value = data;
+  } catch (error) {
+    console.error('Failed to load sermons', error);
+  }
+}
+
+onMounted(() => {
+  if (props.setPageMeta) {
+    props.setPageMeta({
+      title: 'ធម្មទេសនា​ប្រចាំថ្ងៃ',
+      // subtitle: 'Short reflections to accompany your daily walk with God.',
+    });
+  }
+  loadSermons();
+});
 </script>
