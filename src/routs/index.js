@@ -228,6 +228,56 @@ const router = createRouter({
           ],
         },
         {
+          path: 'bible-management',
+          children: [
+            {
+              path: '',
+              name: 'adminBibleManagement',
+              component: () => import('@/components/view/admin/bible/AdminBibleList.vue'),
+            },
+            {
+              path: 'bible/create',
+              name: 'adminBibleCreate',
+              component: () => import('@/components/view/admin/bible/BibleForm.vue'),
+            },
+            {
+              path: 'bible/edit/:id',
+              name: 'adminBibleEdit',
+              component: () => import('@/components/view/admin/bible/BibleForm.vue'),
+            },
+            {
+              path: 'bible/:bibleId/chapters',
+              name: 'adminChapterList',
+              component: () => import('@/components/view/admin/bible/AdminChapterList.vue'),
+            },
+            {
+              path: 'bible/:bibleId/chapter/create',
+              name: 'adminChapterCreate',
+              component: () => import('@/components/view/admin/bible/ChapterForm.vue'),
+            },
+            {
+              path: 'bible/:bibleId/chapter/edit/:chapterId',
+              name: 'adminChapterEdit',
+              component: () => import('@/components/view/admin/bible/ChapterForm.vue'),
+            },
+            {
+              path: 'chapter/:chapterId/verses',
+              name: 'adminVerseList',
+              component: () => import('@/components/view/admin/bible/AdminVerseList.vue'),
+            },
+            {
+              path: 'chapter/:chapterId/verse/create',
+              name: 'adminVerseCreate',
+              component: () => import('@/components/view/admin/bible/VerseForm.vue'),
+            },
+            {
+              path: 'chapter/:chapterId/verse/edit/:verseId',
+              name: 'adminVerseEdit',
+              component: () => import('@/components/view/admin/bible/VerseForm.vue'),
+            },
+          ],
+        },
+        {
           path: 'sermons',
           children: [
             {

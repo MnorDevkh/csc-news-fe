@@ -1,13 +1,13 @@
 <template>
-  <div class="min-h-screen bg-gray-50 py-12 font-sans">
+  <div class="min-h-screen bg-gray-50 pt-6 pb-12 font-sans">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-      <button
+      <!-- <button
         @click="$router.back()"
         class="flex items-center text-gray-500 hover:text-blue-600 transition-colors mb-8 group"
       >
         <ArrowLeftOutlined class="mr-2 group-hover:-translate-x-1 transition-transform" />
         Back to Daily Readings
-      </button>
+      </button> -->
 
       <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sm:p-10 md:p-12">
         <div v-if="loading" class="py-12 text-center text-gray-500">
@@ -18,19 +18,15 @@
           <p class="text-red-500 mb-4">
             {{ error }}
           </p>
-          <button
-            @click="goBackToList"
-            class="inline-flex items-center px-4 py-2 rounded-lg bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 transition-colors"
-          >
+          <button @click="goBackToList"
+            class="inline-flex items-center px-4 py-2 rounded-lg bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 transition-colors">
             Back to Daily Readings
           </button>
         </div>
 
         <div v-else class="space-y-10">
           <div class="text-center">
-            <span
-              class="inline-block px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-sm font-medium mb-4"
-            >
+            <span class="inline-block px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-sm font-medium mb-4">
               Daily Reading
             </span>
             <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight mb-4">
@@ -42,28 +38,22 @@
           </div>
 
           <div
-            class="prose prose-lg prose-blue max-w-none mx-auto text-gray-800 leading-relaxed font-serif whitespace-pre-line"
+            class="prose prose-lg prose-blue max-w-none mx-auto text-gray-800 leading-relaxed font-serif overflow-x-auto"
           >
-            {{ reading.content }}
+            <div v-html="reading.content" />
           </div>
 
           <div class="mt-12 pt-8 border-t border-gray-100 flex justify-center gap-6">
-            <button
-              class="flex flex-col items-center gap-2 text-gray-500 hover:text-blue-600 transition-colors"
-            >
+            <button class="flex flex-col items-center gap-2 text-gray-500 hover:text-blue-600 transition-colors">
               <div
-                class="h-12 w-12 rounded-full bg-gray-50 flex items-center justify-center text-xl group-hover:bg-blue-50"
-              >
+                class="h-12 w-12 rounded-full bg-gray-50 flex items-center justify-center text-xl group-hover:bg-blue-50">
                 <ShareAltOutlined />
               </div>
               <span class="text-xs font-medium">Share</span>
             </button>
-            <button
-              class="flex flex-col items-center gap-2 text-gray-500 hover:text-blue-600 transition-colors"
-            >
+            <button class="flex flex-col items-center gap-2 text-gray-500 hover:text-blue-600 transition-colors">
               <div
-                class="h-12 w-12 rounded-full bg-gray-50 flex items-center justify-center text-xl group-hover:bg-blue-50"
-              >
+                class="h-12 w-12 rounded-full bg-gray-50 flex items-center justify-center text-xl group-hover:bg-blue-50">
                 <BookOutlined />
               </div>
               <span class="text-xs font-medium">Bookmark</span>
@@ -80,6 +70,13 @@ import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { ArrowLeftOutlined, ShareAltOutlined, BookOutlined } from '@ant-design/icons-vue';
 import { DailyReadingService } from '@/services/DailyReadingService';
+
+const props = defineProps({
+  setPageMeta: {
+    type: Function,
+    default: null,
+  },
+});
 
 const route = useRoute();
 const router = useRouter();
@@ -129,5 +126,14 @@ function goBackToList() {
 
 onMounted(() => {
   loadReading();
+  if (props.setPageMeta) {
+    props.setPageMeta({
+      title: 'អត្ថបទព្រះគម្ពីរប្រចាំថ្ងៃ',
+      // subtitle: 'Short reflections to accompany your daily walk with God.',
+    });
+  }
 });
 </script>
+
+<style scoped>
+</style>

@@ -1,11 +1,6 @@
 <template>
-  <div class="min-h-screen bg-gray-50 py-12 font-sans">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-10">
-        <h1 class="text-3xl font-extrabold text-blue-900 sm:text-4xl">Daily Bible Readings</h1>
-        <p class="mt-4 text-lg text-gray-500">Nourish your soul with the Word of God every day.</p>
-      </div>
-
+  <div class="min-h-screen bg-gray-50 pt-4 pb-12 font-sans">
+    <div class="max-w-5xl mx-auto">
       <div v-if="loading" class="py-16 text-center text-gray-500">
         Loading daily readings...
       </div>
@@ -14,7 +9,7 @@
         No daily readings available yet.
       </div>
 
-      <div v-else class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <div v-else class="grid gap-6 sm:gap-8 sm:grid-cols-2 lg:grid-cols-2">
         <div
           v-for="reading in readings"
           :key="reading.id"
@@ -23,7 +18,7 @@
         >
           <div class="h-2 bg-gradient-to-r from-blue-500 to-indigo-600"></div>
 
-          <div class="p-6 flex-1 flex flex-col justify-between">
+          <div class="p-5 sm:p-6 flex-1 flex flex-col justify-between">
             <div>
               <div class="flex items-center text-sm text-gray-400 mb-3">
                 <CalendarOutlined class="mr-2" /> {{ formatDate(reading.reading_date) }}
@@ -65,7 +60,16 @@ import { useRouter } from 'vue-router';
 import { CalendarOutlined, ArrowRightOutlined } from '@ant-design/icons-vue';
 import { DailyReadingService } from '@/services/DailyReadingService';
 
+const props = defineProps({
+  setPageMeta: {
+    type: Function,
+    default: null,
+  },
+});
+
 const router = useRouter();
+
+const PAGE_TITLE = 'អត្ថបទព្រះគម្ពីរប្រចាំថ្ងៃ';
 
 const readings = ref([]);
 const loading = ref(false);
@@ -120,6 +124,9 @@ function openReading(id) {
 }
 
 onMounted(() => {
+  if (props.setPageMeta) {
+    props.setPageMeta({ title: PAGE_TITLE });
+  }
   loadReadings(currentPage.value);
 });
 </script>

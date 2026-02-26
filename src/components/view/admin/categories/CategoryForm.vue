@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white p-8 rounded-lg shadow-sm border border-gray-200 max-w-2xl mx-auto">
+  <div class="category-form bg-white p-8 rounded-lg shadow-sm border border-gray-200 max-w-2xl mx-auto">
     <div class="flex items-center justify-between mb-8">
       <h2 class="text-2xl font-bold text-gray-800">{{ isEditMode ? 'Edit Category' : 'Create Category' }}</h2>
       <button @click="$router.push({ name: 'adminCategories' })" class="text-gray-500 hover:text-gray-700">
@@ -149,13 +149,44 @@ import { useRoute, useRouter } from 'vue-router';
 import { CategoryService } from '@/services/CategoryService';
 import ImageSelectModal from '@/components/ImageSelectModal.vue';
 import { PictureOutlined } from '@ant-design/icons-vue';
-import { ClassicEditor, Essentials, Paragraph, Bold, Italic, Link, List } from 'ckeditor5';
+import { ClassicEditor, Essentials, Paragraph, Bold, Italic, Link, List, PasteFromOffice, Font, Alignment, Heading, BlockQuote, Table, TableToolbar } from 'ckeditor5';
 
 const editor = ClassicEditor;
 const editorConfig = {
   licenseKey: 'GPL',
-  plugins: [ Essentials, Paragraph, Bold, Italic, Link, List ],
-  toolbar: [ 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'undo', 'redo' ]
+  plugins: [
+    Essentials,
+    Paragraph,
+    Bold,
+    Italic,
+    Link,
+    List,
+    Heading,
+    BlockQuote,
+    Table,
+    TableToolbar,
+    Font,
+    Alignment,
+    PasteFromOffice,
+  ],
+  toolbar: [
+    'heading',
+    '|',
+    'bold',
+    'italic',
+    'link',
+    'bulletedList',
+    'numberedList',
+    'blockQuote',
+    'insertTable',
+    '|',
+    'fontColor',
+    'fontBackgroundColor',
+    'alignment',
+    '|',
+    'undo',
+    'redo',
+  ],
 };
 
 const route = useRoute();
@@ -286,3 +317,30 @@ const handleSubmit = async () => {
   }
 };
 </script>
+<style scoped>
+.category-form {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.category-form :deep(.ck-editor__editable_inline) {
+  min-height: 180px;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+}
+
+.category-form :deep(.ck.ck-editor__main) {
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.category-form :deep(.ck.ck-toolbar) {
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+}
+
+.category-form :deep(.ck.ck-content) {
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+</style>

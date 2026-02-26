@@ -38,9 +38,9 @@ onMounted(async () => {
 
 <template>
   <div class="homepage bg-gray-50 min-h-screen pb-12 font-sans flex flex-col items-center">
-    <div class="w-full max-w-[1400px] px-10 mx-auto">
-      <header v-if="pageTitle" class="mt-8 mb-6 text-center md:text-left">
-        <h1 class="text-3xl font-extrabold text-gray-900 sm:text-4xl tracking-tight">
+    <div class="w-full max-w-[1400px] lg:px-10 mx-auto">
+      <header v-if="pageTitle" class="mt-8 mb-8 ">
+        <h1 class="text-3xl font-extrabold text-gray-900 sm:text-2xl tracking-tight pt-6 ">
           {{ pageTitle }}
         </h1>
         <p v-if="pageSubtitle" class="mt-3 text-base sm:text-lg text-gray-500">

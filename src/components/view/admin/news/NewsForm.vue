@@ -83,13 +83,44 @@ import { ref, reactive, onMounted, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { NewsService } from '@/services/NewsService';
 import { CategoryService } from '@/services/CategoryService';
-import { ClassicEditor, Essentials, Paragraph, Bold, Italic, Link, List, Heading, BlockQuote, Table, TableToolbar } from 'ckeditor5';
+import { ClassicEditor, Essentials, Paragraph, Bold, Italic, Link, List, Heading, BlockQuote, Table, TableToolbar, Font, Alignment, PasteFromOffice } from 'ckeditor5';
 
 const editor = ClassicEditor;
 const editorConfig = {
   licenseKey: 'GPL',
-  plugins: [ Essentials, Paragraph, Bold, Italic, Link, List, Heading, BlockQuote, Table, TableToolbar ],
-  toolbar: [ 'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'insertTable', 'undo', 'redo' ]
+  plugins: [
+    Essentials,
+    Paragraph,
+    Bold,
+    Italic,
+    Link,
+    List,
+    Heading,
+    BlockQuote,
+    Table,
+    TableToolbar,
+    Font,
+    Alignment,
+    PasteFromOffice,
+  ],
+  toolbar: [
+    'heading',
+    '|',
+    'bold',
+    'italic',
+    'link',
+    'bulletedList',
+    'numberedList',
+    'blockQuote',
+    'insertTable',
+    '|',
+    'fontColor',
+    'fontBackgroundColor',
+    'alignment',
+    '|',
+    'undo',
+    'redo',
+  ],
 };
 
 const route = useRoute();

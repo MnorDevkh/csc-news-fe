@@ -60,11 +60,7 @@ onMounted(() => {
 
         <!-- Content -->
         <div class="p-6 sm:p-10 text-gray-800 leading-relaxed text-lg">
-          <div class="prose prose-lg prose-blue max-w-none">
-            <p>{{ article.content }}</p>
-            <p>Additional paragraph to demonstrate typography. Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-              sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-          </div>
+          <div class="prose prose-lg prose-blue max-w-none" v-html="article.content" />
 
           <!-- Share and Actions -->
           <div class="mt-8 pt-8 border-t border-gray-100 flex items-center justify-between">

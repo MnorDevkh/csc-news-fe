@@ -41,7 +41,7 @@
         </div>
 
         <div v-if="sermon.snippet" class="max-w-2xl mx-auto text-left text-gray-700 leading-relaxed mb-6">
-          <p>{{ sermon.snippet }}</p>
+          <div class="prose prose-blue max-w-none" v-html="sermon.snippet" />
         </div>
 
         <div v-if="sermon.media_url" class="mt-6 max-w-2xl mx-auto">
