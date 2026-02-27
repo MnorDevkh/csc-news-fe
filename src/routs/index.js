@@ -34,11 +34,6 @@ const router = createRouter({
       component: FrontLayoutWithSidebar,
       children: [
         {
-          path: 'bible/types',
-          name: 'bible-types',
-          component: () => TypeBibleComponent
-        },
-        {
           path: 'bible',
           name: 'bible',
           component: BiblePage
@@ -126,6 +121,11 @@ const router = createRouter({
           component: PhotoUploadPage
         },
       ]
+    },
+    {
+      path: '/bible/types',
+      name: 'bible-types',
+      component: TypeBibleComponent
     },
     {
       path: '/news',

@@ -5,7 +5,7 @@ const BASE_URL = `${apiBase}/bibles`;
 const CHAPTER_URL = `${apiBase}/chapters`;
 const language = 'KM';
 
-const endpoint = '/bibles/';
+const endpoint = '/bibles';
 
 export const BibleService = {
   /**
@@ -41,6 +41,23 @@ export const BibleService = {
    */
   deleteBible(id) {
     return BaseAPI.authClient.delete(`${endpoint}/${id}`);
+  },
+
+  async getBibleTypes() {
+    try {
+      const response = await fetch(`${BASE_URL}/types`, {
+        headers: {
+          accept: 'application/json',
+        },
+      });
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return await response.json();
+    } catch (error) {
+      console.error('Failed to fetch bible types', error);
+      throw error;
+    }
   },
 
   async getBibleList() {

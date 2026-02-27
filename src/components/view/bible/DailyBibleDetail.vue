@@ -136,4 +136,21 @@ onMounted(() => {
 </script>
 
 <style scoped>
+.prose :deep(figure.table) {
+  margin: 1.5rem 0;
+  max-width: 100%;
+}
+
+.prose :deep(figure.table table) {
+  width: 100%;
+  max-width: 100%;
+  border-collapse: collapse;
+}
+
+.prose :deep(figure.table th),
+.prose :deep(figure.table td) {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #e5e7eb;
+  word-break: break-word;
+}
 </style>

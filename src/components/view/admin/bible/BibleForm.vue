@@ -62,12 +62,18 @@
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">Type</label>
-          <input
+          <select
             v-model="form.type"
-            type="text"
             class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-            placeholder="e.g. NT, OT"
-          />
+          >
+            <option
+              v-for="option in bibleTypeOptions"
+              :key="option.value"
+              :value="option.value"
+            >
+              {{ option.label }}
+            </option>
+          </select>
         </div>
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">Language</label>
@@ -162,6 +168,13 @@ import { BibleService } from '@/services/BibleService';
 const route = useRoute();
 const router = useRouter();
 
+const bibleTypeOptions = [
+  { value: 'NT', label: 'ព្រះគម្ពីរសម្ព័ន្ធមេត្រីថ្មី' },
+  { value: 'OT', label: 'ព្រះគម្ពីរសម្ព័ន្ធមេត្រីចាស់' },
+  { value: 'Introduction', label: 'សេចក្ដីណែនាំ' },
+  { value: 'PW', label: 'ពាក្យកាព្យ' },
+];
+
 const isEditMode = computed(() => !!route.params.id);
 const isSubmitting = ref(false);
 const pageLoading = ref(false);
@@ -174,7 +187,7 @@ const form = reactive({
   slug: '',
   description: '',
   thumbnail: '',
-  type: '',
+  type: 'NT',
   language: '',
   audio_url: '',
   video_url: '',
