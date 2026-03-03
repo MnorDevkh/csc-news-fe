@@ -1,7 +1,14 @@
 <script setup>
 import { BibleService } from '@/services/BibleService';
-import { ref, onMounted, computed, watch } from 'vue';
+import { ref, onMounted, onUnmounted, computed, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+
+const props = defineProps({
+  setPageMeta: {
+    type: Function,
+    default: null,
+  },
+});
 
 const bibleItems = ref([]);
 const isLoading = ref(false);
@@ -16,6 +23,20 @@ const bibleTypeOptions = [
 ];
 
 const selectedType = computed(() => route.query.type || 'NT');
+
+const typeLabel = computed(() => {
+  switch (selectedType.value) {
+    case 'OT':
+      return 'ព្រះគម្ពីរសម្ព័ន្ធមេត្រីចាស់';
+    case 'Introduction':
+      return 'សេចក្ដីណែនាំ';
+    case 'PW':
+      return 'ពាក្យកាព្យ';
+    case 'NT':
+    default:
+      return 'ព្រះគម្ពីរសម្ព័ន្ធមេត្រីថ្មី';
+  }
+});
 
 const filters = ref({
   language: 'km',
@@ -76,12 +97,27 @@ const fetchBibles = async () => {
   }
 };
 
-onMounted(fetchBibles);
+const syncPageMeta = () => {
+  props.setPageMeta?.({
+    title: `ប្រភេទព្រះគម្ពីរ ${typeLabel.value}`,
+    subtitle: 'ជ្រើសរើសកំណែព្រះគម្ពីរដើម្បីអានជំពូក និងខណ្ឌនៅខាងមុខ។',
+  });
+};
+
+onMounted(() => {
+  syncPageMeta();
+  fetchBibles();
+});
+
+onUnmounted(() => {
+  props.setPageMeta?.(null);
+});
 
 watch(
   () => route.query.type,
   () => {
     pageIndex.value = 1;
+    syncPageMeta();
     fetchBibles();
   }
 );
@@ -146,20 +182,6 @@ const pageStart = computed(() => {
 const pageEnd = computed(() => {
   if (!totalElements.value) return 0;
   return Math.min(pageIndex.value * pageSize.value, totalElements.value);
-});
-
-const typeLabel = computed(() => {
-  switch (selectedType.value) {
-    case 'OT':
-      return 'ព្រះគម្ពីរសម្ព័ន្ធមេត្រីចាស់';
-    case 'Introduction':
-      return 'សេចក្ដីណែនាំ';
-    case 'PW':
-      return 'ពាក្យកាព្យ';
-    case 'NT':
-    default:
-      return 'ព្រះគម្ពីរសម្ព័ន្ធមេត្រីថ្មី';
-  }
 });
 </script>
 
