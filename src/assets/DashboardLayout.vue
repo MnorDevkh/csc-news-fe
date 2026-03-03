@@ -11,15 +11,8 @@
       </div>
 
       <div class="flex-1 overflow-y-auto py-4">
-        <a-menu
-          v-model:openKeys="openKeys"
-          v-model:selectedKeys="selectedKeys"
-          style="width: 256px"
-          mode="inline"
-          :items="menuItems"
-          class="admin-sidebar-menu border-none"
-          @click="handleClick"
-        />
+        <a-menu v-model:openKeys="openKeys" v-model:selectedKeys="selectedKeys" style="width: 256px" mode="inline"
+          :items="menuItems" class="admin-sidebar-menu border-none" @click="handleClick" />
       </div>
 
       <div class="p-4 border-t border-gray-200">
@@ -104,7 +97,7 @@ import {
 } from '@ant-design/icons-vue';
 import { useAuth } from '../composables/useAuth';
 import { useBibleManagementContext } from '@/composables/useBibleManagementContext';
-import { onMounted, computed, h, ref, watch } from 'vue';
+import { onMounted, h, reactive, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 const { user, logout, initAuth } = useAuth();
@@ -114,6 +107,22 @@ const router = useRouter();
 
 const chapterRouteNames = ['adminChapterList', 'adminChapterCreate', 'adminChapterEdit'];
 const verseRouteNames = ['adminVerseList', 'adminVerseCreate', 'adminVerseEdit'];
+
+// Map child admin routes to their parent sidebar keys
+const childToParentMap = {
+  createNews: 'adminNews',
+  editNews: 'adminNews',
+  createCategory: 'adminCategories',
+  editCategory: 'adminCategories',
+  createDailyReading: 'adminBible',
+  editDailyReading: 'adminBible',
+  createSermon: 'adminSermons',
+  editSermon: 'adminSermons',
+  adminGalleryCreate: 'adminGallery',
+  adminGalleryEdit: 'adminGallery',
+  adminBibleCreate: 'bible',
+  adminBibleEdit: 'bible',
+};
 
 const menuRouteKeys = [
   'dashboard',
@@ -126,73 +135,110 @@ const menuRouteKeys = [
   'adminPanel',
 ];
 
-function getItem(label, key, icon, children, type) {
-  return {
-    key,
-    icon,
-    children,
-    label,
-    type,
-  };
-}
-
 const selectedKeys = ref([]);
 const openKeys = ref(['bible-management']);
 
-watch(
-  () => route.name,
-  (name) => {
-    if (name === 'adminBibleManagement') {
-      selectedKeys.value = ['adminBibleManagement'];
-    } else if (chapterRouteNames.includes(name)) {
-      selectedKeys.value = ['chapters'];
-    } else if (verseRouteNames.includes(name)) {
-      selectedKeys.value = ['verses'];
-    } else if (typeof name === 'string' && menuRouteKeys.includes(name)) {
-      selectedKeys.value = [name];
-    } else {
-      selectedKeys.value = [];
-    }
-    if (route.path.startsWith('/admin/bible-management')) {
-      openKeys.value = verseRouteNames.includes(name) ? ['bible-management', 'chapters'] : ['bible-management'];
-    } else {
-      openKeys.value = [];
-    }
-  },
-  { immediate: true }
-);
 
-const menuItems = computed(() => [
-  getItem('Dashboard', 'dashboard', () => h(AppstoreOutlined)),
-  getItem('Content Management', 'content-group', null, [
-    getItem('News & Articles', 'adminNews', () => h(FileTextOutlined)),
-    getItem('Categories', 'adminCategories', () => h(TagsOutlined)),
-    getItem('Bible Readings', 'adminBible', () => h(ReadOutlined)),
-    getItem('Bible Management', 'bible-management', () => h(BookOutlined), [
-      getItem('Chapters', 'chapters', () => h(UnorderedListOutlined), [
-        getItem('Verses', 'verses', () => h(FileTextOutlined)),
-      ]),
-    ]),
-    getItem('Sermons', 'adminSermons', () => h(SoundOutlined)),
-    getItem('Media Gallery', 'adminGallery', () => h(PictureOutlined)),
-    getItem('Saints', 'adminSaints', () => h(FireOutlined)),
-  ], 'group'),
-  getItem('System', 'system-group', null, [
-    getItem('User Management', 'adminPanel', () => h(TeamOutlined)),
-    getItem('Settings', 'settings', () => h(SettingOutlined)),
-  ], 'group'),
+const menuItems = reactive([
+  {
+    key: 'dashboard',
+    icon: () => h(AppstoreOutlined),
+    label: 'Dashboard',
+    title: 'Dashboard',
+  }, {
+    key: 'adminNews',
+    icon: () => h(FileTextOutlined),
+    label: 'News & Articles',
+    title: 'News & Articles',
+  },
+  {
+    key: 'adminCategories',
+    icon: () => h(TagsOutlined),
+    label: 'Categories',
+    title: 'Categories',
+  },
+  {
+    key: 'adminBible',
+    icon: () => h(ReadOutlined),
+    label: 'Bible Readings',
+    title: 'Bible Readings',
+  },
+  {
+    key: 'bible-management',
+    icon: () => h(BookOutlined),
+    label: 'Bible Management',
+    title: 'Bible Management',
+  },
+  {
+    key: 'bible',
+    label: 'Bible',
+    title: 'Bible',
+  },
+  {
+    key: 'chapters',
+    label: 'Chapters',
+    title: 'Chapters',
+  },
+  {
+    key: 'verses',
+    label: 'Verses',
+    title: 'Verses',
+  },
+  {
+    key: 'adminSermons',
+    icon: () => h(SoundOutlined),
+    label: 'Sermons',
+    title: 'Sermons',
+  },
+  {
+    key: 'adminGallery',
+    icon: () => h(PictureOutlined),
+    label: 'Media Gallery',
+    title: 'Media Gallery',
+  },
+  {
+    key: 'adminSaints',
+    icon: () => h(FireOutlined),
+    label: 'Saints',
+    title: 'Saints',
+  },
+
+  {
+    key: 'system-group',
+    icon: () => h(SettingOutlined),
+    label: 'System',
+    title: 'System',
+    children: [
+      {
+        key: 'adminPanel',
+        icon: () => h(TeamOutlined),
+        label: 'User Management',
+        title: 'User Management',
+      },
+      {
+        key: 'settings',
+        icon: () => h(SettingOutlined),
+        label: 'Settings',
+        title: 'Settings',
+      },
+    ],
+  },
 ]);
 
 function handleClick(e) {
   const k = String(e.key);
   if (k === 'settings') return;
   if (k === 'bible-management') {
+    router.push({ name: 'adminBibleTypes' });
+    return;
+  }
+  if (k === 'bible') {
     router.push({ name: 'adminBibleManagement' });
     return;
   }
   if (k === 'chapters') {
     if (lastBibleId.value) {
-      router.push({ name: 'adminChapterList', params: { bibleId: lastBibleId.value } });
+      router.push({ name: 'adminChapterList' });
     } else {
       router.push({ name: 'adminBibleManagement' });
     }
@@ -200,9 +246,9 @@ function handleClick(e) {
   }
   if (k === 'verses') {
     if (lastChapterId.value) {
-      router.push({ name: 'adminVerseList', params: { chapterId: lastChapterId.value } });
+      router.push({ name: 'adminVerseList' });
     } else {
-      router.push({ name: 'adminBibleManagement' });
+      router.push({ name: 'adminVerseList' });
     }
     return;
   }
@@ -214,40 +260,4 @@ onMounted(() => {
 });
 </script>
 
-<style scoped>
-.admin-sidebar-menu {
-  padding-left: 8px;
-  padding-right: 8px;
-}
-
-.admin-sidebar-menu :deep(.ant-menu-item),
-.admin-sidebar-menu :deep(.ant-menu-submenu-title) {
-  border-radius: 8px;
-  margin-inline: 0;
-  margin-bottom: 2px;
-}
-
-.admin-sidebar-menu :deep(.ant-menu-item-selected) {
-  background: rgb(239 246 255) !important;
-  color: rgb(29 78 216);
-}
-
-.admin-sidebar-menu :deep(.ant-menu-sub .ant-menu-item) {
-  padding-left: 40px !important;
-}
-
-.admin-sidebar-menu :deep(.ant-menu-item-group-title) {
-  padding-left: 12px;
-  font-size: 11px;
-  font-weight: 600;
-  color: rgb(156 163 175);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-top: 16px;
-  margin-bottom: 4px;
-}
-
-.admin-sidebar-menu :deep(.ant-menu-item-group:first-child .ant-menu-item-group-title) {
-  margin-top: 0;
-}
-</style>
+<style scoped></style>

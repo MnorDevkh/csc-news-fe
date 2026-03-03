@@ -51,12 +51,9 @@
 
       <div>
         <label class="block text-sm font-medium text-gray-700 mb-2">Description (optional)</label>
-        <textarea
-          v-model="form.description"
-          rows="3"
-          class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-          placeholder="Short description"
-        />
+        <div class="prose max-w-none">
+          <ckeditor :editor="editor" v-model="form.description" :config="editorConfig"></ckeditor>
+        </div>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -65,7 +62,11 @@
           <select
             v-model="form.type"
             class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+            :disabled="bibleTypeLoading || !bibleTypeOptions.length"
           >
+            <option v-if="!bibleTypeOptions.length" disabled value="">
+              {{ bibleTypeLoading ? 'Loading types...' : 'Select type' }}
+            </option>
             <option
               v-for="option in bibleTypeOptions"
               :key="option.value"
@@ -164,16 +165,78 @@
 import { ref, reactive, computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { BibleService } from '@/services/BibleService';
+import {
+  ClassicEditor,
+  Essentials,
+  Paragraph,
+  Bold,
+  Italic,
+  Link,
+  List,
+  Heading,
+  BlockQuote,
+  Table,
+  TableToolbar,
+  Font,
+  Alignment,
+  PasteFromOffice,
+  GeneralHtmlSupport,
+} from 'ckeditor5';
+
+const editor = ClassicEditor;
+const editorConfig = {
+  licenseKey: 'GPL',
+  plugins: [
+    Essentials,
+    Paragraph,
+    Bold,
+    Italic,
+    Link,
+    List,
+    Heading,
+    BlockQuote,
+    Table,
+    TableToolbar,
+    Font,
+    Alignment,
+    PasteFromOffice,
+    GeneralHtmlSupport,
+  ],
+  toolbar: [
+    'heading',
+    '|',
+    'bold',
+    'italic',
+    'link',
+    'bulletedList',
+    'numberedList',
+    'blockQuote',
+    'insertTable',
+    '|',
+    'fontColor',
+    'fontBackgroundColor',
+    'alignment',
+    '|',
+    'undo',
+    'redo',
+  ],
+  htmlSupport: {
+    allow: [
+      {
+        name: /.*/,
+        styles: true,
+        attributes: true,
+        classes: true,
+      },
+    ],
+  },
+};
 
 const route = useRoute();
 const router = useRouter();
 
-const bibleTypeOptions = [
-  { value: 'NT', label: 'ព្រះគម្ពីរសម្ព័ន្ធមេត្រីថ្មី' },
-  { value: 'OT', label: 'ព្រះគម្ពីរសម្ព័ន្ធមេត្រីចាស់' },
-  { value: 'Introduction', label: 'សេចក្ដីណែនាំ' },
-  { value: 'PW', label: 'ពាក្យកាព្យ' },
-];
+const bibleTypeOptions = ref([]);
+const bibleTypeLoading = ref(false);
 
 const isEditMode = computed(() => !!route.params.id);
 const isSubmitting = ref(false);
@@ -187,7 +250,7 @@ const form = reactive({
   slug: '',
   description: '',
   thumbnail: '',
-  type: 'NT',
+  type: '',
   language: '',
   audio_url: '',
   video_url: '',
@@ -197,11 +260,31 @@ const form = reactive({
 });
 
 onMounted(async () => {
-  pageLoading.value = isEditMode.value;
+  // Load bible types for the Type select
+  bibleTypeLoading.value = true;
+  try {
+    const data = await BibleService.getBibleTypes();
+    const items = Array.isArray(data) ? data : Array.isArray(data?.items) ? data.items : [];
+    bibleTypeOptions.value = items.map((t) => ({
+      value: t.id,
+      label: t.name,
+    }));
+    if (!isEditMode.value && !form.type && bibleTypeOptions.value.length) {
+      form.type = bibleTypeOptions.value[0].value;
+    }
+  } catch (err) {
+    console.error('Failed to load bible types:', err);
+    bibleTypeOptions.value = [];
+  } finally {
+    bibleTypeLoading.value = false;
+  }
+
   if (!isEditMode.value) {
     pageLoading.value = false;
     return;
   }
+
+  pageLoading.value = true;
   try {
     const res = await BibleService.getBible(route.params.id);
     const b = res.data;

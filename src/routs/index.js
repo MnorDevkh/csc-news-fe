@@ -231,7 +231,22 @@ const router = createRouter({
           path: 'bible-management',
           children: [
             {
-              path: '',
+              path: 'bible-type',
+              name: 'adminBibleTypes',
+              component: () => import('@/components/view/admin/bible/BibleTypeListComponent.vue'),
+            },
+            {
+              path: 'bible-type/create',
+              name: 'adminBibleTypeCreate',
+              component: () => import('@/components/view/admin/bible/BibleTypeForm.vue'),
+            },
+            {
+              path: 'bible-type/edit/:id',
+              name: 'adminBibleTypeEdit',
+              component: () => import('@/components/view/admin/bible/BibleTypeForm.vue'),
+            },
+            {
+              path: 'bible',
               name: 'adminBibleManagement',
               component: () => import('@/components/view/admin/bible/AdminBibleList.vue'),
             },
@@ -246,32 +261,32 @@ const router = createRouter({
               component: () => import('@/components/view/admin/bible/BibleForm.vue'),
             },
             {
-              path: 'bible/:bibleId/chapters',
+              path: 'chapters',
               name: 'adminChapterList',
               component: () => import('@/components/view/admin/bible/AdminChapterList.vue'),
             },
             {
-              path: 'bible/:bibleId/chapter/create',
+              path: 'chapter/create',
               name: 'adminChapterCreate',
               component: () => import('@/components/view/admin/bible/ChapterForm.vue'),
             },
             {
-              path: 'bible/:bibleId/chapter/edit/:chapterId',
+              path: 'chapter/edit/:chapterId',
               name: 'adminChapterEdit',
               component: () => import('@/components/view/admin/bible/ChapterForm.vue'),
             },
             {
-              path: 'chapter/:chapterId/verses',
+              path: 'verse',
               name: 'adminVerseList',
               component: () => import('@/components/view/admin/bible/AdminVerseList.vue'),
             },
             {
-              path: 'chapter/:chapterId/verse/create',
+              path: 'verse/create',
               name: 'adminVerseCreate',
               component: () => import('@/components/view/admin/bible/VerseForm.vue'),
             },
             {
-              path: 'chapter/:chapterId/verse/edit/:verseId',
+              path: 'verse/edit/:verseId',
               name: 'adminVerseEdit',
               component: () => import('@/components/view/admin/bible/VerseForm.vue'),
             },

@@ -25,6 +25,26 @@
       </div>
 
       <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">Chapter</label>
+        <select
+          v-model="form.chapter_id"
+          required
+          class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+        >
+          <option disabled value="">
+            {{ chaptersLoading ? 'Loading chapters...' : 'Select chapter' }}
+          </option>
+          <option
+            v-for="ch in chapters"
+            :key="ch.id"
+            :value="ch.id"
+          >
+            {{ ch.chapter_number }}{{ ch.title ? ` - ${ch.title}` : '' }}
+          </option>
+        </select>
+      </div>
+
+      <div>
         <label class="block text-sm font-medium text-gray-700 mb-2">Verse number</label>
         <input
           v-model.number="form.verse_number"
@@ -38,13 +58,9 @@
 
       <div>
         <label class="block text-sm font-medium text-gray-700 mb-2">Content</label>
-        <textarea
-          v-model="form.content"
-          rows="6"
-          required
-          class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none font-serif"
-          placeholder="Verse text..."
-        />
+        <div class="prose max-w-none">
+          <ckeditor :editor="editor" v-model="form.content" :config="editorConfig"></ckeditor>
+        </div>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -94,6 +110,73 @@
 import { ref, reactive, computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import VerseService from '@/services/VerseService';
+import ChapterService from '@/services/ChapterService';
+import {
+  ClassicEditor,
+  Essentials,
+  Paragraph,
+  Bold,
+  Italic,
+  Link,
+  List,
+  Heading,
+  BlockQuote,
+  Table,
+  TableToolbar,
+  Font,
+  Alignment,
+  PasteFromOffice,
+  GeneralHtmlSupport,
+} from 'ckeditor5';
+
+const editor = ClassicEditor;
+const editorConfig = {
+  licenseKey: 'GPL',
+  plugins: [
+    Essentials,
+    Paragraph,
+    Bold,
+    Italic,
+    Link,
+    List,
+    Heading,
+    BlockQuote,
+    Table,
+    TableToolbar,
+    Font,
+    Alignment,
+    PasteFromOffice,
+    GeneralHtmlSupport,
+  ],
+  toolbar: [
+    'heading',
+    '|',
+    'bold',
+    'italic',
+    'link',
+    'bulletedList',
+    'numberedList',
+    'blockQuote',
+    'insertTable',
+    '|',
+    'fontColor',
+    'fontBackgroundColor',
+    'alignment',
+    '|',
+    'undo',
+    'redo',
+  ],
+  htmlSupport: {
+    allow: [
+      {
+        name: /.*/,
+        styles: true,
+        attributes: true,
+        classes: true,
+      },
+    ],
+  },
+};
 
 const route = useRoute();
 const router = useRouter();
@@ -106,21 +189,44 @@ const loadError = ref(null);
 const feedbackMsg = ref('');
 const feedbackType = ref('success');
 
+const chapters = ref([]);
+const chaptersLoading = ref(false);
+
 const form = reactive({
   verse_number: 1,
   content: '',
   status: 'active',
   is_featured: false,
   order_index: '',
-  chapter_id: null,
+  chapter_id: '',
 });
+
+async function loadChapters() {
+  chaptersLoading.value = true;
+  try {
+    const res = await ChapterService.getChapters({
+      skip: 0,
+      limit: 500,
+      order_by: 'chapter_number',
+    });
+    const data = res.data;
+    chapters.value = data?.items ?? (Array.isArray(data) ? data : []);
+  } catch (err) {
+    console.error('Error loading chapters:', err);
+  } finally {
+    chaptersLoading.value = false;
+  }
+}
 
 function goBack() {
   router.push({ name: 'adminVerseList', params: { chapterId: chapterId.value } });
 }
 
 onMounted(async () => {
-  form.chapter_id = chapterId.value;
+  await loadChapters();
+  if (chapterId.value) {
+    form.chapter_id = chapterId.value;
+  }
   pageLoading.value = isEditMode.value;
   if (!isEditMode.value) {
     pageLoading.value = false;
@@ -148,6 +254,12 @@ onMounted(async () => {
 async function handleSubmit() {
   feedbackMsg.value = '';
   try {
+    if (!form.chapter_id) {
+      feedbackType.value = 'error';
+      feedbackMsg.value = 'Please select a chapter.';
+      return;
+    }
+
     isSubmitting.value = true;
     const payload = {
       verse_number: form.verse_number,

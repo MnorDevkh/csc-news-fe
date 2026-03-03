@@ -48,12 +48,9 @@
 
       <div>
         <label class="block text-sm font-medium text-gray-700 mb-2">Summary (optional)</label>
-        <textarea
-          v-model="form.summary"
-          rows="4"
-          class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-          placeholder="Chapter summary"
-        />
+        <div class="prose max-w-none">
+          <ckeditor :editor="editor" v-model="form.summary" :config="editorConfig"></ckeditor>
+        </div>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -133,6 +130,72 @@
 import { ref, reactive, computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import ChapterService from '@/services/ChapterService';
+import {
+  ClassicEditor,
+  Essentials,
+  Paragraph,
+  Bold,
+  Italic,
+  Link,
+  List,
+  Heading,
+  BlockQuote,
+  Table,
+  TableToolbar,
+  Font,
+  Alignment,
+  PasteFromOffice,
+  GeneralHtmlSupport,
+} from 'ckeditor5';
+
+const editor = ClassicEditor;
+const editorConfig = {
+  licenseKey: 'GPL',
+  plugins: [
+    Essentials,
+    Paragraph,
+    Bold,
+    Italic,
+    Link,
+    List,
+    Heading,
+    BlockQuote,
+    Table,
+    TableToolbar,
+    Font,
+    Alignment,
+    PasteFromOffice,
+    GeneralHtmlSupport,
+  ],
+  toolbar: [
+    'heading',
+    '|',
+    'bold',
+    'italic',
+    'link',
+    'bulletedList',
+    'numberedList',
+    'blockQuote',
+    'insertTable',
+    '|',
+    'fontColor',
+    'fontBackgroundColor',
+    'alignment',
+    '|',
+    'undo',
+    'redo',
+  ],
+  htmlSupport: {
+    allow: [
+      {
+        name: /.*/,
+        styles: true,
+        attributes: true,
+        classes: true,
+      },
+    ],
+  },
+};
 
 const route = useRoute();
 const router = useRouter();
@@ -159,7 +222,7 @@ const form = reactive({
 });
 
 function goBack() {
-  router.push({ name: 'adminChapterList', params: { bibleId: bibleId.value } });
+  router.push({ name: 'adminChapterList', query: { bible: bibleId.value } });
 }
 
 onMounted(async () => {

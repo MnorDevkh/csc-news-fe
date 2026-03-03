@@ -43,17 +43,14 @@ export const BibleService = {
     return BaseAPI.authClient.delete(`${endpoint}/${id}`);
   },
 
+  /**
+   * Public: list bible types
+   * Uses GET /api/v1/bible-types/
+   */
   async getBibleTypes() {
     try {
-      const response = await fetch(`${BASE_URL}/types`, {
-        headers: {
-          accept: 'application/json',
-        },
-      });
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      return await response.json();
+      const response = await BaseAPI.publicClient.get('/bible-types/');
+      return response.data;
     } catch (error) {
       console.error('Failed to fetch bible types', error);
       throw error;
