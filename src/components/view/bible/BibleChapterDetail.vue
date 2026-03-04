@@ -38,9 +38,10 @@ const fetchData = async () => {
   loading.value = true;
 
   try {
-    const id = route.params.id;
+    const id = route.params.id || route.params.chapterId;
     if (id) {
       const response = await ChapterService.getChapter(id);
+      console.log("chapter",response.data);
       if (response.data) {
         chapter.value = response.data;
 
@@ -48,7 +49,6 @@ const fetchData = async () => {
           const chaptersResponse = await ChapterService.getChaptersByBible(chapter.value.bible_id, {
             skip: 0,
             limit: 100,
-            language: chapter.value.language,
             order_by: 'chapter_number',
           });
           if (chaptersResponse.data) {
@@ -105,13 +105,13 @@ const bookAndChapterLabel = computed(() => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-gray-50 py-12">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+  <div class="min-h-[calc(100vh-3.5rem-3.5rem)]  py-8">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
       <!-- Navigation -->
       <div class="mb-8">
         <button
           @click="goBack"
-          class="group flex items-center text-sm font-medium text-gray-500 hover:text-blue-600 transition-colors"
+          class="group inline-flex items-center text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors"
         >
           <svg
             class="mr-2 h-5 w-5 transition-transform group-hover:-translate-x-1"
@@ -137,119 +137,57 @@ const bookAndChapterLabel = computed(() => {
       </div>
 
       <!-- Chapter Content -->
-      <div v-else class="grid grid-cols-1 lg:grid-cols-4 gap-8">
-        <!-- Sidebar Navigation -->
-        <div class="lg:col-span-1 order-2 lg:order-1">
-          <div class="bg-white overflow-hidden shadow-sm rounded-lg p-6 sticky top-6">
-            <h3 class="text-lg font-medium text-gray-900 mb-1">
-              Chapters
-            </h3>
-            <p v-if="chapter.book_name" class="text-xs text-gray-500 mb-4">
-              {{ chapter.book_name }}
+      <div v-else class="bg-white overflow-hidden shadow-sm rounded-2xl border border-amber-100">
+        <div class="p-6 sm:p-8">
+          <div class="border-b border-amber-100 pb-4 mb-5">
+            <h1 class="text-2xl sm:text-3xl font-bold leading-tight text-slate-900">
+              {{ bookAndChapterLabel || `Chapter ${chapter.chapter_number}` }}
+            </h1>
+            <p v-if="chapter.bible?.name" class="mt-1 text-sm text-blue-700 font-medium">
+              {{ chapter.bible.name }}
             </p>
-            <div class="grid grid-cols-5 lg:grid-cols-4 gap-2">
-              <button
-                v-for="c in chapters"
-                :key="c.id"
-                @click="router.push({ name: 'chapter-detail', params: { id: c.id } })"
-                :class="[
-                  'p-2 text-center text-sm rounded-md transition-colors',
-                  c.id === chapter.id
-                    ? 'bg-blue-600 text-white font-bold'
-                    : 'bg-gray-50 text-gray-700 hover:bg-gray-100',
-                ]"
-              >
-                {{ c.chapter_number }}
-              </button>
-            </div>
           </div>
-        </div>
 
-        <!-- Main Content -->
-        <div class="lg:col-span-3 order-1 lg:order-2 bg-white overflow-hidden shadow-sm rounded-lg">
-          <div class="p-8">
-            <div class="border-b border-gray-200 pb-5 mb-6">
-              <h1 class="text-3xl font-bold leading-tight text-gray-900">
-                {{ bookAndChapterLabel || (chapter.title && chapter.title !== 'string'
-                  ? chapter.title
-                  : `Chapter ${chapter.chapter_number}`) }}
-              </h1>
-              <p v-if="chapter.bible?.name" class="mt-2 text-sm text-blue-600 font-medium">
-                {{ chapter.bible.name }}
-              </p>
-            </div>
+          <!-- Verses Section -->
+          <div class="mt-4 border-t border-amber-100 pt-5">
+            <h3 class="text-base font-semibold text-slate-900 mb-3">
+              ខណ្ឌក្នុង {{ bookAndChapterLabel || `Chapter ${chapter.chapter_number}` }}
+            </h3>
 
-            <div v-if="chapter.summary && chapter.summary !== 'string'" class="prose prose-blue max-w-none text-gray-700">
-              <p class="text-lg leading-relaxed whitespace-pre-line">{{ chapter.summary }}</p>
-            </div>
-
-            <!-- Verses Section -->
-            <div v-if="verses && verses.length > 0" class="mt-10 border-t border-gray-100 pt-6">
-              <h3 class="text-xl font-semibold text-gray-900 mb-4">
-                ខណ្ឌក្នុង {{ bookAndChapterLabel || `Chapter ${chapter.chapter_number}` }}
-              </h3>
-              <div class="text-lg leading-relaxed text-gray-700">
-                <span v-for="verse in verses" :key="verse.id">
-                  <span class="text-xs font-bold text-red-600 align-top mr-0.5">{{ verse.verse_number }}</span>
-                  <span class="mr-1">{{ verse.content }}</span>
-                </span>
-              </div>
-              <div v-if="versesPagination.total > 0" class="pt-8 flex justify-center">
-                <APagination
-                  v-model:current="versesPagination.current"
-                  :page-size="versesPagination.pageSize"
-                  :total="versesPagination.total"
-                  @change="onVersesPageChange"
-                  show-less-items
-                />
-              </div>
-            </div>
-
-            <!-- Media Links -->
             <div
-              v-if="(chapter.audio_url && chapter.audio_url !== 'string') || (chapter.video_url && chapter.video_url !== 'string')"
-              class="mt-10 border-t border-gray-100 pt-6"
+              v-if="verses && verses.length > 0"
+              class="leading-relaxed text-slate-900"
+              :style="{ fontSize: 'calc(1rem * var(--bible-font-scale, 1.05))' }"
             >
-              <h3 class="text-lg font-medium text-gray-900 mb-4">មូលធនមេឌៀ</h3>
-              <div class="flex flex-col sm:flex-row gap-4">
-                <a
-                  v-if="chapter.audio_url && chapter.audio_url !== 'string'"
-                  :href="chapter.audio_url"
-                  target="_blank"
-                  class="inline-flex justify-center items-center rounded-lg bg-blue-50 px-4 py-2 text-sm font-medium text-blue-700 hover:bg-blue-100 transition-colors"
+              <template v-for="(verse, vIdx) in verses" :key="verse.id">
+                <div
+                  v-for="section in (chapter.sections || []).filter(s => s.start_verse === verse.verse_number)"
+                  :key="section.id"
+                  class="mt-4 mb-2 text-sm font-semibold text-amber-800"
                 >
-                  <svg class="mr-2 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586ল4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"
-                    />
-                  </svg>
-                  ស្តាប់អូឌីយ៉ូ
-                </a>
-                <a
-                  v-if="chapter.video_url && chapter.video_url !== 'string'"
-                  :href="chapter.video_url"
-                  target="_blank"
-                  class="inline-flex justify-center items-center rounded-lg bg-indigo-50 px-4 py-2 text-sm font-medium text-indigo-700 hover:bg-indigo-100 transition-colors"
-                >
-                  <svg class="mr-2 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"
-                    /><path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
-                  មើលវីដេអូ
-                </a>
-              </div>
+                  {{ section.title }}
+                </div>
+                <div class="inline-block mb-1 mr-1">
+                  <span class="text-[11px] font-bold text-amber-700 align-top mr-0.5">
+                    {{ verse.verse_number }}
+                  </span>
+                  <span class="verse-content" v-html="verse.verse_text" />
+                </div>
+              </template>
+            </div>
+
+            <div v-else class="text-sm text-slate-500 mt-2">
+              មិនទាន់មានខណ្ឌសម្រាប់ជំពូកនេះទេ។
+            </div>
+
+            <div v-if="versesPagination.total > versesPagination.pageSize" class="pt-6 flex justify-center">
+              <APagination
+                v-model:current="versesPagination.current"
+                :page-size="versesPagination.pageSize"
+                :total="versesPagination.total"
+                @change="onVersesPageChange"
+                show-less-items
+              />
             </div>
           </div>
         </div>
@@ -257,3 +195,10 @@ const bookAndChapterLabel = computed(() => {
     </div>
   </div>
 </template>
+
+<style scoped>
+.verse-content p {
+  display: inline;
+  margin: 0;
+}
+</style>

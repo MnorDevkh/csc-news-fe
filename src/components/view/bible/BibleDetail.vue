@@ -1,48 +1,81 @@
 <script setup>
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { BibleService } from '../../../services/BibleService';
 import ChapterService from '../../../services/ChapterService';
-import { Pagination as APagination } from 'ant-design-vue';
+import VerseService from '../../../services/VerseService';
+import SectionService from '../../../services/SectionService';
 
 const route = useRoute();
 const router = useRouter();
 const item = ref(null);
 const loading = ref(false);
-const pagination = ref({
-  current: 1,
-  pageSize: 12,
-  total: 0,
-});
+/** @type {import('vue').Ref<Record<string, { verse_number: number; verse_text: string }[]>> */
+const chapterVerses = ref({});
+/** @type {import('vue').Ref<Record<string, { id: string; title?: string; start_verse: number; end_verse: number; order_no: number }[]>> */
+const chapterSections = ref({});
+
+const fetchVersesForChapter = async (chapterId) => {
+  try {
+    const res = await VerseService.getVerses({
+      chapter_id: chapterId,
+      skip: 0,
+      limit: 500,
+      order_by: 'verse_number',
+    });
+    const items = res.data?.items || [];
+    chapterVerses.value[chapterId] = items.map((v) => ({
+      verse_number: v.verse_number,
+      verse_text: v.verse_text,
+    }));
+  } catch (e) {
+    console.error('Failed to fetch verses for chapter:', chapterId, e);
+    chapterVerses.value[chapterId] = [];
+  }
+};
+
+const fetchSectionsForChapter = async (chapterId) => {
+  try {
+    const res = await SectionService.getSectionsByChapter(chapterId, {
+      skip: 0,
+      limit: 100,
+      order_by: 'order_no',
+    });
+    const items = res.data?.items || [];
+    chapterSections.value[chapterId] = items;
+  } catch (e) {
+    console.error('Failed to fetch sections for chapter:', chapterId, e);
+    chapterSections.value[chapterId] = [];
+  }
+};
 
 const fetchChapters = async (bibleId, language) => {
   try {
     const chaptersResponse = await ChapterService.getChaptersByBible(bibleId, {
-      skip: (pagination.value.current - 1) * pagination.value.pageSize,
-      limit: pagination.value.pageSize,
+      skip: 0,
+      limit: 500,
       language,
       order_by: 'chapter_number',
     });
-    if (chaptersResponse.data) {
-      if (item.value) {
-        item.value.chapters = chaptersResponse.data.items || [];
+    if (chaptersResponse.data && item.value) {
+      item.value.chapters = chaptersResponse.data.items || [];
+      for (const ch of item.value.chapters) {
+        await fetchVersesForChapter(ch.id);
+        await fetchSectionsForChapter(ch.id);
       }
-      pagination.value.total = chaptersResponse.data.total_elements || 0;
     }
   } catch (error) {
     console.error('Failed to fetch chapters:', error);
-    if (item.value) {
-      item.value.chapters = [];
-    }
-    pagination.value.total = 0;
+    if (item.value) item.value.chapters = [];
   }
 };
 
 const fetchData = async () => {
   loading.value = true;
-  pagination.value.current = 1;
+  chapterVerses.value = {};
+  chapterSections.value = {};
   try {
-    const id = route.params.id;
+    const id = route.params.bibleId;
     if (id) {
       const data = await BibleService.getBibleDetails(id);
       if (data) {
@@ -61,44 +94,24 @@ onMounted(() => {
   fetchData();
 });
 
-const onPageChange = (page, pageSize) => {
-  pagination.value.current = page;
-  pagination.value.pageSize = pageSize;
-  if (item.value) {
-    fetchChapters(item.value.id, item.value.language);
-  }
+const getVerses = (chapterId) => {
+  return chapterVerses.value[chapterId] || [];
 };
 
-const getThumbnail = (url) => {
-  if (url && url !== 'string') return url;
-  return 'https://images.unsplash.com/photo-1499652848871-1527a310b13a?q=80&w=1974&auto=format&fit=crop';
+/** Sections that start at this verse number (show title above this verse) */
+const getSectionsForVerse = (chapterId, verseNumber) => {
+  const sections = chapterSections.value[chapterId] || [];
+  return sections.filter((s) => s.start_verse === verseNumber);
 };
-
-const navigateToChapter = (id) => {
-  router.push({ name: 'chapter-detail', params: { id } });
-};
-
-const formattedType = computed(() => {
-  if (!item.value?.type) return '';
-  switch (item.value.type) {
-    case 'OT':
-      return 'ព្រះគម្ពីរសញ្ញាចាស់';
-    case 'NT':
-      return 'ព្រះគម្ពីរសញ្ញាថ្មី';
-    default:
-      return item.value.type;
-  }
-});
 </script>
 
 <template>
-  <div class="min-h-screen bg-gray-50 py-12">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <!-- Navigation -->
-      <div class="mb-8">
+  <div class="bg-gray-50 min-h-screen pb-12 font-sans flex flex-col items-center">
+    <main class="w-full max-w-[1400px] px-4 mx-auto py-8">
+      <div class="mb-6">
         <button
           @click="router.back()"
-          class="group flex items-center text-sm font-medium text-gray-500 hover:text-blue-600 transition-colors"
+          class="group inline-flex items-center text-sm font-medium text-gray-600 hover:text-indigo-600 transition-colors"
         >
           <svg
             class="mr-2 h-5 w-5 transition-transform group-hover:-translate-x-1"
@@ -108,126 +121,65 @@ const formattedType = computed(() => {
           >
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
           </svg>
-          ត្រឡប់ទៅមកកាន់បញ្ជីព្រះគម្ពីរ
+          ត្រឡប់ទៅបញ្ជីសៀវភៅ
         </button>
       </div>
 
-      <div v-if="item" class="text-center mb-8 sm:mb-12 p-4 sm:px-6 lg:px-8">
-        <h1
-          class="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-3xl font-extrabold tracking-tight text-transparent sm:text-4xl"
+      <h1 v-if="item" class="text-2xl sm:text-3xl font-extrabold tracking-tight text-gray-800 mb-6 border-l-4 border-indigo-500 pl-4">
+        {{ item.name }}
+      </h1>
+
+      <div v-if="loading" class="flex justify-center py-16">
+        <div class="h-9 w-9 animate-spin rounded-full border-4 border-blue-500 border-t-transparent"></div>
+      </div>
+
+      <div v-else-if="!item" class="text-center py-16">
+        <p class="text-gray-500 text-sm">No Bible found.</p>
+      </div>
+
+      <div v-else class="space-y-8">
+        <section
+          v-for="chapter in (item.chapters || [])"
+          :key="chapter.id"
+          class="rounded-2xl bg-white border border-gray-100 p-6 shadow-sm hover:shadow-md transition-shadow"
         >
-          {{ item.name }}
-        </h1>
-        <p class="mx-auto mt-2 max-w-xl text-sm text-blue-600">
-          {{ formattedType }} • {{ item.language }}
-        </p>
-        <p v-if="item.description && item.description !== 'string'" class="mx-auto mt-4 max-w-2xl text-lg text-gray-500">
-          {{ item.description }}
-        </p>
-      </div>
-
-      <!-- Loading State -->
-      <div v-if="loading" class="flex justify-center py-20">
-        <div class="h-10 w-10 animate-spin rounded-full border-4 border-blue-600 border-t-transparent"></div>
-      </div>
-
-      <!-- Empty State -->
-      <div v-else-if="!item" class="text-center py-20">
-        <p class="text-gray-500 text-lg">No Bible found.</p>
-      </div>
-
-      <!-- Detail View -->
-      <div v-else class="overflow-hidden rounded-2xl">
-        <div class="relative h-64 sm:h-80 md:h-96 w-full">
-          <img class="h-full w-full object-cover" :src="getThumbnail(item.thumbnail)" :alt="item.name" />
-        </div>
-
-        <div class="p-4 sm:p-6 md:p-8">
-          <div class="mt-8 border-t pt-6">
-            <div class="flex flex-col sm:flex-row gap-4">
-              <a
-                v-if="item.audio_url && item.audio_url !== 'string'"
-                :href="item.audio_url"
-                target="_blank"
-                class="inline-flex justify-center items-center rounded-lg bg-blue-600 px-6 py-3 text-base font-medium text-white hover:bg-blue-700 transition-colors shadow-sm"
-              >
-                <svg class="mr-2 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"
-                  />
-                </svg>
-                ស្តាប់អូឌីយ៉ូ
-              </a>
-              <a
-                v-if="item.video_url && item.video_url !== 'string'"
-                :href="item.video_url"
-                target="_blank"
-                class="inline-flex justify-center items-center rounded-lg bg-indigo-600 px-6 py-3 text-base font-medium text-white hover:bg-indigo-700 transition-colors shadow-sm"
-              >
-                <svg class="mr-2 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"
-                  />
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-                មើលវីដេអូ
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Chapters -->
-        <div v-if="item.chapters && item.chapters.length > 0" class="mt-8 sm:mt-12 px-4 sm:px-8 pb-10">
-          <h2 class="text-2xl font-semibold text-gray-900 mb-4">
-            ជំពូកក្នុង {{ item.name }}
+          <h2 class="text-lg font-semibold text-gray-800 mb-4 border-l-4 border-0 pl-4">
+            ជំពូក {{ chapter.chapter_number }}
           </h2>
-          <p class="text-sm text-gray-500 mb-6">
-            ជ្រើសរើសជំពូក ដើម្បីមើលខណ្ឌ និងអត្ថបទពេញលេញ។
-          </p>
-          <div class="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-            <div
-              v-for="chapter in item.chapters"
-              :key="chapter.id"
-              @click="navigateToChapter(chapter.id)"
-              class="cursor-pointer bg-white overflow-hidden shadow rounded-lg border border-gray-100 hover:shadow-md transition-shadow"
-            >
-              <div class="px-4 py-5 sm:p-6">
-                <h3 class="text-lg font-medium leading-6 text-gray-900">
-                  {{ chapter.title && chapter.title !== 'string' ? chapter.title : `Chapter ${chapter.chapter_number}` }}
-                </h3>
-                <p
-                  v-if="chapter.summary && chapter.summary !== 'string'"
-                  class="mt-2 text-sm text-gray-500 line-clamp-3"
-                >
-                  {{ chapter.summary }}
-                </p>
+          <div
+            class="leading-relaxed text-gray-800 verse-list"
+            :style="{ fontSize: 'calc(1rem * var(--bible-font-scale, 1.05))' }"
+          >
+            <template v-for="verse in getVerses(chapter.id)" :key="verse.verse_number">
+              <div
+                v-for="section in getSectionsForVerse(chapter.id, verse.verse_number)"
+                :key="section.id"
+                class="mt-5 mb-2 text-sm font-semibold text-amber-700 first:mt-0"
+              >
+                {{ section.title }}
               </div>
-            </div>
+              <span class="mr-1">
+                <span class="text-[11px] font-bold text-amber-600 align-top mr-0.5">{{ verse.verse_number }}</span>
+                <span class="verse-content" v-html="verse.verse_text" />
+              </span>
+            </template>
           </div>
-          <div v-if="pagination.total > 0" class="pt-8 flex justify-center">
-            <APagination
-              v-model:current="pagination.current"
-              :page-size="pagination.pageSize"
-              :total="pagination.total"
-              @change="onPageChange"
-              show-less-items
-              show-size-changer
-              :page-size-options="['12', '24', '48', '96']"
-            />
-          </div>
-        </div>
+          <p v-if="getVerses(chapter.id).length === 0" class="text-sm text-gray-500">
+            មិនទាន់មានខណ្ឌ។
+          </p>
+        </section>
+
+        <p v-if="!item.chapters?.length" class="py-8 text-center text-sm text-gray-500">
+          មិនទាន់មានជំពូកសម្រាប់សៀវភៅនេះទេ។
+        </p>
       </div>
-    </div>
+    </main>
   </div>
 </template>
+
+<style scoped>
+.verse-content :deep(p) {
+  display: inline;
+  margin: 0;
+}
+</style>

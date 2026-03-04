@@ -39,7 +39,7 @@
             :key="ch.id"
             :value="ch.id"
           >
-            {{ ch.chapter_number }}{{ ch.title ? ` - ${ch.title}` : '' }}
+            Chapter {{ ch.chapter_number }}
           </option>
         </select>
       </div>
@@ -57,39 +57,10 @@
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-2">Content</label>
+        <label class="block text-sm font-medium text-gray-700 mb-2">Verse text <span class="text-red-500">*</span></label>
         <div class="prose max-w-none">
-          <ckeditor :editor="editor" v-model="form.content" :config="editorConfig"></ckeditor>
+          <ckeditor :editor="editor" v-model="form.verse_text" :config="editorConfig"></ckeditor>
         </div>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
-          <select
-            v-model="form.status"
-            class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-          >
-            <option value="active">Active</option>
-            <option value="inactive">Inactive</option>
-          </select>
-        </div>
-        <div class="flex items-center gap-2 pt-8">
-          <label class="flex items-center gap-2 cursor-pointer">
-            <input v-model="form.is_featured" type="checkbox" class="w-4 h-4 text-blue-600 rounded border-gray-300" />
-            <span class="text-sm font-medium text-gray-700">Featured</span>
-          </label>
-        </div>
-      </div>
-
-      <div>
-        <label class="block text-sm font-medium text-gray-700 mb-2">Order index (optional)</label>
-        <input
-          v-model="form.order_index"
-          type="text"
-          class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-          placeholder="0"
-        />
       </div>
 
       <div class="flex justify-end pt-6 border-t border-gray-100">
@@ -194,10 +165,7 @@ const chaptersLoading = ref(false);
 
 const form = reactive({
   verse_number: 1,
-  content: '',
-  status: 'active',
-  is_featured: false,
-  order_index: '',
+  verse_text: '',
   chapter_id: '',
 });
 
@@ -237,10 +205,7 @@ onMounted(async () => {
     const v = res.data;
     Object.assign(form, {
       verse_number: v.verse_number ?? 1,
-      content: v.content || '',
-      status: v.status || 'active',
-      is_featured: v.is_featured || false,
-      order_index: v.order_index ?? '',
+      verse_text: v.verse_text || '',
       chapter_id: v.chapter_id || chapterId.value,
     });
   } catch (err) {
@@ -263,10 +228,7 @@ async function handleSubmit() {
     isSubmitting.value = true;
     const payload = {
       verse_number: form.verse_number,
-      content: form.content,
-      status: form.status,
-      is_featured: form.is_featured,
-      order_index: form.order_index || null,
+      verse_text: form.verse_text,
       chapter_id: form.chapter_id,
     };
     if (isEditMode.value) {

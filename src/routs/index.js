@@ -19,6 +19,10 @@ import { createRouter, createWebHistory } from 'vue-router'
 import BibleDetail from '@/components/view/bible/BibleDetail.vue'
 import BibleChapterDetail from '@/components/view/bible/BibleChapterDetail.vue'
 import TypeBibleComponent from '@/components/view/bible/TypeBibleComponent.vue'
+import BibleReaderLayout from '@/components/layout/BibleReaderLayout.vue'
+import BibleSearchPage from '@/components/view/bible/BibleSearchPage.vue'
+import BibleBookmarksPage from '@/components/view/bible/BibleBookmarksPage.vue'
+import BibleSettingsPage from '@/components/view/bible/BibleSettingsPage.vue'
 
 
 const router = createRouter({
@@ -30,24 +34,50 @@ const router = createRouter({
       component: HomePage
     },
     {
-      path: '/',
-      component: FrontLayoutWithSidebar,
+      path: '/read',
+      component: BibleReaderLayout,
       children: [
         {
-          path: 'bible',
-          name: 'bible',
+          path: '',
+          name: 'bibleReadHome',
+          component: TypeBibleComponent
+        },
+        {
+          path: 'search',
+          name: 'bibleSearch',
+          component: BibleSearchPage
+        },
+        {
+          path: 'bookmarks',
+          name: 'bibleBookmarks',
+          component: BibleBookmarksPage
+        },
+        {
+          path: 'settings',
+          name: 'bibleSettings',
+          component: BibleSettingsPage
+        },
+        {
+          path: ':type',
+          name: 'bibleReadType',
           component: BiblePage
         },
         {
-          path: 'bible/:id',
-          name: 'bible-detail',
-          component: BibleDetail,
+          path: ':type/:bibleId',
+          name: 'bibleReadBook',
+          component: BibleDetail
         },
         {
-          path: 'chapter/:id',
-          name: 'chapter-detail',
-          component: BibleChapterDetail,
-        },
+          path: ':type/:bibleId/:chapterId',
+          name: 'bibleReadChapter',
+          component: BibleChapterDetail
+        }
+      ]
+    },
+    {
+      path: '/',
+      component: FrontLayoutWithSidebar,
+      children: [
         {
           path: 'daily-bible',
           name: 'dailyBibleList',
@@ -122,11 +152,7 @@ const router = createRouter({
         },
       ]
     },
-    {
-      path: '/bible/types',
-      name: 'bible-types',
-      component: TypeBibleComponent
-    },
+   
     {
       path: '/news',
       name: 'news',
@@ -266,7 +292,7 @@ const router = createRouter({
               component: () => import('@/components/view/admin/bible/AdminChapterList.vue'),
             },
             {
-              path: 'chapter/create',
+              path: 'chapter/create/:bibleId?',
               name: 'adminChapterCreate',
               component: () => import('@/components/view/admin/bible/ChapterForm.vue'),
             },
@@ -289,6 +315,21 @@ const router = createRouter({
               path: 'verse/edit/:verseId',
               name: 'adminVerseEdit',
               component: () => import('@/components/view/admin/bible/VerseForm.vue'),
+            },
+            {
+              path: 'sections',
+              name: 'adminSectionList',
+              component: () => import('@/components/view/admin/bible/AdminSectionList.vue'),
+            },
+            {
+              path: 'section/create',
+              name: 'adminSectionCreate',
+              component: () => import('@/components/view/admin/bible/SectionForm.vue'),
+            },
+            {
+              path: 'section/edit/:sectionId',
+              name: 'adminSectionEdit',
+              component: () => import('@/components/view/admin/bible/SectionForm.vue'),
             },
           ],
         },

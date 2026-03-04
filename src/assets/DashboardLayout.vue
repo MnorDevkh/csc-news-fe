@@ -237,11 +237,7 @@ function handleClick(e) {
     return;
   }
   if (k === 'chapters') {
-    if (lastBibleId.value) {
-      router.push({ name: 'adminChapterList' });
-    } else {
-      router.push({ name: 'adminBibleManagement' });
-    }
+    router.push({ name: 'adminChapterList' });
     return;
   }
   if (k === 'verses') {

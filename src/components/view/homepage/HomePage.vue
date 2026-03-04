@@ -101,8 +101,8 @@ const formatDate = (dateString) => {
           <div
             class="bg-white p-6 rounded-2xl hover:shadow-xl transition-all duration-300 hover:-translate-y-1 cursor-pointer group text-center flex flex-col items-center">
             <div
-              class="h-14 w-14 bg-amber-50 rounded-full flex items-center justify-center mb-4 group-hover:bg-amber-500 transition-colors duration-300">
-              <FireOutlined class="text-2xl text-amber-500 group-hover:text-white" />
+              class="h-14 w-14  rounded-full flex items-center justify-center mb-4 group-hover:0 transition-colors duration-300">
+              <FireOutlined class="text-2xl text-0 group-hover:text-white" />
             </div>
             <h3 class="text-xl font-bold text-gray-800 mb-2">សន្តសន្តី</h3>
             <p class="text-gray-500 text-sm">ប្រវត្តិ និងគំរូជីវិតសន្តបុគ្គល</p>

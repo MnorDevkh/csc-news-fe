@@ -94,32 +94,20 @@
         <thead class="bg-gray-50">
           <tr>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">#</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Content</th>
-            <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Verse text</th>
             <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
           </tr>
         </thead>
         <tbody class="bg-white divide-y divide-gray-200">
           <tr v-if="loading">
-            <td colspan="4" class="px-6 py-4 text-center text-sm text-gray-500">Loading verses...</td>
+            <td colspan="3" class="px-6 py-4 text-center text-sm text-gray-500">Loading verses...</td>
           </tr>
           <tr v-else-if="!verses.length">
-            <td colspan="4" class="px-6 py-4 text-center text-sm text-gray-500">No verses found.</td>
+            <td colspan="3" class="px-6 py-4 text-center text-sm text-gray-500">No verses found.</td>
           </tr>
           <tr v-for="v in verses" :key="v.id" class="hover:bg-gray-50 transition-colors">
             <td class="px-6 py-4 text-sm font-medium text-gray-900">{{ v.verse_number }}</td>
-            <td class="px-6 py-4 text-sm text-gray-700 max-w-md truncate" :title="v.content">{{ v.content || '-' }}</td>
-            <td class="px-6 py-4 whitespace-nowrap text-center">
-              <span
-                v-if="v.status === 'active'"
-                class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"
-              >
-                Active
-              </span>
-              <span v-else class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
-                {{ v.status || 'inactive' }}
-              </span>
-            </td>
+            <td class="px-6 py-4 text-sm text-gray-700 max-w-md truncate" :title="v.verse_text">{{ v.verse_text || '-' }}</td>
             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
               <div class="flex justify-end gap-2">
                 <button
@@ -210,7 +198,7 @@ async function loadChapter() {
   try {
     const res = await ChapterService.getChapter(chapterId.value);
     const ch = res.data;
-    chapterTitle.value = ch.title || `Chapter ${ch.chapter_number}`;
+    chapterTitle.value = `Chapter ${ch.chapter_number}`;
     bibleId.value = ch.bible_id;
     if (ch.bible_id) {
       try {

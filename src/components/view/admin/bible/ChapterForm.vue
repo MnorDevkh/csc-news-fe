@@ -25,7 +25,27 @@
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-2">Chapter number</label>
+        <label class="block text-sm font-medium text-gray-700 mb-2">Bible <span class="text-red-500">*</span></label>
+        <select
+          v-model="form.bible_id"
+          required
+          :disabled="isEditMode"
+          class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none disabled:bg-gray-100 disabled:cursor-not-allowed"
+        >
+          <option value="">Select a Bible</option>
+          <option
+            v-for="b in bibleOptions"
+            :key="b.id"
+            :value="b.id"
+          >
+            {{ b.name }}{{ b.language ? ` (${b.language})` : '' }}
+          </option>
+        </select>
+        <p v-if="isEditMode" class="mt-1 text-xs text-gray-500">Bible cannot be changed when editing.</p>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">Chapter number <span class="text-red-500">*</span></label>
         <input
           v-model.number="form.chapter_number"
           type="number"
@@ -36,80 +56,13 @@
         />
       </div>
 
-      <div>
-        <label class="block text-sm font-medium text-gray-700 mb-2">Title (optional)</label>
-        <input
-          v-model="form.title"
-          type="text"
-          class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-          placeholder="Chapter title"
-        />
-      </div>
-
-      <div>
-        <label class="block text-sm font-medium text-gray-700 mb-2">Summary (optional)</label>
-        <div class="prose max-w-none">
-          <ckeditor :editor="editor" v-model="form.summary" :config="editorConfig"></ckeditor>
-        </div>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">Code (optional)</label>
-          <input
-            v-model="form.code"
-            type="text"
-            class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-            placeholder=""
-          />
-        </div>
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
-          <select
-            v-model="form.status"
-            class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-          >
-            <option value="active">Active</option>
-            <option value="inactive">Inactive</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="flex items-center gap-2">
-        <label class="flex items-center gap-2 cursor-pointer">
-          <input v-model="form.is_featured" type="checkbox" class="w-4 h-4 text-blue-600 rounded border-gray-300" />
-          <span class="text-sm font-medium text-gray-700">Featured</span>
-        </label>
-      </div>
-
-      <div>
-        <label class="block text-sm font-medium text-gray-700 mb-2">Audio URL (optional)</label>
-        <input
-          v-model="form.audio_url"
-          type="text"
-          class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-          placeholder="https://..."
-        />
-      </div>
-
-      <div>
-        <label class="block text-sm font-medium text-gray-700 mb-2">Video URL (optional)</label>
-        <input
-          v-model="form.video_url"
-          type="text"
-          class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-          placeholder="https://..."
-        />
-      </div>
-
-      <div>
-        <label class="block text-sm font-medium text-gray-700 mb-2">Order index (optional)</label>
-        <input
-          v-model="form.order_index"
-          type="text"
-          class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-          placeholder="0"
-        />
+      <div v-if="isEditMode" class="pt-4 border-t border-gray-100">
+        <router-link
+          :to="{ name: 'adminSectionList', query: { chapter_id: route.params.chapterId } }"
+          class="text-blue-600 hover:text-blue-800 font-medium"
+        >
+          Manage sections for this chapter
+        </router-link>
       </div>
 
       <div class="flex justify-end pt-6 border-t border-gray-100">
@@ -130,72 +83,7 @@
 import { ref, reactive, computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import ChapterService from '@/services/ChapterService';
-import {
-  ClassicEditor,
-  Essentials,
-  Paragraph,
-  Bold,
-  Italic,
-  Link,
-  List,
-  Heading,
-  BlockQuote,
-  Table,
-  TableToolbar,
-  Font,
-  Alignment,
-  PasteFromOffice,
-  GeneralHtmlSupport,
-} from 'ckeditor5';
-
-const editor = ClassicEditor;
-const editorConfig = {
-  licenseKey: 'GPL',
-  plugins: [
-    Essentials,
-    Paragraph,
-    Bold,
-    Italic,
-    Link,
-    List,
-    Heading,
-    BlockQuote,
-    Table,
-    TableToolbar,
-    Font,
-    Alignment,
-    PasteFromOffice,
-    GeneralHtmlSupport,
-  ],
-  toolbar: [
-    'heading',
-    '|',
-    'bold',
-    'italic',
-    'link',
-    'bulletedList',
-    'numberedList',
-    'blockQuote',
-    'insertTable',
-    '|',
-    'fontColor',
-    'fontBackgroundColor',
-    'alignment',
-    '|',
-    'undo',
-    'redo',
-  ],
-  htmlSupport: {
-    allow: [
-      {
-        name: /.*/,
-        styles: true,
-        attributes: true,
-        classes: true,
-      },
-    ],
-  },
-};
+import { BibleService } from '@/services/BibleService';
 
 const route = useRoute();
 const router = useRouter();
@@ -207,26 +95,38 @@ const pageLoading = ref(false);
 const loadError = ref(null);
 const feedbackMsg = ref('');
 const feedbackType = ref('success');
+const bibleOptions = ref([]);
 
 const form = reactive({
   chapter_number: 1,
-  title: '',
-  summary: '',
-  status: 'active',
-  code: '',
-  audio_url: '',
-  video_url: '',
-  is_featured: false,
-  order_index: '',
   bible_id: null,
 });
 
 function goBack() {
-  router.push({ name: 'adminChapterList', query: { bible: bibleId.value } });
+  const q = form.bible_id || bibleId.value ? { bible: form.bible_id || bibleId.value } : {};
+  router.push({ name: 'adminChapterList', query: q });
+}
+
+async function loadBibleOptions() {
+  try {
+    const res = await BibleService.getBibles({
+      skip: 0,
+      limit: 200,
+      order_by: 'bible_number',
+    });
+    const data = res.data;
+    bibleOptions.value = data?.items ?? (Array.isArray(data) ? data : []);
+  } catch (err) {
+    console.error('Failed to load bible options', err);
+    bibleOptions.value = [];
+  }
 }
 
 onMounted(async () => {
-  form.bible_id = bibleId.value;
+  await loadBibleOptions();
+  if (!form.bible_id && bibleId.value) {
+    form.bible_id = bibleId.value;
+  }
   pageLoading.value = isEditMode.value;
   if (!isEditMode.value) {
     pageLoading.value = false;
@@ -237,14 +137,6 @@ onMounted(async () => {
     const ch = res.data;
     Object.assign(form, {
       chapter_number: ch.chapter_number ?? 1,
-      title: ch.title || '',
-      summary: ch.summary || '',
-      status: ch.status || 'active',
-      code: ch.code || '',
-      audio_url: ch.audio_url || '',
-      video_url: ch.video_url || '',
-      is_featured: ch.is_featured || false,
-      order_index: ch.order_index ?? '',
       bible_id: ch.bible_id || bibleId.value,
     });
   } catch (err) {
@@ -257,19 +149,17 @@ onMounted(async () => {
 
 async function handleSubmit() {
   feedbackMsg.value = '';
+  const effectiveBibleId = form.bible_id ?? bibleId.value;
+  if (!effectiveBibleId) {
+    feedbackType.value = 'error';
+    feedbackMsg.value = 'Please select a Bible.';
+    return;
+  }
   try {
     isSubmitting.value = true;
     const payload = {
       chapter_number: form.chapter_number,
-      title: form.title || null,
-      summary: form.summary || null,
-      status: form.status,
-      code: form.code || null,
-      audio_url: form.audio_url || null,
-      video_url: form.video_url || null,
-      is_featured: form.is_featured,
-      order_index: form.order_index || null,
-      bible_id: form.bible_id,
+      bible_id: effectiveBibleId,
     };
     if (isEditMode.value) {
       await ChapterService.updateChapter(route.params.chapterId, payload);
