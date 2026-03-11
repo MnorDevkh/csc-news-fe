@@ -3,7 +3,7 @@ import BaseAPI from './BaseAPI';
 export const NewsService = {
   async getFeaturedArticles() {
     try {
-      const response = await BaseAPI.publicClient.get('/articles', {
+      const response = await BaseAPI.publicClient.get('/articles/', {
         params: {
           is_featured: true,
           limit: 4
@@ -19,7 +19,7 @@ export const NewsService = {
 
   async getLatestHeadlines() {
     try {
-      const response = await BaseAPI.publicClient.get('/articles', {
+      const response = await BaseAPI.publicClient.get('/articles/', {
         params: {
           limit: 5 // Adjust limit as needed
         }
@@ -46,7 +46,7 @@ export const NewsService = {
 
   async getAllArticles(params = {}) {
     try {
-      const response = await BaseAPI.publicClient.get('/articles', { params });
+      const response = await BaseAPI.publicClient.get('/articles/', { params });
       return response.data;
     } catch (error) {
       console.error('Error fetching articles:', error);

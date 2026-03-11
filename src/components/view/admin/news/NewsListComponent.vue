@@ -17,15 +17,27 @@
         <div class="flex flex-col sm:flex-row gap-4 mb-6">
             <div class="relative flex-1">
                 <SearchOutlined class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-                <input type="text" placeholder="Search articles by title..."
-                    class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-100 focus:border-blue-500 outline-none transition-all">
+                <input
+                    v-model="searchQuery"
+                    type="text"
+                    placeholder="Search articles by title..."
+                    class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-100 focus:border-blue-500 outline-none transition-all"
+                    @keyup.enter="onFilterChange"
+                >
             </div>
             <select
-                class="border border-gray-300 rounded-lg px-4 py-2 bg-white focus:ring-2 focus:ring-blue-100 outline-none cursor-pointer">
+                v-model="selectedCategoryId"
+                class="border border-gray-300 rounded-lg px-4 py-2 bg-white focus:ring-2 focus:ring-blue-100 outline-none cursor-pointer"
+                @change="onFilterChange"
+            >
                 <option value="">All Categories</option>
-                <option value="Local">Local News</option>
-                <option value="Vatican">Vatican</option>
-                <option value="Events">Events</option>
+                <option
+                    v-for="category in categories"
+                    :key="category.id"
+                    :value="category.id"
+                >
+                    {{ category.name }}
+                </option>
             </select>
         </div>
 
@@ -52,8 +64,8 @@
                     <tr v-for="article in articles" :key="article.id" class="hover:bg-gray-50 transition-colors">
                         <td class="px-6 py-4">
                             <div class="flex items-center">
-                                <div class="h-10 w-10 flex-shrink-0">
-                                    <img class="h-10 w-10 rounded-lg object-cover" :src="article.image" alt="" />
+                                <div class="h-10 w-10 flex-shrink-0" v-if="article.thumbnail">
+                                    <img class="h-10 w-10 rounded-lg object-cover" :src="article.thumbnail" alt="" />
                                 </div>
                                 <div class="ml-4">
                                     <div class="text-sm font-medium text-gray-900 line-clamp-1">{{ article.title }}
@@ -72,7 +84,7 @@
                             {{ article.author }}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            {{ article.publish_at }}
+                            {{ article.publish_at || article.publish_at }}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
                             <span v-if="article.status === 'published'"
@@ -100,7 +112,13 @@
 
         <!-- Pagination -->
         <div class="mt-4 flex justify-end">
-            <a-pagination v-model:current="currentPage" :total="50" show-less-items />
+            <a-pagination
+                v-model:current="currentPage"
+                :total="pagination.total_elements"
+                :page-size="pagination.page_size"
+                show-less-items
+                @change="onPageChange"
+            />
         </div>
 
     </div>
@@ -114,16 +132,59 @@ import { useRouter } from 'vue-router';
 
 const router = useRouter();
 const currentPage = ref(1);
+const pageSize = 10;
 const articles = ref([]);
+const categories = ref([]);
+const searchQuery = ref('');
+const selectedCategoryId = ref('');
+const pagination = ref({
+    total_elements: 0,
+    page_size: pageSize,
+});
 
 const loadArticles = async () => {
     try {
-        const data = await NewsService.getAllArticles(); // Assuming it returns data with pagination if needed, or straight list
-        // Adjust depending on your API structure (data.items for pagination)
+        const params = {
+            skip: (currentPage.value - 1) * pageSize,
+            limit: pageSize,
+        };
+
+        if (searchQuery.value) {
+            params.search = searchQuery.value;
+        }
+
+        if (selectedCategoryId.value) {
+            params.category_id = selectedCategoryId.value;
+        }
+
+        const data = await NewsService.getAllArticles(params);
         articles.value = data.items || data;
+        pagination.value = {
+            total_elements: data.total_elements || (data.items ? data.items.length : 0),
+            page_size: data.page_size || pageSize,
+        };
     } catch (error) {
         console.error("Failed to load articles", error);
     }
+};
+
+const loadCategories = async () => {
+    try {
+        const data = await NewsService.getNewsCategories();
+        categories.value = data.items || data;
+    } catch (error) {
+        console.error("Failed to load categories", error);
+    }
+};
+
+const onFilterChange = () => {
+    currentPage.value = 1;
+    loadArticles();
+};
+
+const onPageChange = (page) => {
+    currentPage.value = page;
+    loadArticles();
 };
 
 const deleteArticle = async (id) => {
@@ -139,6 +200,7 @@ const deleteArticle = async (id) => {
 
 onMounted(() => {
     loadArticles();
+    loadCategories();
 });
 
 </script>

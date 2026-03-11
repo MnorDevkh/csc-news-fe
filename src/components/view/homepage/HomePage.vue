@@ -13,6 +13,7 @@ const featuredArticles = ref([]);
 const latestHeadlines = ref([]);
 const newsCategories = ref([]);
 const isLoading = ref(true);
+const hasError = ref(false);
 const currentFeaturedIndex = ref(0);
 
 const router = useRouter();
@@ -29,7 +30,7 @@ onMounted(async () => {
     newsCategories.value = categories;
   } catch (error) {
     console.error("Failed to fetch homepage data:", error);
-    // Handle error state in UI if necessary
+    hasError.value = true;
   } finally {
     isLoading.value = false;
   }
@@ -54,6 +55,13 @@ const formatDate = (dateString) => {
 <template>
   <div class="homepage bg-gray-50 min-h-screen pb-12 font-sans flex flex-col items-center">
     <main class="w-full max-w-[1400px] px-4  mx-auto">
+      <div v-if="isLoading" class="py-16 text-center text-gray-500">
+        Loading latest news and content...
+      </div>
+      <div v-else-if="hasError" class="py-16 text-center text-red-500">
+        Failed to load homepage content. Please try again later.
+      </div>
+      <template v-else>
 
       <!-- Hero Section -->
       <section class="py-8 [&_.slick-slide]:text-center [&_.slick-slide]:h-auto [&_.slick-slide]:leading-normal [&_.slick-slide]:overflow-hidden [&_.slick-slide_h3]:text-white">
@@ -134,7 +142,10 @@ const formatDate = (dateString) => {
           </div>
 
           <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-            <ul class="divide-y divide-gray-100">
+            <div v-if="latestHeadlines.length === 0" class="p-4 text-center text-gray-400 text-sm">
+              No latest news available.
+            </div>
+            <ul v-else class="divide-y divide-gray-100">
               <li v-for="headline in latestHeadlines" :key="headline.id" class="group">
                 <RouterLink :to="{ name: 'articleDetails', params: { id: headline.id } }"
                   class="flex items-start p-4 hover:bg-gray-50 transition-colors duration-200">
@@ -161,7 +172,10 @@ const formatDate = (dateString) => {
           <div class="sticky top-6 p-6">
             <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 m-4">
               <h2 class="text-xl font-bold text-gray-800 mb-4 border-b pb-2">មាតិការ</h2>
-              <ul class="space-y-2">
+              <div v-if="activeCategories.length === 0" class="text-gray-400 text-sm">
+                No categories available.
+              </div>
+              <ul v-else class="space-y-2">
                 <li v-for="category in activeCategories" :key="category.id">
                   <RouterLink :to="{ name: 'categoryView', params: { name: category.name } }"
                     class="flex items-center justify-between p-2 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-600 transition-all duration-200 group">
@@ -270,6 +284,7 @@ const formatDate = (dateString) => {
         </section>
 
       </div>
+      </template>
     </main>
   </div>
 </template>
