@@ -6,10 +6,10 @@ export const NewsService = {
       const response = await BaseAPI.publicClient.get('/articles/', {
         params: {
           is_featured: true,
+          public_only: true,
           limit: 4
         }
       });
-      // Handle the response structure from get_articles ({ items: [], ... })
       return response.data.items || [];
     } catch (error) {
       console.error('Error fetching featured articles:', error);
@@ -21,7 +21,8 @@ export const NewsService = {
     try {
       const response = await BaseAPI.publicClient.get('/articles/', {
         params: {
-          limit: 5 // Adjust limit as needed
+          public_only: true,
+          limit: 5
         }
       });
       return response.data.items || [];

@@ -175,15 +175,15 @@ const items = ref<MenuProps['items']>([
             },
             {
                 type: 'group',
-                label: 'ពត៌មានផ្សេងៗ',
+                label: 'ព័ត៌មានពិភពលោក',
                 children: [
                     {
-                        label: 'Option 1',
-                        key: 'other:1',
+                        label: 'ព័ត៌មានវ៉ាទីកង់',
+                        key: 'news:vatican',
                     },
                     {
-                        label: 'Option 2',
-                        key: 'other:2',
+                        label: 'ព្រះវិហារពិភពលោក',
+                        key: 'news:worldchurch',
                     },
                 ],
             },

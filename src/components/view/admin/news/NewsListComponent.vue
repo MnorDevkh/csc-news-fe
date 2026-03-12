@@ -52,10 +52,12 @@
                             Category</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Author</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Date
                         </th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Status</th>
+                            Status
+                        </th>
                         <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Actions</th>
                     </tr>
@@ -84,15 +86,29 @@
                             {{ article.author }}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            {{ article.publish_at || article.publish_at }}
+                            {{ formatDate(article.publish_at || article.created_at) }}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <span v-if="article.status === 'published'"
-                                class="text-green-600 text-xs font-bold flex items-center gap-1">
-                                <span class="w-1.5 h-1.5 rounded-full bg-green-600"></span> Published
+                            <span
+                                v-if="articleEffectiveStatus(article) === 'public'"
+                                class="text-green-600 text-xs font-bold flex items-center gap-1"
+                            >
+                                <span class="w-1.5 h-1.5 rounded-full bg-green-600"></span>
+                                Public
                             </span>
-                            <span v-else class="text-gray-500 text-xs font-bold flex items-center gap-1">
-                                <span class="w-1.5 h-1.5 rounded-full bg-gray-500"></span> Draft
+                            <span
+                                v-else-if="articleEffectiveStatus(article) === 'scheduled'"
+                                class="text-blue-600 text-xs font-bold flex items-center gap-1"
+                            >
+                                <span class="w-1.5 h-1.5 rounded-full bg-blue-600"></span>
+                                Scheduled
+                            </span>
+                            <span
+                                v-else
+                                class="text-gray-500 text-xs font-bold flex items-center gap-1"
+                            >
+                                <span class="w-1.5 h-1.5 rounded-full bg-gray-500"></span>
+                                Draft
                             </span>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
@@ -141,6 +157,32 @@ const pagination = ref({
     total_elements: 0,
     page_size: pageSize,
 });
+
+const formatDate = (value) => {
+    if (!value) return '';
+    const d = new Date(value);
+    return d.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+    });
+};
+
+const articleEffectiveStatus = (article) => {
+    if (article.effective_status) {
+        return article.effective_status;
+    }
+
+    if (article.status === 'draft') return 'draft';
+    if (article.status === 'public') return 'public';
+
+    if (article.status === 'scheduled') {
+        if (!article.publish_at) return 'scheduled';
+        return new Date(article.publish_at) <= new Date() ? 'public' : 'scheduled';
+    }
+
+    return article.status;
+};
 
 const loadArticles = async () => {
     try {

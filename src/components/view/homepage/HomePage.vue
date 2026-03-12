@@ -141,7 +141,7 @@ const formatDate = (dateString) => {
             </RouterLink>
           </div>
 
-          <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
             <div v-if="latestHeadlines.length === 0" class="p-4 text-center text-gray-400 text-sm">
               No latest news available.
             </div>

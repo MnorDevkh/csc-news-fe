@@ -28,12 +28,34 @@
         </select>
       </div>
 
-      <!-- Thumbnail URL -->
+      <!-- Thumbnail (cover-style picker) -->
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1">Thumbnail URL</label>
-        <input v-model="form.thumbnail" type="text"
-          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-          placeholder="https://example.com/image.jpg" />
+        <label class="block text-sm font-medium text-gray-700 mb-1">Thumbnail</label>
+        <div
+          class="rounded-lg border-2 border-dashed min-h-[140px] flex items-center justify-center bg-gray-50/80 transition-colors cursor-pointer hover:border-blue-400 hover:bg-blue-50/30"
+          :class="thumbnailUrl ? 'border-gray-200' : 'border-gray-300'"
+          @click="openThumbnailModal"
+        >
+          <img
+            v-if="thumbnailUrl"
+            :src="thumbnailUrl"
+            alt="Thumbnail"
+            class="w-full h-full min-h-[140px] max-h-[200px] object-contain rounded-lg"
+          />
+          <div v-else class="flex flex-col items-center gap-2 text-gray-400 py-6">
+            <PictureOutlined class="text-4xl" />
+            <span class="text-sm">Click to select thumbnail image (optional)</span>
+          </div>
+        </div>
+        <!-- Remove thumbnail button -->
+        <button
+          v-if="thumbnailUrl"
+          type="button"
+          class="mt-2 text-xs text-red-500 hover:text-red-700 transition-colors"
+          @click="removeThumbnail"
+        >
+          Remove thumbnail
+        </button>
       </div>
 
       <!-- Excerpt -->
@@ -52,18 +74,48 @@
         </div>
       </div>
 
-      <!-- Options -->
-      <div class="flex items-center gap-6">
-        <label class="flex items-center gap-2 cursor-pointer">
-          <input type="checkbox" v-model="form.is_featured" class="w-4 h-4 text-blue-600 rounded border-gray-300" />
-          <span class="text-sm text-gray-700">Featured Article</span>
-        </label>
-        
-        <label class="flex items-center gap-2 cursor-pointer">
-           <!-- Simple status toggle for now, backend expects 'draft' or 'published' or 'archived' -->
-           <input type="checkbox" :checked="form.status === 'published'" @change="toggleStatus" class="w-4 h-4 text-green-600 rounded border-gray-300" />
-           <span class="text-sm text-gray-700">Publish Immediately</span>
-        </label>
+      <!-- Status & Scheduling -->
+      <div class="space-y-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+            <select
+              v-model="form.status"
+              @change="onStatusChange"
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm"
+            >
+              <option value="draft">Draft</option>
+              <option value="scheduled">Scheduled</option>
+              <option value="public">Public</option>
+            </select>
+            <p class="mt-1 text-xs text-gray-400">
+              <template v-if="form.status === 'draft'">Hidden from the site.</template>
+              <template v-else-if="form.status === 'scheduled'">Will appear on the site when publish time arrives.</template>
+              <template v-else>Visible on the site now.</template>
+            </p>
+          </div>
+
+          <div v-if="form.status !== 'draft'">
+            <label class="block text-sm font-medium text-gray-700 mb-1">Publish at</label>
+            <input
+              v-model="publishAtLocal"
+              type="datetime-local"
+              :required="form.status === 'scheduled'"
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm"
+            />
+            <p class="mt-1 text-xs text-gray-400">
+              <template v-if="form.status === 'scheduled'">Required. The article goes live at this time.</template>
+              <template v-else>Defaults to now if left empty.</template>
+            </p>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-6">
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input type="checkbox" v-model="form.is_featured" class="w-4 h-4 text-blue-600 rounded border-gray-300" />
+            <span class="text-sm text-gray-700">Featured article</span>
+          </label>
+        </div>
       </div>
 
       <!-- Actions -->
@@ -75,6 +127,15 @@
         </button>
       </div>
     </form>
+
+    <!-- Thumbnail selection modal -->
+    <ImageSelectModal
+      v-model:open="thumbnailModalOpen"
+      mode="single"
+      title="Select thumbnail image"
+      confirm-label="Select"
+      @confirm="onThumbnailSelected"
+    />
   </div>
 </template>
 
@@ -84,6 +145,8 @@ import { useRoute, useRouter } from 'vue-router';
 import { NewsService } from '@/services/NewsService';
 import { CategoryService } from '@/services/CategoryService';
 import { ClassicEditor, Essentials, Paragraph, Bold, Italic, Link, List, Heading, BlockQuote, Table, TableToolbar, Font, Alignment, PasteFromOffice } from 'ckeditor5';
+import ImageSelectModal from '@/components/ImageSelectModal.vue';
+import { PictureOutlined } from '@ant-design/icons-vue';
 
 const editor = ClassicEditor;
 const editorConfig = {
@@ -130,6 +193,11 @@ const isEditMode = computed(() => !!route.params.id);
 const isSubmitting = ref(false);
 const categories = ref([]);
 
+// Thumbnail picker state
+const thumbnailModalOpen = ref(false);
+const thumbnailUrl = ref('');
+const thumbnailKey = ref('');
+
 const form = reactive({
   title: '',
   category_id: '',
@@ -137,11 +205,62 @@ const form = reactive({
   excerpt: '',
   content: '',
   is_featured: false,
-  status: 'draft'
+  status: 'public'
 });
 
-const toggleStatus = (e) => {
-  form.status = e.target.checked ? 'published' : 'draft';
+const publishAtLocal = ref('');
+
+const nowLocalString = () => {
+  const now = new Date();
+  const pad = (n) => String(n).padStart(2, '0');
+  return `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}T${pad(now.getHours())}:${pad(now.getMinutes())}`;
+};
+
+const onStatusChange = () => {
+  if (form.status === 'public' && !publishAtLocal.value) {
+    publishAtLocal.value = nowLocalString();
+  }
+  if (form.status === 'draft') {
+    publishAtLocal.value = '';
+  }
+};
+
+const toLocalInput = (isoString) => {
+  if (!isoString) return '';
+  const d = new Date(isoString);
+  const pad = (n) => String(n).padStart(2, '0');
+  const year = d.getFullYear();
+  const month = pad(d.getMonth() + 1);
+  const day = pad(d.getDate());
+  const hours = pad(d.getHours());
+  const minutes = pad(d.getMinutes());
+  return `${year}-${month}-${day}T${hours}:${minutes}`;
+};
+
+const toIsoWithOffset = (localString) => {
+  if (!localString) return null;
+  // localString is like '2026-03-11T10:07'
+  const d = new Date(localString);
+  return d.toISOString();
+};
+
+const openThumbnailModal = () => {
+  thumbnailModalOpen.value = true;
+};
+
+const onThumbnailSelected = (items) => {
+  const item = items[0];
+  if (item) {
+    thumbnailUrl.value = item.url;
+    thumbnailKey.value = item.key || '';
+    form.thumbnail = item.url;
+  }
+};
+
+const removeThumbnail = () => {
+  thumbnailUrl.value = '';
+  thumbnailKey.value = '';
+  form.thumbnail = '';
 };
 
 onMounted(async () => {
@@ -162,6 +281,14 @@ onMounted(async () => {
         is_featured: article.is_featured,
         status: article.status
       });
+
+      if (article.thumbnail) {
+        thumbnailUrl.value = article.thumbnail;
+      }
+
+      if (article.publish_at) {
+        publishAtLocal.value = toLocalInput(article.publish_at);
+      }
     }
   } catch (error) {
     console.error("Error loading data:", error);
@@ -172,11 +299,16 @@ onMounted(async () => {
 const handleSubmit = async () => {
   try {
     isSubmitting.value = true;
+    const payload = {
+      ...form,
+      publish_at: publishAtLocal.value ? toIsoWithOffset(publishAtLocal.value) : undefined,
+    };
+
     if (isEditMode.value) {
-      await NewsService.updateArticle(route.params.id, form);
+      await NewsService.updateArticle(route.params.id, payload);
       alert('Article updated successfully!');
     } else {
-      await NewsService.createArticle(form);
+      await NewsService.createArticle(payload);
       alert('Article created successfully!');
     }
     router.push({ name: 'adminNews' });
@@ -187,4 +319,5 @@ const handleSubmit = async () => {
     isSubmitting.value = false;
   }
 };
+
 </script>
