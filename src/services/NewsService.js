@@ -55,6 +55,20 @@ export const NewsService = {
     }
   },
 
+  async getArticlesByCategory(categoryId, params = {}) {
+    try {
+      const { skip = 0, limit = 50 } = params;
+      const response = await BaseAPI.publicClient.get(
+        `/articles/category/${categoryId}`,
+        { params: { skip, limit } }
+      );
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching articles by category:', error);
+      throw error;
+    }
+  },
+
   async getArticleById(id) {
     try {
       const response = await BaseAPI.publicClient.get(`/articles/${id}`);
