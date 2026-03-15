@@ -68,7 +68,7 @@ const formatDate = (dateString) => {
 </script>
 <template>
   <div class="homepage bg-gray-50 min-h-screen pb-12 font-sans flex flex-col items-center">
-    <main class="w-full max-w-[1400px] px-4  mx-auto">
+    <main class="w-full max-w-[1400px] px-4 mx-auto">
       <!-- Loading Skeleton -->
       <div v-if="isLoading" class="py-8 space-y-10 animate-pulse">
         <div class="rounded-2xl overflow-hidden bg-gray-200 h-[500px] md:h-[600px]" />
@@ -116,7 +116,7 @@ const formatDate = (dateString) => {
       <!-- Hero Section -->
       <section class="py-8 [&_.slick-slide]:text-center [&_.slick-slide]:h-auto [&_.slick-slide]:leading-normal [&_.slick-slide]:overflow-hidden [&_.slick-slide_h3]:text-white">
         <a-carousel autoplay class="rounded-2xl overflow-hidden shadow-xl">
-          <div v-for="article in featuredArticles.slice(0, 4)" :key="article.id"
+          <div v-for="article in latestHeadlines.slice(0, 5)" :key="article.id"
             class="relative h-[500px] md:h-[600px] w-full cursor-pointer"
             @click="router.push({ name: 'articleDetails', params: { id: article.id } })">
             <img :src="article.thumbnail" :alt="article.title" class="h-full w-full object-cover" />
@@ -142,8 +142,8 @@ const formatDate = (dateString) => {
       </section>
 
       <!-- Feature Cards -->
-      <section class="mb-16">
-        <div class="flex items-center justify-between mb-6">
+      <section class="mb-16 px-4 py-4">
+        <div class="flex items-center justify-between mb-6 px-2">
           <h2 class="text-2xl font-bold text-gray-800 border-l-4 border-indigo-500 pl-4">លក្ខណៈពិសេស
           </h2>
         </div>
@@ -188,11 +188,11 @@ const formatDate = (dateString) => {
       </section>
 
       <!-- Content Grid -->
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
+      <div class="grid grid-cols-1 lg:grid-cols-3 mb-16">
 
         <!-- Latest News (Left 2 cols) -->
-        <section class="lg:col-span-2">
-          <div class="flex items-center justify-between mb-6">
+        <section class="lg:col-span-2 px-4 py-4">
+          <div class="flex items-center justify-between mb-6 px-2">
             <h2 class="text-2xl font-bold text-gray-800 border-l-4 border-blue-600 pl-4">ព័ត៌មានថ្មីៗបំផុត</h2>
             <RouterLink to="/news" class="text-blue-600 hover:text-blue-800 font-medium flex items-center text-sm">
               មើលទាំងអស់
@@ -200,7 +200,7 @@ const formatDate = (dateString) => {
             </RouterLink>
           </div>
 
-            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden p-4">
             <div v-if="latestHeadlines.length === 0" class="p-4 text-center text-gray-400 text-sm">
               No latest news available.
             </div>
@@ -231,9 +231,8 @@ const formatDate = (dateString) => {
             </ul>
           </div>
         </section>
-
         <!-- Sidebar (Right 1 col) -->
-        <aside class="lg:col-span-1">
+        <aside class="lg:col-span-1 px-4 py-4">
           <div class="sticky top-6 p-6">
             <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
               <h2 class="text-xl font-bold text-gray-800 mb-4 border-b pb-2">មាតិការ</h2>
@@ -271,12 +270,11 @@ const formatDate = (dateString) => {
       </div>
 
       <!-- Full Width Sections -->
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-16">
 
         <!-- Latest News (Left 2 cols) -->
-        <section class="lg:col-span-2">
-                   <div class="flex items-center justify-between mb-6">
-
+        <section class="lg:col-span-2 px-4 py-4">
+          <div class="flex items-center justify-between mb-6 px-2">
             <h2 class="text-2xl font-bold text-gray-800 border-l-4 border-indigo-500 pl-4">សន្តសន្តី
             </h2>
             <RouterLink :to="{ name: 'saintList' }"
@@ -289,21 +287,6 @@ const formatDate = (dateString) => {
             <Saint />
           </div>
         </section>
-
-        <!-- Sidebar (Right 1 col) -->
-        <aside class="lg:col-span-1">
-          <div class="sticky top-6 p-6">
-            <!-- Ad/Promo Placeholder -->
-            <div
-              class="mt-6 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl p-6 text-white text-center shadow-lg">
-              <h3 class="text-xl font-bold mb-2">Subscribe Newsletter</h3>
-              <p class="text-blue-100 text-sm mb-4">Get the latest catholic news directly to your inbox.</p>
-              <button
-                class="bg-white text-blue-600 px-4 py-2 rounded-lg font-bold text-sm hover:bg-blue-50 transition-colors w-full">Subscribe
-                Now</button>
-            </div>
-          </div>
-        </aside>
       </div>
 
 
@@ -311,8 +294,8 @@ const formatDate = (dateString) => {
 
         <!-- Bible & Sermon Grid -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <section>
-            <div class="flex items-center justify-between mb-6">
+          <section class="px-4 py-4">
+            <div class="flex items-center justify-between mb-6 px-2">
               <h2 class="text-2xl font-bold text-gray-800 border-l-4 border-indigo-500 pl-4">អត្ថបទព្រះគម្ពីរប្រចាំថ្ងៃ
               </h2>
               <RouterLink :to="{ name: 'dailyBibleList' }"
@@ -326,8 +309,8 @@ const formatDate = (dateString) => {
             </div>
           </section>
 
-          <section>
-            <div class="flex items-center justify-between mb-6">
+          <section class="px-4 py-4">
+            <div class="flex items-center justify-between mb-6 px-2">
               <h2 class="text-2xl font-bold text-gray-800 border-l-4 border-purple-500 pl-4">ធម្មទេសនា​ប្រចាំថ្ងៃ</h2>
               <RouterLink :to="{ name: 'dailySermonList' }"
                 class="text-purple-600 hover:text-purple-800 font-medium flex items-center text-sm">
@@ -343,8 +326,8 @@ const formatDate = (dateString) => {
 
 
         <!-- Gallery -->
-        <section>
-          <div class="flex items-center justify-between mb-8">
+        <section class="px-4 py-4">
+          <div class="flex items-center justify-between mb-8 px-2">
             <h2 class="text-2xl font-bold text-gray-800 border-l-4 border-indigo-500 pl-4">កម្រងរូបភាព
             </h2>
             <RouterLink :to="{ name: 'galleryGridView' }"

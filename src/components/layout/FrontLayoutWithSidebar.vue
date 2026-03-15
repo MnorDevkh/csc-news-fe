@@ -47,7 +47,7 @@ onMounted(async () => {
           {{ pageSubtitle }}
         </p>
       </header>
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16 mt-6">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-2 mb-16">
         <!-- Main content (Left 2 cols) -->
         <section class="lg:col-span-2">
           <RouterView v-slot="{ Component }">

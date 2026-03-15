@@ -80,7 +80,7 @@ watch(
 </script>
 
 <template>
-  <div class="w-full min-h-screen flex justify-center items-start p-4 sm:p-6 lg:p-8 box-border bg-gray-50">
+  <div class="w-full min-h-screen flex justify-center items-start p-4 box-border bg-gray-50">
     <div class="w-full max-w-4xl mx-auto rounded-lg bg-white p-4 sm:p-8 lg:p-8 lg:py-8">
       <h1 class="mb-6 text-2xl sm:text-3xl font-bold text-blue-600">
         Category: {{ categoryName }}

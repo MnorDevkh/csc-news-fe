@@ -66,11 +66,66 @@
           placeholder="Brief summary used in listings"></textarea>
       </div>
 
-      <!-- CKEditor Content -->
+      <!-- Block-based Content -->
       <div>
         <label class="block text-sm font-medium text-gray-700 mb-1">Content</label>
-        <div class="prose max-w-none [&_.ck-editor__editable]:min-h-[200px]">
-          <ckeditor :editor="editor" v-model="form.content" :config="editorConfig"></ckeditor>
+        <p class="text-xs text-gray-500 mb-2">Add content blocks and images in any order. Use the buttons below to add more.</p>
+        <div class="space-y-4">
+          <div
+            v-for="(block, index) in contentBlocks"
+            :key="block.id"
+            class="rounded-lg border border-gray-200 bg-gray-50/50 p-4 relative"
+          >
+            <!-- Text block -->
+            <template v-if="block.type === 'text'">
+              <div class="prose max-w-none [&_.ck-editor__editable]:min-h-[120px]">
+                <ckeditor :editor="editor" v-model="block.html" :config="editorConfig" />
+              </div>
+            </template>
+            <!-- Image block -->
+            <template v-else-if="block.type === 'image'">
+              <div class="flex flex-wrap gap-3">
+                <div
+                  v-for="(img, imgIdx) in block.images"
+                  :key="img.key || imgIdx"
+                  class="relative rounded-lg overflow-hidden border border-gray-200 bg-white"
+                >
+                  <img
+                    :src="img.url"
+                    :alt="img.filename || 'Image'"
+                    class="w-32 h-32 object-cover"
+                  />
+                </div>
+              </div>
+            </template>
+            <div class="flex items-center justify-between mt-2">
+              <span class="text-xs text-gray-400">{{ block.type === 'text' ? 'Content block' : 'Image block' }}</span>
+              <button
+                type="button"
+                class="text-xs text-red-500 hover:text-red-700 transition-colors"
+                @click="removeBlock(index)"
+              >
+                Remove block
+              </button>
+            </div>
+          </div>
+          <!-- Add block buttons -->
+          <div class="flex flex-wrap gap-2 pt-2">
+            <button
+              type="button"
+              class="inline-flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg font-medium transition-colors text-sm"
+              @click="addContentBlock"
+            >
+              Add content
+            </button>
+            <button
+              type="button"
+              class="inline-flex items-center gap-2 px-4 py-2 bg-blue-100 hover:bg-blue-200 text-blue-700 rounded-lg font-medium transition-colors text-sm"
+              @click="openContentImageModal"
+            >
+              <PictureOutlined /> Add image(s)
+            </button>
+          </div>
         </div>
       </div>
 
@@ -135,6 +190,14 @@
       title="Select thumbnail image"
       confirm-label="Select"
       @confirm="onThumbnailSelected"
+    />
+    <!-- Content image(s) modal for block -->
+    <ImageSelectModal
+      v-model:open="contentImageModalOpen"
+      mode="multiple"
+      title="Select image(s) for content"
+      confirm-label="Add to article"
+      @confirm="onContentImagesSelected"
     />
   </div>
 </template>
@@ -204,11 +267,73 @@ const form = reactive({
   thumbnail: '',
   excerpt: '',
   content: '',
-  is_featured: false,
+  is_featured: true,
   status: 'public'
 });
 
 const publishAtLocal = ref('');
+
+// Block-based content: list of { id, type: 'text'|'image', html?: string, images?: [{ url, key }] }
+const contentBlocks = ref([]);
+const contentImageModalOpen = ref(false);
+let nextBlockId = 0;
+function nextId() {
+  return `block-${++nextBlockId}-${Date.now()}`;
+}
+
+function parseContentToBlocks(contentStr) {
+  if (!contentStr || !contentStr.trim()) {
+    return [];
+  }
+  const s = contentStr.trim();
+  if (s.startsWith('[') && s.endsWith(']')) {
+    try {
+      const arr = JSON.parse(contentStr);
+      if (!Array.isArray(arr)) return [{ id: nextId(), type: 'text', html: contentStr }];
+      return arr.map((b) => {
+        if (b.type === 'text') {
+          return { id: nextId(), type: 'text', html: b.html != null ? String(b.html) : '' };
+        }
+        if (b.type === 'image' && Array.isArray(b.images)) {
+          return {
+            id: nextId(),
+            type: 'image',
+            images: b.images.map((img) => ({ url: img.url || '', key: img.key || '' }))
+          };
+        }
+        return { id: nextId(), type: 'text', html: '' };
+      });
+    } catch {
+      return [{ id: nextId(), type: 'text', html: contentStr }];
+    }
+  }
+  return [{ id: nextId(), type: 'text', html: contentStr }];
+}
+
+function serializeBlocks() {
+  return contentBlocks.value.map((b) => {
+    if (b.type === 'text') return { type: 'text', html: b.html || '' };
+    return { type: 'image', images: (b.images || []).map((img) => ({ url: img.url, key: img.key })) };
+  });
+}
+
+function addContentBlock() {
+  contentBlocks.value.push({ id: nextId(), type: 'text', html: '' });
+}
+
+function removeBlock(index) {
+  contentBlocks.value.splice(index, 1);
+}
+
+function openContentImageModal() {
+  contentImageModalOpen.value = true;
+}
+
+function onContentImagesSelected(items) {
+  if (!items || !items.length) return;
+  const images = items.map((item) => ({ url: item.url, key: item.key || '' }));
+  contentBlocks.value.push({ id: nextId(), type: 'image', images });
+}
 
 const nowLocalString = () => {
   const now = new Date();
@@ -289,6 +414,11 @@ onMounted(async () => {
       if (article.publish_at) {
         publishAtLocal.value = toLocalInput(article.publish_at);
       }
+
+      contentBlocks.value = parseContentToBlocks(article.content || '');
+    } else {
+      // Create mode: start with one empty text block
+      contentBlocks.value = [{ id: nextId(), type: 'text', html: '' }];
     }
   } catch (error) {
     console.error("Error loading data:", error);
@@ -299,6 +429,7 @@ onMounted(async () => {
 const handleSubmit = async () => {
   try {
     isSubmitting.value = true;
+    form.content = JSON.stringify(serializeBlocks());
     const payload = {
       ...form,
       publish_at: publishAtLocal.value ? toIsoWithOffset(publishAtLocal.value) : undefined,
