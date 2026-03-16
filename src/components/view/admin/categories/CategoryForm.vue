@@ -1,5 +1,5 @@
 <template>
-  <div class="category-form bg-white p-8 rounded-lg shadow-sm border border-gray-200 max-w-2xl mx-auto">
+  <div class="category-form bg-white p-8 rounded-lg shadow-sm border border-gray-200 max-w-2xl mx-auto my-6">
     <div class="flex items-center justify-between mb-8">
       <h2 class="text-2xl font-bold text-gray-800">{{ isEditMode ? 'Edit Category' : 'Create Category' }}</h2>
       <button @click="$router.push({ name: 'adminCategories' })" class="text-gray-500 hover:text-gray-700">
@@ -318,11 +318,6 @@ const handleSubmit = async () => {
 };
 </script>
 <style scoped>
-.category-form {
-  margin-top: 1.5rem;
-  margin-bottom: 1.5rem;
-}
-
 .category-form :deep(.ck-editor__editable_inline) {
   min-height: 180px;
   padding: 0.75rem 1rem;

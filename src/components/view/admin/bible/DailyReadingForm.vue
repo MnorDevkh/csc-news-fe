@@ -1,5 +1,5 @@
 <template>
-  <div class="daily-reading-form bg-white p-8 rounded-lg shadow-sm border border-gray-200 max-w-3xl mx-auto">
+  <div class="daily-reading-form bg-white p-8 rounded-lg shadow-sm border border-gray-200 max-w-3xl mx-auto my-6">
     <div class="flex items-center justify-between mb-8">
       <h2 class="text-2xl font-bold text-gray-800">
         {{ isEditMode ? 'Edit Daily Reading' : 'Create Daily Reading' }}
@@ -268,11 +268,6 @@ async function handleSubmit() {
 </script>
 
 <style scoped>
-.daily-reading-form {
-  margin-top: 1.5rem;
-  margin-bottom: 1.5rem;
-}
-
 .daily-reading-form :deep(.ck-editor__editable_inline) {
   min-height: 220px;
   padding: 0.75rem 1rem;

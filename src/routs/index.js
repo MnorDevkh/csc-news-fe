@@ -23,6 +23,8 @@ import BibleReaderLayout from '@/components/layout/BibleReaderLayout.vue'
 import BibleSearchPage from '@/components/view/bible/BibleSearchPage.vue'
 import BibleBookmarksPage from '@/components/view/bible/BibleBookmarksPage.vue'
 import BibleSettingsPage from '@/components/view/bible/BibleSettingsPage.vue'
+import MessengerListingPage from '@/components/view/messenger/MessengerListingPage.vue'
+import MessengerDetailsPage from '@/components/view/messenger/MessengerDetailsPage.vue'
 
 
 const router = createRouter({
@@ -32,6 +34,10 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: HomePage
+    },
+    {
+      path: '/bible/types',
+      redirect: '/read'
     },
     {
       path: '/read',
@@ -139,6 +145,17 @@ const router = createRouter({
           path: 'reading-list',
           name: 'readingList',
           component: ReadingListPage
+        },
+        {
+          path: 'the-messenger',
+          name: 'messengerList',
+          component: MessengerListingPage,
+        },
+        {
+          path: 'the-messenger/:slug',
+          name: 'messengerDetail',
+          component: MessengerDetailsPage,
+          props: true,
         },
         {
           path: 'saints',
@@ -350,6 +367,26 @@ const router = createRouter({
               path: 'edit/:id',
               name: 'editSermon',
               component: () => import('@/components/view/admin/sermon/SermonForm.vue'),
+            },
+          ],
+        },
+        {
+          path: 'messenger',
+          children: [
+            {
+              path: '',
+              name: 'adminMessengerIssues',
+              component: () => import('@/components/view/admin/messenger/MessengerIssueList.vue'),
+            },
+            {
+              path: 'create',
+              name: 'createMessengerIssue',
+              component: () => import('@/components/view/admin/messenger/MessengerIssueForm.vue'),
+            },
+            {
+              path: 'edit/:id',
+              name: 'editMessengerIssue',
+              component: () => import('@/components/view/admin/messenger/MessengerIssueForm.vue'),
             },
           ],
         },

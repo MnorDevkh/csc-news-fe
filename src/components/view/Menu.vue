@@ -289,6 +289,7 @@ const menuItems = ref<MenuItem[]>([
     { label: 'ទំព័រដើម', path: '/' },
     { label: 'ព្រះគម្ពីរ', path: '/read' },
     { label: 'ពត៌មាន', path: '/news', children: [] },
+    { label: 'The Messenger', path: '/the-messenger' },
     { label: 'Links', href: 'https://antdv.com' },
 ]);
 

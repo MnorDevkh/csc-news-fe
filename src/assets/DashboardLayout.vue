@@ -122,6 +122,8 @@ const childToParentMap = {
   adminGalleryEdit: 'adminGallery',
   adminBibleCreate: 'bible',
   adminBibleEdit: 'bible',
+  createMessengerIssue: 'adminMessengerIssues',
+  editMessengerIssue: 'adminMessengerIssues',
 };
 
 const menuRouteKeys = [
@@ -130,6 +132,7 @@ const menuRouteKeys = [
   'adminCategories',
   'adminBible',
   'adminSermons',
+  'adminMessengerIssues',
   'adminGallery',
   'adminSaints',
   'adminPanel',
@@ -189,6 +192,12 @@ const menuItems = reactive([
     icon: () => h(SoundOutlined),
     label: 'Sermons',
     title: 'Sermons',
+  },
+  {
+    key: 'adminMessengerIssues',
+    icon: () => h(FileTextOutlined),
+    label: 'The Messenger',
+    title: 'The Messenger',
   },
   {
     key: 'adminGallery',

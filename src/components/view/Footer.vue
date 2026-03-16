@@ -43,7 +43,7 @@
                         </li>
                         <li><router-link to="/news" class="hover:text-blue-500 transition-colors">News</router-link>
                         </li>
-                        <li><router-link to="/bible/types" class="hover:text-blue-500 transition-colors">Holy
+                        <li><router-link to="/read" class="hover:text-blue-500 transition-colors">Holy
                                 Bible</router-link></li>
                         <li><router-link to="/daily-readings" class="hover:text-blue-500 transition-colors">Daily
                                 Readings</router-link></li>

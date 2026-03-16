@@ -184,6 +184,15 @@ const formatDate = (dateString) => {
             <h3 class="text-xl font-bold text-gray-800 mb-2">កម្រងរូបភាព</h3>
             <p class="text-gray-500 text-sm mb-0">រូបភាពសកម្មភាព និងពិធីបុណ្យ</p>
           </RouterLink>
+          <RouterLink :to="{ name: 'messengerList' }"
+            class="bg-white p-6 rounded-2xl hover:shadow-xl transition-all duration-300 hover:-translate-y-1 cursor-pointer group text-center flex flex-col items-center no-underline">
+            <div
+              class="h-14 w-14 bg-sky-50 rounded-full flex items-center justify-center mb-4 group-hover:bg-sky-500 transition-colors duration-300">
+              <ReadOutlined class="text-2xl text-sky-500 group-hover:text-white" />
+            </div>
+            <h3 class="text-xl font-bold text-gray-800 mb-2">The Messenger</h3>
+            <p class="text-gray-500 text-sm mb-0">Magazine issues in flipbook format</p>
+          </RouterLink>
         </div>
       </section>
 
