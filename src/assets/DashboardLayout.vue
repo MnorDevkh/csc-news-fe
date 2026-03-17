@@ -93,7 +93,8 @@ import {
   DownOutlined,
   TagsOutlined,
   UnorderedListOutlined,
-  BookOutlined
+  BookOutlined,
+  HistoryOutlined
 } from '@ant-design/icons-vue';
 import { useAuth } from '../composables/useAuth';
 import { useBibleManagementContext } from '@/composables/useBibleManagementContext';
@@ -135,6 +136,7 @@ const menuRouteKeys = [
   'adminMessengerIssues',
   'adminGallery',
   'adminSaints',
+  'adminChurchHistory',
   'adminPanel',
 ];
 
@@ -210,6 +212,12 @@ const menuItems = reactive([
     icon: () => h(FireOutlined),
     label: 'Saints',
     title: 'Saints',
+  },
+  {
+    key: 'adminChurchHistory',
+    icon: () => h(HistoryOutlined),
+    label: 'Church History',
+    title: 'Church History',
   },
 
   {

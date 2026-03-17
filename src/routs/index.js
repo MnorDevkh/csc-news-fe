@@ -167,6 +167,11 @@ const router = createRouter({
           name: 'photoUpload',
           component: PhotoUploadPage
         },
+        {
+          path: 'church-history',
+          name: 'churchHistory',
+          component: () => import('@/components/view/ChurchHistoryPage.vue')
+        },
       ]
     },
    
@@ -409,6 +414,11 @@ const router = createRouter({
           path: 'saints',
           name: 'adminSaints',
           component: () => import('@/components/view/admin/saints/SaintListComponent.vue'),
+        },
+        {
+          path: 'church-history',
+          name: 'adminChurchHistory',
+          component: () => import('@/components/view/admin/church-history/ChurchHistoryForm.vue'),
         },
       ],
     },

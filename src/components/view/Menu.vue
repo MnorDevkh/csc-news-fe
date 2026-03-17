@@ -290,6 +290,7 @@ const menuItems = ref<MenuItem[]>([
     { label: 'ព្រះគម្ពីរ', path: '/read' },
     { label: 'ពត៌មាន', path: '/news', children: [] },
     { label: 'The Messenger', path: '/the-messenger' },
+    { label: 'ប្រវត្តិព្រះសហគមន៍', path: '/church-history' },
     { label: 'Links', href: 'https://antdv.com' },
 ]);
 

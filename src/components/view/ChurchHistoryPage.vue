@@ -1,0 +1,238 @@
+<script setup>
+import { ref, computed, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+import { ArrowLeftOutlined, ExclamationCircleOutlined, ReloadOutlined } from '@ant-design/icons-vue';
+import { ChurchHistoryService } from '@/services/ChurchHistoryService.js';
+
+const router = useRouter();
+const content = ref(null);
+const isLoading = ref(true);
+const hasError = ref(false);
+
+function parseContentBlocks(raw) {
+  if (!raw || !String(raw).trim()) return null;
+  const s = String(raw).trim();
+  if (!s.startsWith('[') || !s.endsWith(']')) return null;
+  try {
+    const arr = JSON.parse(raw);
+    if (!Array.isArray(arr) || arr.length === 0) return null;
+    const hasValidType = arr.every(
+      (b) => b && typeof b === 'object' && (b.type === 'text' || b.type === 'image' || b.type === 'text_image')
+    );
+    return hasValidType ? arr : null;
+  } catch {
+    return null;
+  }
+}
+
+const contentBlocks = computed(() => {
+  if (!content.value || content.value.content == null) return null;
+  return parseContentBlocks(content.value.content);
+});
+
+async function loadContent() {
+  isLoading.value = true;
+  hasError.value = false;
+  content.value = null;
+  try {
+    const data = await ChurchHistoryService.get();
+    content.value = data;
+  } catch (error) {
+    console.error('Failed to load church history:', error);
+    hasError.value = true;
+  } finally {
+    isLoading.value = false;
+  }
+}
+
+onMounted(() => {
+  loadContent();
+});
+</script>
+
+<template>
+  <div class="church-history-page min-h-screen bg-gray-50/80">
+    <div class="w-full max-w-5xl mx-auto p-4">
+      <!-- Loading -->
+      <div v-if="isLoading" class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden animate-pulse">
+        <div class="aspect-video w-full bg-gray-200" />
+        <div class="p-6 sm:p-10 space-y-5">
+          <div class="h-7 bg-gray-200 rounded w-2/3 max-w-md" />
+          <div class="h-4 bg-gray-200 rounded w-full max-w-xl" />
+          <div class="h-4 bg-gray-200 rounded w-full" />
+        </div>
+      </div>
+
+      <!-- Error -->
+      <div v-else-if="hasError" class="bg-white rounded-2xl shadow-sm border border-gray-100 p-10 sm:p-12 text-center">
+        <ExclamationCircleOutlined class="text-5xl text-gray-300 mb-4 block mx-auto" aria-hidden="true" />
+        <p class="text-gray-700 text-lg font-medium mb-2">Failed to load church history.</p>
+        <p class="text-gray-500 text-sm mb-6">The connection may have failed.</p>
+        <div class="flex flex-wrap items-center justify-center gap-3">
+          <button type="button" @click="loadContent"
+            class="inline-flex items-center gap-2 px-5 py-2.5 bg-gray-100 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-200 transition-colors">
+            <ReloadOutlined /> Retry
+          </button>
+          <button type="button" @click="router.push({ name: 'home' })"
+            class="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors">
+            <ArrowLeftOutlined /> Home
+          </button>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <article v-else-if="content" class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+        <header class="relative aspect-video w-full overflow-hidden">
+          <img v-if="content.thumbnail" :src="content.thumbnail" :alt="content.title"
+            class="w-full h-full object-cover" />
+          <div v-else class="w-full h-full bg-gradient-to-br from-blue-600 to-indigo-700" />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" aria-hidden="true" />
+          <div class="absolute bottom-0 left-0 right-0 p-6 sm:p-8 text-white">
+            <h1
+              class="text-2xl sm:text-4xl font-bold leading-tight tracking-tight drop-shadow-md [text-shadow:0_1px_2px_rgba(0,0,0,0.5)]">
+              {{ content.title || 'Church History' }}
+            </h1>
+          </div>
+        </header>
+
+        <div class="px-6 sm:px-10 py-8 sm:py-10">
+          <p v-if="content.excerpt"
+            class="article-lead text-lg sm:text-xl text-gray-600 leading-relaxed mb-10 pl-4 border-l-4 border-blue-500">
+            {{ content.excerpt }}
+          </p>
+
+          <div class="article-body-wrapper ">
+            <template v-if="contentBlocks">
+              <div v-for="(block, index) in contentBlocks" :key="index" class="article-body-block mb-8 last:mb-0">
+                <div v-if="block.type === 'text_image'" class="article-body-text-image">
+                  <div class="flex flex-col gap-4"
+                    :class="block.layout === 'left' ? 'md:flex-row' : block.layout === 'right' ? 'md:flex-row-reverse' : ''">
+                    <figure v-if="block.image && block.image.url" class="m-0" :class="(block.ratio === '2/3' ? 'md:w-2/3' :
+                        block.ratio === '1/2' ? 'md:w-1/2' :
+                          'md:w-1/3')
+                      ">
+                      <img :src="block.image.url" :alt="block.caption || (content.title || 'Church History') + ' image'"
+                        class="rounded-lg w-full h-auto object-contain" />
+                      <figcaption v-if="block.caption" class="mt-2 text-sm text-gray-300 font-light leading-snug">
+                        {{ block.caption }}
+                      </figcaption>
+                    </figure>
+                    <div :class="(block.image && block.image.url)
+                        ? (block.ratio === '2/3' ? 'md:w-1/3' : block.ratio === '1/2' ? 'md:w-1/2' : 'md:w-2/3')
+                        : ''
+                      ">
+                      <div v-if="block.html" class="article-body prose prose-gray prose-lg max-w-none"
+                        v-html="block.html" />
+                    </div>
+                  </div>
+                </div>
+                <div v-else-if="block.type === 'text' && block.html"
+                  class="article-body prose prose-gray prose-lg max-w-none" v-html="block.html" />
+                <div v-else-if="block.type === 'image' && block.images && block.images.length"
+                  class="article-body-images flex flex-wrap gap-4 my-6">
+                  <img v-for="(img, i) in block.images" :key="img.key || i" :src="img.url"
+                    :alt="(content.title || 'Church History') + ' image ' + (i + 1)"
+                    class="rounded-lg max-w-full h-auto object-contain" />
+                </div>
+              </div>
+            </template>
+            <div v-else-if="content.content" class="article-body prose prose-gray prose-lg max-w-none"
+              v-html="content.content" />
+          </div>
+
+          <footer class="mt-10 pt-8 border-t border-gray-100">
+            <button type="button" @click="router.push({ name: 'home' })"
+              class="inline-flex items-center gap-2 text-gray-500 hover:text-blue-600 text-sm font-medium transition-colors">
+              <ArrowLeftOutlined class="text-xs" /> Back to home
+            </button>
+          </footer>
+        </div>
+      </article>
+    </div>
+  </div>
+</template>
+
+<style scoped>
+.article-lead {
+  font-family: inherit;
+}
+
+.article-body :deep(h1),
+.article-body :deep(h2),
+.article-body :deep(h3) {
+  font-weight: 700;
+  color: #111827;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+}
+
+.article-body :deep(h1) {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+
+.article-body :deep(h2) {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
+
+.article-body :deep(h3) {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+}
+
+.article-body :deep(p) {
+  color: #374151;
+  line-height: 1.625;
+  margin-bottom: 1rem;
+}
+
+.article-body :deep(a) {
+  color: #2563eb;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.article-body :deep(a:hover) {
+  color: #1d4ed8;
+}
+
+.article-body :deep(ul),
+.article-body :deep(ol) {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  padding-left: 1.5rem;
+}
+
+.article-body :deep(ul) {
+  list-style-type: disc;
+}
+
+.article-body :deep(ol) {
+  list-style-type: decimal;
+}
+
+.article-body :deep(li) {
+  margin-bottom: 0.25rem;
+  color: #374151;
+}
+
+.article-body :deep(blockquote) {
+  border-left: 4px solid #d1d5db;
+  padding-left: 1rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  font-style: italic;
+  color: #4b5563;
+}
+
+.article-body :deep(img) {
+  border-radius: 0.5rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  max-width: 100%;
+  height: auto;
+}
+</style>
