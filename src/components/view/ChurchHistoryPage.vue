@@ -51,8 +51,8 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="church-history-page min-h-screen bg-gray-50/80">
-    <div class="w-full max-w-5xl mx-auto p-4">
+  <div class="church-history-page min-h-screen bg-gray-50/80 flex items-center justify-center">
+    <div class="w-full max-w-7xl mx-auto p-4">
       <!-- Loading -->
       <div v-if="isLoading" class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden animate-pulse">
         <div class="aspect-video w-full bg-gray-200" />
@@ -101,38 +101,80 @@ onMounted(() => {
             {{ content.excerpt }}
           </p>
 
-          <div class="article-body-wrapper ">
+          <div class="article-body-wrapper">
             <template v-if="contentBlocks">
-              <div v-for="(block, index) in contentBlocks" :key="index" class="article-body-block mb-8 last:mb-0">
-                <div v-if="block.type === 'text_image'" class="article-body-text-image">
-                  <div class="flex flex-col gap-4"
-                    :class="block.layout === 'left' ? 'md:flex-row' : block.layout === 'right' ? 'md:flex-row-reverse' : ''">
-                    <figure v-if="block.image && block.image.url" class="m-0" :class="(block.ratio === '2/3' ? 'md:w-2/3' :
-                        block.ratio === '1/2' ? 'md:w-1/2' :
-                          'md:w-1/3')
-                      ">
+              <div
+                v-for="(block, index) in contentBlocks"
+                :key="index"
+                class="article-body-block mb-8 sm:mb-10 last:mb-0"
+              >
+                <div
+                  v-if="block.type === 'text_image'"
+                  class="article-body-text-image rounded-xl border border-gray-100 bg-gray-50/60 p-4 sm:p-6"
+                >
+                  <div
+                    class="flex flex-col gap-5"
+                    :class="
+                      block.layout === 'left'
+                        ? 'xl:flex-row'
+                        : block.layout === 'right'
+                          ? 'xl:flex-row-reverse'
+                          : ''
+                    "
+                  >
+                    <figure
+                      v-if="block.image && block.image.url"
+                      class="m-0 w-full xl:flex-shrink-0"
+                      :class="
+                        block.ratio === '2/3'
+                          ? 'xl:w-2/3'
+                          : block.ratio === '1/2'
+                            ? 'xl:w-1/2'
+                            : 'xl:w-1/3'
+                      "
+                    >
                       <img :src="block.image.url" :alt="block.caption || (content.title || 'Church History') + ' image'"
-                        class="rounded-lg w-full h-auto object-contain" />
-                      <figcaption v-if="block.caption" class="mt-2 text-sm text-gray-300 font-light leading-snug">
+                        class="rounded-lg w-full h-auto max-h-[480px] object-contain mx-auto" />
+                      <figcaption
+                        v-if="block.caption"
+                        class="mt-2 text-sm text-gray-500 font-light leading-snug text-center xl:text-left"
+                      >
                         {{ block.caption }}
                       </figcaption>
                     </figure>
-                    <div :class="(block.image && block.image.url)
-                        ? (block.ratio === '2/3' ? 'md:w-1/3' : block.ratio === '1/2' ? 'md:w-1/2' : 'md:w-2/3')
-                        : ''
-                      ">
-                      <div v-if="block.html" class="article-body prose prose-gray prose-lg max-w-none"
-                        v-html="block.html" />
+                    <div
+                      class="w-full"
+                      :class="
+                        block.image && block.image.url
+                          ? block.ratio === '2/3'
+                            ? 'xl:w-1/3'
+                            : block.ratio === '1/2'
+                              ? 'xl:w-1/2'
+                              : 'xl:w-2/3'
+                          : ''
+                      "
+                    >
+                      <div
+                        v-if="block.html"
+                        class="article-body prose prose-gray prose-lg max-w-none"
+                        v-html="block.html"
+                      />
                     </div>
                   </div>
                 </div>
                 <div v-else-if="block.type === 'text' && block.html"
                   class="article-body prose prose-gray prose-lg max-w-none" v-html="block.html" />
-                <div v-else-if="block.type === 'image' && block.images && block.images.length"
-                  class="article-body-images flex flex-wrap gap-4 my-6">
-                  <img v-for="(img, i) in block.images" :key="img.key || i" :src="img.url"
+                <div
+                  v-else-if="block.type === 'image' && block.images && block.images.length"
+                  class="article-body-images flex flex-wrap justify-center gap-4 my-6"
+                >
+                  <img
+                    v-for="(img, i) in block.images"
+                    :key="img.key || i"
+                    :src="img.url"
                     :alt="(content.title || 'Church History') + ' image ' + (i + 1)"
-                    class="rounded-lg max-w-full h-auto object-contain" />
+                    class="rounded-lg max-w-full h-auto object-contain"
+                  />
                 </div>
               </div>
             </template>
@@ -222,17 +264,22 @@ onMounted(() => {
   padding-left: 1rem;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
   font-style: italic;
   color: #4b5563;
 }
 
 .article-body :deep(img) {
   border-radius: 0.5rem;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
   max-width: 100%;
   height: auto;
+}
+
+.article-body-block + .article-body-block {
+  padding-top: 1.5rem;
+  border-top: 1px solid #f3f4f6;
 }
 </style>

@@ -5,11 +5,17 @@
             <!-- Top Header Bar -->
             <div class="flex justify-between items-center py-4">
                 <div class="flex items-center gap-3 cursor-pointer z-50" @click="router.push('/')">
+                    <img
+                        src="/image/cropped-logo-1.jpg"
+                        alt="CSC News logo"
+                        class="h-10 sm:h-12 w-auto object-contain"
+                    />
                     <div class="flex flex-col">
-                        <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight text-blue-600 m-0 leading-none">
-                            CSC NEWS</h1>
-                        <p class="text-xs sm:text-lg font-medium text-gray-500 m-0 tracking-wide uppercase">Catholic
-                            Cambodia</p>
+                        <!-- <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight text-blue-600 m-0 leading-none">
+                            CSC NEWS</h1> -->
+                        <p class="text-xs sm:text-lg font-medium text-gray-500 m-0 tracking-wide uppercase">
+                            Catholic Cambodia
+                        </p>
                     </div>
                 </div>
 
@@ -130,7 +136,14 @@
             <div v-if="mobileMenuOpen"
                 class="fixed inset-0 z-[60] bg-white flex flex-col overflow-y-auto w-full h-full">
                 <div class="flex justify-between items-center p-4 border-b border-gray-100 bg-white sticky top-0 z-10">
-                    <h1 class="text-2xl font-extrabold text-blue-600 leading-none">CSC NEWS</h1>
+                    <div class="flex items-center gap-2">
+                        <img
+                            src="/image/cropped-logo-1.jpg"
+                            alt="CSC News logo"
+                            class="h-8 w-auto object-contain"
+                        />
+                        <h1 class="text-2xl font-extrabold text-blue-600 leading-none">CSC NEWS</h1>
+                    </div>
                     <button
                         type="button"
                         class="p-2 text-gray-500 hover:text-red-500 transition-colors"
