@@ -13,7 +13,7 @@ const isAdminOrLogin = computed(() => {
 
 <template>
   <div id="app" class="w-full" :class="{ 'bg-gray-50': !isAdminOrLogin }">
-    <div :class="{ 'mx-auto w-full flex flex-col min-h-screen': !isAdminOrLogin }">
+    <div :class="{ 'mx-auto w-full flex flex-col min-h-[100dvh]': !isAdminOrLogin }">
       <Menus v-if="!isAdminOrLogin" />
       <RouterView :class="{ 'px-8': !isAdminOrLogin }" />
       <Footer v-if="!isAdminOrLogin" />

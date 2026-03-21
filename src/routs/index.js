@@ -5,6 +5,7 @@ import GalleryGridViewPage from "@/components/view/homepage/GalleryGridViewPage.
 import GalleryItemDetailsPage from "@/components/view/homepage/GalleryItemDetailsPage.vue";
 import FrontLayoutWithSidebar from "@/components/layout/FrontLayoutWithSidebar.vue";
 import HomePage from "@/components/view/homepage/HomePage.vue";
+import InstallAppPage from "@/components/view/homepage/InstallAppPage.vue";
 import ReadingListPage from "@/components/view/ReadingListPage.vue";
 import SearchResultsPage from "@/components/view/SearchResultsPage.vue";
 import SingleGalleryViewPage from "@/components/view/SingleGalleryViewPage.vue";
@@ -170,6 +171,11 @@ const router = createRouter({
           path: "photos/upload",
           name: "photoUpload",
           component: PhotoUploadPage,
+        },
+        {
+          path: "install-app",
+          name: "installApp",
+          component: InstallAppPage,
         },
       ],
     },

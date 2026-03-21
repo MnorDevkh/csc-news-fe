@@ -5,6 +5,7 @@ import vue from '@vitejs/plugin-vue'
 import Components from 'unplugin-vue-components/vite';
 import tailwindcss from '@tailwindcss/vite'
 import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers';
+import { VitePWA } from 'vite-plugin-pwa';
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -18,6 +19,32 @@ export default defineConfig({
           importStyle: false,
         }),
       ],
+    }),
+    VitePWA({
+      registerType: 'autoUpdate',
+      includeAssets: ['logo.svg'],
+      manifest: {
+        name: 'CSC News',
+        short_name: 'CSC News',
+        description: 'Catholic Cambodia news and daily content.',
+        theme_color: '#2563eb',
+        background_color: '#ffffff',
+        // Use full display when installed (no browser/OS chrome around the app)
+        display: 'fullscreen',
+        display_override: ['fullscreen', 'standalone', 'minimal-ui'],
+        start_url: '/',
+        icons: [
+          {
+            src: '/logo.svg',
+            sizes: 'any',
+            type: 'image/svg+xml',
+            purpose: 'any maskable',
+          },
+        ],
+      },
+      workbox: {
+        navigateFallbackDenylist: [/^\/admin/, /^\/login/],
+      },
     }),
 
   ],

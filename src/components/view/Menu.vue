@@ -304,6 +304,7 @@ const menuItems = ref<MenuItem[]>([
     { label: 'ពត៌មាន', path: '/news', children: [] },
     { label: 'The Messenger', path: '/the-messenger' },
     { label: 'ប្រវត្តិព្រះសហគមន៍', path: '/church-history' },
+    { label: 'Download App', path: '/install-app' },
     { label: 'Links', href: 'https://antdv.com' },
 ]);
 

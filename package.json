@@ -29,6 +29,7 @@
     "@vitejs/plugin-vue": "^6.0.1",
     "unplugin-vue-components": "^30.0.0",
     "vite": "^7.1.11",
+    "vite-plugin-pwa": "^1.1.0",
     "vite-plugin-vue-devtools": "^8.0.3"
   }
 }
