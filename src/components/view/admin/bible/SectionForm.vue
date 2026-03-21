@@ -11,6 +11,20 @@
     </div>
 
     <form v-else @submit.prevent="handleSubmit" class="space-y-6">
+      <div v-if="chapterId" class="pb-2 border-b border-gray-100">
+        <label class="block text-sm font-medium text-gray-700 mb-2">Languages (from Bible)</label>
+        <div class="flex flex-wrap gap-4">
+          <label class="flex items-center gap-2 cursor-default opacity-90">
+            <input :checked="langKm" type="checkbox" disabled class="w-4 h-4 text-blue-600 rounded border-gray-300" />
+            <span class="text-sm text-gray-700">Khmer (km)</span>
+          </label>
+          <label class="flex items-center gap-2 cursor-default opacity-90">
+            <input :checked="langEn" type="checkbox" disabled class="w-4 h-4 text-blue-600 rounded border-gray-300" />
+            <span class="text-sm text-gray-700">English (en)</span>
+          </label>
+        </div>
+      </div>
+
       <div
         v-if="feedbackMsg"
         class="px-4 py-3 rounded-lg text-sm flex items-center justify-between"
@@ -84,6 +98,8 @@
 import { ref, reactive, computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import SectionService from '@/services/SectionService';
+import ChapterService from '@/services/ChapterService';
+import { parseLanguageCodes } from '@/utils/bibleLanguage';
 
 const route = useRoute();
 const router = useRouter();
@@ -93,6 +109,9 @@ const isEditMode = computed(() => !!route.params.sectionId);
 const isSubmitting = ref(false);
 const feedbackMsg = ref('');
 const feedbackType = ref('success');
+
+const langKm = ref(true);
+const langEn = ref(false);
 
 const form = reactive({
   title: '',
@@ -105,7 +124,20 @@ function goBack() {
   router.push({ name: 'adminSectionList', query: { chapter_id: chapterId.value } });
 }
 
+async function loadChapterLanguages() {
+  if (!chapterId.value) return;
+  try {
+    const res = await ChapterService.getChapter(chapterId.value);
+    const parsed = parseLanguageCodes(res.data?.bible?.language);
+    langKm.value = parsed.km;
+    langEn.value = parsed.en;
+  } catch (err) {
+    console.error('Error loading chapter for language:', err);
+  }
+}
+
 onMounted(async () => {
+  await loadChapterLanguages();
   if (!isEditMode.value) return;
   try {
     const res = await SectionService.getSection(route.params.sectionId);

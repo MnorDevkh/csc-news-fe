@@ -25,6 +25,21 @@
       </div>
 
       <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">Languages (filter)</label>
+        <div class="flex flex-wrap gap-4 mb-1">
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input v-model="langKm" type="checkbox" class="w-4 h-4 text-blue-600 rounded border-gray-300" />
+            <span class="text-sm text-gray-700">Khmer (km)</span>
+          </label>
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input v-model="langEn" type="checkbox" class="w-4 h-4 text-blue-600 rounded border-gray-300" />
+            <span class="text-sm text-gray-700">English (en)</span>
+          </label>
+        </div>
+        <p class="text-xs text-gray-500 mb-3">Show chapters whose Bible matches at least one selected language (default: Khmer).</p>
+      </div>
+
+      <div>
         <label class="block text-sm font-medium text-gray-700 mb-2">Chapter</label>
         <select
           v-model="form.chapter_id"
@@ -35,7 +50,7 @@
             {{ chaptersLoading ? 'Loading chapters...' : 'Select chapter' }}
           </option>
           <option
-            v-for="ch in chapters"
+            v-for="ch in chaptersFiltered"
             :key="ch.id"
             :value="ch.id"
           >
@@ -82,6 +97,7 @@ import { ref, reactive, computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import VerseService from '@/services/VerseService';
 import ChapterService from '@/services/ChapterService';
+import { chapterMatchesLanguageFilter } from '@/utils/bibleLanguage';
 import {
   ClassicEditor,
   Essentials,
@@ -162,6 +178,20 @@ const feedbackType = ref('success');
 
 const chapters = ref([]);
 const chaptersLoading = ref(false);
+const langKm = ref(true);
+const langEn = ref(false);
+
+const chaptersFiltered = computed(() => {
+  const filtered = chapters.value.filter((ch) => {
+    if (!ch?.bible) return true;
+    return chapterMatchesLanguageFilter(ch, { km: langKm.value, en: langEn.value });
+  });
+  const selectedId = form.chapter_id;
+  if (!selectedId) return filtered;
+  if (filtered.some((ch) => ch.id === selectedId)) return filtered;
+  const extra = chapters.value.find((ch) => ch.id === selectedId);
+  return extra ? [...filtered, extra] : filtered;
+});
 
 const form = reactive({
   verse_number: 1,

@@ -25,6 +25,21 @@
       </div>
 
       <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">Languages (filter)</label>
+        <div class="flex flex-wrap gap-4 mb-1">
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input v-model="langKm" type="checkbox" class="w-4 h-4 text-blue-600 rounded border-gray-300" />
+            <span class="text-sm text-gray-700">Khmer (km)</span>
+          </label>
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input v-model="langEn" type="checkbox" class="w-4 h-4 text-blue-600 rounded border-gray-300" />
+            <span class="text-sm text-gray-700">English (en)</span>
+          </label>
+        </div>
+        <p class="text-xs text-gray-500 mb-3">Show Bibles that match at least one selected language (default: Khmer).</p>
+      </div>
+
+      <div>
         <label class="block text-sm font-medium text-gray-700 mb-2">Bible <span class="text-red-500">*</span></label>
         <select
           v-model="form.bible_id"
@@ -34,7 +49,7 @@
         >
           <option value="">Select a Bible</option>
           <option
-            v-for="b in bibleOptions"
+            v-for="b in bibleOptionsFiltered"
             :key="b.id"
             :value="b.id"
           >
@@ -84,6 +99,7 @@ import { ref, reactive, computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import ChapterService from '@/services/ChapterService';
 import { BibleService } from '@/services/BibleService';
+import { bibleMatchesLanguageFilter } from '@/utils/bibleLanguage';
 
 const route = useRoute();
 const router = useRouter();
@@ -96,6 +112,19 @@ const loadError = ref(null);
 const feedbackMsg = ref('');
 const feedbackType = ref('success');
 const bibleOptions = ref([]);
+const langKm = ref(true);
+const langEn = ref(false);
+
+const bibleOptionsFiltered = computed(() => {
+  const filtered = bibleOptions.value.filter((b) =>
+    bibleMatchesLanguageFilter(b, { km: langKm.value, en: langEn.value }),
+  );
+  const selectedId = form.bible_id ?? bibleId.value;
+  if (!selectedId) return filtered;
+  if (filtered.some((b) => b.id === selectedId)) return filtered;
+  const extra = bibleOptions.value.find((b) => b.id === selectedId);
+  return extra ? [...filtered, extra] : filtered;
+});
 
 const form = reactive({
   chapter_number: 1,

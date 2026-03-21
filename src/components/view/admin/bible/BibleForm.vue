@@ -77,13 +77,17 @@
           </select>
         </div>
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">Language</label>
-          <input
-            v-model="form.language"
-            type="text"
-            class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-            placeholder="e.g. KM, EN"
-          />
+          <label class="block text-sm font-medium text-gray-700 mb-2">Languages</label>
+          <div class="flex flex-wrap gap-4 pt-1">
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input v-model="langKm" type="checkbox" class="w-4 h-4 text-blue-600 rounded border-gray-300" />
+              <span class="text-sm text-gray-700">Khmer (km)</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input v-model="langEn" type="checkbox" class="w-4 h-4 text-blue-600 rounded border-gray-300" />
+              <span class="text-sm text-gray-700">English (en)</span>
+            </label>
+          </div>
         </div>
       </div>
 
@@ -162,9 +166,10 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed, onMounted } from 'vue';
+import { ref, reactive, computed, watch, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { BibleService } from '@/services/BibleService';
+import { parseLanguageCodes, serializeLanguageCodes } from '@/utils/bibleLanguage';
 import {
   ClassicEditor,
   Essentials,
@@ -245,18 +250,31 @@ const loadError = ref(null);
 const feedbackMsg = ref('');
 const feedbackType = ref('success');
 
+const langKm = ref(true);
+const langEn = ref(false);
+
 const form = reactive({
   name: '',
   slug: '',
   description: '',
   thumbnail: '',
   type: '',
-  language: '',
+  language: 'km',
   audio_url: '',
   video_url: '',
   status: 'active',
   is_featured: false,
   order_index: '',
+});
+
+function syncLangCheckboxesFromForm() {
+  const parsed = parseLanguageCodes(form.language);
+  langKm.value = parsed.km;
+  langEn.value = parsed.en;
+}
+
+watch([langKm, langEn], () => {
+  form.language = serializeLanguageCodes({ km: langKm.value, en: langEn.value });
 });
 
 onMounted(async () => {
@@ -281,6 +299,7 @@ onMounted(async () => {
 
   if (!isEditMode.value) {
     pageLoading.value = false;
+    syncLangCheckboxesFromForm();
     return;
   }
 
@@ -294,7 +313,7 @@ onMounted(async () => {
       description: b.description || '',
       thumbnail: b.thumbnail || '',
       type: b.type || '',
-      language: b.language || '',
+      language: b.language || 'km',
       audio_url: b.audio_url || '',
       video_url: b.video_url || '',
       status: b.status || 'active',
@@ -307,6 +326,7 @@ onMounted(async () => {
   } finally {
     pageLoading.value = false;
   }
+  syncLangCheckboxesFromForm();
 });
 
 async function handleSubmit() {

@@ -22,7 +22,7 @@ export default defineConfig({
     }),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['logo.svg'],
+      includeAssets: ['logo.svg', 'pwa-192x192.png', 'pwa-512x512.png'],
       manifest: {
         name: 'CSC News',
         short_name: 'CSC News',
@@ -33,12 +33,26 @@ export default defineConfig({
         display: 'fullscreen',
         display_override: ['fullscreen', 'standalone', 'minimal-ui'],
         start_url: '/',
+        scope: '/',
+        // Chrome requires PNG icons (192 + 512) for installability; SVG-only often blocks beforeinstallprompt
         icons: [
+          {
+            src: '/pwa-192x192.png',
+            sizes: '192x192',
+            type: 'image/png',
+            purpose: 'any',
+          },
+          {
+            src: '/pwa-512x512.png',
+            sizes: '512x512',
+            type: 'image/png',
+            purpose: 'any maskable',
+          },
           {
             src: '/logo.svg',
             sizes: 'any',
             type: 'image/svg+xml',
-            purpose: 'any maskable',
+            purpose: 'any',
           },
         ],
       },
