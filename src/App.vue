@@ -15,7 +15,11 @@ const isAdminOrLogin = computed(() => {
   <div id="app" class="w-full" :class="{ 'bg-gray-50': !isAdminOrLogin }">
     <div :class="{ 'mx-auto w-full flex flex-col min-h-[100dvh]': !isAdminOrLogin }">
       <Menus v-if="!isAdminOrLogin" />
-      <RouterView :class="{ 'px-0 sm:px-5 lg:px-8': !isAdminOrLogin }" />
+      <RouterView
+        :class="{
+          'px-[5px] sm:px-5 md:px-6 lg:px-8 xl:px-10': !isAdminOrLogin,
+        }"
+      />
       <Footer v-if="!isAdminOrLogin" />
     </div>
   </div>
