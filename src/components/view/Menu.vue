@@ -1,9 +1,9 @@
 <template>
-    <nav class="menu-nav bg-white shadow-sm mb-4 sticky top-0 z-50 flex justify-center w-full font-[Kantumruy_Pro,'Khmer','Koh_Santepheap',sans-serif]">
-        <div class="w-full max-w-[1400px] px-4 sm:px-6 lg:px-8 mx-auto">
+    <nav class="menu-nav bg-white shadow-sm mb-3 sm:mb-4 sticky top-0 z-50 flex justify-center w-full font-[Kantumruy_Pro,'Khmer','Koh_Santepheap',sans-serif]">
+        <div class="w-full max-w-[1400px] px-0 sm:px-5 lg:px-8 mx-auto">
 
             <!-- Top Header Bar -->
-            <div class="flex justify-between items-center py-4">
+            <div class="flex justify-between items-center py-3 sm:py-4">
                 <div class="flex items-center gap-3 cursor-pointer z-50" @click="router.push('/')">
                     <img
                         src="/image/cropped-logo-1.jpg"

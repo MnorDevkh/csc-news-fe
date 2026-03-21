@@ -5,7 +5,7 @@
     >
     <!-- Top App Bar -->
     <header
-      class="h-14 flex items-center justify-between px-4 border-b border-amber-200/80 bg-white/95 backdrop-blur"
+      class="h-14 flex items-center justify-between px-0 sm:px-4 border-b border-amber-200/80 bg-white/95 backdrop-blur"
     >
       <div class="flex  gap-2">
         <RouterLink to="/read" class="flex gap-2">

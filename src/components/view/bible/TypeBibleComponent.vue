@@ -62,7 +62,7 @@ const goToTestament = (type) => {
 
 <template>
   <div class="min-h-[calc(100vh-3.5rem-3.5rem)]  flex">
-    <div class="max-w-7xl px-0 py-6 sm:py-10 w-full">
+    <div class="max-w-7xl px-0 py-3 sm:py-10 w-full">
       <!-- Hero copy -->
       <section class="text-center mb-6 sm:mb-10">
         <p class="text-xs font-semibold tracking-[0.25em] uppercase text-amber-700/80">

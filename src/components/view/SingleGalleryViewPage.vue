@@ -15,14 +15,14 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="w-full min-h-screen flex justify-center items-start p-4 sm:p-6 lg:p-8 box-border">
-    <div class="w-full max-w-7xl mx-auto bg-white rounded-lg shadow-md p-6 sm:p-8 lg:px-12 lg:py-10">
+  <div class="w-full min-h-screen flex justify-center items-start px-3 py-3 sm:p-6 lg:p-8 box-border">
+    <div class="w-full max-w-7xl mx-auto bg-white rounded-lg shadow-md p-4 sm:p-8 lg:px-12 lg:py-10">
       <div v-if="loading" class="flex justify-center items-center min-h-64 w-full">
         <a-spin size="large" />
       </div>
 
       <div v-else-if="gallery">
-        <header class="mb-8 pb-6 border-b border-gray-200 text-left">
+        <header class="mb-6 sm:mb-8 pb-4 sm:pb-6 border-b border-gray-200 text-left">
           <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-blue-600 mb-3 leading-tight">
             {{ gallery.title }}
           </h1>

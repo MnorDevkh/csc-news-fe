@@ -132,7 +132,7 @@ onBeforeUnmount(() => {
     </div>
 
     <div v-else class="bg-white border border-gray-200 rounded-xl overflow-hidden">
-      <div class="px-4 py-3 border-b border-gray-100 flex items-center justify-between gap-3">
+      <div class="px-3 sm:px-4 py-2.5 sm:py-3 border-b border-gray-100 flex items-center justify-between gap-2 sm:gap-3">
         <div class="min-w-0">
           <div class="text-sm font-semibold text-gray-900 truncate">{{ props.title }}</div>
           <div v-if="isLoading" class="text-xs text-gray-500">
@@ -153,7 +153,7 @@ onBeforeUnmount(() => {
         {{ error }}
       </div>
 
-      <div v-else-if="isLoading && pages.length === 0" class="p-10 flex items-center justify-center">
+      <div v-else-if="isLoading && pages.length === 0" class="p-6 sm:p-10 flex items-center justify-center">
         <div class="text-sm text-gray-500">Loading PDF…</div>
       </div>
 

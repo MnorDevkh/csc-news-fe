@@ -118,7 +118,7 @@ onUnmounted(() => {
       />
     </div>
 
-    <div class="w-full max-w-5xl mx-auto p-4">
+    <div class="w-full max-w-5xl mx-auto px-3 py-3 sm:px-4 sm:py-4">
 
       <!-- Loading State -->
       <div
@@ -138,7 +138,7 @@ onUnmounted(() => {
       <!-- Error State -->
       <div
         v-else-if="hasError"
-        class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sm:p-10 md:p-12 text-center"
+        class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-10 md:p-12 text-center"
       >
         <ExclamationCircleOutlined class="text-5xl text-gray-300 mb-4 block mx-auto" aria-hidden="true" />
         <p class="text-gray-700 text-lg font-medium mb-2">Failed to load article.</p>
@@ -179,7 +179,7 @@ onUnmounted(() => {
             class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent"
             aria-hidden="true"
           />
-          <div class="absolute bottom-0 left-0 right-0 p-6 sm:p-8 text-white">
+          <div class="absolute bottom-0 left-0 right-0 p-4 sm:p-8 text-white">
             <div class="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-white/80 mb-4">
               <span
                 v-if="article.category?.name"
@@ -204,7 +204,7 @@ onUnmounted(() => {
         </header>
 
         <!-- Body -->
-        <div class="px-6 sm:px-10 py-8 sm:py-10">
+        <div class="px-4 sm:px-10 py-6 sm:py-10">
           <!-- Lead / Excerpt -->
           <p
             v-if="article.excerpt"

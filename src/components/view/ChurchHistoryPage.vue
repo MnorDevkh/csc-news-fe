@@ -52,7 +52,7 @@ onMounted(() => {
 
 <template>
   <div class="church-history-page min-h-screen bg-gray-50/80 flex items-center justify-center">
-    <div class="w-full max-w-7xl mx-auto p-4">
+    <div class="w-full max-w-7xl mx-auto px-3 py-3 sm:px-4 sm:py-4">
       <!-- Loading -->
       <div v-if="isLoading" class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden animate-pulse">
         <div class="aspect-video w-full bg-gray-200" />
@@ -64,7 +64,7 @@ onMounted(() => {
       </div>
 
       <!-- Error -->
-      <div v-else-if="hasError" class="bg-white rounded-2xl shadow-sm border border-gray-100 p-10 sm:p-12 text-center">
+      <div v-else-if="hasError" class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sm:p-10 md:p-12 text-center">
         <ExclamationCircleOutlined class="text-5xl text-gray-300 mb-4 block mx-auto" aria-hidden="true" />
         <p class="text-gray-700 text-lg font-medium mb-2">Failed to load church history.</p>
         <p class="text-gray-500 text-sm mb-6">The connection may have failed.</p>
@@ -95,7 +95,7 @@ onMounted(() => {
           </div>
         </header>
 
-        <div class="px-6 sm:px-10 py-8 sm:py-10">
+        <div class="px-4 sm:px-10 py-6 sm:py-10">
           <p v-if="content.excerpt"
             class="article-lead text-lg sm:text-xl text-gray-600 leading-relaxed mb-10 pl-4 border-l-4 border-blue-500">
             {{ content.excerpt }}

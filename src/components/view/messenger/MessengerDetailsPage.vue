@@ -53,8 +53,8 @@ watch(slug, () => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-gray-50 py-8">
-    <div class="max-w-6xl mx-auto px-4">
+  <div class="min-h-screen bg-gray-50 py-4 sm:py-8">
+    <div class="max-w-6xl mx-auto px-3 sm:px-5">
       <button
         type="button"
         class="text-sm text-gray-600 hover:text-gray-900 font-medium mb-5"
@@ -63,7 +63,7 @@ watch(slug, () => {
         ← Back to issues
       </button>
 
-      <div v-if="loading" class="bg-white rounded-xl shadow-sm border border-gray-100 p-8">
+      <div v-if="loading" class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 sm:p-8">
         <div class="animate-pulse space-y-4">
           <div class="h-7 bg-gray-200 rounded w-2/3" />
           <div class="h-4 bg-gray-200 rounded w-1/3" />
@@ -84,7 +84,7 @@ watch(slug, () => {
 
       <div v-else class="space-y-6">
         <header class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-          <div class="p-6 sm:p-8 flex flex-col sm:flex-row gap-6">
+          <div class="p-4 sm:p-8 flex flex-col sm:flex-row gap-4 sm:gap-6">
             <div class="w-full sm:w-56">
               <div class="aspect-[4/3] rounded-lg overflow-hidden bg-gray-100 border border-gray-200">
                 <img

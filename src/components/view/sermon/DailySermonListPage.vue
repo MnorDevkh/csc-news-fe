@@ -21,7 +21,7 @@
           </div>
         </div>
 
-        <div class="p-6 md:w-2/3 flex flex-col justify-center">
+        <div class="p-4 sm:p-6 md:w-2/3 flex flex-col justify-center">
           <div
             class="flex items-center justify-center md:justify-start text-xs uppercase tracking-wide text-gray-400 mb-1"
           >

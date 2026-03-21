@@ -1,6 +1,6 @@
 <template>
-  <div class="min-h-screen bg-gray-50 pt-6 pb-12 font-sans">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+  <div class="min-h-screen bg-gray-50 pt-4 pb-8 sm:pb-12 font-sans">
+    <div class="max-w-4xl mx-auto px-3 sm:px-6 lg:px-8">
       <!-- <button
         @click="$router.back()"
         class="flex items-center text-gray-500 hover:text-blue-600 transition-colors mb-8 group"
@@ -9,7 +9,7 @@
         Back to Daily Readings
       </button> -->
 
-      <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sm:p-10 md:p-12">
+      <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-10 md:p-12">
         <div v-if="loading" class="py-12 text-center text-gray-500">
           Loading reading...
         </div>

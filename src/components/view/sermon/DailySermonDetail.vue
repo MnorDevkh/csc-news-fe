@@ -24,7 +24,7 @@
         </div>
       </div> -->
 
-      <div class="p-6 sm:p-10">
+      <div class="p-4 sm:p-10">
         <div class="flex flex-col items-start mb-4">
           <div class="flex flex-wrap items-center gap-4 mb-3 text-sm text-gray-500">
             <span v-if="sermon.preacher" class="flex items-center gap-1">

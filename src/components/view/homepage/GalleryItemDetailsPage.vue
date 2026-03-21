@@ -64,10 +64,10 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="w-full min-h-screen flex justify-center items-start p-4 sm:p-6 lg:p-8 box-border bg-[rgba(0,0,0,0.95)]">
-    <div class="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+  <div class="w-full min-h-screen flex justify-center items-start px-3 py-3 sm:p-6 lg:p-8 box-border bg-[rgba(0,0,0,0.95)]">
+    <div class="w-full max-w-5xl mx-auto px-3 sm:px-6 lg:px-8">
       <!-- Top bar -->
-      <div class="flex justify-between items-center mb-6 text-white">
+      <div class="flex justify-between items-center mb-4 sm:mb-6 text-white">
         <button
           @click="router.push({ name: 'singleGalleryView', params: { id: route.params.galleryId } })"
           class="flex items-center gap-2 hover:text-blue-400 transition-colors"

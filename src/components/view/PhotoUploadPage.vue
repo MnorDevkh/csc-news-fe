@@ -60,8 +60,8 @@ onMounted(loadPhotos);
 </script>
 
 <template>
-  <div class="mx-auto p-6 md:p-8 max-w-6xl">
-    <div class="mb-8">
+  <div class="mx-auto p-4 sm:p-6 md:p-8 max-w-6xl">
+    <div class="mb-6 sm:mb-8">
       <h1 class="text-2xl font-bold text-gray-800 border-l-4 border-indigo-500 pl-4 mb-2">
         Photo upload
       </h1>
@@ -69,7 +69,7 @@ onMounted(loadPhotos);
     </div>
 
     <!-- Upload area -->
-    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mb-8">
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-6 mb-6 sm:mb-8">
       <input
         ref="fileInput"
         type="file"
@@ -93,7 +93,7 @@ onMounted(loadPhotos);
     </div>
 
     <!-- Gallery grid -->
-    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-6">
       <h2 class="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
         <PictureOutlined />
         Uploaded images

@@ -43,9 +43,9 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-gray-50 py-10">
-    <div class="max-w-6xl mx-auto px-4">
-      <header class="mb-8">
+  <div class="min-h-screen bg-gray-50 py-6 sm:py-10">
+    <div class="max-w-6xl mx-auto px-3 sm:px-5">
+      <header class="mb-6 sm:mb-8">
         <h1 class="text-3xl font-bold text-gray-900 mb-2">The Messenger</h1>
         <p class="text-gray-600 text-sm">
           Browse past issues of The Messenger magazine.
@@ -68,7 +68,7 @@ onMounted(() => {
         <p class="text-gray-500 text-sm">No issues available yet.</p>
       </div>
 
-      <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         <article
           v-for="issue in issues"
           :key="issue.id"
