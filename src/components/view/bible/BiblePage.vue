@@ -122,8 +122,8 @@ const navigateToDetail = (id) => {
 </script>
 
 <template>
-  <div class="min-h-[calc(100vh-3.5rem-3.5rem)] py-8">
-    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+  <div class="min-h-[calc(100vh-3.5rem-3.5rem)] py-4 sm:py-8">
+    <div class="mx-auto max-w-5xl px-0 sm:px-0 lg:px-8">
       <header class="mb-6 flex items-center justify-between gap-3">
         <div>
           <h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">

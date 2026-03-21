@@ -138,7 +138,7 @@ onUnmounted(() => {
       <!-- Error State -->
       <div
         v-else-if="hasError"
-        class="bg-white rounded-2xl shadow-sm border border-gray-100 p-10 sm:p-12 text-center"
+        class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sm:p-10 md:p-12 text-center"
       >
         <ExclamationCircleOutlined class="text-5xl text-gray-300 mb-4 block mx-auto" aria-hidden="true" />
         <p class="text-gray-700 text-lg font-medium mb-2">Failed to load article.</p>

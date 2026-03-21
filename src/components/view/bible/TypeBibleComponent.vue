@@ -62,9 +62,9 @@ const goToTestament = (type) => {
 
 <template>
   <div class="min-h-[calc(100vh-3.5rem-3.5rem)]  flex">
-    <div class="max-w-7xl px-4 py-10 w-full">
+    <div class="max-w-7xl px-0 py-6 sm:py-10 w-full">
       <!-- Hero copy -->
-      <section class="text-center mb-10">
+      <section class="text-center mb-6 sm:mb-10">
         <p class="text-xs font-semibold tracking-[0.25em] uppercase text-amber-700/80">
           Bible Reading
         </p>
@@ -78,7 +78,7 @@ const goToTestament = (type) => {
 
       <!-- Testament cards -->
       <section
-        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mt-4 justify-items-center w-full"
+        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8 mt-4 justify-items-center w-full"
       >
         <button
           v-for="card in testamentCards"
@@ -91,7 +91,7 @@ const goToTestament = (type) => {
           <div
             class="absolute inset-0 bg-[radial-gradient(circle_at_20%_0,rgba(255,255,255,0.2),transparent_55%),radial-gradient(circle_at_80%_120%,rgba(0,0,0,0.35),transparent_55%)]" />
 
-          <div class="relative px-6 py-7 sm:px-7 sm:py-8 flex flex-col h-full text-left text-white">
+          <div class="relative px-4 py-6 sm:px-7 sm:py-8 flex flex-col h-full text-left text-white">
             <div class="flex items-center justify-between gap-3">
               <div>
                 <p class="text-xs font-semibold tracking-[0.28em] uppercase opacity-80">

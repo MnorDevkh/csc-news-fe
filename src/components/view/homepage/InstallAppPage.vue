@@ -90,7 +90,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <section class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 md:p-10">
+  <section class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-6 md:p-10">
     <h1 class="text-2xl md:text-3xl font-bold text-gray-900 mb-3">Download CSC News App</h1>
     <p class="text-gray-600 mb-6">
       Install CSC News on your phone or computer for a faster local app experience.

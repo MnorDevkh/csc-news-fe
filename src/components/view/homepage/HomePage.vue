@@ -68,7 +68,7 @@ const formatDate = (dateString) => {
 </script>
 <template>
   <div class="homepage bg-gray-50 min-h-screen pb-12 font-sans flex flex-col items-center">
-    <main class="w-full max-w-[1400px] px-4 mx-auto">
+    <main class="w-full max-w-[1400px] px-0 mx-auto">
       <!-- Loading Skeleton -->
       <div v-if="isLoading" class="py-8 space-y-10 animate-pulse">
         <div class="rounded-2xl overflow-hidden bg-gray-200 h-[500px] md:h-[600px]" />

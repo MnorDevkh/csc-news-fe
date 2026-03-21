@@ -107,7 +107,7 @@ const getSectionsForVerse = (chapterId, verseNumber) => {
 
 <template>
   <div class="bg-gray-50 min-h-screen pb-12 font-sans flex flex-col items-center">
-    <main class="w-full max-w-[1400px] px-4 mx-auto py-8">
+    <main class="w-full max-w-[1400px] px-0 mx-auto py-4 sm:py-8">
       <div class="mb-6">
         <button
           @click="router.back()"
@@ -141,7 +141,7 @@ const getSectionsForVerse = (chapterId, verseNumber) => {
         <section
           v-for="chapter in (item.chapters || [])"
           :key="chapter.id"
-          class="rounded-2xl bg-white border border-gray-100 p-6 shadow-sm hover:shadow-md transition-shadow"
+          class="rounded-2xl bg-white border border-gray-100 p-4 sm:p-6 shadow-sm hover:shadow-md transition-shadow"
         >
           <h2 class="text-lg font-semibold text-gray-800 mb-4 border-l-4 border-0 pl-4">
             ជំពូក {{ chapter.chapter_number }}

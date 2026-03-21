@@ -83,7 +83,7 @@ const handleSubmit = (e) => {
 
 <template>
   <div class="min-h-[calc(100vh-3.5rem-3.5rem)] bg-gray-50 dark:bg-slate-950">
-    <div class="max-w-5xl mx-auto px-4 pt-6 pb-16">
+    <div class="max-w-5xl mx-auto px-0 pt-4 sm:pt-6 pb-12 sm:pb-16">
       <header class="mb-4">
         <h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900 dark:text-slate-50">
           ស្វែងរកព្រះគម្ពីរ

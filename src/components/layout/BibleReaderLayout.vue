@@ -1,7 +1,7 @@
 <template>
   <div class="homepage bg-gray-50 min-h-screen pb-12 font-sans flex flex-col items-center">
     <div
-      class="w-full max-w-[1400px] px-4 lg:px-10 mx-auto flex flex-col min-h-screen text-slate-900 transition-colors duration-300"
+      class="w-full max-w-[1400px] px-0 lg:px-10 mx-auto flex flex-col min-h-screen text-slate-900 transition-colors duration-300"
     >
     <!-- Top App Bar -->
     <header

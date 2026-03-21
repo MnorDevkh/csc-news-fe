@@ -105,8 +105,8 @@ const bookAndChapterLabel = computed(() => {
 </script>
 
 <template>
-  <div class="min-h-[calc(100vh-3.5rem-3.5rem)]  py-8">
-    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+  <div class="min-h-[calc(100vh-3.5rem-3.5rem)] py-4 sm:py-8">
+    <div class="mx-auto max-w-5xl px-0 sm:px-0 lg:px-8">
       <!-- Navigation -->
       <div class="mb-8">
         <button
@@ -138,7 +138,7 @@ const bookAndChapterLabel = computed(() => {
 
       <!-- Chapter Content -->
       <div v-else class="bg-white overflow-hidden shadow-sm rounded-2xl border border-amber-100">
-        <div class="p-6 sm:p-8">
+        <div class="p-4 sm:p-8">
           <div class="border-b border-amber-100 pb-4 mb-5">
             <h1 class="text-2xl sm:text-3xl font-bold leading-tight text-slate-900">
               {{ bookAndChapterLabel || `Chapter ${chapter.chapter_number}` }}
