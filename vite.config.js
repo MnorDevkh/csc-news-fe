@@ -23,12 +23,18 @@ export default defineConfig({
     VitePWA({
       registerType: 'autoUpdate',
       includeAssets: ['logo.svg', 'pwa-192x192.png', 'pwa-512x512.png'],
+      // Enable SW + manifest in dev so beforeinstallprompt can be tested on localhost
+      devOptions: {
+        enabled: true,
+      },
       manifest: {
         name: 'CSC News',
         short_name: 'CSC News',
         description: 'Catholic Cambodia news and daily content.',
         theme_color: '#2563eb',
         background_color: '#ffffff',
+        // Prefer PWA over related Play Store listings when both exist (Android)
+        prefer_related_applications: false,
         // Use full display when installed (no browser/OS chrome around the app)
         display: 'fullscreen',
         display_override: ['fullscreen', 'standalone', 'minimal-ui'],
