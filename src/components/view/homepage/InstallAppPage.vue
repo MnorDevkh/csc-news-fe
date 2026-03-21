@@ -1,8 +1,12 @@
 <script setup>
-import { computed, onMounted, onUnmounted, ref } from 'vue';
+import { computed, onUnmounted, ref } from 'vue';
+import {
+  deferredPrompt,
+  installState,
+  promptPwaInstall,
+} from '@/composables/pwaInstall.js';
 
-const deferredPrompt = ref(null);
-const installState = ref('idle');
+const iosStepsEl = ref(null);
 const manualInstallEl = ref(null);
 const installHelpEl = ref(null);
 /** Which block to briefly highlight after clicking the CTA when there’s no PWA prompt */
@@ -18,8 +22,12 @@ function isSafari() {
   return /^((?!chrome|android).)*safari/i.test(ua);
 }
 
+/** iPhone, iPod, iPad (incl. iPadOS 13+ where Safari may report as Mac) */
 function isIos() {
-  return /iphone|ipad|ipod/i.test(window.navigator.userAgent);
+  const ua = window.navigator.userAgent;
+  if (/iphone|ipad|ipod/i.test(ua)) return true;
+  if (window.navigator.platform === 'MacIntel' && window.navigator.maxTouchPoints > 1) return true;
+  return false;
 }
 
 /** One-tap install API exists only in Chromium-based browsers (Chrome, Edge, etc.), not Safari/Firefox */
@@ -30,22 +38,19 @@ const showManualOnly = computed(() => {
   return false;
 });
 
-async function installApp() {
-  if (!deferredPrompt.value) return;
-
-  installState.value = 'prompting';
-  deferredPrompt.value.prompt();
-  const choiceResult = await deferredPrompt.value.userChoice;
-
-  installState.value = choiceResult.outcome === 'accepted' ? 'accepted' : 'dismissed';
-  deferredPrompt.value = null;
+function installApp() {
+  return promptPwaInstall();
 }
 
 function focusInstallInstructions() {
   window.clearTimeout(highlightTimer);
   const manual = manualInstallEl.value;
+  const ios = iosStepsEl.value;
   const help = installHelpEl.value;
-  if (manual) {
+  if (ios) {
+    ios.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    highlightSection.value = 'ios';
+  } else if (manual) {
     manual.scrollIntoView({ behavior: 'smooth', block: 'center' });
     highlightSection.value = 'manual';
   } else if (help) {
@@ -67,25 +72,8 @@ function onDownloadClick() {
   focusInstallInstructions();
 }
 
-function onBeforeInstallPrompt(event) {
-  event.preventDefault();
-  deferredPrompt.value = event;
-}
-
-function onAppInstalled() {
-  installState.value = 'installed';
-  deferredPrompt.value = null;
-}
-
-onMounted(() => {
-  window.addEventListener('beforeinstallprompt', onBeforeInstallPrompt);
-  window.addEventListener('appinstalled', onAppInstalled);
-});
-
 onUnmounted(() => {
   window.clearTimeout(highlightTimer);
-  window.removeEventListener('beforeinstallprompt', onBeforeInstallPrompt);
-  window.removeEventListener('appinstalled', onAppInstalled);
 });
 </script>
 
@@ -96,16 +84,34 @@ onUnmounted(() => {
       Install CSC News on your phone or computer for a faster local app experience.
     </p>
 
-    <!-- iOS / Safari: no programmatic install API -->
+    <!-- iOS / iPadOS: Add to Home Screen (only supported install path; all iOS browsers use WebKit) -->
     <div
-      v-if="showManualOnly"
+      v-if="isIos()"
+      ref="iosStepsEl"
+      class="rounded-xl bg-slate-50 border border-slate-200 text-slate-800 px-4 py-4 sm:px-5 mb-6 text-sm transition-shadow duration-300"
+      :class="highlightSection === 'ios' ? 'ring-2 ring-blue-400 ring-offset-2' : ''"
+    >
+      <p class="font-semibold text-slate-900 mb-3">Install on iPhone or iPad (Safari)</p>
+      <ol class="list-decimal list-inside space-y-2.5 text-slate-700">
+        <li>Open this page in <strong>Safari</strong> (required for “Add to Home Screen”).</li>
+        <li>Tap the <strong>Share</strong> button (square with an arrow) — bottom bar on iPhone, top on iPad.</li>
+        <li>Scroll and tap <strong>Add to Home Screen</strong>, then <strong>Add</strong>.</li>
+      </ol>
+      <p class="mt-3 text-xs text-slate-600">
+        Chrome or other browsers on iOS still use Apple’s WebKit — use their menu (<strong>Share</strong> or <strong>⋮</strong>) and look for <strong>Add to Home Screen</strong>.
+      </p>
+    </div>
+
+    <!-- Desktop Safari / non‑Chromium: no beforeinstallprompt -->
+    <div
+      v-else-if="showManualOnly"
       ref="manualInstallEl"
       class="rounded-lg bg-amber-50 border border-amber-200 text-amber-900 px-4 py-3 text-sm mb-6 transition-shadow duration-300"
       :class="highlightSection === 'manual' ? 'ring-2 ring-amber-400 ring-offset-2' : ''"
     >
       <p class="font-medium mb-1">This browser doesn’t support the one‑click install button</p>
       <p class="mb-0 text-amber-800">
-        <span v-if="isIos() || isSafari()">Use <strong>Share → Add to Home Screen</strong> (Safari on iPhone/iPad).</span>
+        <span v-if="isSafari()">Use <strong>File → Add to Dock</strong> (Safari on Mac) or the share menu if available.</span>
         <span v-else>Use your browser’s menu: <strong>Install app</strong> or <strong>Install CSC News</strong>.</span>
       </p>
     </div>
@@ -116,7 +122,7 @@ onUnmounted(() => {
       :class="
         canInstall
           ? 'bg-blue-600 text-white hover:bg-blue-700'
-          : showManualOnly
+          : isIos() || showManualOnly
             ? 'bg-amber-600 text-white hover:bg-amber-700'
             : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
       "
@@ -125,6 +131,7 @@ onUnmounted(() => {
       @click="onDownloadClick"
     >
       <template v-if="canInstall">Download / Install App</template>
+      <template v-else-if="isIos()">Show steps (Add to Home Screen)</template>
       <template v-else-if="showManualOnly">Add to Home Screen — how to</template>
       <template v-else>Install help</template>
     </button>
@@ -141,9 +148,9 @@ onUnmounted(() => {
       class="mt-8 pt-6 border-t border-gray-100 text-sm text-gray-600 space-y-2 rounded-lg transition-shadow duration-300"
       :class="highlightSection === 'help' ? 'ring-2 ring-gray-300 ring-offset-2' : ''"
     >
-      <p><strong>Chrome / Edge (desktop or Android):</strong> Menu (⋮) → <strong>Install CSC News</strong> or <strong>Install app</strong>.</p>
-      <p><strong>Why one‑click install may be unavailable:</strong> Only Chromium browsers fire the install event. You need <strong>HTTPS</strong> (or <code class="bg-gray-100 px-1 rounded">localhost</code> for dev), a valid web app manifest, a service worker, and PNG icons — we’ve added 192×512 icons for that. If you already installed the app, uninstall it first to see the prompt again.</p>
-      <p v-if="isIos()"><strong>iPhone/iPad:</strong> In Safari, tap <strong>Share</strong>, then <strong>Add to Home Screen</strong>.</p>
+      <p v-if="!isIos()"><strong>Chrome / Edge (desktop or Android):</strong> Menu (⋮) → <strong>Install CSC News</strong> or <strong>Install app</strong>.</p>
+      <p v-if="!isIos()"><strong>Why one‑click install may be unavailable:</strong> Only Chromium on desktop/Android exposes the install prompt. You need <strong>HTTPS</strong> (or <code class="bg-gray-100 px-1 rounded">localhost</code> for dev), a valid manifest, a registered service worker, and <strong>192×192</strong> and <strong>512×512</strong> PNG icons. Open this site first, then come back here — the prompt can appear after a short moment. If you already installed the app, uninstall it to see the button again.</p>
+      <p v-if="isIos()"><strong>iPhone/iPad:</strong> Apple does not allow websites to show an install popup. <strong>Add to Home Screen</strong> is the supported way to pin CSC News; use Safari for the clearest steps above.</p>
     </div>
   </section>
 </template>
