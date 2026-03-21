@@ -88,69 +88,11 @@
         </RouterView>
       </section>
 
-      <!-- Bottom Navigation (mobile) -->
-      <nav
-        class="md:hidden sticky bottom-0 inset-x-0 border-t border-amber-200/80 /95 backdrop-blur"
-      >
-        <div class="max-w-xl mx-auto flex items-stretch justify-around py-1.5 text-xs">
-          <RouterLink
-            :to="{ name: 'bibleReadHome' }"
-            class="flex flex-col items-center flex-1 py-1.5 text-gray-500 hover:text-blue-600"
-          >
-            <svg class="h-5 w-5 mb-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M3 12l9-9 9 9M5 10v10h5V14h4v6h5V10"
-              />
-            </svg>
-            <span>Home</span>
-          </RouterLink>
-          <RouterLink
-            :to="{ name: 'bibleSearch' }"
-            class="flex flex-col items-center flex-1 py-1.5 text-gray-500 hover:text-blue-600"
-          >
-            <svg class="h-5 w-5 mb-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M21 21l-4.35-4.35M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15z"
-              />
-            </svg>
-            <span>Search</span>
-          </RouterLink>
-          <RouterLink
-            :to="{ name: 'bibleBookmarks' }"
-            class="flex flex-col items-center flex-1 py-1.5 text-gray-500 hover:text-amber-600"
-          >
-            <svg class="h-5 w-5 mb-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M6 4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16l-6-3.5L6 20V4z"
-              />
-            </svg>
-            <span>Saves</span>
-          </RouterLink>
-          <RouterLink
-            :to="{ name: 'bibleSettings' }"
-            class="flex flex-col items-center flex-1 py-1.5 text-gray-500 hover:text-indigo-600"
-          >
-            <svg class="h-5 w-5 mb-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M10.325 4.317a1 1 0 0 1 1.35-.437l.39.195a1 1 0 0 0 .894 0l.39-.195a1 1 0 0 1 1.35.437l.379.758a1 1 0 0 0 .746.54l.842.122a1 1 0 0 1 .884.884l.122.842a1 1 0 0 0 .54.746l.758.379a1 1 0 0 1 .437 1.35l-.195.39a1 1 0 0 0 0 .894l.195.39a1 1 0 0 1-.437 1.35l-.758.379a1 1 0 0 0-.54.746l-.122.842a1 1 0 0 1-.884.884l-.842.122a1 1 0 0 0-.746.54l-.379.758a1 1 0 0 1-1.35.437l-.39-.195a1 1 0 0 0-.894 0l-.39.195a1 1 0 0 1-1.35-.437l-.379-.758a1 1 0 0 0-.746-.54l-.842-.122a1 1 0 0 1-.884-.884l-.122-.842a1 1 0 0 0-.54-.746l-.758-.379a1 1 0 0 1-.437-1.35l.195-.39a1 1 0 0 0 0-.894l-.195-.39a1 1 0 0 1 .437-1.35l.758-.379a1 1 0 0 0 .54-.746l.122-.842a1 1 0 0 1 .884-.884l.842-.122a1 1 0 0 0 .746-.54l.379-.758z"
-              />
-            </svg>
-            <span>Settings</span>
-          </RouterLink>
-        </div>
-      </nav>
+      <MobileBottomNav
+        :items="bibleNavItems"
+        variant="amber"
+        position="sticky"
+      />
     </main>
     </div>
   </div>
@@ -159,6 +101,14 @@
 <script setup>
 import { onMounted } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
+import MobileBottomNav from '@/components/layout/MobileBottomNav.vue'
+
+const bibleNavItems = [
+  { to: { name: 'bibleReadHome' }, label: 'Home', icon: 'home', accent: 'blue' },
+  { to: { name: 'bibleSearch' }, label: 'Search', icon: 'search', accent: 'blue' },
+  { to: { name: 'bibleBookmarks' }, label: 'Saves', icon: 'bookmark', accent: 'amber' },
+  { to: { name: 'bibleSettings' }, label: 'Settings', icon: 'settings', accent: 'indigo' },
+]
 
 onMounted(() => {
   if (typeof document !== 'undefined') {
