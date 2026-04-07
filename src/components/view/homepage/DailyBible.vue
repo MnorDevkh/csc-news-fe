@@ -13,6 +13,29 @@ const props = defineProps({
 const latestReading = ref(null);
 const loading = ref(false);
 
+function extractPreviewText(reading) {
+  const raw = reading?.snippet || reading?.content || '';
+  if (!raw) return '';
+
+  const s = String(raw).trim();
+  // If content is block JSON like admin `NewsForm.vue`, try to pull first text block.
+  if (s.startsWith('[') && s.endsWith(']')) {
+    try {
+      const blocks = JSON.parse(s);
+      if (Array.isArray(blocks)) {
+        const firstText = blocks.find((b) => b && b.type === 'text' && typeof b.html === 'string');
+        if (firstText?.html) {
+          return firstText.html.replace(/<[^>]*>/g, '').trim();
+        }
+      }
+    } catch {
+      // fall through
+    }
+  }
+  // Basic HTML strip for legacy content.
+  return s.replace(/<[^>]*>/g, '').trim();
+}
+
 function mapReadingToCard(reading) {
   if (!reading) return null;
   const reference = reading.reference || reading.title || '';
@@ -30,10 +53,11 @@ function mapReadingToCard(reading) {
 
   return {
     id: reading.id,
+    articleId: reading.article_id || null,
     book: book || 'Daily Reading',
     chapter: chapter || '',
     verse: verse || '',
-    text: reading.snippet || reading.content || '',
+    text: extractPreviewText(reading),
     date: formatDate(reading.reading_date),
   };
 }
@@ -110,7 +134,9 @@ onMounted(() => {
           </p>
         </div>
         <RouterLink
-          :to="{ name: 'dailyBibleDetail', params: { id: latestReading.id } }"
+          :to="latestReading.articleId
+            ? { name: 'articleDetails', params: { id: latestReading.articleId } }
+            : { name: 'dailyBibleDetail', params: { id: latestReading.id } }"
           class="shrink-0 inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium bg-indigo-50 text-indigo-600 hover:bg-indigo-100 hover:text-indigo-700 transition-colors"
         >
           អានលម្អិត
@@ -122,7 +148,9 @@ onMounted(() => {
         class="flex items-center justify-between pt-2 border-t border-gray-100 text-xs"
       >
         <RouterLink
-          :to="{ name: 'dailyBibleDetail', params: { id: latestReading.id } }"
+          :to="latestReading.articleId
+            ? { name: 'articleDetails', params: { id: latestReading.articleId } }
+            : { name: 'dailyBibleDetail', params: { id: latestReading.id } }"
           class="inline-flex items-center text-indigo-600 hover:text-indigo-800 font-medium"
         >
           <span>អានអត្ថបទពេញ</span>

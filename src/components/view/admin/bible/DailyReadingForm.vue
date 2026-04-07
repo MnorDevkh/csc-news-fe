@@ -62,13 +62,21 @@
             placeholder="e.g. John 3:16-18"
           />
         </div>
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">Date</label>
-          <input
-            v-model="form.reading_date"
-            type="date"
-            class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-          />
+      </div>
+
+      <div v-if="linkedArticleId" class="bg-blue-50 border border-blue-100 rounded-lg p-4">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <div class="text-sm font-medium text-blue-800">Linked Article</div>
+            <div class="text-xs text-blue-700 mt-1 break-all">{{ linkedArticleId }}</div>
+          </div>
+          <button
+            type="button"
+            @click="openLinkedArticle"
+            class="shrink-0 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium"
+          >
+            Open Article
+          </button>
         </div>
       </div>
 
@@ -99,6 +107,37 @@
             <option value="active">Active</option>
             <option value="inactive">Inactive</option>
           </select>
+        </div>
+      </div>
+
+      <div class="space-y-2">
+        <label class="block text-sm font-medium text-gray-700 mb-1">Publish</label>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <select
+              v-model="publishMode"
+              @change="onPublishModeChange"
+              class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm"
+            >
+              <option value="public">Public</option>
+              <option value="scheduled">Scheduled</option>
+            </select>
+            <p class="mt-1 text-xs text-gray-400">
+              <template v-if="publishMode === 'public'">Will publish as soon as possible.</template>
+              <template v-else>Will publish when the date/time arrives.</template>
+            </p>
+          </div>
+
+          <div v-if="publishMode === 'scheduled'">
+            <label class="block text-xs font-medium text-gray-600 mb-1">Publish at</label>
+            <div class="text-xs text-gray-500 mb-2">Timezone: Asia/Phnom_Penh</div>
+            <input
+              v-model="form.reading_date"
+              type="datetime-local"
+              required
+              class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+            />
+          </div>
         </div>
       </div>
 
@@ -199,6 +238,8 @@ const pageLoading = ref(false);
 const loadError = ref(null);
 const feedbackMsg = ref('');
 const feedbackType = ref('success');
+const linkedArticleId = ref(null);
+const publishMode = ref('public');
 
 const form = reactive({
   title: '',
@@ -209,21 +250,80 @@ const form = reactive({
   status: 'active',
 });
 
+function nowDateTimeLocalPhnomPenh() {
+  try {
+    const parts = new Intl.DateTimeFormat('sv-SE', {
+      timeZone: 'Asia/Phnom_Penh',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    }).format(new Date()); // "YYYY-MM-DD HH:mm"
+    return parts.replace(' ', 'T');
+  } catch {
+    return '';
+  }
+}
+
+function onPublishModeChange() {
+  if (publishMode.value === 'public') {
+    // Publish ASAP by setting the reading_date to now.
+    form.reading_date = nowDateTimeLocalPhnomPenh();
+  } else {
+    // Let user pick an explicit date/time.
+    if (!form.reading_date) form.reading_date = '';
+  }
+}
+
+function toDateTimeLocalPhnomPenh(value) {
+  if (!value) return '';
+  try {
+    const d = new Date(value);
+    const parts = new Intl.DateTimeFormat('sv-SE', {
+      timeZone: 'Asia/Phnom_Penh',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    }).format(d); // "YYYY-MM-DD HH:mm"
+    return parts.replace(' ', 'T');
+  } catch {
+    return '';
+  }
+}
+
+function openLinkedArticle() {
+  if (!linkedArticleId.value) return;
+  router.push({ name: 'articleDetails', params: { id: linkedArticleId.value } });
+}
+
 onMounted(async () => {
   pageLoading.value = isEditMode.value;
   try {
     if (isEditMode.value) {
       const reading = await DailyReadingService.getReadingById(route.params.id);
+      linkedArticleId.value = reading.article_id || null;
       Object.assign(form, {
         title: reading.title || '',
         reference: reading.reference || '',
         reading_date: reading.reading_date
-          ? reading.reading_date.substring(0, 10)
+          ? toDateTimeLocalPhnomPenh(reading.reading_date)
           : '',
         snippet: reading.snippet || '',
         content: reading.content || '',
         status: reading.status || 'active',
       });
+      publishMode.value = form.reading_date ? 'scheduled' : 'public';
+      if (publishMode.value === 'public' && !form.reading_date) {
+        form.reading_date = nowDateTimeLocalPhnomPenh();
+      }
+    } else {
+      // default: scheduled, but if user wants public they can switch
+      if (!form.reading_date) form.reading_date = '';
     }
   } catch (err) {
     console.error('Error loading daily reading:', err);
@@ -242,13 +342,18 @@ async function handleSubmit() {
     if (!payload.reference) payload.reference = null;
     if (!payload.snippet) payload.snippet = null;
     if (!payload.content) payload.content = null;
+    if (publishMode.value === 'public') {
+      payload.reading_date = nowDateTimeLocalPhnomPenh();
+    }
 
     if (isEditMode.value) {
-      await DailyReadingService.updateReading(route.params.id, payload);
+      const updated = await DailyReadingService.updateReading(route.params.id, payload);
+      linkedArticleId.value = updated?.article_id || linkedArticleId.value;
       feedbackType.value = 'success';
       feedbackMsg.value = 'Daily reading updated successfully!';
     } else {
-      await DailyReadingService.createReading(payload);
+      const created = await DailyReadingService.createReading(payload);
+      linkedArticleId.value = created?.article_id || null;
       feedbackType.value = 'success';
       feedbackMsg.value = 'Daily reading created successfully!';
     }

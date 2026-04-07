@@ -72,7 +72,7 @@ export const MessengerService = {
     formData.append('file', file);
 
     try {
-      const response = await BaseAPI.publicClient.post('/messenger-issues/upload-pdf', formData, {
+      const response = await BaseAPI.publicClient.post('/pdf-files/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

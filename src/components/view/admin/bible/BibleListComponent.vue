@@ -36,13 +36,13 @@
         <thead class="bg-gray-50">
           <tr>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Date
-            </th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
               Title
             </th>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
               Reference
+            </th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Date
             </th>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
               Status
@@ -68,14 +68,14 @@
             :key="reading.id"
             class="hover:bg-gray-50 transition-colors"
           >
-            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-              {{ formatDate(reading.reading_date) }}
-            </td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
               {{ reading.title }}
             </td>
             <td class="px-6 py-4 text-sm text-gray-500">
               {{ reading.reference || '-' }}
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+              {{ formatDate(reading.reading_date) }}
             </td>
             <td class="px-6 py-4 whitespace-nowrap text-sm">
               <span
@@ -145,7 +145,13 @@ function formatDate(value) {
   if (!value) return '';
   try {
     const d = new Date(value);
-    return d.toLocaleDateString();
+    return d.toLocaleString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    });
   } catch {
     return '';
   }
