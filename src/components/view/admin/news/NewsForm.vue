@@ -150,7 +150,7 @@
             </p>
           </div>
 
-          <div v-if="form.status !== 'draft'">
+          <div v-if="form.status === 'scheduled'">
             <label class="block text-sm font-medium text-gray-700 mb-1">Publish at</label>
             <input
               v-model="publishAtLocal"
@@ -342,11 +342,11 @@ const nowLocalString = () => {
 };
 
 const onStatusChange = () => {
-  if (form.status === 'public' && !publishAtLocal.value) {
-    publishAtLocal.value = nowLocalString();
-  }
   if (form.status === 'draft') {
     publishAtLocal.value = '';
+  }
+  if (form.status === 'scheduled' && !publishAtLocal.value) {
+    publishAtLocal.value = nowLocalString();
   }
 };
 
