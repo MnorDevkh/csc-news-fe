@@ -1,6 +1,7 @@
 import axios from 'axios';
+import { getApiBaseUrl } from '@/config/api';
 
-const baseURL = import.meta.env.VITE_API_URL;
+const baseURL = getApiBaseUrl();
 
 const api = axios.create({
   baseURL,
@@ -38,7 +39,7 @@ export async function getPhotos(skip = 0, limit = 100) {
 /**
  * Get presigned URL for a photo by key.
  * GET /photos/{key}/url → { "url": "https://...?X-Amz-..." }
- * @param {string} key - Photo key (e.g. "af12....jpg" or "gallery/af12....jpg")
+ * @param {string} key - Photo key (e.g. "af12....jpg" or "photos/af12....jpg")
  * @returns {Promise<string>} Presigned URL
  */
 export async function getPhotoUrl(key) {

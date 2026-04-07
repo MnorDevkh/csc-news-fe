@@ -1,6 +1,7 @@
 import BaseAPI from './BaseAPI';
+import { getApiBaseUrl } from '@/config/api';
 
-const apiBase = import.meta.env.VITE_API_URL;
+const apiBase = getApiBaseUrl();
 const BASE_URL = `${apiBase}/bibles`;
 const CHAPTER_URL = `${apiBase}/chapters`;
 const language = 'KM';

@@ -1,9 +1,9 @@
 import axios from 'axios';
+import { getApiBaseUrl } from '@/config/api';
 
 class BaseAPI {
   constructor() {
-    // Define the base URL for all services
-    this.baseURL = import.meta.env.VITE_API_URL;
+    this.baseURL = getApiBaseUrl();
 
     // 1. Public Client: For requests that do not require authentication headers
     this.publicClient = axios.create({
