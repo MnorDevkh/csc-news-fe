@@ -34,7 +34,7 @@ export const NewsService = {
 
   async getNewsCategories() {
     try {
-      const response = await BaseAPI.publicClient.get('/categories');
+      const response = await BaseAPI.publicClient.get('/categories/');
       // The API returns a list of category objects. 
       // If the UI expects just names, we might need to map it, 
       // but let's return the full objects and update the UI to handle it.
