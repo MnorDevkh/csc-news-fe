@@ -185,6 +185,17 @@ const router = createRouter({
       component: () => import("@/components/view/ChurchHistoryPage.vue"),
     },
     {
+      path: "/structure",
+      name: "structureIndex",
+      component: () => import("@/components/view/structure/StructureIndexPage.vue"),
+    },
+    {
+      path: "/structure/:slug",
+      name: "structurePage",
+      component: () => import("@/components/view/structure/StructurePageView.vue"),
+      props: true,
+    },
+    {
       path: "/news",
       name: "news",
       redirect: "/",
@@ -463,6 +474,30 @@ const router = createRouter({
           name: "adminChurchHistory",
           component: () =>
             import("@/components/view/admin/church-history/ChurchHistoryForm.vue"),
+        },
+        {
+          path: "structure-pages",
+          children: [
+            {
+              path: "",
+              name: "adminStructurePages",
+              component: () =>
+                import("@/components/view/admin/structure-pages/StructurePageListComponent.vue"),
+            },
+            {
+              path: "create",
+              name: "createStructurePage",
+              component: () =>
+                import("@/components/view/admin/structure-pages/StructurePageForm.vue"),
+            },
+            {
+              path: "edit/:slug",
+              name: "editStructurePage",
+              component: () =>
+                import("@/components/view/admin/structure-pages/StructurePageForm.vue"),
+              props: true,
+            },
+          ],
         },
       ],
     },

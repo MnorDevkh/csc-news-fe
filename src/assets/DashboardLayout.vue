@@ -94,7 +94,8 @@ import {
   TagsOutlined,
   UnorderedListOutlined,
   BookOutlined,
-  HistoryOutlined
+  HistoryOutlined,
+  ApartmentOutlined
 } from '@ant-design/icons-vue';
 import { useAuth } from '../composables/useAuth';
 import { useBibleManagementContext } from '@/composables/useBibleManagementContext';
@@ -125,6 +126,8 @@ const childToParentMap = {
   adminBibleEdit: 'bible',
   createMessengerIssue: 'adminMessengerIssues',
   editMessengerIssue: 'adminMessengerIssues',
+  createStructurePage: 'adminStructurePages',
+  editStructurePage: 'adminStructurePages',
 };
 
 const menuRouteKeys = [
@@ -137,6 +140,7 @@ const menuRouteKeys = [
   'adminGallery',
   'adminSaints',
   'adminChurchHistory',
+  'adminStructurePages',
   'adminPanel',
 ];
 
@@ -218,6 +222,12 @@ const menuItems = reactive([
     icon: () => h(HistoryOutlined),
     label: 'Church History',
     title: 'Church History',
+  },
+  {
+    key: 'adminStructurePages',
+    icon: () => h(ApartmentOutlined),
+    label: 'Structure pages',
+    title: 'Structure pages',
   },
 
   {

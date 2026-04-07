@@ -4,6 +4,7 @@ import router from './routs/index.js'
 import { initPwaInstallListeners } from './composables/pwaInstall.js'
 
 initPwaInstallListeners()
+import 'ant-design-vue/dist/reset.css'
 import './assets/main.css'
 import 'ckeditor5/ckeditor5.css'
 

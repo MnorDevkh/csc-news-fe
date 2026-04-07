@@ -31,8 +31,8 @@ export default defineConfig({
         name: 'CSC News',
         short_name: 'CSC News',
         description: 'Catholic Cambodia news and daily content.',
-        theme_color: '#2563eb',
-        background_color: '#ffffff',
+        theme_color: '#3d6d9e',
+        background_color: '#f7f6f3',
         // Prefer PWA over related Play Store listings when both exist (Android)
         prefer_related_applications: false,
         // Use full display when installed (no browser/OS chrome around the app)

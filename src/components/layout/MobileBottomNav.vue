@@ -1,8 +1,8 @@
 <template>
   <nav
     :class="[
-      'md:hidden inset-x-0 border-t bg-white/95 backdrop-blur z-40',
-      variant === 'amber' ? 'border-amber-200/80' : 'border-gray-200/80',
+      'md:hidden inset-x-0 border-t bg-surface-elevated/95 backdrop-blur-md z-40 shadow-[0_-4px_24px_-8px_rgba(0,0,0,0.08)]',
+      variant === 'amber' ? 'border-amber-200/80' : 'border-stone-200/70',
       position === 'fixed' ? 'fixed bottom-0' : 'sticky bottom-0',
     ]"
     :style="{ paddingBottom: 'max(0.375rem, env(safe-area-inset-bottom))' }"
@@ -78,14 +78,14 @@ function activeClasses(item) {
   const a = item.accent || 'blue'
   if (a === 'amber') return 'text-amber-600'
   if (a === 'indigo') return 'text-indigo-600'
-  return 'text-blue-600'
+  return 'text-primary'
 }
 
 function inactiveClasses(item) {
   const a = item.accent || 'blue'
-  if (a === 'amber') return 'text-gray-500 hover:text-amber-600'
-  if (a === 'indigo') return 'text-gray-500 hover:text-indigo-600'
-  return 'text-gray-500 hover:text-blue-600'
+  if (a === 'amber') return 'text-stone-500 hover:text-amber-600'
+  if (a === 'indigo') return 'text-stone-500 hover:text-indigo-600'
+  return 'text-stone-500 hover:text-primary'
 }
 
 function iconComponent(name) {

@@ -1,11 +1,19 @@
 <script setup>
 import { computed } from 'vue';
 import { RouterView, useRoute } from 'vue-router'
+import { ConfigProvider } from 'ant-design-vue'
 import { LoadingOutlined } from '@ant-design/icons-vue';
 import Menus from './components/view/Menu.vue'
 import Footer from './components/view/Footer.vue'
 import MobileBottomNav from './components/layout/MobileBottomNav.vue'
 import { usePullToRefresh, isPwaDisplayMode, isMobileTouch } from './composables/usePullToRefresh.js'
+
+const antdTheme = {
+  token: {
+    colorPrimary: '#3d6d9e',
+    borderRadiusLG: 12,
+  },
+}
 
 const route = useRoute();
 const isAdminOrLogin = computed(() => {
@@ -56,10 +64,11 @@ const contentPullStyle = computed(() => {
 </script>
 
 <template>
-  <div id="app" class="w-full" :class="{ 'bg-gray-50': !isAdminOrLogin }">
+  <ConfigProvider :theme="antdTheme">
+  <div id="app" class="w-full" :class="{ 'bg-surface': !isAdminOrLogin }">
     <div
       v-if="pullToRefreshEnabled"
-      class="fixed left-0 right-0 top-0 z-[60] pointer-events-none flex justify-center items-start overflow-hidden text-blue-600 transition-[height] duration-75 ease-out"
+      class="fixed left-0 right-0 top-0 z-[60] pointer-events-none flex justify-center items-start overflow-hidden text-primary transition-[height] duration-75 ease-out"
       :style="{ height: `${pullDistance}px` }"
       aria-hidden="true"
     >
@@ -96,4 +105,5 @@ const contentPullStyle = computed(() => {
       />
     </div>
   </div>
+  </ConfigProvider>
 </template>
