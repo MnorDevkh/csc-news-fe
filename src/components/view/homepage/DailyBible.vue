@@ -53,7 +53,6 @@ function mapReadingToCard(reading) {
 
   return {
     id: reading.id,
-    articleId: reading.article_id || null,
     book: book || 'Daily Reading',
     chapter: chapter || '',
     verse: verse || '',
@@ -79,7 +78,10 @@ function formatDate(value) {
 async function loadLatestReading() {
   loading.value = true;
   try {
-    const data = await DailyReadingService.getAllReadings({ limit: 1 });
+    const data = await DailyReadingService.getAllReadings({
+      limit: 1,
+      public_only: true,
+    });
     const items = Array.isArray(data) ? data : data.items || [];
     latestReading.value = mapReadingToCard(items[0]);
   } catch (error) {
@@ -134,9 +136,7 @@ onMounted(() => {
           </p>
         </div>
         <RouterLink
-          :to="latestReading.articleId
-            ? { name: 'articleDetails', params: { id: latestReading.articleId } }
-            : { name: 'dailyBibleDetail', params: { id: latestReading.id } }"
+          :to="{ name: 'dailyBibleDetail', params: { id: latestReading.id } }"
           class="shrink-0 inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium bg-indigo-50 text-indigo-600 hover:bg-indigo-100 hover:text-indigo-700 transition-colors"
         >
           អានលម្អិត
@@ -148,9 +148,7 @@ onMounted(() => {
         class="flex items-center justify-between pt-2 border-t border-gray-100 text-xs"
       >
         <RouterLink
-          :to="latestReading.articleId
-            ? { name: 'articleDetails', params: { id: latestReading.articleId } }
-            : { name: 'dailyBibleDetail', params: { id: latestReading.id } }"
+          :to="{ name: 'dailyBibleDetail', params: { id: latestReading.id } }"
           class="inline-flex items-center text-indigo-600 hover:text-indigo-800 font-medium"
         >
           <span>អានអត្ថបទពេញ</span>

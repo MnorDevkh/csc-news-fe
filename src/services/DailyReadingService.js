@@ -11,9 +11,11 @@ export const DailyReadingService = {
     }
   },
 
-  async getReadingById(id) {
+  async getReadingById(id, params = {}) {
     try {
-      const response = await BaseAPI.publicClient.get(`/daily-bible-readings/${id}`);
+      const response = await BaseAPI.publicClient.get(`/daily-bible-readings/${id}`, {
+        params,
+      });
       return response.data;
     } catch (error) {
       console.error(`Error fetching daily reading ${id}:`, error);

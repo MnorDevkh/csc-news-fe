@@ -1,6 +1,6 @@
 <template>
   <div class="min-h-screen bg-gray-50 pt-4 pb-8 sm:pb-12 font-sans">
-    <div class="max-w-4xl mx-auto px-3 sm:px-6 lg:px-8">
+    <div class="max-w-4xl mx-auto px-3 sm:px-6 lg:px-8 min-w-0 w-full">
       <!-- <button
         @click="$router.back()"
         class="flex items-center text-gray-500 hover:text-blue-600 transition-colors mb-8 group"
@@ -9,7 +9,7 @@
         Back to Daily Readings
       </button> -->
 
-      <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-10 md:p-12">
+      <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-10 md:p-12 min-w-0">
         <div v-if="loading" class="py-12 text-center text-gray-500">
           Loading reading...
         </div>
@@ -24,7 +24,7 @@
           </button>
         </div>
 
-        <div v-else class="space-y-10">
+        <div v-else class="space-y-10 min-w-0">
           <div class="text-center">
             <span class="inline-block px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-sm font-medium mb-4">
               Daily Reading
@@ -38,9 +38,9 @@
           </div>
 
           <div
-            class="prose prose-lg prose-blue max-w-none mx-auto text-gray-800 leading-relaxed font-serif overflow-x-auto"
+            class="prose prose-lg prose-blue max-w-none mx-auto text-gray-800 leading-relaxed font-serif w-full min-w-0 overflow-x-auto overscroll-x-contain"
           >
-            <div v-html="reading.content" />
+            <div class="daily-reading-html min-w-0" v-html="reading.content" />
           </div>
 
           <div class="mt-12 pt-8 border-t border-gray-100 flex justify-center gap-6">
@@ -110,7 +110,9 @@ async function loadReading() {
   loading.value = true;
   error.value = '';
   try {
-    const data = await DailyReadingService.getReadingById(route.params.id);
+    const data = await DailyReadingService.getReadingById(route.params.id, {
+      public_only: true,
+    });
     reading.value = data;
   } catch (err) {
     console.error('Failed to load daily reading', err);
@@ -136,13 +138,20 @@ onMounted(() => {
 </script>
 
 <style scoped>
+/* Tables: constrain layout on narrow viewports; horizontal scroll inside figure, not page */
 .prose :deep(figure.table) {
+  display: block;
   margin: 1.5rem 0;
   max-width: 100%;
+  min-width: 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
 }
 
 .prose :deep(figure.table table) {
   width: 100%;
+  min-width: 0;
   max-width: 100%;
   border-collapse: collapse;
 }
@@ -152,5 +161,26 @@ onMounted(() => {
   padding: 0.5rem 0.75rem;
   border: 1px solid #e5e7eb;
   word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+/* Plain <table> in HTML (no figure wrapper) — prose overflow-x scrolls wide tables */
+.daily-reading-html :deep(table) {
+  width: 100%;
+  max-width: 100%;
+  border-collapse: collapse;
+}
+
+.daily-reading-html :deep(table th),
+.daily-reading-html :deep(table td) {
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 639px) {
+  .prose :deep(figure.table table),
+  .daily-reading-html :deep(table) {
+    table-layout: fixed;
+  }
 }
 </style>

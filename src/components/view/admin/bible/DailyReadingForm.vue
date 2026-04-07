@@ -64,22 +64,6 @@
         </div>
       </div>
 
-      <div v-if="linkedArticleId" class="bg-blue-50 border border-blue-100 rounded-lg p-4">
-        <div class="flex items-start justify-between gap-4">
-          <div>
-            <div class="text-sm font-medium text-blue-800">Linked Article</div>
-            <div class="text-xs text-blue-700 mt-1 break-all">{{ linkedArticleId }}</div>
-          </div>
-          <button
-            type="button"
-            @click="openLinkedArticle"
-            class="shrink-0 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium"
-          >
-            Open Article
-          </button>
-        </div>
-      </div>
-
       <div>
         <label class="block text-sm font-medium text-gray-700 mb-2">Short Description</label>
         <textarea
@@ -238,7 +222,6 @@ const pageLoading = ref(false);
 const loadError = ref(null);
 const feedbackMsg = ref('');
 const feedbackType = ref('success');
-const linkedArticleId = ref(null);
 const publishMode = ref('public');
 
 const form = reactive({
@@ -296,9 +279,14 @@ function toDateTimeLocalPhnomPenh(value) {
   }
 }
 
-function openLinkedArticle() {
-  if (!linkedArticleId.value) return;
-  router.push({ name: 'articleDetails', params: { id: linkedArticleId.value } });
+/** True if this instant is strictly after now (UTC), e.g. scheduled for the future. */
+function isReadingDateInFuture(isoOrValue) {
+  if (!isoOrValue) return false;
+  try {
+    return new Date(isoOrValue).getTime() > Date.now();
+  } catch {
+    return false;
+  }
 }
 
 onMounted(async () => {
@@ -306,7 +294,6 @@ onMounted(async () => {
   try {
     if (isEditMode.value) {
       const reading = await DailyReadingService.getReadingById(route.params.id);
-      linkedArticleId.value = reading.article_id || null;
       Object.assign(form, {
         title: reading.title || '',
         reference: reading.reference || '',
@@ -317,8 +304,9 @@ onMounted(async () => {
         content: reading.content || '',
         status: reading.status || 'active',
       });
-      publishMode.value = form.reading_date ? 'scheduled' : 'public';
-      if (publishMode.value === 'public' && !form.reading_date) {
+      const future = isReadingDateInFuture(reading.reading_date);
+      publishMode.value = future ? 'scheduled' : 'public';
+      if (publishMode.value === 'public') {
         form.reading_date = nowDateTimeLocalPhnomPenh();
       }
     } else {
@@ -347,13 +335,11 @@ async function handleSubmit() {
     }
 
     if (isEditMode.value) {
-      const updated = await DailyReadingService.updateReading(route.params.id, payload);
-      linkedArticleId.value = updated?.article_id || linkedArticleId.value;
+      await DailyReadingService.updateReading(route.params.id, payload);
       feedbackType.value = 'success';
       feedbackMsg.value = 'Daily reading updated successfully!';
     } else {
-      const created = await DailyReadingService.createReading(payload);
-      linkedArticleId.value = created?.article_id || null;
+      await DailyReadingService.createReading(payload);
       feedbackType.value = 'success';
       feedbackMsg.value = 'Daily reading created successfully!';
     }

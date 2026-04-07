@@ -96,7 +96,11 @@ async function loadReadings(page = 1) {
   try {
     const limit = pageSize.value;
     const skip = (page - 1) * limit;
-    const data = await DailyReadingService.getAllReadings({ skip, limit });
+    const data = await DailyReadingService.getAllReadings({
+      skip,
+      limit,
+      public_only: true,
+    });
 
     if (Array.isArray(data)) {
       readings.value = data;
