@@ -1,8 +1,8 @@
 <template>
-  <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200 max-w-4xl mx-auto">
+  <div class="bg-white rounded-2xl shadow-sm ring-1 ring-gray-100 p-6 md:p-8 max-w-4xl mx-auto">
     <div class="flex items-center justify-between mb-6">
-      <h2 class="text-2xl font-bold text-gray-800">{{ isEditMode ? 'Edit Article' : 'Create Article' }}</h2>
-      <button @click="$router.push({ name: 'adminNews' })" class="text-gray-500 hover:text-gray-700">
+      <h2 class="text-xl font-bold text-gray-900">{{ isEditMode ? 'Edit Article' : 'Create Article' }}</h2>
+      <button @click="$router.push({ name: 'adminNews' })" class="text-gray-400 hover:text-gray-600 text-sm font-medium hover:bg-gray-100 px-3 py-1.5 rounded-lg transition-all">
         Cancel
       </button>
     </div>
@@ -10,17 +10,17 @@
     <form @submit.prevent="handleSubmit" class="space-y-6">
       <!-- Title -->
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1">Title</label>
+        <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Title</label>
         <input v-model="form.title" type="text" required
-          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+          class="w-full px-4 py-2.5 border border-gray-200 bg-gray-50/80 rounded-xl focus:ring-2 focus:ring-[#1a365d]/10 focus:border-[#1a365d] focus:bg-white outline-none text-sm transition-all"
           placeholder="Enter article title" />
       </div>
 
       <!-- Category -->
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1">Category</label>
+        <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Category</label>
         <select v-model="form.category_id" required
-          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+          class="w-full px-4 py-2.5 border border-gray-200 bg-gray-50/80 rounded-xl focus:ring-2 focus:ring-[#1a365d]/10 focus:border-[#1a365d] focus:bg-white outline-none text-sm transition-all cursor-pointer">
           <option value="" disabled>Select a category</option>
           <option v-for="cat in categories" :key="cat.id" :value="cat.id">
             {{ cat.name }}
@@ -30,9 +30,9 @@
 
       <!-- Thumbnail (cover-style picker) -->
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1">Thumbnail</label>
+        <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Thumbnail</label>
         <div
-          class="rounded-lg border-2 border-dashed min-h-[140px] flex items-center justify-center bg-gray-50/80 transition-colors cursor-pointer hover:border-blue-400 hover:bg-blue-50/30"
+          class="rounded-xl border-2 border-dashed min-h-[140px] flex items-center justify-center bg-gray-50/80 transition-all cursor-pointer hover:border-[#1a365d]/40 hover:bg-[#1a365d]/[0.03]"
           :class="thumbnailUrl ? 'border-gray-200' : 'border-gray-300'"
           @click="openThumbnailModal"
         >
@@ -60,16 +60,16 @@
 
       <!-- Excerpt -->
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1">Excerpt</label>
+        <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Excerpt</label>
         <textarea v-model="form.excerpt" rows="2"
-          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+          class="w-full px-4 py-2.5 border border-gray-200 bg-gray-50/80 rounded-xl focus:ring-2 focus:ring-[#1a365d]/10 focus:border-[#1a365d] focus:bg-white outline-none text-sm transition-all"
           placeholder="Brief summary used in listings"></textarea>
       </div>
 
       <!-- Block-based Content -->
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1">Content</label>
-        <p class="text-xs text-gray-500 mb-2">Add content blocks and images in any order. Use the buttons below to add more.</p>
+        <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Content</label>
+        <p class="text-xs text-gray-400 mb-3">Add content blocks and images in any order. Use the buttons below to add more.</p>
         <div class="space-y-4">
           <div
             v-for="(block, index) in contentBlocks"
@@ -133,11 +133,11 @@
       <div class="space-y-4">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Status</label>
             <select
               v-model="form.status"
               @change="onStatusChange"
-              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm"
+              class="w-full px-4 py-2.5 border border-gray-200 bg-gray-50/80 rounded-xl focus:ring-2 focus:ring-[#1a365d]/10 focus:border-[#1a365d] focus:bg-white outline-none text-sm transition-all cursor-pointer"
             >
               <option value="draft">Draft</option>
               <option value="scheduled">Scheduled</option>
@@ -151,12 +151,12 @@
           </div>
 
           <div v-if="form.status === 'scheduled'">
-            <label class="block text-sm font-medium text-gray-700 mb-1">Publish at</label>
+            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Publish at</label>
             <input
               v-model="publishAtLocal"
               type="datetime-local"
               :required="form.status === 'scheduled'"
-              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm"
+              class="w-full px-4 py-2.5 border border-gray-200 bg-gray-50/80 rounded-xl focus:ring-2 focus:ring-[#1a365d]/10 focus:border-[#1a365d] focus:bg-white outline-none text-sm transition-all"
             />
             <p class="mt-1 text-xs text-gray-400">
               <template v-if="form.status === 'scheduled'">Required. The article goes live at this time.</template>
@@ -174,9 +174,9 @@
       </div>
 
       <!-- Actions -->
-      <div class="flex justify-end pt-4 border-t border-gray-100">
+      <div class="flex justify-end pt-6 border-t border-gray-100">
         <button type="submit" :disabled="isSubmitting"
-          class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition-colors flex items-center gap-2">
+          class="inline-flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-[#1a365d] to-[#2a4a7f] text-white text-sm font-medium rounded-xl shadow-md shadow-[#1a365d]/15 hover:shadow-lg hover:-translate-y-0.5 transition-all disabled:opacity-60 disabled:transform-none">
           <span v-if="isSubmitting" class="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full"></span>
           {{ isEditMode ? 'Update Article' : 'Create Article' }}
         </button>

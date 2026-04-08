@@ -1,33 +1,33 @@
 <template>
-    <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+    <div class="bg-white rounded-2xl shadow-sm ring-1 ring-gray-100 overflow-hidden">
         <!-- Header -->
-        <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center p-6 pb-0 gap-4">
             <div>
-                <h2 class="text-2xl font-bold text-gray-800">News & Articles</h2>
-                <p class="text-gray-500 text-sm">Manage all news content and publications</p>
+                <h2 class="text-xl font-bold text-gray-900">News & Articles</h2>
+                <p class="text-gray-400 text-sm mt-0.5">Manage all news content and publications</p>
             </div>
             <button @click="router.push({ name: 'createNews' })"
-                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 font-medium transition-colors">
+                class="inline-flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-[#1a365d] to-[#2a4a7f] text-white text-sm font-medium rounded-xl shadow-md shadow-[#1a365d]/15 hover:shadow-lg hover:-translate-y-0.5 transition-all">
                 <PlusOutlined />
                 <span>Create Article</span>
             </button>
         </div>
 
         <!-- Filters -->
-        <div class="flex flex-col sm:flex-row gap-4 mb-6">
+        <div class="flex flex-col sm:flex-row gap-3 p-6">
             <div class="relative flex-1">
-                <SearchOutlined class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                <SearchOutlined class="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
                 <input
                     v-model="searchQuery"
                     type="text"
                     placeholder="Search articles by title..."
-                    class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-100 focus:border-blue-500 outline-none transition-all"
+                    class="w-full pl-11 pr-4 py-2.5 border border-gray-200 bg-gray-50/80 rounded-xl focus:ring-2 focus:ring-[#1a365d]/10 focus:border-[#1a365d] focus:bg-white outline-none transition-all text-sm"
                     @keyup.enter="onFilterChange"
                 >
             </div>
             <select
                 v-model="selectedCategoryId"
-                class="border border-gray-300 rounded-lg px-4 py-2 bg-white focus:ring-2 focus:ring-blue-100 outline-none cursor-pointer"
+                class="border border-gray-200 bg-gray-50/80 rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-[#1a365d]/10 focus:border-[#1a365d] focus:bg-white outline-none cursor-pointer text-sm transition-all"
                 @change="onFilterChange"
             >
                 <option value="">All Categories</option>
@@ -43,80 +43,81 @@
 
         <!-- Table -->
         <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
-                    <tr>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <table class="min-w-full divide-y divide-gray-100">
+                <thead>
+                    <tr class="bg-gray-50/80">
+                        <th class="px-6 py-3.5 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
                             Article</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th class="px-6 py-3.5 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
                             Category</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th class="px-6 py-3.5 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
                             Author</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Date
-                        </th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Status
-                        </th>
-                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th class="px-6 py-3.5 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                            Date</th>
+                        <th class="px-6 py-3.5 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                            Status</th>
+                        <th class="px-6 py-3.5 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider">
                             Actions</th>
                     </tr>
                 </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
-                    <tr v-for="article in articles" :key="article.id" class="hover:bg-gray-50 transition-colors">
+                <tbody class="divide-y divide-gray-50">
+                    <tr v-for="article in articles" :key="article.id" class="hover:bg-gray-50/60 transition-colors">
                         <td class="px-6 py-4">
-                            <div class="flex items-center">
-                                <div class="h-10 w-10 flex-shrink-0" v-if="article.thumbnail">
-                                    <img class="h-10 w-10 rounded-lg object-cover" :src="article.thumbnail" alt="" />
+                            <div class="flex items-center gap-3">
+                                <div class="h-11 w-11 flex-shrink-0 rounded-xl overflow-hidden ring-1 ring-gray-100" v-if="article.thumbnail">
+                                    <img class="h-11 w-11 object-cover" :src="article.thumbnail" alt="" />
                                 </div>
-                                <div class="ml-4">
-                                    <div class="text-sm font-medium text-gray-900 line-clamp-1">{{ article.title }}
-                                    </div>
-                                    <div class="text-xs text-gray-500 line-clamp-1">{{ article.excerpt }}</div>
+                                <div class="h-11 w-11 flex-shrink-0 rounded-xl bg-[#1a365d]/5 flex items-center justify-center" v-else>
+                                    <FileTextOutlined class="text-[#1a365d]/40" />
+                                </div>
+                                <div class="min-w-0">
+                                    <div class="text-sm font-semibold text-gray-900 line-clamp-1">{{ article.title }}</div>
+                                    <div class="text-xs text-gray-400 line-clamp-1 mt-0.5">{{ article.excerpt }}</div>
                                 </div>
                             </div>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <span
-                                class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                            <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold bg-[#1a365d]/8 text-[#1a365d]">
                                 {{ article.category?.name || 'Uncategorized' }}
                             </span>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                             {{ article.author }}
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">
                             {{ formatDate(article.publish_at || article.created_at) }}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
                             <span
                                 v-if="articleEffectiveStatus(article) === 'public'"
-                                class="text-green-600 text-xs font-bold flex items-center gap-1"
+                                class="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg"
                             >
-                                <span class="w-1.5 h-1.5 rounded-full bg-green-600"></span>
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
                                 Public
                             </span>
                             <span
                                 v-else-if="articleEffectiveStatus(article) === 'scheduled'"
-                                class="text-blue-600 text-xs font-bold flex items-center gap-1"
+                                class="inline-flex items-center gap-1.5 text-xs font-semibold text-[#1a365d] bg-[#1a365d]/8 px-2.5 py-1 rounded-lg"
                             >
-                                <span class="w-1.5 h-1.5 rounded-full bg-blue-600"></span>
+                                <span class="w-1.5 h-1.5 rounded-full bg-[#1a365d]"></span>
                                 Scheduled
                             </span>
                             <span
                                 v-else
-                                class="text-gray-500 text-xs font-bold flex items-center gap-1"
+                                class="inline-flex items-center gap-1.5 text-xs font-semibold text-gray-500 bg-gray-100 px-2.5 py-1 rounded-lg"
                             >
-                                <span class="w-1.5 h-1.5 rounded-full bg-gray-500"></span>
+                                <span class="w-1.5 h-1.5 rounded-full bg-gray-400"></span>
                                 Draft
                             </span>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                            <div class="flex justify-end gap-2">
-                                <button @click="$router.push({ name: 'editNews', params: { id: article.id } })" class="text-blue-600 hover:text-blue-900 p-1 hover:bg-blue-50 rounded">
+                            <div class="flex justify-end gap-1">
+                                <button @click="$router.push({ name: 'editNews', params: { id: article.id } })"
+                                    class="p-2 text-gray-400 hover:text-[#1a365d] hover:bg-[#1a365d]/5 rounded-lg transition-all">
                                     <EditOutlined />
                                 </button>
-                                <button @click="deleteArticle(article.id)" class="text-red-600 hover:text-red-900 p-1 hover:bg-red-50 rounded">
+                                <button @click="deleteArticle(article.id)"
+                                    class="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all">
                                     <DeleteOutlined />
                                 </button>
                             </div>
@@ -127,7 +128,7 @@
         </div>
 
         <!-- Pagination -->
-        <div class="mt-4 flex justify-end">
+        <div class="p-6 pt-4 flex justify-end border-t border-gray-50">
             <a-pagination
                 v-model:current="currentPage"
                 :total="pagination.total_elements"
@@ -142,7 +143,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import { PlusOutlined, SearchOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons-vue';
+import { PlusOutlined, SearchOutlined, EditOutlined, DeleteOutlined, FileTextOutlined } from '@ant-design/icons-vue';
 import { NewsService } from '@/services/NewsService';
 import { useRouter } from 'vue-router';
 

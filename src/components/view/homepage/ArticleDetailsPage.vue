@@ -105,7 +105,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="article-details min-h-screen bg-gray-50/80">
+  <div class="article-details min-h-screen bg-[#f8f9fa]">
     <!-- Reading progress bar -->
     <div
       v-if="article"
@@ -113,7 +113,7 @@ onUnmounted(() => {
       aria-hidden="true"
     >
       <div
-        class="h-full bg-blue-600 transition-[width] duration-150"
+        class="h-full bg-gradient-to-r from-[#1a365d] to-[#d4a853] transition-[width] duration-150"
         :style="{ width: readProgress + '%' }"
       />
     </div>
@@ -123,7 +123,7 @@ onUnmounted(() => {
       <!-- Loading State -->
       <div
         v-if="isLoading"
-        class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden animate-pulse"
+        class="bg-white rounded-2xl shadow-sm ring-1 ring-gray-100 overflow-hidden animate-pulse"
       >
         <div class="aspect-video w-full bg-gray-200" />
         <div class="p-6 sm:p-10 space-y-5">
@@ -138,7 +138,7 @@ onUnmounted(() => {
       <!-- Error State -->
       <div
         v-else-if="hasError"
-        class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-10 md:p-12 text-center"
+        class="bg-white rounded-2xl shadow-sm ring-1 ring-gray-100 p-4 sm:p-10 md:p-12 text-center"
       >
         <ExclamationCircleOutlined class="text-5xl text-gray-300 mb-4 block mx-auto" aria-hidden="true" />
         <p class="text-gray-700 text-lg font-medium mb-2">Failed to load article.</p>
@@ -147,14 +147,14 @@ onUnmounted(() => {
           <button
             type="button"
             @click="loadArticle"
-            class="inline-flex items-center gap-2 px-5 py-2.5 bg-gray-100 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-200 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            class="inline-flex items-center gap-2 px-5 py-2.5 bg-gray-100 text-gray-700 text-sm font-medium rounded-xl hover:bg-gray-200 transition-colors focus:outline-none focus:ring-2 focus:ring-[#1a365d]/20 focus:ring-offset-2"
           >
             <ReloadOutlined /> Retry
           </button>
           <button
             type="button"
             @click="router.back()"
-            class="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            class="inline-flex items-center gap-2 px-5 py-2.5 bg-[#1a365d] text-white text-sm font-medium rounded-xl hover:bg-[#2a4a7f] transition-colors focus:outline-none focus:ring-2 focus:ring-[#1a365d]/30 focus:ring-offset-2 shadow-sm"
           >
             <ArrowLeftOutlined /> Go Back
           </button>
@@ -164,7 +164,7 @@ onUnmounted(() => {
       <!-- Article Content -->
       <article
         v-else-if="article"
-        class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden"
+        class="bg-white rounded-2xl shadow-sm ring-1 ring-gray-100 overflow-hidden"
       >
         <!-- Hero Image -->
         <header class="relative aspect-video w-full overflow-hidden">
@@ -174,7 +174,7 @@ onUnmounted(() => {
             :alt="article.title"
             class="w-full h-full object-cover"
           />
-          <div v-else class="w-full h-full bg-gradient-to-br from-blue-600 to-indigo-700" />
+          <div v-else class="w-full h-full bg-gradient-to-br from-[#1a365d] to-[#2a4a7f]" />
           <div
             class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent"
             aria-hidden="true"
@@ -183,7 +183,7 @@ onUnmounted(() => {
             <div class="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-white/80 mb-4">
               <span
                 v-if="article.category?.name"
-                class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/20 backdrop-blur-sm font-medium"
+                class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#d4a853]/80 backdrop-blur-sm font-semibold shadow-sm text-white"
               >
                 <TagOutlined /> {{ article.category.name }}
               </span>
@@ -208,7 +208,7 @@ onUnmounted(() => {
           <!-- Lead / Excerpt -->
           <p
             v-if="article.excerpt"
-            class="article-lead text-lg sm:text-xl text-gray-600 leading-relaxed mb-10 pl-4 border-l-4 border-blue-500"
+            class="article-lead text-lg sm:text-xl text-gray-600 leading-relaxed mb-10 pl-4 border-l-4 border-[#d4a853]"
           >
             {{ article.excerpt }}
           </p>
@@ -256,7 +256,7 @@ onUnmounted(() => {
               <span
                 v-for="tag in article.tags.split(',')"
                 :key="tag.trim()"
-                class="inline-flex items-center px-3 py-1.5 rounded-lg text-sm font-medium bg-blue-50 text-blue-700 hover:bg-blue-100 transition-colors"
+                class="inline-flex items-center px-3 py-1.5 rounded-lg text-sm font-medium bg-[#1a365d]/8 text-[#1a365d] hover:bg-[#1a365d]/12 transition-colors"
               >
                 #{{ tag.trim() }}
               </span>
@@ -268,7 +268,7 @@ onUnmounted(() => {
             <button
               type="button"
               @click="router.back()"
-              class="inline-flex items-center gap-2 text-gray-500 hover:text-blue-600 text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded"
+              class="inline-flex items-center gap-2 text-gray-500 hover:text-[#1a365d] text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-[#1a365d]/20 focus:ring-offset-2 rounded-lg px-3 py-1.5 hover:bg-[#1a365d]/5"
             >
               <ArrowLeftOutlined class="text-xs" /> Back to list
             </button>
@@ -277,7 +277,7 @@ onUnmounted(() => {
               <button
                 type="button"
                 @click="handleShare"
-                class="h-9 w-9 rounded-full bg-gray-100 text-gray-600 hover:bg-blue-600 hover:text-white flex items-center justify-center transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                class="h-9 w-9 rounded-full bg-gray-100 text-gray-600 hover:bg-[#1a365d] hover:text-white flex items-center justify-center transition-all focus:outline-none focus:ring-2 focus:ring-[#1a365d]/30 focus:ring-offset-2"
                 :title="shareCopied ? 'Copied' : 'Share article'"
               >
                 <ShareAltOutlined class="text-base" />
@@ -321,12 +321,12 @@ onUnmounted(() => {
   margin-bottom: 1rem;
 }
 .article-body :deep(a) {
-  color: #2563eb;
+  color: #1a365d;
   text-decoration: underline;
   text-underline-offset: 2px;
 }
 .article-body :deep(a:hover) {
-  color: #1d4ed8;
+  color: #d4a853;
 }
 .article-body :deep(ul),
 .article-body :deep(ol) {
@@ -345,7 +345,7 @@ onUnmounted(() => {
   color: #374151;
 }
 .article-body :deep(blockquote) {
-  border-left: 4px solid #d1d5db;
+  border-left: 4px solid #d4a853;
   padding-left: 1rem;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;

@@ -1,8 +1,8 @@
 <template>
   <nav
     :class="[
-      'md:hidden inset-x-0 border-t bg-surface-elevated/95 backdrop-blur-md z-40 shadow-[0_-4px_24px_-8px_rgba(0,0,0,0.08)]',
-      variant === 'amber' ? 'border-amber-200/80' : 'border-stone-200/70',
+      'md:hidden inset-x-0 border-t bg-white/90 backdrop-blur-xl z-40 shadow-[0_-4px_24px_-8px_rgba(26,54,93,0.08)]',
+      variant === 'amber' ? 'border-amber-200/80' : 'border-gray-200/70',
       position === 'fixed' ? 'fixed bottom-0' : 'sticky bottom-0',
     ]"
     :style="{ paddingBottom: 'max(0.375rem, env(safe-area-inset-bottom))' }"
@@ -18,12 +18,14 @@
       >
         <a
           :href="href"
-          class="flex flex-col items-center flex-1 py-1.5 transition-colors"
+          class="relative flex flex-col items-center flex-1 py-2 transition-all duration-200"
           :class="navIsActive(item, isActive) ? activeClasses(item) : inactiveClasses(item)"
           @click="navigate"
         >
-          <component :is="iconComponent(item.icon)" class="h-5 w-5 mb-0.5" />
-          <span>{{ item.label }}</span>
+          <component :is="iconComponent(item.icon)" class="h-5 w-5 mb-1" />
+          <span class="text-[10px] font-medium">{{ item.label }}</span>
+          <!-- Active indicator dot -->
+          <span v-if="navIsActive(item, isActive)" class="absolute bottom-0 w-1 h-1 rounded-full bg-[#d4a853]"></span>
         </a>
       </RouterLink>
     </div>
@@ -78,14 +80,14 @@ function activeClasses(item) {
   const a = item.accent || 'blue'
   if (a === 'amber') return 'text-amber-600'
   if (a === 'indigo') return 'text-indigo-600'
-  return 'text-primary'
+  return 'text-[#1a365d] font-semibold'
 }
 
 function inactiveClasses(item) {
   const a = item.accent || 'blue'
-  if (a === 'amber') return 'text-stone-500 hover:text-amber-600'
-  if (a === 'indigo') return 'text-stone-500 hover:text-indigo-600'
-  return 'text-stone-500 hover:text-primary'
+  if (a === 'amber') return 'text-gray-400 hover:text-amber-600'
+  if (a === 'indigo') return 'text-gray-400 hover:text-indigo-600'
+  return 'text-gray-400 hover:text-[#1a365d]'
 }
 
 function iconComponent(name) {

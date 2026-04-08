@@ -1,120 +1,166 @@
 <template>
   <div>
-    <h1 class="text-3xl font-bold text-gray-900">Dashboard</h1>
+    <!-- Page Header -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+      <div>
+        <h1 class="text-2xl font-bold text-gray-900">Dashboard</h1>
+        <p class="text-sm text-gray-500 mt-1">Welcome back! Here's an overview of your content.</p>
+      </div>
+      <div class="flex items-center gap-3">
+        <router-link :to="{ name: 'createNews' }"
+          class="inline-flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-[#1a365d] to-[#2a4a7f] text-white text-sm font-medium rounded-xl shadow-md shadow-[#1a365d]/15 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200">
+          <PlusOutlined />
+          New Article
+        </router-link>
+      </div>
+    </div>
 
     <!-- Analytics Cards -->
-    <div class="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-      <div class="rounded-2xl bg-white p-6 shadow-lg">
-        <div class="flex items-center justify-between">
-          <div>
-            <p class="text-sm font-medium text-gray-500">Total Revenue</p>
-            <p class="text-2xl font-bold text-gray-900">$45,231.89</p>
+    <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 mb-8">
+      <div class="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-gray-100 hover:shadow-md transition-shadow group">
+        <div class="flex items-center justify-between mb-3">
+          <div class="h-11 w-11 rounded-xl bg-[#1a365d]/8 flex items-center justify-center group-hover:bg-[#1a365d]/12 transition-colors">
+            <FileTextOutlined class="text-lg text-[#1a365d]" />
           </div>
-          <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-100 text-blue-600">
-            <i class="fas fa-dollar-sign text-xl"></i>
-          </div>
+          <span class="text-xs font-medium text-emerald-600 bg-emerald-50 px-2 py-1 rounded-lg">Live</span>
         </div>
-        <p class="mt-2 text-sm text-green-600">+20.1% from last month</p>
+        <p class="text-sm font-medium text-gray-500 mb-1">Published Articles</p>
+        <p class="text-2xl font-bold text-gray-900">{{ stats.articles }}</p>
       </div>
-      <div class="rounded-2xl bg-white p-6 shadow-lg">
-        <div class="flex items-center justify-between">
-          <div>
-            <p class="text-sm font-medium text-gray-500">Subscriptions</p>
-            <p class="text-2xl font-bold text-gray-900">+2350</p>
+
+      <div class="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-gray-100 hover:shadow-md transition-shadow group">
+        <div class="flex items-center justify-between mb-3">
+          <div class="h-11 w-11 rounded-xl bg-[#d4a853]/10 flex items-center justify-center group-hover:bg-[#d4a853]/15 transition-colors">
+            <TagsOutlined class="text-lg text-[#d4a853]" />
           </div>
-          <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-purple-100 text-purple-600">
-            <i class="fas fa-users text-xl"></i>
-          </div>
+          <span class="text-xs font-medium text-[#d4a853] bg-[#d4a853]/10 px-2 py-1 rounded-lg">Active</span>
         </div>
-        <p class="mt-2 text-sm text-green-600">+180.1% from last month</p>
+        <p class="text-sm font-medium text-gray-500 mb-1">Categories</p>
+        <p class="text-2xl font-bold text-gray-900">{{ stats.categories }}</p>
       </div>
-      <div class="rounded-2xl bg-white p-6 shadow-lg">
-        <div class="flex items-center justify-between">
-          <div>
-            <p class="text-sm font-medium text-gray-500">Sales</p>
-            <p class="text-2xl font-bold text-gray-900">+12,234</p>
-          </div>
-          <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-orange-100 text-orange-600">
-            <i class="fas fa-shopping-cart text-xl"></i>
+
+      <div class="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-gray-100 hover:shadow-md transition-shadow group">
+        <div class="flex items-center justify-between mb-3">
+          <div class="h-11 w-11 rounded-xl bg-violet-100/80 flex items-center justify-center group-hover:bg-violet-100 transition-colors">
+            <PictureOutlined class="text-lg text-violet-600" />
           </div>
         </div>
-        <p class="mt-2 text-sm text-green-600">+19% from last month</p>
+        <p class="text-sm font-medium text-gray-500 mb-1">Media Files</p>
+        <p class="text-2xl font-bold text-gray-900">{{ stats.media }}</p>
       </div>
-      <div class="rounded-2xl bg-white p-6 shadow-lg">
-        <div class="flex items-center justify-between">
-          <div>
-            <p class="text-sm font-medium text-gray-500">Active Now</p>
-            <p class="text-2xl font-bold text-gray-900">+573</p>
-          </div>
-          <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-red-500/20 text-red-500">
-            <i class="fas fa-chart-line text-xl"></i>
+
+      <div class="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-gray-100 hover:shadow-md transition-shadow group">
+        <div class="flex items-center justify-between mb-3">
+          <div class="h-11 w-11 rounded-xl bg-sky-100/80 flex items-center justify-center group-hover:bg-sky-100 transition-colors">
+            <ReadOutlined class="text-lg text-sky-600" />
           </div>
         </div>
-        <p class="mt-2 text-sm text-gray-500">+201 since last hour</p>
+        <p class="text-sm font-medium text-gray-500 mb-1">Bible Readings</p>
+        <p class="text-2xl font-bold text-gray-900">{{ stats.readings }}</p>
       </div>
     </div>
 
-    <!-- Chart and User Activity -->
-    <div class="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-3">
-      <!-- Chart Widget -->
-      <div class="rounded-2xl bg-white p-6 shadow-lg lg:col-span-2">
-        <h3 class="text-lg font-semibold">Sales Overview</h3>
-        <!-- Placeholder for a chart library like Chart.js or ApexCharts -->
-        <div class="mt-4 flex h-80 items-center justify-center rounded-lg bg-gray-100 text-gray-500">
-          [Chart Component Here]
-        </div>
-      </div>
+    <!-- Content Grid -->
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
 
-      <!-- User Activity Area -->
-      <div class="rounded-2xl bg-white p-6 shadow-lg">
-        <h3 class="text-lg font-semibold">Recent Activity</h3>
-        <ul class="mt-4 space-y-4">
-          <li v-for="i in 5" :key="i" class="flex items-start gap-4">
-            <img :src="`https://i.pravatar.cc/40?u=${i}`" class="h-10 w-10 rounded-full" />
-            <div>
-              <p class="text-sm font-medium">
-                <span class="font-bold">User {{ i }}</span> purchased a new plan.
-              </p>
-              <p class="text-xs text-gray-500">{{ i * 3 }} minutes ago</p>
+      <!-- Quick Actions -->
+      <div class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-100 lg:col-span-2">
+        <h3 class="text-lg font-bold text-gray-900 mb-5">Quick Actions</h3>
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+          <router-link v-for="action in quickActions" :key="action.name" :to="action.to"
+            class="flex flex-col items-center gap-3 p-4 rounded-xl bg-gray-50/80 hover:bg-[#1a365d]/5 border border-transparent hover:border-[#1a365d]/10 transition-all duration-200 group cursor-pointer">
+            <div class="h-10 w-10 rounded-xl flex items-center justify-center transition-colors"
+              :class="action.iconBg">
+              <component :is="action.icon" class="text-base" :class="action.iconColor" />
             </div>
-          </li>
-        </ul>
+            <span class="text-xs font-medium text-gray-600 group-hover:text-[#1a365d] text-center transition-colors">{{ action.name }}</span>
+          </router-link>
+        </div>
       </div>
-    </div>
 
-    <!-- Table Widget -->
-    <div class="mt-8 rounded-2xl bg-white p-6 shadow-lg">
-      <div class="flex items-center justify-between">
-        <h3 class="text-lg font-semibold">Recent Orders</h3>
-        <button class="rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700">
-          View All
-        </button>
+      <!-- Recent Activity -->
+      <div class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-100">
+        <h3 class="text-lg font-bold text-gray-900 mb-5">System Info</h3>
+        <div class="space-y-4">
+          <div class="flex items-center gap-3 p-3 rounded-xl bg-gray-50/80">
+            <div class="h-8 w-8 rounded-lg bg-emerald-100 flex items-center justify-center">
+              <CheckCircleOutlined class="text-emerald-600 text-sm" />
+            </div>
+            <div class="flex-1 min-w-0">
+              <p class="text-sm font-medium text-gray-800">System Status</p>
+              <p class="text-xs text-emerald-600">All services operational</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-3 p-3 rounded-xl bg-gray-50/80">
+            <div class="h-8 w-8 rounded-lg bg-[#1a365d]/10 flex items-center justify-center">
+              <GlobalOutlined class="text-[#1a365d] text-sm" />
+            </div>
+            <div class="flex-1 min-w-0">
+              <p class="text-sm font-medium text-gray-800">Version</p>
+              <p class="text-xs text-gray-500">CSC News v2.0</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-3 p-3 rounded-xl bg-gray-50/80">
+            <div class="h-8 w-8 rounded-lg bg-[#d4a853]/10 flex items-center justify-center">
+              <ClockCircleOutlined class="text-[#d4a853] text-sm" />
+            </div>
+            <div class="flex-1 min-w-0">
+              <p class="text-sm font-medium text-gray-800">Last Updated</p>
+              <p class="text-xs text-gray-500">{{ new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) }}</p>
+            </div>
+          </div>
+        </div>
       </div>
-      <table class="mt-4 w-full text-left">
-        <thead>
-          <tr class="border-b text-sm text-gray-500">
-            <th class="py-3 font-medium">Invoice</th>
-            <th class="py-3 font-medium">Customer</th>
-            <th class="py-3 font-medium">Status</th>
-            <th class="py-3 font-medium">Amount</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="i in 4" :key="i" class="border-b">
-            <td class="py-4 font-medium text-gray-800">INV-00{{ i }}</td>
-            <td class="py-4 text-gray-600">Customer {{ i }}</td>
-            <td class="py-4">
-              <span class="rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-700">Paid</span>
-            </td>
-            <td class="py-4 text-gray-800">$250.00</td>
-          </tr>
-        </tbody>
-      </table>
     </div>
   </div>
 </template>
 
 <script setup>
-// This component demonstrates the layout for a dashboard.
-// For charts, you would integrate a library like Chart.js or ApexCharts.
+import { ref, h, onMounted } from 'vue';
+import {
+  PlusOutlined,
+  FileTextOutlined,
+  TagsOutlined,
+  PictureOutlined,
+  ReadOutlined,
+  SoundOutlined,
+  FireOutlined,
+  BookOutlined,
+  CheckCircleOutlined,
+  GlobalOutlined,
+  ClockCircleOutlined,
+  ApartmentOutlined,
+} from '@ant-design/icons-vue';
+import { NewsService } from '@/services/NewsService';
+
+const stats = ref({
+  articles: '—',
+  categories: '—',
+  media: '—',
+  readings: '—',
+});
+
+const quickActions = [
+  { name: 'New Article', to: { name: 'createNews' }, icon: FileTextOutlined, iconBg: 'bg-[#1a365d]/8', iconColor: 'text-[#1a365d]' },
+  { name: 'Categories', to: { name: 'adminCategories' }, icon: TagsOutlined, iconBg: 'bg-[#d4a853]/10', iconColor: 'text-[#d4a853]' },
+  { name: 'Bible Readings', to: { name: 'adminBible' }, icon: ReadOutlined, iconBg: 'bg-sky-100/80', iconColor: 'text-sky-600' },
+  { name: 'New Sermon', to: { name: 'createSermon' }, icon: SoundOutlined, iconBg: 'bg-emerald-100/80', iconColor: 'text-emerald-600' },
+  { name: 'Media Gallery', to: { name: 'adminGallery' }, icon: PictureOutlined, iconBg: 'bg-violet-100/80', iconColor: 'text-violet-600' },
+  { name: 'Structure', to: { name: 'adminStructurePages' }, icon: ApartmentOutlined, iconBg: 'bg-orange-100/80', iconColor: 'text-orange-600' },
+];
+
+onMounted(async () => {
+  try {
+    const [articles, categories] = await Promise.all([
+      NewsService.getAllArticles({ skip: 0, limit: 1 }),
+      NewsService.getNewsCategories(),
+    ]);
+    stats.value.articles = articles?.total_elements ?? (articles?.items?.length || 0);
+    stats.value.categories = Array.isArray(categories) ? categories.length : (categories?.items?.length || 0);
+    stats.value.media = '—';
+    stats.value.readings = '—';
+  } catch {
+    // fallback
+  }
+});
 </script>

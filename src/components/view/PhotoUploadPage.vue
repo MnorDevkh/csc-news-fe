@@ -107,7 +107,7 @@ onMounted(loadPhotos);
       <div v-else class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
         <div
           v-for="item in photos"
-          :key="item.key"
+          :key="item.id || item.key"
           class="aspect-square rounded-xl overflow-hidden bg-gray-100 border border-gray-100"
         >
           <img

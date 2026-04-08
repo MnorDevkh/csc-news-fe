@@ -80,10 +80,11 @@ watch(
 </script>
 
 <template>
-  <div class="w-full min-h-screen flex justify-center items-start px-3 py-3 sm:px-4 sm:py-4 box-border bg-gray-50">
-    <div class="w-full max-w-4xl mx-auto rounded-lg bg-white p-3 sm:p-8 lg:p-8 lg:py-8">
-      <h1 class="mb-6 text-2xl sm:text-3xl font-bold text-blue-600">
+  <div class="w-full min-h-screen flex justify-center items-start px-3 py-3 sm:px-4 sm:py-4 box-border bg-[#f8f9fa]">
+    <div class="w-full max-w-4xl mx-auto rounded-2xl bg-white p-3 sm:p-8 lg:p-8 lg:py-8 ring-1 ring-gray-100 shadow-sm">
+      <h1 class="mb-6 text-2xl sm:text-3xl font-bold text-[#1a365d] relative pb-3">
         Category: {{ categoryName }}
+        <span class="absolute bottom-0 left-0 w-12 h-0.5 bg-gradient-to-r from-[#d4a853] to-transparent rounded-full"></span>
       </h1>
 
       <div v-if="isLoading" class="space-y-4 animate-pulse">
@@ -106,7 +107,7 @@ watch(
           v-for="article in articles"
           :key="article.id"
           :to="{ name: 'articleDetails', params: { id: article.id } }"
-          class="flex flex-col sm:flex-row gap-4 rounded-lg border border-gray-100 p-4 h-[150px] overflow-hidden transition-all duration-200 hover:shadow-lg hover:border-blue-100 group"
+          class="flex flex-col sm:flex-row gap-4 rounded-2xl ring-1 ring-gray-100 p-4 h-[150px] overflow-hidden transition-all duration-300 hover:shadow-lg hover:ring-[#1a365d]/15 group"
         >
           <div v-if="article.image" class="w-full sm:w-52 flex-shrink-0 h-full min-h-0">
             <img
@@ -117,7 +118,7 @@ watch(
           </div>
           <div class="flex-1 flex flex-col justify-between min-w-0 min-h-0">
             <div class="min-h-0 overflow-hidden">
-              <h3 class="text-lg font-bold text-gray-800 mb-1 group-hover:text-blue-600 transition-colors line-clamp-2">
+              <h3 class="text-lg font-bold text-gray-800 mb-1 group-hover:text-[#1a365d] transition-colors line-clamp-2">
                 {{ article.title }}
               </h3>
               <p class="text-gray-600 text-sm line-clamp-2">{{ article.snippet }}</p>

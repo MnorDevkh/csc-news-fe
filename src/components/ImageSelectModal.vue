@@ -233,7 +233,7 @@ async function onFileSelect(e) {
     try {
       const response = await uploadPhoto(file);
       const key = response.key;
-      const url = await getPhotoUrl(key);
+      const url = response.url || (await getPhotoUrl(key));
       const id = nextSelectedId();
       const entry = { id, key, url, title: '' };
       if (props.mode === 'single') {

@@ -50,8 +50,8 @@ onMounted(async () => {
     <!-- Sort controls -->
     <div v-if="showControls && !loading && galleries.length" class="flex justify-end mb-4 sm:mb-6">
       <div class="relative inline-flex items-center group">
-        <span class="mr-3 text-sm font-medium text-gray-500 group-hover:text-blue-600 transition-colors">Sort by:</span>
-        <select v-model="sortOption" class="appearance-none bg-white border border-gray-200 text-gray-700 py-2 pl-4 pr-10 rounded-lg leading-tight focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-500 cursor-pointer text-sm transition-all shadow-sm hover:border-blue-300">
+        <span class="mr-3 text-sm font-medium text-gray-500 group-hover:text-[#1a365d] transition-colors">Sort by:</span>
+        <select v-model="sortOption" class="appearance-none bg-white border border-gray-200 text-gray-700 py-2 pl-4 pr-10 rounded-xl leading-tight focus:outline-none focus:ring-2 focus:ring-[#1a365d]/10 focus:border-[#1a365d] cursor-pointer text-sm transition-all shadow-sm hover:border-[#1a365d]/30">
           <option value="date">Date</option>
           <option value="title">Title</option>
           <option value="count">Photo Count</option>
@@ -84,7 +84,7 @@ onMounted(async () => {
     <div v-else class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
       <div v-for="gallery in sortedGalleries" :key="gallery.id">
         <RouterLink :to="{ name: 'singleGalleryView', params: { id: gallery.id } }" class="block group h-full">
-          <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 h-full flex flex-col">
+          <div class="bg-white rounded-2xl overflow-hidden shadow-sm ring-1 ring-gray-100 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:ring-[#1a365d]/15 h-full flex flex-col">
             <div class="relative overflow-hidden aspect-[4/3]">
                <img
                  v-if="gallery.thumbnail"
@@ -96,20 +96,20 @@ onMounted(async () => {
                  <PictureOutlined class="text-3xl" />
                </div>
                <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300"></div>
-               <div class="absolute bottom-2 right-2 bg-black/60 backdrop-blur-sm text-white text-xs px-2 py-1 rounded-md flex items-center gap-1">
+               <div class="absolute bottom-2 right-2 bg-[#d4a853]/90 backdrop-blur-sm text-white text-xs px-2.5 py-1 rounded-lg flex items-center gap-1 font-semibold shadow-sm">
                   <PictureOutlined /> {{ gallery.itemCount }}
                </div>
             </div>
             
             <div class="p-4 flex flex-col flex-grow">
-              <h3 class="font-bold text-gray-800 text-lg mb-2 line-clamp-1 group-hover:text-blue-600 transition-colors">{{ gallery.title }}</h3>
+              <h3 class="font-bold text-gray-800 text-lg mb-2 line-clamp-1 group-hover:text-[#1a365d] transition-colors">{{ gallery.title }}</h3>
               <p class="text-gray-500 text-sm line-clamp-2 mb-4 flex-grow">{{ gallery.description }}</p>
               
               <div class="flex items-center justify-between pt-3 border-t border-gray-50 mt-auto">
                  <span class="text-xs text-gray-400">
                     {{ gallery.date || 'Recently Added' }}
                  </span>
-                 <span class="text-xs font-medium text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity transform translate-x-2 group-hover:translate-x-0 flex items-center gap-1">
+                 <span class="text-xs font-semibold text-[#1a365d] opacity-0 group-hover:opacity-100 transition-opacity transform translate-x-2 group-hover:translate-x-0 flex items-center gap-1">
                     View Album <ArrowRightOutlined />
                  </span>
               </div>

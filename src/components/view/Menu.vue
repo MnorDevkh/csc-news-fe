@@ -1,5 +1,5 @@
 <template>
-    <nav class="menu-nav bg-surface-elevated/85 backdrop-blur-md border-b border-stone-200/70 shadow-[0_1px_3px_rgba(0,0,0,0.04)] mb-3 sm:mb-4 sticky top-0 z-50 flex justify-center w-full font-[Kantumruy_Pro,'Khmer','Koh_Santepheap',sans-serif]">
+    <nav class="menu-nav bg-white/90 backdrop-blur-xl border-b border-gray-200/60 shadow-[0_1px_8px_rgba(26,54,93,0.04)] mb-3 sm:mb-4 sticky top-0 z-50 flex justify-center w-full font-[Kantumruy_Pro,'Khmer','Koh_Santepheap',sans-serif]">
         <div class="w-full max-w-[1400px] px-[5px] sm:px-5 md:px-6 lg:px-8 xl:px-10 mx-auto">
 
             <!-- Top Header Bar -->
@@ -13,7 +13,7 @@
                     <div class="flex flex-col">
                         <!-- <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight text-blue-600 m-0 leading-none">
                             CSC NEWS</h1> -->
-                        <p class="text-xs sm:text-lg font-medium text-muted m-0 tracking-wide uppercase">
+                        <p class="text-xs sm:text-lg font-semibold text-[#1a365d] m-0 tracking-wide uppercase">
                             Catholic Cambodia
                         </p>
                     </div>
@@ -21,24 +21,24 @@
 
                 <!-- Desktop Search & Actions -->
                 <div class="hidden md:flex flex-1 max-w-xl mx-8 justify-end items-center gap-3">
-                    <div class="flex flex-1 min-w-0 items-center rounded-full bg-surface pl-4 pr-1 py-1 ring-1 ring-stone-200/90 focus-within:ring-2 focus-within:ring-primary/30">
+                    <div class="flex flex-1 min-w-0 items-center rounded-full bg-gray-50 pl-4 pr-1 py-1 ring-1 ring-gray-200 focus-within:ring-2 focus-within:ring-[#1a365d]/20 transition-all">
                         <input
                             v-model="searchQuery"
                             type="search"
                             placeholder="ស្វែងរកអត្ថបទ..."
-                            class="flex-1 min-w-0 py-2 bg-transparent border-0 text-stone-800 placeholder:text-stone-400 focus:outline-none focus:ring-0"
+                            class="flex-1 min-w-0 py-2 bg-transparent border-0 text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-0 text-sm"
                             @keydown.enter="performSearch"
                         />
                         <button
                             type="button"
-                            class="px-4 py-2 rounded-full bg-primary text-white text-sm font-medium hover:bg-primary-hover shrink-0"
+                            class="px-5 py-2 rounded-full bg-[#1a365d] text-white text-sm font-medium hover:bg-[#2a4a7f] shadow-sm shadow-[#1a365d]/15 shrink-0 transition-all"
                             @click="performSearch"
                         >
                             Search
                         </button>
                     </div>
                     <router-link v-if="isAuthenticated" :to="{ name: 'dashboard' }"
-                        class="flex items-center gap-2 px-4 py-2 rounded-full bg-primary text-white text-sm font-medium hover:bg-primary-hover shrink-0">
+                        class="flex items-center gap-2 px-4 py-2 rounded-full bg-[#d4a853] text-white text-sm font-medium hover:bg-[#c49843] shadow-sm shadow-[#d4a853]/20 shrink-0 transition-all">
                         <DashboardIcon class="w-5 h-5" />
                         <span>Dashboard</span>
                     </router-link>
@@ -46,7 +46,7 @@
 
                 <button
                     type="button"
-                    class="md:hidden p-2 text-stone-600 hover:text-primary"
+                    class="md:hidden p-2 text-gray-600 hover:text-[#1a365d] transition-colors"
                     aria-label="Open menu"
                     @click="mobileMenuOpen = true"
                 >
@@ -55,18 +55,18 @@
             </div>
 
             <!-- Desktop Navigation Menu -->
-            <div class="hidden md:block border-t border-stone-200/60">
+            <div class="hidden md:block border-t border-gray-100">
                 <ul class="menu-list flex flex-wrap items-center gap-0 list-none m-0 p-0 text-base font-medium">
                     <li v-for="item in menuItems" :key="item.path || item.href" class="menu-item-wrapper relative">
                         <!-- Simple link -->
                         <template v-if="!item.children?.length">
                             <a v-if="item.href" :href="item.href" target="_blank" rel="noopener"
-                                class="menu-link block px-6 py-3 text-stone-600 hover:text-primary">
+                                class="menu-link block px-6 py-3 text-gray-600 hover:text-[#1a365d] transition-colors">
                                 {{ item.label }}
                             </a>
                             <router-link v-else :to="item.path!"
-                                class="menu-link block px-6 py-3 no-underline text-stone-600 hover:text-primary"
-                                exact-active-class="!text-primary border-b-2 border-primary">
+                                class="menu-link block px-6 py-3 no-underline text-gray-600 hover:text-[#1a365d] transition-colors"
+                                exact-active-class="!text-[#1a365d] !font-semibold border-b-2 border-[#d4a853]">
                                 {{ item.label }}
                             </router-link>
                         </template>
@@ -77,8 +77,8 @@
                                 class="menu-link menu-dropdown-trigger flex items-center gap-1 px-6 py-3 w-full text-left border-0 bg-transparent cursor-pointer transition-colors"
                                 :class="
                                     (itemDropdownKey(item) === 'news' ? isNewsActive : isStructureActive)
-                                        ? 'text-primary border-b-2 border-primary'
-                                        : 'text-stone-600 hover:text-primary'
+                                        ? 'text-[#1a365d] font-semibold border-b-2 border-[#d4a853]'
+                                        : 'text-gray-600 hover:text-[#1a365d]'
                                 "
                                 :aria-expanded="itemDropdownKey(item) === 'news' ? newsDropdownOpen : structureDropdownOpen"
                                 aria-haspopup="true"
@@ -104,13 +104,13 @@
                             </button>
                             <div
                                 v-show="itemDropdownKey(item) === 'news' ? newsDropdownOpen : structureDropdownOpen"
-                                class="menu-dropdown absolute left-0 top-full min-w-[220px] py-2 bg-surface-elevated shadow-lg ring-1 ring-black/5 rounded-xl z-50"
+                                class="menu-dropdown absolute left-0 top-full min-w-[220px] py-2 bg-white shadow-xl shadow-gray-200/50 ring-1 ring-gray-100 rounded-xl z-50"
                                 @mouseleave="itemDropdownKey(item) === 'news' ? (newsDropdownOpen = false) : (structureDropdownOpen = false)"
                             >
                                 <router-link
                                     v-if="itemDropdownKey(item) === 'structure'"
                                     :to="item.path!"
-                                    class="block px-4 py-2 text-stone-800 font-medium hover:bg-stone-50 hover:text-primary border-b border-stone-100"
+                                    class="block px-4 py-2 text-gray-800 font-medium hover:bg-gray-50 hover:text-[#1a365d] border-b border-gray-100 transition-colors"
                                     @click="structureDropdownOpen = false"
                                 >
                                     ទាំងអស់
@@ -119,7 +119,7 @@
                                     <div v-if="group.children?.length" class="py-1">
                                         <router-link
                                             :to="group.path!"
-                                            class="block px-4 py-2 text-stone-800 font-medium hover:bg-stone-50 hover:text-primary"
+                                            class="block px-4 py-2 text-gray-800 font-medium hover:bg-gray-50 hover:text-[#1a365d] transition-colors"
                                             @click="closeAllDesktopDropdowns"
                                         >
                                             {{ group.label }}
@@ -128,7 +128,7 @@
                                             v-for="child in group.children"
                                             :key="child.path"
                                             :to="child.path!"
-                                            class="block py-1.5 pl-6 pr-4 text-stone-600 hover:bg-stone-50 hover:text-primary text-sm"
+                                            class="block py-1.5 pl-6 pr-4 text-gray-500 hover:bg-gray-50 hover:text-[#1a365d] text-sm transition-colors"
                                             @click="closeAllDesktopDropdowns"
                                         >
                                             {{ child.label }}
@@ -137,7 +137,7 @@
                                     <router-link
                                         v-else
                                         :to="group.path!"
-                                        class="block px-4 py-2 text-stone-700 hover:bg-stone-50 hover:text-primary"
+                                        class="block px-4 py-2 text-gray-600 hover:bg-gray-50 hover:text-[#1a365d] transition-colors"
                                         @click="closeAllDesktopDropdowns"
                                     >
                                         {{ group.label }}
@@ -160,15 +160,15 @@
             leave-to-class="opacity-0 translate-x-full"
         >
             <div v-if="mobileMenuOpen"
-                class="fixed inset-0 z-[60] bg-surface-elevated flex flex-col overflow-y-auto w-full h-full">
-                <div class="flex justify-between items-center p-4 border-b border-stone-200/70 bg-surface-elevated/95 backdrop-blur-md sticky top-0 z-10">
+                class="fixed inset-0 z-[60] bg-white flex flex-col overflow-y-auto w-full h-full">
+                <div class="flex justify-between items-center p-4 border-b border-gray-200/70 bg-white/95 backdrop-blur-xl sticky top-0 z-10">
                     <div class="flex items-center gap-2">
                         <img
                             src="/image/cropped-logo-1.jpg"
                             alt="CSC News logo"
                             class="h-8 w-auto object-contain"
                         />
-                        <h1 class="text-2xl font-extrabold text-primary leading-none">CSC NEWS</h1>
+                        <h1 class="text-2xl font-extrabold text-[#1a365d] leading-none">CSC NEWS</h1>
                     </div>
                     <button
                         type="button"
@@ -183,7 +183,7 @@
                 <div class="flex-1 p-6 flex flex-col gap-8">
                     <div>
                         <h3 class="text-sm font-bold text-muted uppercase tracking-wider mb-2">Search</h3>
-                        <div class="flex flex-1 min-w-0 items-center rounded-full bg-surface pl-4 pr-1 py-1 ring-1 ring-stone-200/90 focus-within:ring-2 focus-within:ring-primary/30">
+                        <div class="flex flex-1 min-w-0 items-center rounded-full bg-gray-50 pl-4 pr-1 py-1 ring-1 ring-gray-200 focus-within:ring-2 focus-within:ring-[#1a365d]/20 transition-all">
                             <input
                                 v-model="searchQuery"
                                 type="search"
@@ -193,7 +193,7 @@
                             />
                             <button
                                 type="button"
-                                class="px-4 py-2 rounded-full bg-primary text-white text-sm font-medium hover:bg-primary-hover"
+                                class="px-4 py-2 rounded-full bg-[#1a365d] text-white text-sm font-medium hover:bg-[#2a4a7f] shadow-sm transition-all"
                                 @click="() => { performSearch(); mobileMenuOpen = false; }"
                             >
                                 Search

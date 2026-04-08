@@ -61,7 +61,7 @@ export const SermonService = {
     formData.append('file', file);
 
     try {
-      const response = await BaseAPI.publicClient.post('/sermon-media/upload', formData, {
+      const response = await BaseAPI.publicClient.post('/file/', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

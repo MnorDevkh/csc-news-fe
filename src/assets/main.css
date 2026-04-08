@@ -1,24 +1,75 @@
-@import url('https://fonts.googleapis.com/css2?family=Kantumruy+Pro:ital,wght@0,100..700;1,100..700&family=Khmer&family=Koh+Santepheap:wght@100;300;400;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Kantumruy+Pro:ital,wght@0,100..700;1,100..700&family=Khmer&family=Koh+Santepheap:wght@100;300;400;700;900&display=swap');
 @import './base.css';
 @import "tailwindcss";
 
 @theme {
-  --color-surface: #f7f6f3;
+  /* ─── Primary: Deep Navy ─── */
+  --color-primary: #1a365d;
+  --color-primary-hover: #2a4a7f;
+  --color-primary-light: #e8edf5;
+  --color-primary-subtle: #3b5998;
+
+  /* ─── Accent: Warm Gold ─── */
+  --color-accent: #d4a853;
+  --color-accent-hover: #c49843;
+  --color-accent-light: #fdf6e3;
+  --color-accent-subtle: #f0dca0;
+
+  /* ─── Surfaces ─── */
+  --color-surface: #f8f9fa;
   --color-surface-elevated: #ffffff;
-  --color-primary: #3d6d9e;
-  --color-primary-hover: #335f89;
-  --color-muted: #78716c;
-  --color-muted-fg: #57534e;
+  --color-surface-sunken: #f1f3f5;
+
+  /* ─── Text ─── */
+  --color-heading: #111827;
+  --color-muted: #6b7280;
+  --color-muted-fg: #4b5563;
+
+  /* ─── Semantic ─── */
+  --color-success: #059669;
+  --color-warning: #d97706;
+  --color-danger: #dc2626;
+  --color-info: #2563eb;
+
+  /* ─── Shape ─── */
   --radius-card: 1rem;
+  --radius-lg: 1.25rem;
+  --radius-xl: 1.5rem;
 }
 
+/* ─── Keyframe Animations ─── */
 @keyframes shooting-star {
   0% { transform: translateX(0) translateY(0) rotate(-45deg) scale(1); opacity: 1; }
   100% { transform: translateX(-200px) translateY(200px) rotate(-45deg) scale(0); opacity: 0; }
 }
 @keyframes fade-in-up {
-  from { opacity: 0; transform: translateY(20px); }
+  from { opacity: 0; transform: translateY(24px); }
   to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fade-in-slide {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes scale-in {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+@keyframes pulse-soft {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
 }
 
 html {
@@ -26,13 +77,12 @@ html {
 }
 
 * {
-  font-family: 'Kantumruy Pro', 'Khmer', 'Koh Santepheap', sans-serif;
+  font-family: 'Kantumruy Pro', 'Khmer', 'Koh Santepheap', 'Inter', sans-serif;
 }
 
 html,
 body {
-  font-family: 'Kantumruy Pro', 'Khmer', 'Koh Santepheap', sans-serif;
-  /* Fill the visible screen in fullscreen PWA / mobile (dynamic viewport) */
+  font-family: 'Kantumruy Pro', 'Khmer', 'Koh Santepheap', 'Inter', sans-serif;
   min-height: 100vh;
   min-height: 100dvh;
 }
@@ -45,13 +95,12 @@ body {
   width: 100%;
   font-weight: normal;
   background-color: transparent;
-  font-family: 'Kantumruy Pro', 'Khmer', 'Koh Santepheap', sans-serif;
+  font-family: 'Kantumruy Pro', 'Khmer', 'Koh Santepheap', 'Inter', sans-serif;
 }
 
 body {
   color: var(--color-text);
   margin: 0;
-  /* Respect notches / home indicator when viewport-fit=cover */
   padding: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px)
     env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px);
   display: block;
@@ -61,20 +110,22 @@ body {
   justify-content: center;
   align-items: center;
   line-height: 1.6;
-  font-family: 'Kantumruy Pro', 'Khmer', 'Koh Santepheap', sans-serif;
+  font-family: 'Kantumruy Pro', 'Khmer', 'Koh Santepheap', 'Inter', sans-serif;
 }
 
+/* ─── Interactive element transitions ─── */
 a,
 button,
 input,
 select,
 textarea {
   transition: color 0.2s ease-out, background-color 0.2s ease-out, border-color 0.2s ease-out,
-    box-shadow 0.2s ease-out, transform 0.2s ease-out, opacity 0.2s ease-out;
+    box-shadow 0.2s ease-out, transform 0.15s ease-out, opacity 0.2s ease-out;
 }
 
+/* ─── Premium Scrollbar ─── */
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 8px;
 }
 
 ::-webkit-scrollbar-track {
@@ -82,12 +133,57 @@ textarea {
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #d6d3d1;
+  background-color: #c5cad3;
   border-radius: 20px;
-  border: 3px solid transparent;
+  border: 2px solid transparent;
   background-clip: content-box;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background-color: #a8a29e;
+  background-color: #9ca3af;
+}
+
+/* ─── Utility: Glassmorphism ─── */
+.glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.glass-dark {
+  background: rgba(26, 54, 93, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+/* ─── Utility: Gold Accent Underline ─── */
+.accent-underline {
+  position: relative;
+}
+.accent-underline::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 40px;
+  height: 3px;
+  background: linear-gradient(90deg, #d4a853, #f0dca0);
+  border-radius: 2px;
+}
+
+/* ─── Utility: Card Hover Lift ─── */
+.card-hover {
+  transition: transform 0.25s ease-out, box-shadow 0.25s ease-out;
+}
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px -8px rgba(26, 54, 93, 0.12), 0 4px 16px -4px rgba(0, 0, 0, 0.06);
+}
+
+/* ─── Utility: Gradient Text ─── */
+.gradient-text {
+  background: linear-gradient(135deg, #1a365d, #2a4a7f, #d4a853);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }

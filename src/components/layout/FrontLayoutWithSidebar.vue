@@ -37,7 +37,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="homepage bg-gray-50 min-h-screen pb-12 font-sans flex flex-col items-center">
+  <div class="homepage bg-[#f8f9fa] min-h-screen pb-12 font-sans flex flex-col items-center">
     <div class="w-full max-w-[1400px] px-0 lg:px-10 mx-auto">
       <header v-if="pageTitle" class="mt-6 sm:mt-8 mb-6 sm:mb-8">
         <h1 class="text-3xl font-extrabold text-gray-900 sm:text-2xl tracking-tight pt-6 ">
@@ -59,8 +59,11 @@ onMounted(async () => {
         <aside class="lg:col-span-1">
           <div class="sticky top-6 p-2">
             <slot name="sidebar">
-              <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 m-2">
-                <h2 class="text-xl font-bold text-gray-800 mb-4 border-b pb-2">មាតិការ</h2>
+              <div class="bg-white rounded-2xl shadow-sm ring-1 ring-gray-100 p-6 m-2">
+                <h2 class="text-lg font-bold text-gray-900 mb-4 pb-3 relative">
+                  មាតិការ
+                  <span class="absolute bottom-0 left-0 w-10 h-0.5 bg-gradient-to-r from-[#d4a853] to-transparent rounded-full"></span>
+                </h2>
                 <div v-if="isLoadingCategories" class="text-sm text-gray-400">
                   Loading categories...
                 </div>
@@ -68,7 +71,7 @@ onMounted(async () => {
                   <li v-for="category in activeCategories" :key="category.id">
                     <RouterLink
                       :to="{ name: 'categoryView', params: { name: category.name } }"
-                      class="flex items-center justify-between p-2 rounded-lg text-gray-600 hover:bg-blue-50 hover:text-blue-600 transition-all duration-200 group"
+                      class="flex items-center justify-between p-2.5 rounded-xl text-gray-600 hover:bg-[#1a365d]/[0.04] hover:text-[#1a365d] transition-all duration-200 group text-sm"
                     >
                       <span>{{ category.name }}</span>
                       <ArrowRightOutlined

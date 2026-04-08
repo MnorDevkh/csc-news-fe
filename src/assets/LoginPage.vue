@@ -1,116 +1,117 @@
 <template>
   <div class="relative min-h-screen w-full font-sans overflow-hidden flex items-center justify-center">
 
-    <!-- Background: Night Sky Gradient & Mountains -->
-    <div class="absolute inset-0 bg-gradient-to-b from-indigo-900 via-purple-900 to-indigo-950"></div>
+    <!-- Background: Deep Navy Gradient -->
+    <div class="absolute inset-0 bg-gradient-to-br from-[#0a1628] via-[#1a365d] to-[#0f2447]"></div>
 
-    <!-- Stars (Simulated with simple dots) -->
-    <div class="absolute top-10 left-10 w-1 h-1 bg-white rounded-full opacity-70 animate-pulse"></div>
-    <div class="absolute top-20 right-20 w-1.5 h-1.5 bg-white rounded-full opacity-60 animate-pulse delay-500"></div>
-    <div class="absolute top-1/3 left-1/4 w-1 h-1 bg-white rounded-full opacity-50"></div>
-    <div class="absolute top-1/4 right-1/3 w-0.5 h-0.5 bg-white rounded-full opacity-80"></div>
-
-    <!-- Shooting Star (CSS Animation) -->
-    <div
-      class="absolute top-0 right-1/3 w-32 h-0.5 bg-gradient-to-l from-transparent to-white opacity-0 -rotate-45 origin-right"
-      style="animation: shooting-star 3s ease-in-out infinite 2s">
+    <!-- Decorative Pattern Overlay -->
+    <div class="absolute inset-0 opacity-[0.03]"
+      style="background-image: url(&quot;data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E&quot;)">
     </div>
 
+    <!-- Ambient light blobs -->
+    <div class="absolute top-1/4 -left-32 w-96 h-96 bg-[#d4a853]/10 rounded-full blur-[120px]"></div>
+    <div class="absolute bottom-1/4 -right-32 w-80 h-80 bg-[#2a4a7f]/20 rounded-full blur-[100px]"></div>
+    <div class="absolute top-0 right-1/3 w-64 h-64 bg-[#d4a853]/5 rounded-full blur-[80px]"></div>
 
-    <!-- Mountains Silhouette (CSS Shapes) -->
-    <div class="absolute bottom-0 left-0 right-0 h-1/3 z-0">
-      <!-- Back Mountains -->
-      <svg class="absolute bottom-0 w-full h-full text-indigo-800 opacity-60" viewBox="0 0 1440 320"
-        preserveAspectRatio="none">
-        <path fill="currentColor"
-          d="M0,192L48,197.3C96,203,192,213,288,229.3C384,245,480,267,576,250.7C672,235,768,181,864,181.3C960,181,1056,235,1152,234.7C1248,235,1344,181,1392,154.7L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z">
-        </path>
-      </svg>
-      <!-- Middle Mountains -->
-      <svg class="absolute bottom-0 w-full h-3/4 text-indigo-900 opacity-80" viewBox="0 0 1440 320"
-        preserveAspectRatio="none">
-        <path fill="currentColor"
-          d="M0,224L48,213.3C96,203,192,181,288,181.3C384,181,480,203,576,224C672,245,768,267,864,261.3C960,256,1056,224,1152,197.3C1248,171,1344,149,1392,138.7L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z">
-        </path>
-      </svg>
-      <!-- Front Mountains -->
-      <svg class="absolute bottom-0 w-full h-1/2 text-indigo-950" viewBox="0 0 1440 320" preserveAspectRatio="none">
-        <path fill="currentColor"
-          d="M0,96L48,112C96,128,192,160,288,186.7C384,213,480,235,576,213.3C672,192,768,128,864,128C960,128,1056,192,1152,208C1248,224,1344,192,1392,176L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z">
-        </path>
-      </svg>
-    </div>
+    <!-- Floating star dots -->
+    <div class="absolute top-16 left-20 w-1 h-1 bg-white/40 rounded-full animate-pulse"></div>
+    <div class="absolute top-32 right-32 w-1.5 h-1.5 bg-[#d4a853]/50 rounded-full animate-pulse" style="animation-delay: 0.7s"></div>
+    <div class="absolute top-1/3 left-1/4 w-1 h-1 bg-white/30 rounded-full"></div>
+    <div class="absolute bottom-1/3 right-1/4 w-0.5 h-0.5 bg-[#d4a853]/40 rounded-full animate-pulse" style="animation-delay: 1.2s"></div>
+    <div class="absolute top-1/2 left-10 w-0.5 h-0.5 bg-white/50 rounded-full"></div>
 
     <!-- Login Card -->
-    <div class="relative z-10 bg-white w-full max-w-sm rounded-lg overflow-hidden shadow-2xl" style="animation: fade-in-up 0.8s ease-out forwards">
+    <div class="relative z-10 w-full max-w-[420px] mx-4" style="animation: fade-in-up 0.7s ease-out forwards">
 
-      <!-- Header Gradient -->
-      <div
-        class="bg-gradient-to-b from-indigo-900 via-purple-800 to-blue-500 h-48 flex flex-col items-center justify-center text-center p-6 relative overflow-hidden">
-        <!-- Stars in Header -->
-        <div class="absolute top-4 left-10 w-0.5 h-0.5 bg-white opacity-80"></div>
-        <div class="absolute bottom-10 right-10 w-0.5 h-0.5 bg-white opacity-60"></div>
+      <!-- Card Container -->
+      <div class="bg-white/[0.97] backdrop-blur-xl rounded-2xl overflow-hidden shadow-2xl shadow-black/20 ring-1 ring-white/10">
 
-        <h2 class="text-white text-xl font-light tracking-widest uppercase mb-4">Hello & Welcome</h2>
-        <p class="text-blue-100 text-xs px-8 leading-relaxed opacity-80">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet
-          dolore.
-        </p>
-      </div>
+        <!-- Header Section -->
+        <div class="relative bg-gradient-to-br from-[#1a365d] via-[#1e3f6e] to-[#2a4a7f] px-8 pt-10 pb-12 text-center overflow-hidden">
+          <!-- Decorative gold line -->
+          <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#d4a853] to-transparent"></div>
 
-      <!-- Form Section -->
-      <div class="p-8 pb-10 bg-white">
-        <h3 class="text-center text-gray-700 text-lg font-bold tracking-widest uppercase mb-8">User Login</h3>
+          <!-- Logo area -->
+          <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-white/10 backdrop-blur-sm mb-5 ring-1 ring-white/20">
+            <img src="/image/cropped-logo-1.jpg" alt="CSC Logo" class="w-10 h-10 rounded-lg object-contain" />
+          </div>
 
-        <!-- Error Alert -->
-        <div v-if="error" class="mb-4 text-xs text-center text-red-500 bg-red-50 p-2 rounded">
-          {{ error }}
+          <h2 class="text-white text-2xl font-bold tracking-wide mb-2">CSC News</h2>
+          <p class="text-blue-200/70 text-sm leading-relaxed max-w-xs mx-auto">
+            Catholic Cambodia Administration Portal
+          </p>
+
+          <!-- Decorative gold accent -->
+          <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-16 h-0.5 bg-gradient-to-r from-transparent via-[#d4a853] to-transparent"></div>
         </div>
 
-        <form @submit.prevent="handleSubmit" class="space-y-4">
+        <!-- Form Section -->
+        <div class="px-8 py-8">
+          <h3 class="text-center text-[#1a365d] text-sm font-bold tracking-widest uppercase mb-7">Sign In</h3>
 
-          <!-- Username -->
-          <div class="relative">
-            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <UserOutlined class="text-gray-400" />
-            </div>
-            <input v-model="email" type="text" placeholder="Username"
-              class="w-full pl-10 pr-4 py-3 bg-gray-200 border-none rounded-full text-sm text-gray-700 placeholder-gray-400 focus:ring-2 focus:ring-blue-400 focus:bg-white transition-colors outline-none">
+          <!-- Error Alert -->
+          <div v-if="error"
+            class="mb-5 text-sm text-center text-red-600 bg-red-50 p-3 rounded-xl ring-1 ring-red-100 flex items-center justify-center gap-2">
+            <WarningOutlined />
+            {{ error }}
           </div>
 
-          <!-- Password -->
-          <div class="relative">
-            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <LockOutlined class="text-gray-400" />
+          <form @submit.prevent="handleSubmit" class="space-y-5">
+
+            <!-- Username -->
+            <div>
+              <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Username</label>
+              <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                  <UserOutlined class="text-gray-400" />
+                </div>
+                <input v-model="email" type="text" placeholder="Enter your username"
+                  class="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-800 placeholder-gray-400 focus:ring-2 focus:ring-[#1a365d]/20 focus:border-[#1a365d] focus:bg-white transition-all outline-none">
+              </div>
             </div>
-            <input v-model="password" type="password" placeholder="Password"
-              class="w-full pl-10 pr-4 py-3 bg-gray-200 border-none rounded-full text-sm text-gray-700 placeholder-gray-400 focus:ring-2 focus:ring-blue-400 focus:bg-white transition-colors outline-none">
-          </div>
 
-          <!-- Extras -->
-          <div class="flex items-center justify-between text-xs text-gray-500 px-1">
-            <div class="flex items-center">
-              <input type="checkbox" id="remember" class="mr-1 rounded text-purple-600 focus:ring-purple-500">
-              <label for="remember">Remember</label>
+            <!-- Password -->
+            <div>
+              <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Password</label>
+              <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                  <LockOutlined class="text-gray-400" />
+                </div>
+                <input v-model="password" type="password" placeholder="Enter your password"
+                  class="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-800 placeholder-gray-400 focus:ring-2 focus:ring-[#1a365d]/20 focus:border-[#1a365d] focus:bg-white transition-all outline-none">
+              </div>
             </div>
-            <a href="#" class="hover:text-purple-600">Forget Password ?</a>
-          </div>
 
-          <!-- Button -->
-          <button type="submit" :disabled="loading"
-            class="w-full mt-6 bg-gradient-to-r from-indigo-900 to-blue-600 text-white font-bold py-3 rounded-full shadow-lg hover:shadow-xl hover:scale-[1.02] transform transition-all duration-200 disabled:opacity-70 text-xs tracking-wider uppercase">
-            <span v-if="loading">Logging in...</span>
-            <span v-else>Login</span>
-          </button>
+            <!-- Extras -->
+            <div class="flex items-center justify-between text-xs text-gray-500 px-0.5 pt-1">
+              <label class="flex items-center gap-2 cursor-pointer hover:text-gray-700 transition-colors">
+                <input type="checkbox" id="remember" class="w-3.5 h-3.5 rounded text-[#1a365d] border-gray-300 focus:ring-[#1a365d]/30">
+                <span>Remember me</span>
+              </label>
+              <a href="#" class="text-[#1a365d] hover:text-[#d4a853] font-medium transition-colors">Forgot password?</a>
+            </div>
 
-        </form>
+            <!-- Button -->
+            <button type="submit" :disabled="loading"
+              class="w-full mt-2 bg-gradient-to-r from-[#1a365d] to-[#2a4a7f] text-white font-bold py-3.5 rounded-xl shadow-lg shadow-[#1a365d]/25 hover:shadow-xl hover:shadow-[#1a365d]/30 hover:from-[#2a4a7f] hover:to-[#1a365d] transform hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-60 disabled:transform-none text-sm tracking-wide uppercase flex items-center justify-center gap-2">
+              <span v-if="loading" class="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full"></span>
+              <span v-if="loading">Signing in...</span>
+              <span v-else>Sign In</span>
+              <ArrowRightOutlined v-if="!loading" class="text-xs" />
+            </button>
+
+          </form>
+        </div>
+
+        <!-- Bottom accent -->
+        <div class="h-1 bg-gradient-to-r from-[#1a365d] via-[#d4a853] to-[#1a365d]"></div>
       </div>
 
-    </div>
-
-    <!-- Footer Credit -->
-    <div class="absolute bottom-4 text-white/30 text-xs">
-      designed by FlexiGen
+      <!-- Footer Credit -->
+      <div class="text-center mt-6 text-white/25 text-xs">
+        © 2026 CSC News · Catholic Cambodia
+      </div>
     </div>
 
   </div>
@@ -119,14 +120,14 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { MailOutlined, LockOutlined, UserOutlined, ArrowRightOutlined, WarningOutlined } from '@ant-design/icons-vue';
+import { LockOutlined, UserOutlined, ArrowRightOutlined, WarningOutlined } from '@ant-design/icons-vue';
 import { useAuth } from '../composables/useAuth';
 
 const email = ref('admin@gmail.com');
 const password = ref('123');
 const router = useRouter();
 
-const { login, loading, error } = useAuth(); // 使用 useAuth
+const { login, loading, error } = useAuth();
 
 const handleSubmit = async () => {
   const success = await login(email.value, password.value);

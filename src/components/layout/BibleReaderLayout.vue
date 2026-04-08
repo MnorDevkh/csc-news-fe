@@ -4,7 +4,7 @@
       class="w-full max-w-[1400px] px-0 lg:px-10 mx-auto flex flex-col min-h-screen text-slate-900 transition-colors duration-300"
     >
     <!-- Top App Bar -->
-    <header
+    <!-- <header
       class="h-14 flex items-center justify-between px-0 sm:px-4 border-b border-amber-200/80 bg-white/95 backdrop-blur"
     >
       <div class="flex  gap-2">
@@ -68,7 +68,7 @@
           </svg>
         </RouterLink>
       </div>
-    </header>
+    </header> -->
 
     <!-- Main Content -->
     <main class="flex-1 flex flex-col">

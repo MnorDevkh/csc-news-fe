@@ -13,12 +13,12 @@ const api = axios.create({
 /**
  * Upload a photo (multipart/form-data). Do not set Content-Type so axios sends boundary.
  * @param {File} file - image file (jpeg, png, webp)
- * @returns {Promise<{ key: string }>}
+ * @returns {Promise<{ id, type, size, key, url, filename, mime_type, created_at }>}
  */
 export async function uploadPhoto(file) {
   const formData = new FormData();
   formData.append('file', file);
-  const { data } = await api.post('/photos/upload', formData, {
+  const { data } = await api.post('/file/', formData, {
     headers: { 'Content-Type': 'multipart/form-data' }
   });
   return data;
@@ -26,23 +26,23 @@ export async function uploadPhoto(file) {
 
 /**
  * List uploaded photos with presigned URLs.
- * GET /photos/?skip=0&limit=100
+ * GET /file/?type=photo
  * @param {number} [skip=0]
  * @param {number} [limit=100]
- * @returns {Promise<Array<{ key: string, url: string, uploaded_at?: string, filename?: string }>>}
+ * @returns {Promise<Array<{ id, type, size, key, url, filename, created_at }>>}
  */
 export async function getPhotos(skip = 0, limit = 100) {
-  const { data } = await api.get('/photos/', { params: { skip, limit } });
+  const { data } = await api.get('/file/', { params: { skip, limit, type: 'photo' } });
   return data;
 }
 
 /**
  * Get presigned URL for a photo by key.
- * GET /photos/{key}/url → { "url": "https://...?X-Amz-..." }
- * @param {string} key - Photo key (e.g. "af12....jpg" or "photos/af12....jpg")
+ * @param {string} key - Short or full storage key
  * @returns {Promise<string>} Presigned URL
  */
 export async function getPhotoUrl(key) {
-  const { data } = await api.get(`/photos/${encodeURIComponent(key)}/url`);
-  return data.url;
+  const { data } = await api.get('/file/', { params: { key, type: 'photo' } });
+  const item = Array.isArray(data) ? data[0] : null;
+  return item?.url || '';
 }

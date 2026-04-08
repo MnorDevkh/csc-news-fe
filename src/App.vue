@@ -10,8 +10,11 @@ import { usePullToRefresh, isPwaDisplayMode, isMobileTouch } from './composables
 
 const antdTheme = {
   token: {
-    colorPrimary: '#3d6d9e',
-    borderRadiusLG: 12,
+    colorPrimary: '#1a365d',
+    colorLink: '#1a365d',
+    borderRadiusLG: 14,
+    borderRadius: 10,
+    fontFamily: "'Kantumruy Pro', 'Khmer', 'Koh Santepheap', 'Inter', sans-serif",
   },
 }
 

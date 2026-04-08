@@ -1,25 +1,33 @@
 <template>
-  <div class="flex h-screen bg-gray-50 text-gray-800">
+  <div class="flex h-screen bg-[#f8f9fa] text-gray-800">
     <!-- Sidebar -->
-    <aside class="hidden md:flex w-64 flex-col bg-white border-r border-gray-200">
-      <div class="flex items-center gap-3 px-6 h-16 border-b border-gray-200">
+    <aside class="hidden md:flex w-[260px] flex-col bg-gradient-to-b from-[#0f1d32] to-[#1a365d] text-white">
+      <!-- Logo -->
+      <div class="flex items-center gap-3 px-6 h-[72px] border-b border-white/10">
         <div
-          class="h-8 w-8 rounded-lg bg-blue-600 flex items-center justify-center text-white font-bold text-lg shadow-sm">
-          A
+          class="h-9 w-9 rounded-xl bg-gradient-to-br from-[#d4a853] to-[#c49843] flex items-center justify-center text-[#1a365d] font-extrabold text-lg shadow-lg shadow-[#d4a853]/20">
+          C
         </div>
-        <h1 class="text-xl font-bold text-gray-800 tracking-tight">Admin Portal</h1>
+        <div>
+          <h1 class="text-lg font-bold text-white tracking-tight leading-none">CSC Admin</h1>
+          <p class="text-[10px] text-blue-300/60 font-medium tracking-wider uppercase">Control Panel</p>
+        </div>
       </div>
 
-      <div class="flex-1 overflow-y-auto py-4">
-        <a-menu v-model:openKeys="openKeys" v-model:selectedKeys="selectedKeys" style="width: 256px" mode="inline"
-          :items="menuItems" class="admin-sidebar-menu border-none" @click="handleClick" />
+      <!-- Menu -->
+      <div class="flex-1 overflow-y-auto py-4 px-3">
+        <a-menu v-model:openKeys="openKeys" v-model:selectedKeys="selectedKeys" style="width: 100%" mode="inline"
+          :items="menuItems"
+          class="admin-sidebar-menu !bg-transparent !border-none !text-white/80 [&_.ant-menu-item]:!rounded-xl [&_.ant-menu-item]:!mx-0 [&_.ant-menu-item]:!mb-0.5 [&_.ant-menu-item:hover]:!bg-white/10 [&_.ant-menu-item-selected]:!bg-white/15 [&_.ant-menu-item-selected]:!text-[#d4a853] [&_.ant-menu-item-selected]:!font-semibold [&_.ant-menu-submenu-title]:!rounded-xl [&_.ant-menu-submenu-title:hover]:!bg-white/10 [&_.ant-menu-sub]:!bg-transparent [&_.ant-menu-item]:!text-white/75 [&_.ant-menu-submenu-title]:!text-white/75 [&_.ant-menu-item-active]:!text-white [&_.ant-menu-submenu-arrow]:!text-white/40"
+          @click="handleClick" />
       </div>
 
-      <div class="p-4 border-t border-gray-200">
+      <!-- Sidebar Footer -->
+      <div class="p-4 border-t border-white/10">
         <a href="#" @click.prevent="logout"
-          class="flex items-center gap-3 rounded-lg px-3 py-2 text-red-600 hover:bg-red-50 transition-colors">
-          <LogoutOutlined class="text-lg" />
-          <span>Logout</span>
+          class="flex items-center gap-3 rounded-xl px-4 py-2.5 text-red-300/80 hover:bg-red-500/15 hover:text-red-300 transition-all duration-200">
+          <LogoutOutlined class="text-base" />
+          <span class="text-sm font-medium">Sign Out</span>
         </a>
       </div>
     </aside>
@@ -28,51 +36,98 @@
     <div class="flex-1 flex flex-col overflow-hidden">
 
       <!-- Top Navigation -->
-      <header class="h-16 flex items-center justify-between border-b border-gray-200 bg-white px-6 shadow-sm">
+      <header class="h-[72px] flex items-center justify-between border-b border-gray-200/80 bg-white px-6 shadow-sm">
         <div class="flex items-center gap-4">
-          <!-- Mobile Menu Toggle (Visible only on mobile) -->
-          <button class="md:hidden text-gray-500 p-2">
+          <!-- Mobile Menu Toggle -->
+          <button @click="mobileDrawerOpen = true" class="md:hidden text-gray-500 p-2 hover:bg-gray-100 rounded-xl transition-colors">
             <MenuOutlined />
           </button>
 
           <div class="relative hidden sm:block">
-            <SearchOutlined class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-            <input type="text" placeholder="Global search..."
-              class="w-64 rounded-full border border-gray-300 py-1.5 pl-10 pr-4 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 transition-all">
+            <SearchOutlined class="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
+            <input type="text" placeholder="Search anything..."
+              class="w-72 rounded-xl border border-gray-200 bg-gray-50/80 py-2.5 pl-11 pr-4 text-sm focus:border-[#1a365d] focus:outline-none focus:ring-2 focus:ring-[#1a365d]/10 focus:bg-white transition-all placeholder:text-gray-400">
           </div>
         </div>
 
-        <div class="flex items-center gap-6">
-          <button class="relative text-gray-500 hover:text-blue-600 transition-colors">
-            <BellOutlined class="text-xl" />
-            <span class="absolute -top-1 -right-1 h-2.5 w-2.5 rounded-full bg-red-500 border-2 border-white"></span>
+        <div class="flex items-center gap-4">
+          <!-- Visit Site Link -->
+          <router-link to="/"
+            class="hidden sm:inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-medium text-gray-500 hover:text-[#1a365d] hover:bg-[#1a365d]/5 transition-all">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+            Visit Site
+          </router-link>
+
+          <button class="relative text-gray-400 hover:text-[#1a365d] transition-colors p-2 hover:bg-gray-100 rounded-xl">
+            <BellOutlined class="text-lg" />
+            <span class="absolute top-1.5 right-1.5 h-2 w-2 rounded-full bg-[#d4a853] ring-2 ring-white"></span>
           </button>
 
-          <div class="h-8 w-px bg-gray-200"></div>
+          <div class="h-7 w-px bg-gray-200"></div>
 
-          <div class="flex items-center gap-3 cursor-pointer hover:bg-gray-50 p-1.5 rounded-lg transition-colors">
-            <img :src="user?.avatar || 'https://i.pravatar.cc/150'" alt="User Avatar"
-              class="h-9 w-9 rounded-full border border-gray-200">
-            <div class="hidden sm:block text-left">
-              <p class="text-sm font-semibold text-gray-900 leading-tight">{{ user?.name || 'User' }}</p>
-              <p class="text-xs text-gray-500">{{ user?.role || 'Guest' }}</p>
+          <div class="flex items-center gap-3 cursor-pointer hover:bg-gray-50 p-2 rounded-xl transition-colors">
+            <div class="h-9 w-9 rounded-xl bg-gradient-to-br from-[#1a365d] to-[#2a4a7f] flex items-center justify-center text-white font-bold text-sm shadow-sm">
+              {{ (user?.name || 'U').charAt(0).toUpperCase() }}
             </div>
-            <DownOutlined class="text-xs text-gray-400 hidden sm:block" />
+            <div class="hidden sm:block text-left">
+              <p class="text-sm font-semibold text-gray-800 leading-tight">{{ user?.name || 'User' }}</p>
+              <p class="text-[11px] text-gray-400">{{ user?.role || 'Administrator' }}</p>
+            </div>
+            <DownOutlined class="text-[10px] text-gray-400 hidden sm:block" />
           </div>
         </div>
       </header>
 
       <!-- Content Area -->
-      <main class="flex-1 overflow-y-auto bg-gray-50 p-6 md:p-8">
+      <main class="flex-1 overflow-y-auto bg-[#f8f9fa] p-5 md:p-8">
         <router-view v-slot="{ Component }">
-          <transition enter-active-class="transition duration-200 ease-out" enter-from-class="opacity-0"
-            enter-to-class="opacity-100" leave-active-class="transition duration-200 ease-in"
-            leave-from-class="opacity-100" leave-to-class="opacity-0" mode="out-in">
+          <transition enter-active-class="transition duration-200 ease-out" enter-from-class="opacity-0 translate-y-1"
+            enter-to-class="opacity-100 translate-y-0" leave-active-class="transition duration-150 ease-in"
+            leave-from-class="opacity-100 translate-y-0" leave-to-class="opacity-0 -translate-y-1" mode="out-in">
             <component :is="Component" />
           </transition>
         </router-view>
       </main>
     </div>
+
+    <!-- Mobile Drawer -->
+    <transition
+      enter-active-class="transition duration-300 ease-out"
+      enter-from-class="opacity-0"
+      enter-to-class="opacity-100"
+      leave-active-class="transition duration-200 ease-in"
+      leave-from-class="opacity-100"
+      leave-to-class="opacity-0"
+    >
+      <div v-if="mobileDrawerOpen" class="fixed inset-0 z-50 md:hidden" @click.self="mobileDrawerOpen = false">
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" @click="mobileDrawerOpen = false"></div>
+        <aside class="absolute left-0 top-0 bottom-0 w-[280px] bg-gradient-to-b from-[#0f1d32] to-[#1a365d] shadow-2xl flex flex-col"
+          style="animation: fade-in-slide 0.3s ease-out">
+          <div class="flex items-center justify-between px-5 h-[72px] border-b border-white/10">
+            <div class="flex items-center gap-3">
+              <div class="h-9 w-9 rounded-xl bg-gradient-to-br from-[#d4a853] to-[#c49843] flex items-center justify-center text-[#1a365d] font-extrabold text-lg">C</div>
+              <h1 class="text-lg font-bold text-white">CSC Admin</h1>
+            </div>
+            <button @click="mobileDrawerOpen = false" class="text-white/60 hover:text-white p-1">
+              <CloseOutlined />
+            </button>
+          </div>
+          <div class="flex-1 overflow-y-auto py-4 px-3">
+            <a-menu v-model:openKeys="openKeys" v-model:selectedKeys="selectedKeys" mode="inline"
+              :items="menuItems"
+              class="admin-sidebar-menu !bg-transparent !border-none !text-white/80 [&_.ant-menu-item]:!rounded-xl [&_.ant-menu-item:hover]:!bg-white/10 [&_.ant-menu-item-selected]:!bg-white/15 [&_.ant-menu-item-selected]:!text-[#d4a853] [&_.ant-menu-sub]:!bg-transparent [&_.ant-menu-item]:!text-white/75 [&_.ant-menu-submenu-title]:!text-white/75 [&_.ant-menu-submenu-title]:!rounded-xl [&_.ant-menu-submenu-title:hover]:!bg-white/10"
+              @click="(e) => { handleClick(e); mobileDrawerOpen = false; }" />
+          </div>
+          <div class="p-4 border-t border-white/10">
+            <a href="#" @click.prevent="() => { logout(); mobileDrawerOpen = false; }"
+              class="flex items-center gap-3 rounded-xl px-4 py-2.5 text-red-300/80 hover:bg-red-500/15 transition-colors">
+              <LogoutOutlined class="text-base" />
+              <span class="text-sm font-medium">Sign Out</span>
+            </a>
+          </div>
+        </aside>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -92,10 +147,10 @@ import {
   MenuOutlined,
   DownOutlined,
   TagsOutlined,
-  UnorderedListOutlined,
   BookOutlined,
   HistoryOutlined,
-  ApartmentOutlined
+  ApartmentOutlined,
+  CloseOutlined,
 } from '@ant-design/icons-vue';
 import { useAuth } from '../composables/useAuth';
 import { useBibleManagementContext } from '@/composables/useBibleManagementContext';
@@ -107,10 +162,11 @@ const { lastBibleId, lastChapterId } = useBibleManagementContext();
 const route = useRoute();
 const router = useRouter();
 
+const mobileDrawerOpen = ref(false);
+
 const chapterRouteNames = ['adminChapterList', 'adminChapterCreate', 'adminChapterEdit'];
 const verseRouteNames = ['adminVerseList', 'adminVerseCreate', 'adminVerseEdit'];
 
-// Map child admin routes to their parent sidebar keys
 const childToParentMap = {
   createNews: 'adminNews',
   editNews: 'adminNews',
@@ -146,7 +202,6 @@ const menuRouteKeys = [
 
 const selectedKeys = ref([]);
 const openKeys = ref(['bible-management']);
-
 
 const menuItems = reactive([
   {
@@ -283,4 +338,13 @@ onMounted(() => {
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+/* Override Ant Menu inline styles for our dark sidebar */
+.admin-sidebar-menu :deep(.ant-menu-item-group-title) {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding-left: 16px;
+}
+</style>
