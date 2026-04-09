@@ -66,7 +66,7 @@ const goToVerse = (b) => {
               :key="b.key"
               type="button"
               @click="goToVerse(b)"
-              class="w-full text-left rounded-xl border border-gray-100 dark:border-slate-800 bg-gray-50/70 dark:bg-slate-900/70 px-3 py-2 text-sm hover:border-blue-200 dark:hover:border-sky-600/70 hover:bg-white dark:hover:bg-slate-900 transition-all"
+              class="w-full text-left rounded-md border border-gray-100 dark:border-slate-800 bg-gray-50/70 dark:bg-slate-900/70 px-3 py-2 text-sm hover:border-blue-200 dark:hover:border-sky-600/70 hover:bg-white dark:hover:bg-slate-900 transition-all"
             >
               <p class="text-xs font-semibold text-amber-700 dark:text-amber-300 mb-0.5">
                 ខណ្ឌ {{ b.verseNumber }}

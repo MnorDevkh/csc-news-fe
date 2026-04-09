@@ -12,8 +12,8 @@ const antdTheme = {
   token: {
     colorPrimary: '#1a365d',
     colorLink: '#1a365d',
-    borderRadiusLG: 14,
-    borderRadius: 10,
+    borderRadiusLG: 12,
+    borderRadius: 6,
     fontFamily: "'Kantumruy Pro', 'Khmer', 'Koh Santepheap', 'Inter', sans-serif",
   },
 }

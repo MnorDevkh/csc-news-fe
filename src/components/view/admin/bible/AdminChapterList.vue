@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+  <div class="bg-white p-6 rounded-md shadow-sm border border-gray-200">
     <!-- Breadcrumb -->
     <nav class="flex items-center gap-2 text-sm text-gray-500 mb-4">
       <router-link :to="{ name: 'adminBibleManagement' }" class="hover:text-blue-600">Bible Management</router-link>
@@ -15,13 +15,13 @@
       <div class="flex gap-2">
         <button
           @click="router.push({ name: 'adminBibleManagement' })"
-          class="text-gray-600 hover:text-gray-800 px-4 py-2 rounded-lg border border-gray-300 hover:bg-gray-50 transition-colors"
+          class="text-gray-600 hover:text-gray-800 px-4 py-2 rounded-md border border-gray-300 hover:bg-gray-50 transition-colors"
         >
           Back to Bibles
         </button>
         <button
           @click="router.push({ name: 'adminChapterCreate', params: { bibleId } })"
-          class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 font-medium transition-colors"
+          class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md flex items-center gap-2 font-medium transition-colors"
         >
           <PlusOutlined />
           <span>Create Chapter</span>
@@ -35,7 +35,7 @@
           <label class="text-xs font-medium text-gray-500 mb-1">Bible</label>
           <select
             v-model="bibleId"
-            class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm bg-white focus:ring-2 focus:ring-blue-100 focus:border-blue-500 outline-none"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm bg-white focus:ring-2 focus:ring-blue-100 focus:border-blue-500 outline-none"
           >
             <option value="">All Bibles</option>
             <option
@@ -51,7 +51,7 @@
           <label class="text-xs font-medium text-gray-500 mb-1">Language</label>
           <select
             v-model="filters.language"
-            class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm bg-white focus:ring-2 focus:ring-blue-100 focus:border-blue-500 outline-none"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm bg-white focus:ring-2 focus:ring-blue-100 focus:border-blue-500 outline-none"
           >
             <option value="">All</option>
             <option value="km">Khmer (km)</option>
@@ -63,14 +63,14 @@
           <input
             v-model="filters.order_by"
             type="text"
-            class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-100 focus:border-blue-500 outline-none"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-blue-100 focus:border-blue-500 outline-none"
           >
         </div>
         <div class="flex flex-col">
           <label class="text-xs font-medium text-gray-500 mb-1">Page Size</label>
           <select
             v-model.number="pageSize"
-            class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm bg-white focus:ring-2 focus:ring-blue-100 focus:border-blue-500 outline-none"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm bg-white focus:ring-2 focus:ring-blue-100 focus:border-blue-500 outline-none"
           >
             <option :value="10">10</option>
             <option :value="20">20</option>
@@ -82,13 +82,13 @@
       <div class="flex gap-2">
         <button
           @click="applyFilters"
-          class="px-4 py-2 rounded-lg border border-gray-300 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+          class="px-4 py-2 rounded-md border border-gray-300 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
         >
           Apply
         </button>
         <button
           @click="resetFilters"
-          class="px-4 py-2 rounded-lg border border-transparent text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+          class="px-4 py-2 rounded-md border border-transparent text-sm text-gray-700 hover:bg-gray-50 transition-colors"
         >
           Reset
         </button>

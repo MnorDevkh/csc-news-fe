@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+  <div class="bg-white p-6 rounded-md shadow-sm border border-gray-200">
     <nav class="flex items-center gap-2 text-sm text-gray-500 mb-4">
       <router-link :to="{ name: 'adminBibleManagement' }" class="hover:text-blue-600">Bible Management</router-link>
       <span>/</span>
@@ -23,14 +23,14 @@
         <button
           v-if="chapterId"
           @click="router.push({ name: 'adminChapterEdit', params: { chapterId } })"
-          class="text-gray-600 hover:text-gray-800 px-4 py-2 rounded-lg border border-gray-300 hover:bg-gray-50 transition-colors"
+          class="text-gray-600 hover:text-gray-800 px-4 py-2 rounded-md border border-gray-300 hover:bg-gray-50 transition-colors"
         >
           Back to Chapter
         </button>
         <button
           v-if="chapterId"
           @click="goToCreateSection"
-          class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 font-medium transition-colors"
+          class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md flex items-center gap-2 font-medium transition-colors"
         >
           <PlusOutlined />
           <span>Create Section</span>

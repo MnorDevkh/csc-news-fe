@@ -81,7 +81,7 @@ onMounted(loadPhotos);
         <button
           type="button"
           :disabled="uploading"
-          class="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white px-4 py-2 rounded-lg font-medium transition-colors"
+          class="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white px-4 py-2 rounded-md font-medium transition-colors"
           @click="triggerFileInput"
         >
           <UploadOutlined />

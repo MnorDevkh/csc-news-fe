@@ -33,10 +33,10 @@ watch(fontSize, (val) => {
           <p class="mt-1 text-xs text-slate-500">
             ជ្រើសរើសទំហំអក្សរដែលសមរម្យសម្រាប់ភ្នែករបស់អ្នក។
           </p>
-          <div class="mt-3 inline-flex rounded-full  border border-amber-200 p-0.5 text-xs">
+          <div class="mt-3 inline-flex rounded-md  border border-amber-200 p-0.5 text-xs">
             <button
               type="button"
-              class="px-3 py-1.5 rounded-full"
+              class="px-3 py-1.5 rounded-md"
               :class="fontSize === 'normal' ? 'bg-white shadow-sm text-slate-900' : 'text-slate-500'"
               @click="fontSize = 'normal'"
             >
@@ -44,7 +44,7 @@ watch(fontSize, (val) => {
             </button>
             <button
               type="button"
-              class="px-3 py-1.5 rounded-full"
+              class="px-3 py-1.5 rounded-md"
               :class="fontSize === 'large' ? 'bg-white shadow-sm text-slate-900' : 'text-slate-500'"
               @click="fontSize = 'large'"
             >
@@ -52,7 +52,7 @@ watch(fontSize, (val) => {
             </button>
             <button
               type="button"
-              class="px-3 py-1.5 rounded-full"
+              class="px-3 py-1.5 rounded-md"
               :class="fontSize === 'xl' ? 'bg-white shadow-sm text-slate-900' : 'text-slate-500'"
               @click="fontSize = 'xl'"
             >

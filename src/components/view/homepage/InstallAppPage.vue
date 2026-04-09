@@ -106,7 +106,7 @@ onUnmounted(() => {
     <div
       v-else-if="showManualOnly"
       ref="manualInstallEl"
-      class="rounded-lg bg-amber-50 border border-amber-200 text-amber-900 px-4 py-3 text-sm mb-6 transition-shadow duration-300"
+      class="rounded-md bg-amber-50 border border-amber-200 text-amber-900 px-4 py-3 text-sm mb-6 transition-shadow duration-300"
       :class="highlightSection === 'manual' ? 'ring-2 ring-amber-400 ring-offset-2' : ''"
     >
       <p class="font-medium mb-1">This browser doesn’t support the one‑click install button</p>
@@ -118,7 +118,7 @@ onUnmounted(() => {
 
     <button
       type="button"
-      class="px-6 py-3 rounded-lg font-medium transition-colors"
+      class="px-6 py-3 rounded-md font-medium transition-colors"
       :class="
         canInstall
           ? 'bg-blue-600 text-white hover:bg-blue-700'
@@ -145,7 +145,7 @@ onUnmounted(() => {
 
     <div
       ref="installHelpEl"
-      class="mt-8 pt-6 border-t border-gray-100 text-sm text-gray-600 space-y-2 rounded-lg transition-shadow duration-300"
+      class="mt-8 pt-6 border-t border-gray-100 text-sm text-gray-600 space-y-2 rounded-md transition-shadow duration-300"
       :class="highlightSection === 'help' ? 'ring-2 ring-gray-300 ring-offset-2' : ''"
     >
       <p v-if="!isIos()"><strong>Chrome / Edge (desktop or Android):</strong> Menu (⋮) → <strong>Install CSC News</strong> or <strong>Install app</strong>.</p>

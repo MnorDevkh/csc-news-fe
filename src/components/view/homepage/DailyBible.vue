@@ -137,7 +137,7 @@ onMounted(() => {
         </div>
         <RouterLink
           :to="{ name: 'dailyBibleDetail', params: { id: latestReading.id } }"
-          class="shrink-0 inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium bg-indigo-50 text-indigo-600 hover:bg-indigo-100 hover:text-indigo-700 transition-colors"
+          class="shrink-0 inline-flex items-center px-3 py-1.5 rounded-md text-xs font-medium bg-indigo-50 text-indigo-600 hover:bg-indigo-100 hover:text-indigo-700 transition-colors"
         >
           អានលម្អិត
         </RouterLink>

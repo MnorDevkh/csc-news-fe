@@ -70,11 +70,11 @@ onMounted(() => {
         <p class="text-gray-500 text-sm mb-6">The connection may have failed.</p>
         <div class="flex flex-wrap items-center justify-center gap-3">
           <button type="button" @click="loadContent"
-            class="inline-flex items-center gap-2 px-5 py-2.5 bg-gray-100 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-200 transition-colors">
+            class="inline-flex items-center gap-2 px-5 py-2.5 bg-gray-100 text-gray-700 text-sm font-medium rounded-md hover:bg-gray-200 transition-colors">
             <ReloadOutlined /> Retry
           </button>
           <button type="button" @click="router.push({ name: 'home' })"
-            class="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors">
+            class="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 transition-colors">
             <ArrowLeftOutlined /> Home
           </button>
         </div>
@@ -134,7 +134,7 @@ onMounted(() => {
                       "
                     >
                       <img :src="block.image.url" :alt="block.caption || (content.title || 'Church History') + ' image'"
-                        class="rounded-lg w-full h-auto max-h-[480px] object-contain mx-auto" />
+                        class="rounded-md w-full h-auto max-h-[480px] object-contain mx-auto" />
                       <figcaption
                         v-if="block.caption"
                         class="mt-2 text-sm text-gray-500 font-light leading-snug text-center xl:text-left"
@@ -173,7 +173,7 @@ onMounted(() => {
                     :key="img.key || i"
                     :src="img.url"
                     :alt="(content.title || 'Church History') + ' image ' + (i + 1)"
-                    class="rounded-lg max-w-full h-auto object-contain"
+                    class="rounded-md max-w-full h-auto object-contain"
                   />
                 </div>
               </div>

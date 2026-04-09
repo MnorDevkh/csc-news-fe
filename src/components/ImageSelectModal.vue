@@ -37,7 +37,7 @@
         <div
           v-for="item in existingPhotos"
           :key="item.key"
-          class="relative aspect-square rounded-lg overflow-hidden border-2 transition-all flex-shrink-0"
+          class="relative aspect-square rounded-md overflow-hidden border-2 transition-all flex-shrink-0"
           :class="[
             isAlreadySelected(item)
               ? 'border-green-500 ring-2 ring-green-200 cursor-default'
@@ -82,7 +82,7 @@
       <button
         type="button"
         :disabled="uploading"
-        class="inline-flex items-center gap-2 bg-gray-100 hover:bg-gray-200 disabled:opacity-50 text-gray-800 px-4 py-2 rounded-lg font-medium transition-colors"
+        class="inline-flex items-center gap-2 bg-gray-100 hover:bg-gray-200 disabled:opacity-50 text-gray-800 px-4 py-2 rounded-md font-medium transition-colors"
         @click="fileInputRef?.click()"
       >
         <PlusOutlined />
@@ -95,7 +95,7 @@
           <div
             v-for="item in uploadedInSession"
             :key="item.key"
-            class="relative aspect-square rounded-lg overflow-hidden border-2 cursor-pointer transition-all flex-shrink-0"
+            class="relative aspect-square rounded-md overflow-hidden border-2 cursor-pointer transition-all flex-shrink-0"
             :class="isSelectedInModal(item) ? 'border-blue-600 ring-2 ring-blue-200' : 'border-gray-200 hover:border-gray-300'"
             @click="toggleModalSelection(item)"
           >
@@ -118,7 +118,7 @@
     <div class="flex justify-end gap-2 mt-4 pt-4 border-t border-gray-200">
       <button
         type="button"
-        class="inline-flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+        class="inline-flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50"
         @click="handleCancel"
       >
         <CloseOutlined />
@@ -126,7 +126,7 @@
       </button>
       <button
         type="button"
-        class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium disabled:opacity-50"
+        class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md font-medium disabled:opacity-50"
         :disabled="!modalPendingList.length"
         @click="handleConfirm"
       >

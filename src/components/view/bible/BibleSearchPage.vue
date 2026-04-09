@@ -104,7 +104,7 @@ const handleSubmit = (e) => {
           />
           <button
             type="submit"
-            class="absolute inset-y-0 right-1 my-1 px-3 rounded-xl bg-blue-600 text-white text-xs font-semibold hover:bg-blue-700 disabled:opacity-50"
+            class="absolute inset-y-0 right-1 my-1 px-3 rounded-md bg-blue-600 text-white text-xs font-semibold hover:bg-blue-700 disabled:opacity-50"
             :disabled="isSearching"
           >
             {{ isSearching ? 'កំពុងស្វែងរក…' : 'ស្វែងរក' }}
@@ -115,11 +115,11 @@ const handleSubmit = (e) => {
       <!-- Tabs -->
       <div
         v-if="hasResults"
-        class="mt-5 inline-flex rounded-full bg-gray-100 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 p-0.5 text-xs"
+        class="mt-5 inline-flex rounded-md bg-gray-100 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 p-0.5 text-xs"
       >
         <button
           type="button"
-          class="px-3 py-1.5 rounded-full"
+          class="px-3 py-1.5 rounded-md"
           :class="activeTab === 'all' ? 'bg-white dark:bg-slate-800 shadow-sm text-gray-900 dark:text-slate-50' : 'text-gray-500 dark:text-slate-400'"
           @click="activeTab = 'all'"
         >
@@ -127,7 +127,7 @@ const handleSubmit = (e) => {
         </button>
         <button
           type="button"
-          class="px-3 py-1.5 rounded-full"
+          class="px-3 py-1.5 rounded-md"
           :class="activeTab === 'bibles' ? 'bg-white dark:bg-slate-800 shadow-sm text-gray-900 dark:text-slate-50' : 'text-gray-500 dark:text-slate-400'"
           @click="activeTab = 'bibles'"
         >
@@ -135,7 +135,7 @@ const handleSubmit = (e) => {
         </button>
         <button
           type="button"
-          class="px-3 py-1.5 rounded-full"
+          class="px-3 py-1.5 rounded-md"
           :class="activeTab === 'verses' ? 'bg-white dark:bg-slate-800 shadow-sm text-gray-900 dark:text-slate-50' : 'text-gray-500 dark:text-slate-400'"
           @click="activeTab = 'verses'"
         >

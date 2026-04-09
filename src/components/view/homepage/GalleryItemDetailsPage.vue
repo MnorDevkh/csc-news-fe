@@ -107,10 +107,10 @@ onMounted(async () => {
       </div>
 
       <!-- Content -->
-      <div v-else class="w-full bg-transparent rounded-lg overflow-hidden flex flex-col md:flex-row gap-8">
+      <div v-else class="w-full bg-transparent rounded-md overflow-hidden flex flex-col md:flex-row gap-8">
         <!-- Image container with prev/next navigation -->
         <div class="md:w-3/4 relative group">
-          <div class="bg-black flex items-center justify-center rounded-lg overflow-hidden shadow-2xl border border-gray-800">
+          <div class="bg-black flex items-center justify-center rounded-md overflow-hidden shadow-2xl border border-gray-800">
             <img
               :src="currentItem.imageUrl"
               :alt="currentItem.title || 'Gallery image'"
@@ -122,14 +122,14 @@ onMounted(async () => {
           <button
             v-if="hasPrev"
             @click="goToItem(itemIndex - 1)"
-            class="absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/60 hover:bg-black/80 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+            class="absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-md bg-black/60 hover:bg-black/80 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
           >
             <LeftOutlined />
           </button>
           <button
             v-if="hasNext"
             @click="goToItem(itemIndex + 1)"
-            class="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/60 hover:bg-black/80 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+            class="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-md bg-black/60 hover:bg-black/80 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
           >
             <RightOutlined />
           </button>
@@ -173,7 +173,7 @@ onMounted(async () => {
               <div
                 v-for="(img, idx) in gallery.itemList"
                 :key="img.id"
-                class="flex-shrink-0 w-14 h-14 rounded-lg overflow-hidden border-2 cursor-pointer transition-all"
+                class="flex-shrink-0 w-14 h-14 rounded-md overflow-hidden border-2 cursor-pointer transition-all"
                 :class="idx === itemIndex ? 'border-blue-500 ring-1 ring-blue-400' : 'border-gray-700 hover:border-gray-500 opacity-60 hover:opacity-100'"
                 @click="goToItem(idx)"
               >

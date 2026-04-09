@@ -51,7 +51,7 @@ onMounted(async () => {
     <div v-if="showControls && !loading && galleries.length" class="flex justify-end mb-4 sm:mb-6">
       <div class="relative inline-flex items-center group">
         <span class="mr-3 text-sm font-medium text-gray-500 group-hover:text-[#1a365d] transition-colors">Sort by:</span>
-        <select v-model="sortOption" class="appearance-none bg-white border border-gray-200 text-gray-700 py-2 pl-4 pr-10 rounded-xl leading-tight focus:outline-none focus:ring-2 focus:ring-[#1a365d]/10 focus:border-[#1a365d] cursor-pointer text-sm transition-all shadow-sm hover:border-[#1a365d]/30">
+        <select v-model="sortOption" class="appearance-none bg-white border border-gray-200 text-gray-700 py-2 pl-4 pr-10 rounded-md leading-tight focus:outline-none focus:ring-2 focus:ring-[#1a365d]/10 focus:border-[#1a365d] cursor-pointer text-sm transition-all shadow-sm hover:border-[#1a365d]/30">
           <option value="date">Date</option>
           <option value="title">Title</option>
           <option value="count">Photo Count</option>
@@ -96,7 +96,7 @@ onMounted(async () => {
                  <PictureOutlined class="text-3xl" />
                </div>
                <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300"></div>
-               <div class="absolute bottom-2 right-2 bg-[#d4a853]/90 backdrop-blur-sm text-white text-xs px-2.5 py-1 rounded-lg flex items-center gap-1 font-semibold shadow-sm">
+               <div class="absolute bottom-2 right-2 bg-[#d4a853]/90 backdrop-blur-sm text-white text-xs px-2.5 py-1 rounded-full flex items-center gap-1 font-semibold shadow-sm">
                   <PictureOutlined /> {{ gallery.itemCount }}
                </div>
             </div>

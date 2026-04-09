@@ -26,6 +26,8 @@ import BibleBookmarksPage from "@/components/view/bible/BibleBookmarksPage.vue";
 import BibleSettingsPage from "@/components/view/bible/BibleSettingsPage.vue";
 import MessengerListingPage from "@/components/view/messenger/MessengerListingPage.vue";
 import MessengerDetailsPage from "@/components/view/messenger/MessengerDetailsPage.vue";
+import { ensureSession, hasPermissionCode } from "@/composables/useAuth";
+import { ADMIN_ROUTE_PERMISSIONS } from "@/config/adminRoutePermissions";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -502,6 +504,25 @@ const router = createRouter({
       ],
     },
   ],
+});
+
+router.beforeEach(async (to, from, next) => {
+  if (!to.path.startsWith("/admin")) {
+    next();
+    return;
+  }
+  const ok = await ensureSession();
+  if (!ok) {
+    next({ name: "login", query: { redirect: to.fullPath } });
+    return;
+  }
+  const metaPerms = to.meta?.permissions;
+  const required = Array.isArray(metaPerms) ? metaPerms : ADMIN_ROUTE_PERMISSIONS[to.name];
+  if (required?.length && !required.every((p) => hasPermissionCode(p))) {
+    next({ name: "dashboard" });
+    return;
+  }
+  next();
 });
 
 export default router;

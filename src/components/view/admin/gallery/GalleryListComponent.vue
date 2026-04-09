@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+  <div class="bg-white p-6 rounded-md shadow-sm border border-gray-200">
     <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
       <div>
         <h2 class="text-2xl font-bold text-gray-800">Media Gallery</h2>
@@ -7,7 +7,7 @@
       </div>
       <router-link
         :to="{ name: 'adminGalleryCreate' }"
-        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 font-medium transition-colors inline-flex"
+        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md flex items-center gap-2 font-medium transition-colors inline-flex"
       >
         <PlusOutlined />
         <span>Create Album</span>
@@ -16,7 +16,7 @@
 
     <!-- Feedback banner -->
     <div v-if="feedbackMsg"
-      class="mb-4 px-4 py-3 rounded-lg text-sm flex items-center justify-between"
+      class="mb-4 px-4 py-3 rounded-md text-sm flex items-center justify-between"
       :class="feedbackType === 'success'
         ? 'bg-green-50 text-green-700 border border-green-200'
         : 'bg-red-50 text-red-700 border border-red-200'"
@@ -33,7 +33,7 @@
           v-model="searchQuery"
           type="text"
           placeholder="Search albums..."
-          class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-100 focus:border-blue-500 outline-none transition-all"
+          class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-100 focus:border-blue-500 outline-none transition-all"
         />
       </div>
     </div>
@@ -50,7 +50,7 @@
       <p class="text-gray-400 text-sm mb-6">Create your first photo album to get started.</p>
       <router-link
         :to="{ name: 'adminGalleryCreate' }"
-        class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg font-medium transition-colors inline-flex items-center gap-2"
+        class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-md font-medium transition-colors inline-flex items-center gap-2"
       >
         <PlusOutlined /> Create Album
       </router-link>
@@ -88,7 +88,7 @@
             >
               <button
                 type="button"
-                class="bg-white text-gray-800 p-2 rounded-full hover:bg-blue-50 hover:text-blue-600 transition-colors"
+                class="bg-white text-gray-800 p-2 rounded-md hover:bg-blue-50 hover:text-blue-600 transition-colors"
                 title="Edit"
                 @click="$router.push({ name: 'adminGalleryEdit', params: { id: album.id } })"
               >
@@ -96,7 +96,7 @@
               </button>
               <button
                 type="button"
-                class="bg-white text-red-600 p-2 rounded-full hover:bg-red-50 transition-colors"
+                class="bg-white text-red-600 p-2 rounded-md hover:bg-red-50 transition-colors"
                 title="Delete"
                 :disabled="deleting === album.id"
                 @click="confirmDelete(album)"

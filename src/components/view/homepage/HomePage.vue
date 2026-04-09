@@ -83,7 +83,7 @@ const formatDate = (dateString) => {
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-8">
           <div class="lg:col-span-2 bg-surface-elevated ring-1 ring-black/5 rounded-2xl p-4 space-y-4 shadow-sm">
             <div v-for="n in 4" :key="n" class="flex gap-4">
-              <div class="w-20 h-20 bg-gray-200 rounded-lg flex-shrink-0" />
+              <div class="w-20 h-20 bg-gray-200 rounded-md flex-shrink-0" />
               <div class="flex-1 space-y-2 py-1">
                 <div class="h-5 bg-gray-200 rounded w-3/4" />
                 <div class="h-4 bg-gray-200 rounded w-full" />
@@ -93,7 +93,7 @@ const formatDate = (dateString) => {
           </div>
           <div class="bg-surface-elevated ring-1 ring-black/5 rounded-2xl p-6 space-y-3 shadow-sm">
             <div class="h-6 bg-gray-200 rounded w-1/2 mb-4" />
-            <div v-for="n in 5" :key="n" class="h-10 bg-gray-200 rounded-lg" />
+            <div v-for="n in 5" :key="n" class="h-10 bg-gray-200 rounded-md" />
           </div>
         </div>
       </div>
@@ -107,7 +107,7 @@ const formatDate = (dateString) => {
           <h3 class="text-xl font-bold text-gray-800 mb-2">Something went wrong</h3>
           <p class="text-gray-500 text-sm mb-6">Failed to load homepage content. Please check your connection and try again.</p>
           <button @click="() => { hasError = false; isLoading = true; location.reload(); }"
-            class="px-6 py-2.5 bg-[#1a365d] text-white rounded-full text-sm font-medium hover:bg-[#2a4a7f] shadow-sm transition-all">
+            class="px-6 py-2.5 bg-[#1a365d] text-white rounded-md text-sm font-medium hover:bg-[#2a4a7f] shadow-sm transition-all">
             Try Again
           </button>
         </div>
@@ -227,8 +227,8 @@ const formatDate = (dateString) => {
             <ul v-else class="divide-y divide-gray-50">
               <li v-for="headline in latestHeadlines" :key="headline.id" class="group">
                 <RouterLink :to="{ name: 'articleDetails', params: { id: headline.id } }"
-                  class="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 hover:bg-[#1a365d]/[0.02] duration-200 ease-out rounded-xl">
-                  <div class="w-28 h-[76px] flex-shrink-0 rounded-xl overflow-hidden bg-gray-100 ring-1 ring-gray-100">
+                  class="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 hover:bg-[#1a365d]/[0.02] duration-200 ease-out rounded-md">
+                  <div class="w-28 h-[76px] flex-shrink-0 rounded-md overflow-hidden bg-gray-100 ring-1 ring-gray-100">
                     <img v-if="headline.thumbnail" :src="headline.thumbnail" :alt="headline.title"
                       class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                     <div v-else class="w-full h-full bg-gradient-to-br from-[#1a365d]/10 to-[#d4a853]/10" />
@@ -239,7 +239,7 @@ const formatDate = (dateString) => {
                       {{ headline.title }}</h4>
                     <div class="flex items-center gap-2 flex-wrap">
                       <span v-if="headline.category?.name"
-                        class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-semibold bg-[#1a365d]/8 text-[#1a365d]">
+                        class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold bg-[#1a365d]/8 text-[#1a365d]">
                         {{ headline.category.name }}
                       </span>
                       <span class="text-xs text-gray-400">{{ formatDate(headline.publish_at) }}</span>
@@ -269,7 +269,7 @@ const formatDate = (dateString) => {
                     <ul class="ml-3 mt-0.5 space-y-0.5 border-l border-gray-200 pl-2">
                       <li v-for="child in children" :key="child.id">
                         <RouterLink :to="{ name: 'categoryView', params: { name: child.name } }"
-                          class="flex items-center justify-between py-1.5 px-2 rounded-lg text-gray-600 hover:bg-[#1a365d]/[0.04] hover:text-[#1a365d] duration-200 ease-out group text-sm transition-colors">
+                          class="flex items-center justify-between py-1.5 px-2 rounded-md text-gray-600 hover:bg-[#1a365d]/[0.04] hover:text-[#1a365d] duration-200 ease-out group text-sm transition-colors">
                           <span>{{ child.name }}</span>
                           <ArrowRightOutlined class="text-xs opacity-0 group-hover:opacity-100 duration-200 shrink-0 text-[#d4a853]" />
                         </RouterLink>
@@ -279,7 +279,7 @@ const formatDate = (dateString) => {
                   <!-- Parent without children: single link -->
                   <li v-else>
                     <RouterLink :to="{ name: 'categoryView', params: { name: parent.name } }"
-                      class="flex items-center justify-between p-2 rounded-lg text-gray-600 hover:bg-[#1a365d]/[0.04] hover:text-[#1a365d] duration-200 ease-out group transition-colors">
+                      class="flex items-center justify-between p-2 rounded-md text-gray-600 hover:bg-[#1a365d]/[0.04] hover:text-[#1a365d] duration-200 ease-out group transition-colors">
                       <span>{{ parent.name }}</span>
                       <ArrowRightOutlined class="text-xs opacity-0 group-hover:opacity-100 duration-200 text-[#d4a853]" />
                     </RouterLink>

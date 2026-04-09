@@ -7,7 +7,7 @@
                 <p class="text-gray-400 text-sm mt-0.5">Manage all news content and publications</p>
             </div>
             <button @click="router.push({ name: 'createNews' })"
-                class="inline-flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-[#1a365d] to-[#2a4a7f] text-white text-sm font-medium rounded-xl shadow-md shadow-[#1a365d]/15 hover:shadow-lg hover:-translate-y-0.5 transition-all">
+                class="inline-flex items-center gap-2 px-4 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-md shadow-md shadow-blue-600/20 hover:bg-blue-700 hover:shadow-lg hover:-translate-y-0.5 transition-all">
                 <PlusOutlined />
                 <span>Create Article</span>
             </button>
@@ -21,13 +21,13 @@
                     v-model="searchQuery"
                     type="text"
                     placeholder="Search articles by title..."
-                    class="w-full pl-11 pr-4 py-2.5 border border-gray-200 bg-gray-50/80 rounded-xl focus:ring-2 focus:ring-[#1a365d]/10 focus:border-[#1a365d] focus:bg-white outline-none transition-all text-sm"
+                    class="w-full pl-11 pr-4 py-2.5 border border-gray-200 bg-gray-50/80 rounded-md focus:ring-2 focus:ring-[#1a365d]/10 focus:border-[#1a365d] focus:bg-white outline-none transition-all text-sm"
                     @keyup.enter="onFilterChange"
                 >
             </div>
             <select
                 v-model="selectedCategoryId"
-                class="border border-gray-200 bg-gray-50/80 rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-[#1a365d]/10 focus:border-[#1a365d] focus:bg-white outline-none cursor-pointer text-sm transition-all"
+                class="border border-gray-200 bg-gray-50/80 rounded-md px-4 py-2.5 focus:ring-2 focus:ring-[#1a365d]/10 focus:border-[#1a365d] focus:bg-white outline-none cursor-pointer text-sm transition-all"
                 @change="onFilterChange"
             >
                 <option value="">All Categories</option>
@@ -64,10 +64,10 @@
                     <tr v-for="article in articles" :key="article.id" class="hover:bg-gray-50/60 transition-colors">
                         <td class="px-6 py-4">
                             <div class="flex items-center gap-3">
-                                <div class="h-11 w-11 flex-shrink-0 rounded-xl overflow-hidden ring-1 ring-gray-100" v-if="article.thumbnail">
-                                    <img class="h-11 w-11 object-cover" :src="article.thumbnail" alt="" />
+                                <div class="h-11 w-16 flex-shrink-0 rounded-md overflow-hidden ring-1 ring-gray-100" v-if="article.thumbnail">
+                                    <img class="h-11 w-16 object-cover" :src="article.thumbnail" alt="" />
                                 </div>
-                                <div class="h-11 w-11 flex-shrink-0 rounded-xl bg-[#1a365d]/5 flex items-center justify-center" v-else>
+                                <div class="h-11 w-16 flex-shrink-0 rounded-md bg-[#1a365d]/5 flex items-center justify-center" v-else>
                                     <FileTextOutlined class="text-[#1a365d]/40" />
                                 </div>
                                 <div class="min-w-0">
@@ -77,7 +77,7 @@
                             </div>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold bg-[#1a365d]/8 text-[#1a365d]">
+                            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-[#1a365d]/8 text-[#1a365d]">
                                 {{ article.category?.name || 'Uncategorized' }}
                             </span>
                         </td>
@@ -90,21 +90,21 @@
                         <td class="px-6 py-4 whitespace-nowrap">
                             <span
                                 v-if="articleEffectiveStatus(article) === 'public'"
-                                class="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg"
+                                class="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full"
                             >
                                 <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
                                 Public
                             </span>
                             <span
                                 v-else-if="articleEffectiveStatus(article) === 'scheduled'"
-                                class="inline-flex items-center gap-1.5 text-xs font-semibold text-[#1a365d] bg-[#1a365d]/8 px-2.5 py-1 rounded-lg"
+                                class="inline-flex items-center gap-1.5 text-xs font-semibold text-[#1a365d] bg-[#1a365d]/8 px-2.5 py-1 rounded-full"
                             >
                                 <span class="w-1.5 h-1.5 rounded-full bg-[#1a365d]"></span>
                                 Scheduled
                             </span>
                             <span
                                 v-else
-                                class="inline-flex items-center gap-1.5 text-xs font-semibold text-gray-500 bg-gray-100 px-2.5 py-1 rounded-lg"
+                                class="inline-flex items-center gap-1.5 text-xs font-semibold text-gray-500 bg-gray-100 px-2.5 py-1 rounded-full"
                             >
                                 <span class="w-1.5 h-1.5 rounded-full bg-gray-400"></span>
                                 Draft
@@ -113,11 +113,11 @@
                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                             <div class="flex justify-end gap-1">
                                 <button @click="$router.push({ name: 'editNews', params: { id: article.id } })"
-                                    class="p-2 text-gray-400 hover:text-[#1a365d] hover:bg-[#1a365d]/5 rounded-lg transition-all">
+                                    class="p-2 text-gray-400 hover:text-[#1a365d] hover:bg-[#1a365d]/5 rounded-md transition-all">
                                     <EditOutlined />
                                 </button>
                                 <button @click="deleteArticle(article.id)"
-                                    class="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all">
+                                    class="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-md transition-all">
                                     <DeleteOutlined />
                                 </button>
                             </div>

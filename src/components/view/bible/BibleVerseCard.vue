@@ -48,7 +48,7 @@ const shortUrl = computed(() => {
         :src="imageUrl"
         :title="shortUrl"
         :alt="`${book} ${chapter}:${verse}`"
-        class="w-full h-32 object-cover rounded-lg mb-4"
+        class="w-full h-32 object-cover rounded-md mb-4"
       />
       <figcaption>
         <h3 class="text-xl font-bold text-gray-800 group-hover:text-indigo-600 transition-colors">{{ book }} {{ chapter }}:{{ verse }}</h3>

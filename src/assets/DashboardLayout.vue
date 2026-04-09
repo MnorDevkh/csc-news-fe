@@ -5,7 +5,7 @@
       <!-- Logo -->
       <div class="flex items-center gap-3 px-6 h-[72px] border-b border-white/10">
         <div
-          class="h-9 w-9 rounded-xl bg-gradient-to-br from-[#d4a853] to-[#c49843] flex items-center justify-center text-[#1a365d] font-extrabold text-lg shadow-lg shadow-[#d4a853]/20">
+          class="h-9 w-9 rounded-md bg-gradient-to-br from-[#d4a853] to-[#c49843] flex items-center justify-center text-[#1a365d] font-extrabold text-lg shadow-lg shadow-[#d4a853]/20">
           C
         </div>
         <div>
@@ -17,15 +17,15 @@
       <!-- Menu -->
       <div class="flex-1 overflow-y-auto py-4 px-3">
         <a-menu v-model:openKeys="openKeys" v-model:selectedKeys="selectedKeys" style="width: 100%" mode="inline"
-          :items="menuItems"
-          class="admin-sidebar-menu !bg-transparent !border-none !text-white/80 [&_.ant-menu-item]:!rounded-xl [&_.ant-menu-item]:!mx-0 [&_.ant-menu-item]:!mb-0.5 [&_.ant-menu-item:hover]:!bg-white/10 [&_.ant-menu-item-selected]:!bg-white/15 [&_.ant-menu-item-selected]:!text-[#d4a853] [&_.ant-menu-item-selected]:!font-semibold [&_.ant-menu-submenu-title]:!rounded-xl [&_.ant-menu-submenu-title:hover]:!bg-white/10 [&_.ant-menu-sub]:!bg-transparent [&_.ant-menu-item]:!text-white/75 [&_.ant-menu-submenu-title]:!text-white/75 [&_.ant-menu-item-active]:!text-white [&_.ant-menu-submenu-arrow]:!text-white/40"
+          :items="visibleMenuItems"
+          class="admin-sidebar-menu !bg-transparent !border-none !text-white/80 [&_.ant-menu-item]:!rounded-md [&_.ant-menu-item]:!mx-0 [&_.ant-menu-item]:!mb-0.5 [&_.ant-menu-item:hover]:!bg-white/10 [&_.ant-menu-item-selected]:!bg-white/15 [&_.ant-menu-item-selected]:!text-[#d4a853] [&_.ant-menu-item-selected]:!font-semibold [&_.ant-menu-submenu-title]:!rounded-md [&_.ant-menu-submenu-title:hover]:!bg-white/10 [&_.ant-menu-sub]:!bg-transparent [&_.ant-menu-item]:!text-white/75 [&_.ant-menu-submenu-title]:!text-white/75 [&_.ant-menu-item-active]:!text-white [&_.ant-menu-submenu-arrow]:!text-white/40"
           @click="handleClick" />
       </div>
 
       <!-- Sidebar Footer -->
       <div class="p-4 border-t border-white/10">
         <a href="#" @click.prevent="logout"
-          class="flex items-center gap-3 rounded-xl px-4 py-2.5 text-red-300/80 hover:bg-red-500/15 hover:text-red-300 transition-all duration-200">
+          class="flex items-center gap-3 rounded-md px-4 py-2.5 text-red-300/80 hover:bg-red-500/15 hover:text-red-300 transition-all duration-200">
           <LogoutOutlined class="text-base" />
           <span class="text-sm font-medium">Sign Out</span>
         </a>
@@ -39,34 +39,34 @@
       <header class="h-[72px] flex items-center justify-between border-b border-gray-200/80 bg-white px-6 shadow-sm">
         <div class="flex items-center gap-4">
           <!-- Mobile Menu Toggle -->
-          <button @click="mobileDrawerOpen = true" class="md:hidden text-gray-500 p-2 hover:bg-gray-100 rounded-xl transition-colors">
+          <button @click="mobileDrawerOpen = true" class="md:hidden text-gray-500 p-2 hover:bg-gray-100 rounded-md transition-colors">
             <MenuOutlined />
           </button>
 
           <div class="relative hidden sm:block">
             <SearchOutlined class="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
             <input type="text" placeholder="Search anything..."
-              class="w-72 rounded-xl border border-gray-200 bg-gray-50/80 py-2.5 pl-11 pr-4 text-sm focus:border-[#1a365d] focus:outline-none focus:ring-2 focus:ring-[#1a365d]/10 focus:bg-white transition-all placeholder:text-gray-400">
+              class="w-72 rounded-md border border-gray-200 bg-gray-50/80 py-2.5 pl-11 pr-4 text-sm focus:border-[#1a365d] focus:outline-none focus:ring-2 focus:ring-[#1a365d]/10 focus:bg-white transition-all placeholder:text-gray-400">
           </div>
         </div>
 
         <div class="flex items-center gap-4">
           <!-- Visit Site Link -->
           <router-link to="/"
-            class="hidden sm:inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-medium text-gray-500 hover:text-[#1a365d] hover:bg-[#1a365d]/5 transition-all">
+            class="hidden sm:inline-flex items-center gap-2 px-3.5 py-2 rounded-md text-xs font-medium text-gray-500 hover:text-[#1a365d] hover:bg-[#1a365d]/5 transition-all">
             <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
             Visit Site
           </router-link>
 
-          <button class="relative text-gray-400 hover:text-[#1a365d] transition-colors p-2 hover:bg-gray-100 rounded-xl">
+          <button class="relative text-gray-400 hover:text-[#1a365d] transition-colors p-2 hover:bg-gray-100 rounded-md">
             <BellOutlined class="text-lg" />
             <span class="absolute top-1.5 right-1.5 h-2 w-2 rounded-full bg-[#d4a853] ring-2 ring-white"></span>
           </button>
 
           <div class="h-7 w-px bg-gray-200"></div>
 
-          <div class="flex items-center gap-3 cursor-pointer hover:bg-gray-50 p-2 rounded-xl transition-colors">
-            <div class="h-9 w-9 rounded-xl bg-gradient-to-br from-[#1a365d] to-[#2a4a7f] flex items-center justify-center text-white font-bold text-sm shadow-sm">
+          <div class="flex items-center gap-3 cursor-pointer hover:bg-gray-50 p-2 rounded-md transition-colors">
+            <div class="h-9 w-9 rounded-md bg-gradient-to-br from-[#1a365d] to-[#2a4a7f] flex items-center justify-center text-white font-bold text-sm shadow-sm">
               {{ (user?.name || 'U').charAt(0).toUpperCase() }}
             </div>
             <div class="hidden sm:block text-left">
@@ -105,7 +105,7 @@
           style="animation: fade-in-slide 0.3s ease-out">
           <div class="flex items-center justify-between px-5 h-[72px] border-b border-white/10">
             <div class="flex items-center gap-3">
-              <div class="h-9 w-9 rounded-xl bg-gradient-to-br from-[#d4a853] to-[#c49843] flex items-center justify-center text-[#1a365d] font-extrabold text-lg">C</div>
+              <div class="h-9 w-9 rounded-md bg-gradient-to-br from-[#d4a853] to-[#c49843] flex items-center justify-center text-[#1a365d] font-extrabold text-lg">C</div>
               <h1 class="text-lg font-bold text-white">CSC Admin</h1>
             </div>
             <button @click="mobileDrawerOpen = false" class="text-white/60 hover:text-white p-1">
@@ -114,13 +114,13 @@
           </div>
           <div class="flex-1 overflow-y-auto py-4 px-3">
             <a-menu v-model:openKeys="openKeys" v-model:selectedKeys="selectedKeys" mode="inline"
-              :items="menuItems"
-              class="admin-sidebar-menu !bg-transparent !border-none !text-white/80 [&_.ant-menu-item]:!rounded-xl [&_.ant-menu-item:hover]:!bg-white/10 [&_.ant-menu-item-selected]:!bg-white/15 [&_.ant-menu-item-selected]:!text-[#d4a853] [&_.ant-menu-sub]:!bg-transparent [&_.ant-menu-item]:!text-white/75 [&_.ant-menu-submenu-title]:!text-white/75 [&_.ant-menu-submenu-title]:!rounded-xl [&_.ant-menu-submenu-title:hover]:!bg-white/10"
+              :items="visibleMenuItems"
+              class="admin-sidebar-menu !bg-transparent !border-none !text-white/80 [&_.ant-menu-item]:!rounded-md [&_.ant-menu-item:hover]:!bg-white/10 [&_.ant-menu-item-selected]:!bg-white/15 [&_.ant-menu-item-selected]:!text-[#d4a853] [&_.ant-menu-sub]:!bg-transparent [&_.ant-menu-item]:!text-white/75 [&_.ant-menu-submenu-title]:!text-white/75 [&_.ant-menu-submenu-title]:!rounded-md [&_.ant-menu-submenu-title:hover]:!bg-white/10"
               @click="(e) => { handleClick(e); mobileDrawerOpen = false; }" />
           </div>
           <div class="p-4 border-t border-white/10">
             <a href="#" @click.prevent="() => { logout(); mobileDrawerOpen = false; }"
-              class="flex items-center gap-3 rounded-xl px-4 py-2.5 text-red-300/80 hover:bg-red-500/15 transition-colors">
+              class="flex items-center gap-3 rounded-md px-4 py-2.5 text-red-300/80 hover:bg-red-500/15 transition-colors">
               <LogoutOutlined class="text-base" />
               <span class="text-sm font-medium">Sign Out</span>
             </a>
@@ -154,10 +154,10 @@ import {
 } from '@ant-design/icons-vue';
 import { useAuth } from '../composables/useAuth';
 import { useBibleManagementContext } from '@/composables/useBibleManagementContext';
-import { onMounted, h, reactive, ref, watch } from 'vue';
+import { onMounted, h, computed, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
-const { user, logout, initAuth } = useAuth();
+const { user, logout, initAuth, hasPermission } = useAuth();
 const { lastBibleId, lastChapterId } = useBibleManagementContext();
 const route = useRoute();
 const router = useRouter();
@@ -203,88 +203,102 @@ const menuRouteKeys = [
 const selectedKeys = ref([]);
 const openKeys = ref(['bible-management']);
 
-const menuItems = reactive([
+const MENU_BASE = [
   {
     key: 'dashboard',
+    permission: 'DASHBOARD-ACCESS',
     icon: () => h(AppstoreOutlined),
     label: 'Dashboard',
     title: 'Dashboard',
-  }, {
+  },
+  {
     key: 'adminNews',
+    permission: 'READ-NEWS',
     icon: () => h(FileTextOutlined),
     label: 'News & Articles',
     title: 'News & Articles',
   },
   {
     key: 'adminCategories',
+    permission: 'READ-CATEGORY',
     icon: () => h(TagsOutlined),
     label: 'Categories',
     title: 'Categories',
   },
   {
     key: 'adminBible',
+    permission: 'READ-DAILY-READING',
     icon: () => h(ReadOutlined),
     label: 'Bible Readings',
     title: 'Bible Readings',
   },
   {
     key: 'bible-management',
+    permission: 'READ-BIBLE',
     icon: () => h(BookOutlined),
     label: 'Bible Management',
     title: 'Bible Management',
   },
   {
     key: 'bible',
+    permission: 'READ-BIBLE',
     label: 'Bible',
     title: 'Bible',
   },
   {
     key: 'chapters',
+    permission: 'READ-BIBLE',
     label: 'Chapters',
     title: 'Chapters',
   },
   {
     key: 'verses',
+    permission: 'READ-BIBLE',
     label: 'Verses',
     title: 'Verses',
   },
   {
     key: 'adminSermons',
+    permission: 'READ-SERMON',
     icon: () => h(SoundOutlined),
     label: 'Sermons',
     title: 'Sermons',
   },
   {
     key: 'adminMessengerIssues',
+    permission: 'READ-MESSENGER',
     icon: () => h(FileTextOutlined),
     label: 'The Messenger',
     title: 'The Messenger',
   },
   {
     key: 'adminGallery',
+    permission: 'READ-GALLERY',
     icon: () => h(PictureOutlined),
     label: 'Media Gallery',
     title: 'Media Gallery',
   },
   {
     key: 'adminSaints',
+    permission: 'READ-SAINT',
     icon: () => h(FireOutlined),
     label: 'Saints',
     title: 'Saints',
   },
   {
     key: 'adminChurchHistory',
+    permission: 'READ-CHURCH-HISTORY',
     icon: () => h(HistoryOutlined),
     label: 'Church History',
     title: 'Church History',
   },
   {
     key: 'adminStructurePages',
+    permission: 'READ-STRUCTURE-PAGE',
     icon: () => h(ApartmentOutlined),
     label: 'Structure pages',
     title: 'Structure pages',
   },
-
   {
     key: 'system-group',
     icon: () => h(SettingOutlined),
@@ -293,6 +307,7 @@ const menuItems = reactive([
     children: [
       {
         key: 'adminPanel',
+        permission: 'MANAGE-USERS',
         icon: () => h(TeamOutlined),
         label: 'User Management',
         title: 'User Management',
@@ -305,7 +320,24 @@ const menuItems = reactive([
       },
     ],
   },
-]);
+];
+
+function filterMenuByPermission(items) {
+  return items
+    .map((item) => {
+      const { permission, children, ...rest } = item;
+      if (permission && !hasPermission(permission)) return null;
+      if (children?.length) {
+        const nextChildren = filterMenuByPermission(children);
+        if (!nextChildren.length) return null;
+        return { ...rest, children: nextChildren };
+      }
+      return { ...rest };
+    })
+    .filter(Boolean);
+}
+
+const visibleMenuItems = computed(() => filterMenuByPermission(MENU_BASE));
 
 function handleClick(e) {
   const k = String(e.key);

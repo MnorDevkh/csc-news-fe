@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white p-8 rounded-lg shadow-sm border border-gray-200 max-w-2xl mx-auto">
+  <div class="bg-white p-8 rounded-md shadow-sm border border-gray-200 max-w-2xl mx-auto">
     <div class="flex items-center justify-between mb-8">
       <h2 class="text-2xl font-bold text-gray-800">{{ isEditMode ? 'Edit Bible' : 'Create Bible' }}</h2>
       <button @click="$router.push({ name: 'adminBibleManagement' })" class="text-gray-500 hover:text-gray-700">
@@ -21,7 +21,7 @@
     <form v-else @submit.prevent="handleSubmit" class="space-y-6">
       <div
         v-if="feedbackMsg"
-        class="px-4 py-3 rounded-lg text-sm flex items-center justify-between"
+        class="px-4 py-3 rounded-md text-sm flex items-center justify-between"
         :class="feedbackType === 'success' ? 'bg-green-50 text-green-700 border border-green-200' : 'bg-red-50 text-red-700 border border-red-200'"
       >
         <span>{{ feedbackMsg }}</span>
@@ -34,7 +34,7 @@
           v-model="form.name"
           type="text"
           required
-          class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+          class="w-full px-4 py-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none"
           placeholder="Bible name"
         />
       </div>
@@ -44,7 +44,7 @@
         <input
           v-model="form.slug"
           type="text"
-          class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm text-gray-600"
+          class="w-full px-4 py-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none text-sm text-gray-600"
           placeholder="url-slug"
         />
       </div>
@@ -61,7 +61,7 @@
           <label class="block text-sm font-medium text-gray-700 mb-2">Type</label>
           <select
             v-model="form.type"
-            class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+            class="w-full px-4 py-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none"
             :disabled="bibleTypeLoading || !bibleTypeOptions.length"
           >
             <option v-if="!bibleTypeOptions.length" disabled value="">
@@ -96,7 +96,7 @@
         <input
           v-model="form.thumbnail"
           type="text"
-          class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+          class="w-full px-4 py-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none"
           placeholder="https://..."
         />
       </div>
@@ -107,7 +107,7 @@
           <input
             v-model="form.audio_url"
             type="text"
-            class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+            class="w-full px-4 py-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none"
             placeholder="https://..."
           />
         </div>
@@ -116,7 +116,7 @@
           <input
             v-model="form.video_url"
             type="text"
-            class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+            class="w-full px-4 py-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none"
             placeholder="https://..."
           />
         </div>
@@ -127,7 +127,7 @@
           <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
           <select
             v-model="form.status"
-            class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+            class="w-full px-4 py-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none"
           >
             <option value="active">Active</option>
             <option value="inactive">Inactive</option>
@@ -146,7 +146,7 @@
         <input
           v-model="form.order_index"
           type="text"
-          class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+          class="w-full px-4 py-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none"
           placeholder="0"
         />
       </div>
@@ -155,7 +155,7 @@
         <button
           type="submit"
           :disabled="isSubmitting"
-          class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-lg font-medium transition-colors flex items-center gap-2"
+          class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-md font-medium transition-colors flex items-center gap-2"
         >
           <span v-if="isSubmitting" class="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full" />
           {{ isEditMode ? 'Update' : 'Create' }}

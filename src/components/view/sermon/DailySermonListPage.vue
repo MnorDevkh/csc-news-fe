@@ -52,7 +52,7 @@
           <div class="flex justify-center md:justify-start">
             <RouterLink
               :to="{ name: 'dailySermonDetail', params: { id: sermon.id } }"
-              class="inline-flex items-center gap-2 px-4 py-2 bg-purple-50 text-purple-700 rounded-full font-medium hover:bg-purple-100 transition-colors text-sm"
+              class="inline-flex items-center gap-2 px-4 py-2 bg-purple-50 text-purple-700 rounded-md font-medium hover:bg-purple-100 transition-colors text-sm"
             >
               Listen now
               <SoundOutlined />

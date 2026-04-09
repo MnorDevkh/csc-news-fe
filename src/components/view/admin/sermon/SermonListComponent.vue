@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+    <div class="bg-white p-6 rounded-md shadow-sm border border-gray-200">
         <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
             <div>
                 <h2 class="text-2xl font-bold text-gray-800">Sermons & Homilies</h2>
@@ -7,7 +7,7 @@
             </div>
             <button
                 @click="goToCreate"
-                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 font-medium transition-colors">
+                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md flex items-center gap-2 font-medium transition-colors">
                 <PlusOutlined />
                 <span>New Sermon</span>
             </button>
@@ -21,12 +21,12 @@
                     v-model="searchText"
                     type="text"
                     placeholder="Search sermons..."
-                    class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-100 focus:border-blue-500 outline-none transition-all"
+                    class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-100 focus:border-blue-500 outline-none transition-all"
                 >
             </div>
             <select
                 v-model="selectedPreacher"
-                class="border border-gray-300 rounded-lg px-4 py-2 bg-white outline-none cursor-pointer"
+                class="border border-gray-300 rounded-md px-4 py-2 bg-white outline-none cursor-pointer"
             >
                 <option value="">All Preachers</option>
                 <option
@@ -101,7 +101,7 @@
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
                             <span
-                                class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-purple-100 text-purple-800">
+                                class="px-2 inline-flex text-xs leading-5 font-semibold rounded-md bg-purple-100 text-purple-800">
                                 {{ sermon.media_type || 'N/A' }}
                             </span>
                         </td>

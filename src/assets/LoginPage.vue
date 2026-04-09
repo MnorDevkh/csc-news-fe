@@ -16,25 +16,31 @@
 
     <!-- Floating star dots -->
     <div class="absolute top-16 left-20 w-1 h-1 bg-white/40 rounded-full animate-pulse"></div>
-    <div class="absolute top-32 right-32 w-1.5 h-1.5 bg-[#d4a853]/50 rounded-full animate-pulse" style="animation-delay: 0.7s"></div>
+    <div class="absolute top-32 right-32 w-1.5 h-1.5 bg-[#d4a853]/50 rounded-full animate-pulse"
+      style="animation-delay: 0.7s"></div>
     <div class="absolute top-1/3 left-1/4 w-1 h-1 bg-white/30 rounded-full"></div>
-    <div class="absolute bottom-1/3 right-1/4 w-0.5 h-0.5 bg-[#d4a853]/40 rounded-full animate-pulse" style="animation-delay: 1.2s"></div>
+    <div class="absolute bottom-1/3 right-1/4 w-0.5 h-0.5 bg-[#d4a853]/40 rounded-full animate-pulse"
+      style="animation-delay: 1.2s"></div>
     <div class="absolute top-1/2 left-10 w-0.5 h-0.5 bg-white/50 rounded-full"></div>
 
     <!-- Login Card -->
     <div class="relative z-10 w-full max-w-[420px] mx-4" style="animation: fade-in-up 0.7s ease-out forwards">
 
       <!-- Card Container -->
-      <div class="bg-white/[0.97] backdrop-blur-xl rounded-2xl overflow-hidden shadow-2xl shadow-black/20 ring-1 ring-white/10">
+      <div
+        class="bg-white/[0.97] backdrop-blur-xl rounded-2xl overflow-hidden shadow-2xl shadow-black/20 ring-1 ring-white/10">
 
         <!-- Header Section -->
-        <div class="relative bg-gradient-to-br from-[#1a365d] via-[#1e3f6e] to-[#2a4a7f] px-8 pt-10 pb-12 text-center overflow-hidden">
+        <div
+          class="relative bg-gradient-to-br from-[#1a365d] via-[#1e3f6e] to-[#2a4a7f] px-8 pt-10 pb-12 text-center overflow-hidden">
           <!-- Decorative gold line -->
-          <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#d4a853] to-transparent"></div>
+          <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#d4a853] to-transparent">
+          </div>
 
           <!-- Logo area -->
-          <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-white/10 backdrop-blur-sm mb-5 ring-1 ring-white/20">
-            <img src="/image/cropped-logo-1.jpg" alt="CSC Logo" class="w-10 h-10 rounded-lg object-contain" />
+          <div
+            class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-white/10 backdrop-blur-sm mb-5 ring-1 ring-white/20">
+            <img src="/image/cropped-logo-1.jpg" alt="CSC Logo" class="w-10 h-10 rounded-md object-contain" />
           </div>
 
           <h2 class="text-white text-2xl font-bold tracking-wide mb-2">CSC News</h2>
@@ -43,16 +49,18 @@
           </p>
 
           <!-- Decorative gold accent -->
-          <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-16 h-0.5 bg-gradient-to-r from-transparent via-[#d4a853] to-transparent"></div>
+          <div
+            class="absolute bottom-0 left-1/2 -translate-x-1/2 w-16 h-0.5 bg-gradient-to-r from-transparent via-[#d4a853] to-transparent">
+          </div>
         </div>
 
         <!-- Form Section -->
         <div class="px-8 py-8">
-          <h3 class="text-center text-[#1a365d] text-sm font-bold tracking-widest uppercase mb-7">Sign In</h3>
+          <h3 class="text-center text-white text-sm font-bold tracking-widest uppercase mb-7">Sign In</h3>
 
           <!-- Error Alert -->
           <div v-if="error"
-            class="mb-5 text-sm text-center text-red-600 bg-red-50 p-3 rounded-xl ring-1 ring-red-100 flex items-center justify-center gap-2">
+            class="mb-5 text-sm text-center text-red-600 bg-red-50 p-3 rounded-md ring-1 ring-red-100 flex items-center justify-center gap-2">
             <WarningOutlined />
             {{ error }}
           </div>
@@ -61,32 +69,33 @@
 
             <!-- Username -->
             <div>
-              <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Username</label>
+              <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider pb-2">Username</label>
               <div class="relative">
-                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none ">
                   <UserOutlined class="text-gray-400" />
                 </div>
                 <input v-model="email" type="text" placeholder="Enter your username"
-                  class="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-800 placeholder-gray-400 focus:ring-2 focus:ring-[#1a365d]/20 focus:border-[#1a365d] focus:bg-white transition-all outline-none">
+                  class="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-md text-sm text-gray-800 placeholder-gray-400 focus:ring-2 focus:ring-[#1a365d]/20 focus:border-[#1a365d] focus:bg-white transition-all outline-none">
               </div>
             </div>
 
             <!-- Password -->
             <div>
-              <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Password</label>
+              <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider py-2">Password</label>
               <div class="relative">
                 <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                   <LockOutlined class="text-gray-400" />
                 </div>
                 <input v-model="password" type="password" placeholder="Enter your password"
-                  class="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-800 placeholder-gray-400 focus:ring-2 focus:ring-[#1a365d]/20 focus:border-[#1a365d] focus:bg-white transition-all outline-none">
+                  class="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-md text-sm text-gray-800 placeholder-gray-400 focus:ring-2 focus:ring-[#1a365d]/20 focus:border-[#1a365d] focus:bg-white transition-all outline-none">
               </div>
             </div>
 
             <!-- Extras -->
-            <div class="flex items-center justify-between text-xs text-gray-500 px-0.5 pt-1">
+            <div class="flex items-center justify-between text-xs text-gray-500 px-0.5 py-2">
               <label class="flex items-center gap-2 cursor-pointer hover:text-gray-700 transition-colors">
-                <input type="checkbox" id="remember" class="w-3.5 h-3.5 rounded text-[#1a365d] border-gray-300 focus:ring-[#1a365d]/30">
+                <input type="checkbox" id="remember"
+                  class="w-3.5 h-3.5 rounded text-[#1a365d] border-gray-300 focus:ring-[#1a365d]/30">
                 <span>Remember me</span>
               </label>
               <a href="#" class="text-[#1a365d] hover:text-[#d4a853] font-medium transition-colors">Forgot password?</a>
@@ -94,8 +103,9 @@
 
             <!-- Button -->
             <button type="submit" :disabled="loading"
-              class="w-full mt-2 bg-gradient-to-r from-[#1a365d] to-[#2a4a7f] text-white font-bold py-3.5 rounded-xl shadow-lg shadow-[#1a365d]/25 hover:shadow-xl hover:shadow-[#1a365d]/30 hover:from-[#2a4a7f] hover:to-[#1a365d] transform hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-60 disabled:transform-none text-sm tracking-wide uppercase flex items-center justify-center gap-2">
-              <span v-if="loading" class="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full"></span>
+              class="w-full mt-2 bg-blue-600 text-white font-bold py-3.5 rounded-md shadow-lg shadow-blue-600/25 hover:shadow-xl hover:shadow-blue-600/30 hover:bg-blue-700 transform hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-60 disabled:transform-none text-sm tracking-wide uppercase flex items-center justify-center gap-2">
+              <span v-if="loading"
+                class="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full"></span>
               <span v-if="loading">Signing in...</span>
               <span v-else>Sign In</span>
               <ArrowRightOutlined v-if="!loading" class="text-xs" />
@@ -119,20 +129,22 @@
 
 <script setup>
 import { ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { LockOutlined, UserOutlined, ArrowRightOutlined, WarningOutlined } from '@ant-design/icons-vue';
 import { useAuth } from '../composables/useAuth';
 
-const email = ref('admin@gmail.com');
-const password = ref('123');
+const email = ref('');
+const password = ref('');
 const router = useRouter();
+const route = useRoute();
 
 const { login, loading, error } = useAuth();
 
 const handleSubmit = async () => {
   const success = await login(email.value, password.value);
   if (success) {
-    router.push('/admin/dashboard');
+    const dest = typeof route.query.redirect === 'string' ? route.query.redirect : '/admin/dashboard';
+    router.push(dest || '/admin/dashboard');
   }
 };
 </script>

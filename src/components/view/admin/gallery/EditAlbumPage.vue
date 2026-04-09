@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200 max-w-4xl mx-auto">
+  <div class="bg-white p-6 rounded-md shadow-sm border border-gray-200 max-w-4xl mx-auto">
     <div class="flex items-center justify-between mb-6">
       <h2 class="text-2xl font-bold text-gray-800">Edit Album</h2>
       <button
@@ -22,7 +22,7 @@
           v-model="form.title"
           type="text"
           required
-          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+          class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none"
           placeholder="e.g., Summer 2024 Collection"
         />
       </div>
@@ -31,7 +31,7 @@
         <textarea
           v-model="form.description"
           rows="3"
-          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+          class="w-full px-4 py-2 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-blue-500 outline-none"
           placeholder="Describe the mood or context of this collection..."
         />
       </div>
@@ -40,7 +40,7 @@
       <div>
         <label class="block text-sm font-medium text-gray-700 mb-2">Cover image</label>
         <div
-          class="rounded-lg border-2 border-dashed min-h-[140px] flex items-center justify-center bg-gray-50/80 transition-colors cursor-pointer hover:border-blue-400 hover:bg-blue-50/30"
+          class="rounded-md border-2 border-dashed min-h-[140px] flex items-center justify-center bg-gray-50/80 transition-colors cursor-pointer hover:border-blue-400 hover:bg-blue-50/30"
           :class="coverUrl ? 'border-gray-200' : 'border-gray-300'"
           @click="openCoverModal"
         >
@@ -48,7 +48,7 @@
             v-if="coverUrl"
             :src="coverUrl"
             alt="Cover"
-            class="w-full h-full min-h-[140px] max-h-[200px] object-contain rounded-lg"
+            class="w-full h-full min-h-[140px] max-h-[200px] object-contain rounded-md"
           />
           <div v-else class="flex flex-col items-center gap-2 text-gray-400 py-6">
             <PictureOutlined class="text-4xl" />
@@ -68,7 +68,7 @@
         <div class="flex gap-3 overflow-x-auto pb-2">
           <button
             type="button"
-            class="flex-shrink-0 w-24 h-24 rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:border-blue-400 hover:bg-blue-50/50 flex items-center justify-center text-gray-400 hover:text-blue-600 transition-colors"
+            class="flex-shrink-0 w-24 h-24 rounded-md border-2 border-dashed border-gray-300 bg-gray-50 hover:border-blue-400 hover:bg-blue-50/50 flex items-center justify-center text-gray-400 hover:text-blue-600 transition-colors"
             @click="openSelectModal"
           >
             <PlusOutlined class="text-2xl" />
@@ -76,7 +76,7 @@
           <div
             v-for="(item, idx) in selectedList"
             :key="item.id"
-            class="relative flex-shrink-0 w-24 h-24 rounded-lg overflow-hidden border-2 bg-gray-100 group transition-all border-gray-200"
+            class="relative flex-shrink-0 w-24 h-24 rounded-md overflow-hidden border-2 bg-gray-100 group transition-all border-gray-200"
           >
             <img
               :src="item.url"
@@ -85,7 +85,7 @@
             />
             <button
               type="button"
-              class="absolute top-1 right-1 w-6 h-6 rounded-full bg-red-500 hover:bg-red-600 text-white flex items-center justify-center text-sm leading-none shadow transition-colors opacity-0 group-hover:opacity-100"
+              class="absolute top-1 right-1 w-6 h-6 rounded-md bg-red-500 hover:bg-red-600 text-white flex items-center justify-center text-sm leading-none shadow transition-colors opacity-0 group-hover:opacity-100"
               title="Remove"
               @click.stop="removeSelected(idx)"
             >
@@ -107,7 +107,7 @@
         <button
           type="submit"
           :disabled="saving || !form.title?.trim() || !selectedList.length"
-          class="inline-flex items-center gap-2 px-5 py-2 rounded-lg bg-cyan-500 hover:bg-cyan-600 disabled:opacity-50 text-white font-medium transition-colors"
+          class="inline-flex items-center gap-2 px-5 py-2 rounded-md bg-cyan-500 hover:bg-cyan-600 disabled:opacity-50 text-white font-medium transition-colors"
         >
           {{ saving ? 'Saving…' : 'Save Changes' }}
           <ArrowRightOutlined class="text-sm" />

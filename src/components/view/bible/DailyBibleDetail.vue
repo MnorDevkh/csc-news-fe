@@ -19,7 +19,7 @@
             {{ error }}
           </p>
           <button @click="goBackToList"
-            class="inline-flex items-center px-4 py-2 rounded-lg bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 transition-colors">
+            class="inline-flex items-center px-4 py-2 rounded-md bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 transition-colors">
             Back to Daily Readings
           </button>
         </div>
@@ -46,14 +46,14 @@
           <div class="mt-12 pt-8 border-t border-gray-100 flex justify-center gap-6">
             <button class="flex flex-col items-center gap-2 text-gray-500 hover:text-blue-600 transition-colors">
               <div
-                class="h-12 w-12 rounded-full bg-gray-50 flex items-center justify-center text-xl group-hover:bg-blue-50">
+                class="h-12 w-12 rounded-md bg-gray-50 flex items-center justify-center text-xl group-hover:bg-blue-50">
                 <ShareAltOutlined />
               </div>
               <span class="text-xs font-medium">Share</span>
             </button>
             <button class="flex flex-col items-center gap-2 text-gray-500 hover:text-blue-600 transition-colors">
               <div
-                class="h-12 w-12 rounded-full bg-gray-50 flex items-center justify-center text-xl group-hover:bg-blue-50">
+                class="h-12 w-12 rounded-md bg-gray-50 flex items-center justify-center text-xl group-hover:bg-blue-50">
                 <BookOutlined />
               </div>
               <span class="text-xs font-medium">Bookmark</span>

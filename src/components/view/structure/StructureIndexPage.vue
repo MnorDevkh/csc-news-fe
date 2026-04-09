@@ -57,7 +57,7 @@ onMounted(load);
         <p class="text-gray-700 font-medium mb-4">មិនអាចផ្ទុកបញ្ជីទំព័របានទេ</p>
         <button
           type="button"
-          class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-100 text-gray-800 text-sm font-medium hover:bg-gray-200"
+          class="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-gray-100 text-gray-800 text-sm font-medium hover:bg-gray-200"
           @click="load"
         >
           <ReloadOutlined /> ព្យាយាមម្តងទៀត

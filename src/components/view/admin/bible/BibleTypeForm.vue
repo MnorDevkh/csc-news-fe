@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white p-8 rounded-lg shadow-sm border border-gray-200 max-w-2xl mx-auto">
+  <div class="bg-white p-8 rounded-md shadow-sm border border-gray-200 max-w-2xl mx-auto">
     <div class="flex items-center justify-between mb-8">
       <h2 class="text-2xl font-bold text-gray-800">
         {{ isEditMode ? 'Edit Bible Type' : 'Create Bible Type' }}
@@ -26,7 +26,7 @@
     <form v-else @submit.prevent="handleSubmit" class="space-y-6">
       <div
         v-if="feedbackMsg"
-        class="px-4 py-3 rounded-lg text-sm flex items-center justify-between"
+        class="px-4 py-3 rounded-md text-sm flex items-center justify-between"
         :class="feedbackType === 'success'
           ? 'bg-green-50 text-green-700 border border-green-200'
           : 'bg-red-50 text-red-700 border border-red-200'"
@@ -43,7 +43,7 @@
           v-model="form.name"
           type="text"
           required
-          class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+          class="w-full px-4 py-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none"
           placeholder="Bible type name"
         />
       </div>
@@ -53,7 +53,7 @@
         <input
           v-model="form.slug"
           type="text"
-          class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm text-gray-600"
+          class="w-full px-4 py-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none text-sm text-gray-600"
           placeholder="url-slug"
         />
       </div>
@@ -70,7 +70,7 @@
         <input
           v-model="form.thumbnail"
           type="text"
-          class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+          class="w-full px-4 py-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none"
           placeholder="https://..."
         />
       </div>
@@ -79,7 +79,7 @@
         <button
           type="submit"
           :disabled="isSubmitting"
-          class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-lg font-medium transition-colors flex items-center gap-2"
+          class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-md font-medium transition-colors flex items-center gap-2"
         >
           <span
             v-if="isSubmitting"

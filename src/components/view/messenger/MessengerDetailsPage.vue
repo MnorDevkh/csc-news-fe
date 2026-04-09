@@ -86,7 +86,7 @@ watch(slug, () => {
         <header class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
           <div class="p-4 sm:p-8 flex flex-col sm:flex-row gap-4 sm:gap-6">
             <div class="w-full sm:w-56">
-              <div class="aspect-[4/3] rounded-lg overflow-hidden bg-gray-100 border border-gray-200">
+              <div class="aspect-[4/3] rounded-md overflow-hidden bg-gray-100 border border-gray-200">
                 <img
                   v-if="issue?.thumbnail_url"
                   :src="issue.thumbnail_url"

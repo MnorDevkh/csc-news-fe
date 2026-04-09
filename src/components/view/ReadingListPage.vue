@@ -66,7 +66,7 @@ const currentFilteredList = computed(() => {
         </h1>
         <div class="relative max-w-md w-full md:w-auto">
           <input type="text" v-model="filterText" placeholder="Filter articles..."
-            class="w-full pl-4 pr-10 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all" />
+            class="w-full pl-4 pr-10 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all" />
         </div>
       </div>
 
@@ -89,12 +89,12 @@ const currentFilteredList = computed(() => {
 
           <div class="flex items-center gap-2 self-start sm:self-center">
             <button @click="toggleReadStatus(item.id)"
-              class="px-4 py-2 rounded-lg text-sm font-medium transition-colors border"
+              class="px-4 py-2 rounded-md text-sm font-medium transition-colors border"
               :class="item.read ? 'bg-gray-50 text-gray-600 border-gray-200 hover:bg-gray-100' : 'bg-blue-50 text-blue-600 border-blue-100 hover:bg-blue-100'">
               {{ item.read ? 'Mark Unread' : 'Mark Read' }}
             </button>
             <button @click="removeArticle(item.id)"
-              class="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors" title="Remove">
+              class="p-2 text-red-500 hover:bg-red-50 rounded-md transition-colors" title="Remove">
               <DeleteOutlined />
             </button>
           </div>

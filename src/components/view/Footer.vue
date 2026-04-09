@@ -10,7 +10,7 @@
                 <div class="space-y-5">
                     <div class="flex items-center gap-3">
                         <div
-                            class="h-10 w-10 rounded-xl bg-gradient-to-br from-[#d4a853] to-[#c49843] flex items-center justify-center text-[#0f1d32] font-extrabold text-xl shadow-lg shadow-[#d4a853]/15">
+                            class="h-10 w-10 rounded-full bg-gradient-to-br from-[#d4a853] to-[#c49843] flex items-center justify-center text-[#0f1d32] font-extrabold text-xl shadow-lg shadow-[#d4a853]/15">
                             C</div>
                         <span class="text-2xl font-bold tracking-tight text-white">CSC NEWS</span>
                     </div>
@@ -20,19 +20,19 @@
                     </p>
                     <div class="flex gap-2.5 pt-1">
                         <a href="#"
-                            class="h-10 w-10 rounded-xl bg-white/5 flex items-center justify-center text-white/40 hover:bg-[#d4a853]/20 hover:text-[#d4a853] transition-all duration-200">
+                            class="h-10 w-10 rounded-md bg-white/5 flex items-center justify-center text-white/40 hover:bg-[#d4a853]/20 hover:text-[#d4a853] transition-all duration-200">
                             <FacebookFilled />
                         </a>
                         <a href="#"
-                            class="h-10 w-10 rounded-xl bg-white/5 flex items-center justify-center text-white/40 hover:bg-[#d4a853]/20 hover:text-[#d4a853] transition-all duration-200">
+                            class="h-10 w-10 rounded-md bg-white/5 flex items-center justify-center text-white/40 hover:bg-[#d4a853]/20 hover:text-[#d4a853] transition-all duration-200">
                             <TwitterSquareFilled />
                         </a>
                         <a href="#"
-                            class="h-10 w-10 rounded-xl bg-white/5 flex items-center justify-center text-white/40 hover:bg-[#d4a853]/20 hover:text-[#d4a853] transition-all duration-200">
+                            class="h-10 w-10 rounded-md bg-white/5 flex items-center justify-center text-white/40 hover:bg-[#d4a853]/20 hover:text-[#d4a853] transition-all duration-200">
                             <InstagramFilled />
                         </a>
                         <a href="#"
-                            class="h-10 w-10 rounded-xl bg-white/5 flex items-center justify-center text-white/40 hover:bg-[#d4a853]/20 hover:text-[#d4a853] transition-all duration-200">
+                            class="h-10 w-10 rounded-md bg-white/5 flex items-center justify-center text-white/40 hover:bg-[#d4a853]/20 hover:text-[#d4a853] transition-all duration-200">
                             <YoutubeFilled />
                         </a>
                     </div>

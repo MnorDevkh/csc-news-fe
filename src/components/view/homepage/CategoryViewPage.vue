@@ -88,8 +88,8 @@ watch(
       </h1>
 
       <div v-if="isLoading" class="space-y-4 animate-pulse">
-        <div v-for="i in 3" :key="i" class="flex flex-col sm:flex-row gap-6 rounded-lg border border-gray-100 p-4">
-          <div class="w-full sm:w-48 h-32 sm:h-32 bg-gray-200 rounded-lg flex-shrink-0" />
+        <div v-for="i in 3" :key="i" class="flex flex-col sm:flex-row gap-6 rounded-md border border-gray-100 p-4">
+          <div class="w-full sm:w-48 h-32 sm:h-32 bg-gray-200 rounded-md flex-shrink-0" />
           <div class="flex-1 space-y-2">
             <div class="h-5 bg-gray-200 rounded w-3/4" />
             <div class="h-4 bg-gray-200 rounded w-full" />
@@ -113,7 +113,7 @@ watch(
             <img
               :src="article.image"
               :alt="article.title"
-              class="w-full h-full rounded-lg object-cover group-hover:scale-105 transition-transform duration-500"
+              class="w-full h-full rounded-md object-cover group-hover:scale-105 transition-transform duration-500"
             />
           </div>
           <div class="flex-1 flex flex-col justify-between min-w-0 min-h-0">

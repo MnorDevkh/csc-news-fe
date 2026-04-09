@@ -8,7 +8,7 @@
       </div>
       <div class="flex items-center gap-3">
         <router-link :to="{ name: 'createNews' }"
-          class="inline-flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-[#1a365d] to-[#2a4a7f] text-white text-sm font-medium rounded-xl shadow-md shadow-[#1a365d]/15 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200">
+          class="inline-flex items-center gap-2 px-4 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-md shadow-md shadow-blue-600/20 hover:bg-blue-700 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200">
           <PlusOutlined />
           New Article
         </router-link>
@@ -19,10 +19,10 @@
     <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 mb-8">
       <div class="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-gray-100 hover:shadow-md transition-shadow group">
         <div class="flex items-center justify-between mb-3">
-          <div class="h-11 w-11 rounded-xl bg-[#1a365d]/8 flex items-center justify-center group-hover:bg-[#1a365d]/12 transition-colors">
+          <div class="h-11 w-11 rounded-md bg-[#1a365d]/8 flex items-center justify-center group-hover:bg-[#1a365d]/12 transition-colors">
             <FileTextOutlined class="text-lg text-[#1a365d]" />
           </div>
-          <span class="text-xs font-medium text-emerald-600 bg-emerald-50 px-2 py-1 rounded-lg">Live</span>
+          <span class="text-xs font-medium text-emerald-600 bg-emerald-50 px-2 py-1 rounded-md">Live</span>
         </div>
         <p class="text-sm font-medium text-gray-500 mb-1">Published Articles</p>
         <p class="text-2xl font-bold text-gray-900">{{ stats.articles }}</p>
@@ -30,10 +30,10 @@
 
       <div class="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-gray-100 hover:shadow-md transition-shadow group">
         <div class="flex items-center justify-between mb-3">
-          <div class="h-11 w-11 rounded-xl bg-[#d4a853]/10 flex items-center justify-center group-hover:bg-[#d4a853]/15 transition-colors">
+          <div class="h-11 w-11 rounded-md bg-[#d4a853]/10 flex items-center justify-center group-hover:bg-[#d4a853]/15 transition-colors">
             <TagsOutlined class="text-lg text-[#d4a853]" />
           </div>
-          <span class="text-xs font-medium text-[#d4a853] bg-[#d4a853]/10 px-2 py-1 rounded-lg">Active</span>
+          <span class="text-xs font-medium text-[#d4a853] bg-[#d4a853]/10 px-2 py-1 rounded-md">Active</span>
         </div>
         <p class="text-sm font-medium text-gray-500 mb-1">Categories</p>
         <p class="text-2xl font-bold text-gray-900">{{ stats.categories }}</p>
@@ -41,7 +41,7 @@
 
       <div class="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-gray-100 hover:shadow-md transition-shadow group">
         <div class="flex items-center justify-between mb-3">
-          <div class="h-11 w-11 rounded-xl bg-violet-100/80 flex items-center justify-center group-hover:bg-violet-100 transition-colors">
+          <div class="h-11 w-11 rounded-md bg-violet-100/80 flex items-center justify-center group-hover:bg-violet-100 transition-colors">
             <PictureOutlined class="text-lg text-violet-600" />
           </div>
         </div>
@@ -51,7 +51,7 @@
 
       <div class="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-gray-100 hover:shadow-md transition-shadow group">
         <div class="flex items-center justify-between mb-3">
-          <div class="h-11 w-11 rounded-xl bg-sky-100/80 flex items-center justify-center group-hover:bg-sky-100 transition-colors">
+          <div class="h-11 w-11 rounded-md bg-sky-100/80 flex items-center justify-center group-hover:bg-sky-100 transition-colors">
             <ReadOutlined class="text-lg text-sky-600" />
           </div>
         </div>
@@ -61,15 +61,15 @@
     </div>
 
     <!-- Content Grid -->
-    <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-3 pt-4">
 
       <!-- Quick Actions -->
       <div class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-100 lg:col-span-2">
         <h3 class="text-lg font-bold text-gray-900 mb-5">Quick Actions</h3>
         <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
           <router-link v-for="action in quickActions" :key="action.name" :to="action.to"
-            class="flex flex-col items-center gap-3 p-4 rounded-xl bg-gray-50/80 hover:bg-[#1a365d]/5 border border-transparent hover:border-[#1a365d]/10 transition-all duration-200 group cursor-pointer">
-            <div class="h-10 w-10 rounded-xl flex items-center justify-center transition-colors"
+            class="flex flex-col items-center gap-3 p-4 rounded-2xl bg-gray-50/80 hover:bg-[#1a365d]/5 border border-transparent hover:border-[#1a365d]/10 transition-all duration-200 group cursor-pointer">
+            <div class="h-10 w-10 rounded-md flex items-center justify-center transition-colors"
               :class="action.iconBg">
               <component :is="action.icon" class="text-base" :class="action.iconColor" />
             </div>
@@ -83,7 +83,7 @@
         <h3 class="text-lg font-bold text-gray-900 mb-5">System Info</h3>
         <div class="space-y-4">
           <div class="flex items-center gap-3 p-3 rounded-xl bg-gray-50/80">
-            <div class="h-8 w-8 rounded-lg bg-emerald-100 flex items-center justify-center">
+            <div class="h-8 w-8 rounded-md bg-emerald-100 flex items-center justify-center">
               <CheckCircleOutlined class="text-emerald-600 text-sm" />
             </div>
             <div class="flex-1 min-w-0">
@@ -92,7 +92,7 @@
             </div>
           </div>
           <div class="flex items-center gap-3 p-3 rounded-xl bg-gray-50/80">
-            <div class="h-8 w-8 rounded-lg bg-[#1a365d]/10 flex items-center justify-center">
+            <div class="h-8 w-8 rounded-md bg-[#1a365d]/10 flex items-center justify-center">
               <GlobalOutlined class="text-[#1a365d] text-sm" />
             </div>
             <div class="flex-1 min-w-0">
@@ -101,7 +101,7 @@
             </div>
           </div>
           <div class="flex items-center gap-3 p-3 rounded-xl bg-gray-50/80">
-            <div class="h-8 w-8 rounded-lg bg-[#d4a853]/10 flex items-center justify-center">
+            <div class="h-8 w-8 rounded-md bg-[#d4a853]/10 flex items-center justify-center">
               <ClockCircleOutlined class="text-[#d4a853] text-sm" />
             </div>
             <div class="flex-1 min-w-0">

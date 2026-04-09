@@ -31,14 +31,14 @@
                         />
                         <button
                             type="button"
-                            class="px-5 py-2 rounded-full bg-[#1a365d] text-white text-sm font-medium hover:bg-[#2a4a7f] shadow-sm shadow-[#1a365d]/15 shrink-0 transition-all"
+                            class="px-5 py-2 rounded-md bg-[#1a365d] text-white text-sm font-medium hover:bg-[#2a4a7f] shadow-sm shadow-[#1a365d]/15 shrink-0 transition-all"
                             @click="performSearch"
                         >
                             Search
                         </button>
                     </div>
                     <router-link v-if="isAuthenticated" :to="{ name: 'dashboard' }"
-                        class="flex items-center gap-2 px-4 py-2 rounded-full bg-[#d4a853] text-white text-sm font-medium hover:bg-[#c49843] shadow-sm shadow-[#d4a853]/20 shrink-0 transition-all">
+                        class="flex items-center gap-2 px-4 py-2 rounded-md bg-[#d4a853] text-white text-sm font-medium hover:bg-[#c49843] shadow-sm shadow-[#d4a853]/20 shrink-0 transition-all">
                         <DashboardIcon class="w-5 h-5" />
                         <span>Dashboard</span>
                     </router-link>
@@ -104,7 +104,7 @@
                             </button>
                             <div
                                 v-show="itemDropdownKey(item) === 'news' ? newsDropdownOpen : structureDropdownOpen"
-                                class="menu-dropdown absolute left-0 top-full min-w-[220px] py-2 bg-white shadow-xl shadow-gray-200/50 ring-1 ring-gray-100 rounded-xl z-50"
+                                class="menu-dropdown absolute left-0 top-full min-w-[220px] py-2 bg-white shadow-xl shadow-gray-200/50 ring-1 ring-gray-100 rounded-2xl z-50"
                                 @mouseleave="itemDropdownKey(item) === 'news' ? (newsDropdownOpen = false) : (structureDropdownOpen = false)"
                             >
                                 <router-link
@@ -193,7 +193,7 @@
                             />
                             <button
                                 type="button"
-                                class="px-4 py-2 rounded-full bg-[#1a365d] text-white text-sm font-medium hover:bg-[#2a4a7f] shadow-sm transition-all"
+                                class="px-4 py-2 rounded-md bg-[#1a365d] text-white text-sm font-medium hover:bg-[#2a4a7f] shadow-sm transition-all"
                                 @click="() => { performSearch(); mobileMenuOpen = false; }"
                             >
                                 Search
@@ -296,7 +296,7 @@
                     <div v-if="isAuthenticated" class="pt-4 border-t border-stone-200/70">
                         <router-link
                             :to="{ name: 'dashboard' }"
-                            class="flex items-center justify-center gap-2 w-full py-3 px-4 rounded-full bg-primary text-white font-medium hover:bg-primary-hover"
+                            class="flex items-center justify-center gap-2 w-full py-3 px-4 rounded-md bg-primary text-white font-medium hover:bg-primary-hover"
                             @click="mobileMenuOpen = false"
                         >
                             <DashboardIcon class="w-5 h-5" />

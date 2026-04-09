@@ -1,12 +1,12 @@
 <template>
-    <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+    <div class="bg-white p-6 rounded-md shadow-sm border border-gray-200">
         <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
             <div>
                 <h2 class="text-2xl font-bold text-gray-800">Saints</h2>
                 <p class="text-gray-500 text-sm">Manage stories and histories of Saints</p>
             </div>
             <button
-                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 font-medium transition-colors">
+                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md flex items-center gap-2 font-medium transition-colors">
                 <PlusOutlined />
                 <span>Add Saint</span>
             </button>
@@ -17,7 +17,7 @@
             <div class="relative flex-1">
                 <SearchOutlined class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
                 <input type="text" placeholder="Search saints..."
-                    class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-100 focus:border-blue-500 outline-none transition-all">
+                    class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-100 focus:border-blue-500 outline-none transition-all">
             </div>
         </div>
 
@@ -40,7 +40,7 @@
                 <tbody class="bg-white divide-y divide-gray-200">
                     <tr v-for="saint in saints" :key="saint.id" class="hover:bg-gray-50 transition-colors">
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <img :src="saint.image" class="h-10 w-10 rounded-full object-cover border border-gray-200">
+                            <img :src="saint.image" class="h-10 w-10 rounded-md object-cover border border-gray-200">
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                             {{ saint.name }}

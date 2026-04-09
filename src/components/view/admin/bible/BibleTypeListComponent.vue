@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+  <div class="bg-white p-6 rounded-md shadow-sm border border-gray-200">
     <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
       <div>
         <h2 class="text-2xl font-bold text-gray-800">Bible Types</h2>
@@ -9,7 +9,7 @@
       </div>
       <button
         @click="goToCreate"
-        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 font-medium transition-colors"
+        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md flex items-center gap-2 font-medium transition-colors"
       >
         <PlusOutlined />
         <span>Create Bible Type</span>

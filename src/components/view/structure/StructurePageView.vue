@@ -90,14 +90,14 @@ onMounted(() => {
         <div class="flex flex-wrap items-center justify-center gap-3">
           <button
             type="button"
-            class="inline-flex items-center gap-2 px-5 py-2.5 bg-gray-100 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-200 transition-colors"
+            class="inline-flex items-center gap-2 px-5 py-2.5 bg-gray-100 text-gray-700 text-sm font-medium rounded-md hover:bg-gray-200 transition-colors"
             @click="loadContent"
           >
             <ReloadOutlined /> ព្យាយាមម្តងទៀត
           </button>
           <button
             type="button"
-            class="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors"
+            class="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 transition-colors"
             @click="router.push({ name: 'structureIndex' })"
           >
             <ArrowLeftOutlined /> រចនាសម្ព័ន្ធ
@@ -172,7 +172,7 @@ onMounted(() => {
                       <img
                         :src="block.image.url"
                         :alt="block.caption || pageTitle + ' image'"
-                        class="rounded-lg w-full h-auto max-h-[480px] object-contain mx-auto"
+                        class="rounded-md w-full h-auto max-h-[480px] object-contain mx-auto"
                       />
                       <figcaption
                         v-if="block.caption"
@@ -215,7 +215,7 @@ onMounted(() => {
                     :key="img.key || i"
                     :src="img.url"
                     :alt="pageTitle + ' image ' + (i + 1)"
-                    class="rounded-lg max-w-full h-auto object-contain"
+                    class="rounded-md max-w-full h-auto object-contain"
                   />
                 </div>
               </div>

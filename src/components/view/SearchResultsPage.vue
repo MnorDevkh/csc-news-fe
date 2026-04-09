@@ -53,7 +53,7 @@ onMounted(() => {
           <div class="flex items-start justify-between">
             <div>
               <div class="flex items-center gap-2 mb-2">
-                <span class="bg-blue-50 text-blue-600 text-xs px-2 py-1 rounded-md font-medium uppercase">{{
+                <span class="bg-blue-50 text-blue-600 text-xs px-2 py-1 rounded-full font-medium uppercase">{{
                   item.category }}</span>
                 <span class="text-xs text-gray-400">{{ item.date }}</span>
               </div>

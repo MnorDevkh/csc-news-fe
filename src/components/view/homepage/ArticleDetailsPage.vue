@@ -147,14 +147,14 @@ onUnmounted(() => {
           <button
             type="button"
             @click="loadArticle"
-            class="inline-flex items-center gap-2 px-5 py-2.5 bg-gray-100 text-gray-700 text-sm font-medium rounded-xl hover:bg-gray-200 transition-colors focus:outline-none focus:ring-2 focus:ring-[#1a365d]/20 focus:ring-offset-2"
+            class="inline-flex items-center gap-2 px-5 py-2.5 bg-gray-100 text-gray-700 text-sm font-medium rounded-md hover:bg-gray-200 transition-colors focus:outline-none focus:ring-2 focus:ring-[#1a365d]/20 focus:ring-offset-2"
           >
             <ReloadOutlined /> Retry
           </button>
           <button
             type="button"
             @click="router.back()"
-            class="inline-flex items-center gap-2 px-5 py-2.5 bg-[#1a365d] text-white text-sm font-medium rounded-xl hover:bg-[#2a4a7f] transition-colors focus:outline-none focus:ring-2 focus:ring-[#1a365d]/30 focus:ring-offset-2 shadow-sm"
+            class="inline-flex items-center gap-2 px-5 py-2.5 bg-[#1a365d] text-white text-sm font-medium rounded-md hover:bg-[#2a4a7f] transition-colors focus:outline-none focus:ring-2 focus:ring-[#1a365d]/30 focus:ring-offset-2 shadow-sm"
           >
             <ArrowLeftOutlined /> Go Back
           </button>
@@ -235,7 +235,7 @@ onUnmounted(() => {
                     :key="img.key || i"
                     :src="img.url"
                     :alt="article.title + ' image ' + (i + 1)"
-                    class="rounded-lg max-w-full h-auto object-contain"
+                    class="rounded-md max-w-full h-auto object-contain"
                   />
                 </div>
               </div>
@@ -256,7 +256,7 @@ onUnmounted(() => {
               <span
                 v-for="tag in article.tags.split(',')"
                 :key="tag.trim()"
-                class="inline-flex items-center px-3 py-1.5 rounded-lg text-sm font-medium bg-[#1a365d]/8 text-[#1a365d] hover:bg-[#1a365d]/12 transition-colors"
+                class="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium bg-[#1a365d]/8 text-[#1a365d] hover:bg-[#1a365d]/12 transition-colors"
               >
                 #{{ tag.trim() }}
               </span>
@@ -268,7 +268,7 @@ onUnmounted(() => {
             <button
               type="button"
               @click="router.back()"
-              class="inline-flex items-center gap-2 text-gray-500 hover:text-[#1a365d] text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-[#1a365d]/20 focus:ring-offset-2 rounded-lg px-3 py-1.5 hover:bg-[#1a365d]/5"
+              class="inline-flex items-center gap-2 text-gray-500 hover:text-[#1a365d] text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-[#1a365d]/20 focus:ring-offset-2 rounded-md px-3 py-1.5 hover:bg-[#1a365d]/5"
             >
               <ArrowLeftOutlined class="text-xs" /> Back to list
             </button>
@@ -277,7 +277,7 @@ onUnmounted(() => {
               <button
                 type="button"
                 @click="handleShare"
-                class="h-9 w-9 rounded-full bg-gray-100 text-gray-600 hover:bg-[#1a365d] hover:text-white flex items-center justify-center transition-all focus:outline-none focus:ring-2 focus:ring-[#1a365d]/30 focus:ring-offset-2"
+                class="h-9 w-9 rounded-md bg-gray-100 text-gray-600 hover:bg-[#1a365d] hover:text-white flex items-center justify-center transition-all focus:outline-none focus:ring-2 focus:ring-[#1a365d]/30 focus:ring-offset-2"
                 :title="shareCopied ? 'Copied' : 'Share article'"
               >
                 <ShareAltOutlined class="text-base" />

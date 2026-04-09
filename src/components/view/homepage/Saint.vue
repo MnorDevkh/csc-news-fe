@@ -15,7 +15,7 @@ const saintsList = ref([
       <li v-for="saint in saintsList" :key="saint.id" class="group">
         <a href="#" class="flex items-start gap-4 py-4 px-1 hover:bg-gray-50 transition-colors duration-200">
           <div class="flex-shrink-0">
-            <img :src="saint.imageUrl" :alt="saint.name" class="h-25 w-40 rounded-lg object-cover shadow-sm">
+            <img :src="saint.imageUrl" :alt="saint.name" class="h-25 w-40 rounded-md object-cover shadow-sm">
           </div>
           <div class="flex-1">
             <h4 class="font-semibold text-gray-800 group-hover:text-amber-600 transition-colors">{{ saint.name }}</h4>

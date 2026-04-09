@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white p-8 rounded-lg shadow-sm border border-gray-200 max-w-3xl mx-auto">
+  <div class="bg-white p-8 rounded-md shadow-sm border border-gray-200 max-w-3xl mx-auto">
     <div class="flex items-center justify-between mb-8">
       <h2 class="text-2xl font-bold text-gray-800">
         {{ isEditMode ? 'Edit Messenger Issue' : 'Create Messenger Issue' }}
@@ -26,7 +26,7 @@
     <form v-else @submit.prevent="handleSubmit" class="space-y-8">
       <div
         v-if="feedbackMsg"
-        class="px-4 py-3 rounded-lg text-sm flex items-center justify-between"
+        class="px-4 py-3 rounded-md text-sm flex items-center justify-between"
         :class="feedbackType === 'success'
           ? 'bg-green-50 text-green-700 border border-green-200'
           : 'bg-red-50 text-red-700 border border-red-200'"
@@ -49,7 +49,7 @@
             v-model="form.title"
             type="text"
             required
-            class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+            class="w-full px-4 py-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none"
             placeholder="Issue title"
             @blur="autoGenerateSlug"
           />
@@ -60,7 +60,7 @@
             v-model="form.slug"
             type="text"
             required
-            class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+            class="w-full px-4 py-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none"
             placeholder="slug-for-url"
           />
         </div>
@@ -73,7 +73,7 @@
           <input
             v-model="form.issue_date"
             type="date"
-            class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+            class="w-full px-4 py-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none"
           />
         </div>
         <div class="flex items-center gap-3 pt-7">
@@ -92,7 +92,7 @@
         <textarea
           v-model="form.description"
           rows="3"
-          class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+          class="w-full px-4 py-2.5 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-blue-500 outline-none"
           placeholder="Short description to show in listings..."
         />
       </div>
@@ -103,7 +103,7 @@
         <input
           v-model="form.thumbnail_url"
           type="url"
-          class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+          class="w-full px-4 py-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none"
           placeholder="https://example.com/cover.jpg"
         />
         <p class="mt-1 text-xs text-gray-500">You can reuse an image from the gallery or an external URL.</p>
@@ -124,7 +124,7 @@
             <button
               type="button"
               :disabled="pdfUploading"
-              class="inline-flex items-center gap-2 bg-gray-100 hover:bg-gray-200 disabled:opacity-50 text-gray-800 px-4 py-2 rounded-lg font-medium transition-colors"
+              class="inline-flex items-center gap-2 bg-gray-100 hover:bg-gray-200 disabled:opacity-50 text-gray-800 px-4 py-2 rounded-md font-medium transition-colors"
               @click="triggerPdfInput"
             >
               <PlusOutlined />
@@ -148,7 +148,7 @@
         <button
           type="submit"
           :disabled="isSubmitting"
-          class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-lg font-medium transition-colors flex items-center gap-2"
+          class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-md font-medium transition-colors flex items-center gap-2"
         >
           <span
             v-if="isSubmitting"

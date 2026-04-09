@@ -47,8 +47,8 @@ const submitReply = () => {
     </div>
 
     <div v-if="showReplyForm" class="mt-4">
-      <textarea v-model="newReply" placeholder="Write a reply..." class="w-full min-h-[60px] p-2 border border-gray-300 rounded"></textarea>
-      <button @click="submitReply" class="mt-2 px-4 py-2 bg-blue-600 text-white border-none rounded cursor-pointer hover:bg-blue-700">
+      <textarea v-model="newReply" placeholder="Write a reply..." class="w-full min-h-[60px] p-2 border border-gray-300 rounded-md"></textarea>
+      <button @click="submitReply" class="mt-2 px-4 py-2 bg-blue-600 text-white border-none rounded-md cursor-pointer hover:bg-blue-700">
         Submit Reply
       </button>
     </div>

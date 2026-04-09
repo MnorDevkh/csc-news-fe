@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200 max-w-4xl mx-auto">
+  <div class="bg-white p-6 rounded-md shadow-sm border border-gray-200 max-w-4xl mx-auto">
     <div class="flex items-center justify-between mb-6">
       <h2 class="text-2xl font-bold text-gray-800">Church History</h2>
       <button @click="$router.push({ name: 'dashboard' })" class="text-gray-500 hover:text-gray-700">
@@ -12,7 +12,7 @@
       <div>
         <label class="block text-sm font-medium text-gray-700 mb-1">Title</label>
         <input v-model="form.title" type="text" required
-          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+          class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none"
           placeholder="Enter page title" />
       </div>
 
@@ -20,7 +20,7 @@
       <div>
         <label class="block text-sm font-medium text-gray-700 mb-1">Thumbnail</label>
         <div
-          class="rounded-lg border-2 border-dashed min-h-[140px] flex items-center justify-center bg-gray-50/80 transition-colors cursor-pointer hover:border-blue-400 hover:bg-blue-50/30"
+          class="rounded-md border-2 border-dashed min-h-[140px] flex items-center justify-center bg-gray-50/80 transition-colors cursor-pointer hover:border-blue-400 hover:bg-blue-50/30"
           :class="thumbnailUrl ? 'border-gray-200' : 'border-gray-300'"
           @click="openThumbnailModal"
         >
@@ -28,7 +28,7 @@
             v-if="thumbnailUrl"
             :src="thumbnailUrl"
             alt="Thumbnail"
-            class="w-full h-full min-h-[140px] max-h-[200px] object-contain rounded-lg"
+            class="w-full h-full min-h-[140px] max-h-[200px] object-contain rounded-md"
           />
           <div v-else class="flex flex-col items-center gap-2 text-gray-400 py-6">
             <PictureOutlined class="text-4xl" />
@@ -49,7 +49,7 @@
       <div>
         <label class="block text-sm font-medium text-gray-700 mb-1">Excerpt</label>
         <textarea v-model="form.excerpt" rows="2"
-          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+          class="w-full px-4 py-2 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-blue-500 outline-none"
           placeholder="Brief summary (optional)"></textarea>
       </div>
 
@@ -61,7 +61,7 @@
           <div
             v-for="(block, index) in contentBlocks"
             :key="block.id"
-            class="rounded-lg border border-gray-200 bg-gray-50/50 p-4 relative"
+            class="rounded-md border border-gray-200 bg-gray-50/50 p-4 relative"
           >
             <div class="flex flex-wrap items-center justify-between gap-3 mb-3">
               <div class="flex items-center gap-2">
@@ -98,7 +98,7 @@
                   <ckeditor :editor="editor" v-model="block.html" :config="editorConfig" />
                 </div>
 
-                <div class="rounded-lg border border-gray-200 bg-white p-3">
+                <div class="rounded-md border border-gray-200 bg-white p-3">
                   <div class="flex items-center justify-between gap-3">
                     <div class="text-sm font-medium text-gray-700">Block image</div>
                     <div class="flex items-center gap-2">
@@ -136,7 +136,7 @@
                     <img
                       :src="block.image.url"
                       alt="Block image"
-                      class="w-full max-w-xs rounded-lg border border-gray-200 object-contain bg-gray-50"
+                      class="w-full max-w-xs rounded-md border border-gray-200 object-contain bg-gray-50"
                     />
                     <div class="mt-1 text-xs text-gray-400 truncate">{{ block.image.url }}</div>
                   </div>
@@ -159,7 +159,7 @@
                 <div
                   v-for="(img, imgIdx) in block.images"
                   :key="img.key || imgIdx"
-                  class="relative rounded-lg overflow-hidden border border-gray-200 bg-white"
+                  class="relative rounded-md overflow-hidden border border-gray-200 bg-white"
                 >
                   <img
                     :src="img.url"
@@ -178,14 +178,14 @@
           <div class="flex flex-wrap gap-2 pt-2">
             <button
               type="button"
-              class="inline-flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg font-medium transition-colors text-sm"
+              class="inline-flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-md font-medium transition-colors text-sm"
               @click="addContentBlock"
             >
               Add content
             </button>
             <button
               type="button"
-              class="inline-flex items-center gap-2 px-4 py-2 bg-blue-100 hover:bg-blue-200 text-blue-700 rounded-lg font-medium transition-colors text-sm"
+              class="inline-flex items-center gap-2 px-4 py-2 bg-blue-100 hover:bg-blue-200 text-blue-700 rounded-md font-medium transition-colors text-sm"
               @click="openContentImageModal"
             >
               <PictureOutlined /> Add image(s)
@@ -196,7 +196,7 @@
 
       <div class="flex justify-end pt-4 border-t border-gray-100">
         <button type="submit" :disabled="isSubmitting"
-          class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition-colors flex items-center gap-2">
+          class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md font-medium transition-colors flex items-center gap-2">
           <span v-if="isSubmitting" class="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full"></span>
           Save Church History
         </button>

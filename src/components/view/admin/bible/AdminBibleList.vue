@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+  <div class="bg-white p-6 rounded-md shadow-sm border border-gray-200">
     <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
       <div>
         <h2 class="text-2xl font-bold text-gray-800">Bibles</h2>
@@ -7,7 +7,7 @@
       </div>
       <button
         @click="router.push({ name: 'adminBibleCreate' })"
-        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 font-medium transition-colors"
+        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md flex items-center gap-2 font-medium transition-colors"
       >
         <PlusOutlined />
         <span>Create Bible</span>
@@ -20,7 +20,7 @@
           <label class="text-xs font-medium text-gray-500 mb-1">Language</label>
           <select
             v-model="filters.language"
-            class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm bg-white focus:ring-2 focus:ring-blue-100 focus:border-blue-500 outline-none"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm bg-white focus:ring-2 focus:ring-blue-100 focus:border-blue-500 outline-none"
           >
             <option value="">All</option>
             <option value="km">Khmer (km)</option>
@@ -32,14 +32,14 @@
           <input
             v-model="filters.order_by"
             type="text"
-            class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-100 focus:border-blue-500 outline-none"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-blue-100 focus:border-blue-500 outline-none"
           >
         </div>
         <div class="flex flex-col">
           <label class="text-xs font-medium text-gray-500 mb-1">Page Size</label>
           <select
             v-model.number="pageSize"
-            class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm bg-white focus:ring-2 focus:ring-blue-100 focus:border-blue-500 outline-none"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm bg-white focus:ring-2 focus:ring-blue-100 focus:border-blue-500 outline-none"
           >
             <option :value="10">10</option>
             <option :value="20">20</option>
@@ -51,13 +51,13 @@
       <div class="flex gap-2">
         <button
           @click="applyFilters"
-          class="px-4 py-2 rounded-lg border border-gray-300 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+          class="px-4 py-2 rounded-md border border-gray-300 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
         >
           Apply
         </button>
         <button
           @click="resetFilters"
-          class="px-4 py-2 rounded-lg border border-transparent text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+          class="px-4 py-2 rounded-md border border-transparent text-sm text-gray-700 hover:bg-gray-50 transition-colors"
         >
           Reset
         </button>
@@ -111,11 +111,11 @@
             <td class="px-6 py-4 whitespace-nowrap text-center">
               <span
                 v-if="bible.status === 'active'"
-                class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"
+                class="px-2 inline-flex text-xs leading-5 font-semibold rounded-md bg-green-100 text-green-800"
               >
                 Active
               </span>
-              <span v-else class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
+              <span v-else class="px-2 inline-flex text-xs leading-5 font-semibold rounded-md bg-gray-100 text-gray-800">
                 {{ bible.status || 'inactive' }}
               </span>
             </td>

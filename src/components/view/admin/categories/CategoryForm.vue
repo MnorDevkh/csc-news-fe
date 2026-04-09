@@ -1,5 +1,5 @@
 <template>
-  <div class="category-form bg-white p-8 rounded-lg shadow-sm border border-gray-200 max-w-2xl mx-auto my-6">
+  <div class="category-form bg-white p-8 rounded-md shadow-sm border border-gray-200 max-w-2xl mx-auto my-6">
     <div class="flex items-center justify-between mb-8">
       <h2 class="text-2xl font-bold text-gray-800">{{ isEditMode ? 'Edit Category' : 'Create Category' }}</h2>
       <button @click="$router.push({ name: 'adminCategories' })" class="text-gray-500 hover:text-gray-700">
@@ -23,7 +23,7 @@
     <form v-else @submit.prevent="handleSubmit" class="space-y-8">
       <!-- Feedback banner -->
       <div v-if="feedbackMsg"
-        class="px-4 py-3 rounded-lg text-sm flex items-center justify-between"
+        class="px-4 py-3 rounded-md text-sm flex items-center justify-between"
         :class="feedbackType === 'success'
           ? 'bg-green-50 text-green-700 border border-green-200'
           : 'bg-red-50 text-red-700 border border-red-200'"
@@ -37,12 +37,12 @@
         <label class="block text-sm font-medium text-gray-700 mb-2">Name</label>
         <div class="space-y-3 pb-2 ">
             <input v-model="form.name" type="text" required
-            class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+            class="w-full px-4 py-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none"
             placeholder="Category Name" />
 
             <!-- Slug -->
              <input v-model="form.slug" type="text"
-            class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm text-gray-600"
+            class="w-full px-4 py-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none text-sm text-gray-600"
             placeholder="slug-url-path (optional)" />
         </div>
       </div>
@@ -51,7 +51,7 @@
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
              <label class="block text-sm font-medium text-gray-700 mb-2">Parent Category</label>
-             <select v-model="form.parent_id" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+             <select v-model="form.parent_id" class="w-full px-4 py-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none">
                  <option :value="null">None (Top Level)</option>
                  <option v-for="cat in parentCategories" :key="cat.id" :value="cat.id">
                      {{ cat.name }}
@@ -61,7 +61,7 @@
          <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">Order Number</label>
             <input v-model="form.order_no" type="number"
-            class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+            class="w-full px-4 py-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none"
             placeholder="0" />
         </div>
       </div>
@@ -70,7 +70,7 @@
       <div>
         <label class="block text-sm font-medium text-gray-700 mb-2">Thumbnail</label>
         <div
-          class="rounded-lg border-2 border-dashed min-h-[140px] flex items-center justify-center bg-gray-50/80 transition-colors cursor-pointer hover:border-blue-400 hover:bg-blue-50/30"
+          class="rounded-md border-2 border-dashed min-h-[140px] flex items-center justify-center bg-gray-50/80 transition-colors cursor-pointer hover:border-blue-400 hover:bg-blue-50/30"
           :class="thumbnailUrl ? 'border-gray-200' : 'border-gray-300'"
           @click="openThumbnailModal"
         >
@@ -78,7 +78,7 @@
             v-if="thumbnailUrl"
             :src="thumbnailUrl"
             alt="Thumbnail"
-            class="w-full h-full min-h-[140px] max-h-[200px] object-contain rounded-lg"
+            class="w-full h-full min-h-[140px] max-h-[200px] object-contain rounded-md"
           />
           <div v-else class="flex flex-col items-center gap-2 text-gray-400 py-6">
             <PictureOutlined class="text-4xl" />
@@ -108,7 +108,7 @@
       <div class="flex items-center gap-6 pb-2">
          <div class="flex-1">
             <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
-            <select v-model="form.status" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+            <select v-model="form.status" class="w-full px-4 py-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none">
                 <option value="active">Active</option>
                 <option value="inactive">Inactive</option>
             </select>
@@ -125,7 +125,7 @@
       <!-- Actions -->
       <div class="flex justify-end pt-6 border-t border-gray-100">
         <button type="submit" :disabled="isSubmitting"
-          class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-lg font-medium transition-colors flex items-center gap-2">
+          class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-md font-medium transition-colors flex items-center gap-2">
           <span v-if="isSubmitting" class="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full"></span>
           {{ isEditMode ? 'Update' : 'Create' }}
         </button>

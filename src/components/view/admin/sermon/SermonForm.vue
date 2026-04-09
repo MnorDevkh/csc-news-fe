@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white p-8 rounded-lg shadow-sm border border-gray-200 max-w-3xl mx-auto">
+  <div class="bg-white p-8 rounded-md shadow-sm border border-gray-200 max-w-3xl mx-auto">
     <div class="flex items-center justify-between mb-8">
       <h2 class="text-2xl font-bold text-gray-800">
         {{ isEditMode ? 'Edit Sermon' : 'Create Sermon' }}
@@ -26,7 +26,7 @@
     <form v-else @submit.prevent="handleSubmit" class="space-y-8">
       <div
         v-if="feedbackMsg"
-        class="px-4 py-3 rounded-lg text-sm flex items-center justify-between"
+        class="px-4 py-3 rounded-md text-sm flex items-center justify-between"
         :class="feedbackType === 'success'
           ? 'bg-green-50 text-green-700 border border-green-200'
           : 'bg-red-50 text-red-700 border border-red-200'"
@@ -48,7 +48,7 @@
           v-model="form.title"
           type="text"
           required
-          class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+          class="w-full px-4 py-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none"
           placeholder="Sermon title"
         />
       </div>
@@ -60,7 +60,7 @@
           <input
             v-model="form.preacher"
             type="text"
-            class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+            class="w-full px-4 py-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none"
             placeholder="e.g. Fr. Sok Na"
           />
         </div>
@@ -69,7 +69,7 @@
           <input
             v-model="form.sermon_date"
             type="date"
-            class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+            class="w-full px-4 py-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none"
           />
         </div>
       </div>
@@ -79,7 +79,7 @@
         <textarea
           v-model="form.snippet"
           rows="3"
-          class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+          class="w-full px-4 py-2.5 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-blue-500 outline-none"
           placeholder="Short summary to show in lists..."
         />
       </div>
@@ -88,7 +88,7 @@
       <div>
         <label class="block text-sm font-medium text-gray-700 mb-2">Thumbnail</label>
         <div
-          class="rounded-lg border-2 border-dashed min-h-[140px] flex items-center justify-center bg-gray-50/80 transition-colors cursor-pointer hover:border-blue-400 hover:bg-blue-50/30"
+          class="rounded-md border-2 border-dashed min-h-[140px] flex items-center justify-center bg-gray-50/80 transition-colors cursor-pointer hover:border-blue-400 hover:bg-blue-50/30"
           :class="thumbnailUrl ? 'border-gray-200' : 'border-gray-300'"
           @click="openThumbnailModal"
         >
@@ -96,7 +96,7 @@
             v-if="thumbnailUrl"
             :src="thumbnailUrl"
             alt="Thumbnail"
-            class="w-full h-full min-h-[140px] max-h-[200px] object-contain rounded-lg"
+            class="w-full h-full min-h-[140px] max-h-[200px] object-contain rounded-md"
           />
           <div v-else class="flex flex-col items-center gap-2 text-gray-400 py-6">
             <PictureOutlined class="text-4xl" />
@@ -128,7 +128,7 @@
             <button
               type="button"
               :disabled="mediaUploading"
-              class="inline-flex items-center gap-2 bg-gray-100 hover:bg-gray-200 disabled:opacity-50 text-gray-800 px-4 py-2 rounded-lg font-medium transition-colors"
+              class="inline-flex items-center gap-2 bg-gray-100 hover:bg-gray-200 disabled:opacity-50 text-gray-800 px-4 py-2 rounded-md font-medium transition-colors"
               @click="triggerMediaInput"
             >
               <PlusOutlined />
@@ -161,7 +161,7 @@
           <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
           <select
             v-model="form.status"
-            class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+            class="w-full px-4 py-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none"
           >
             <option value="active">Active</option>
             <option value="inactive">Inactive</option>
@@ -174,7 +174,7 @@
         <button
           type="submit"
           :disabled="isSubmitting"
-          class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-lg font-medium transition-colors flex items-center gap-2"
+          class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-md font-medium transition-colors flex items-center gap-2"
         >
           <span
             v-if="isSubmitting"

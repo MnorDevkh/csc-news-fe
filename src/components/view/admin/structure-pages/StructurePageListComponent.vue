@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+  <div class="bg-white p-6 rounded-md shadow-sm border border-gray-200">
     <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
       <div>
         <h2 class="text-2xl font-bold text-gray-800">Structure pages</h2>
@@ -7,7 +7,7 @@
       </div>
       <button
         type="button"
-        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 font-medium transition-colors"
+        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md flex items-center gap-2 font-medium transition-colors"
         @click="router.push({ name: 'createStructurePage' })"
       >
         <PlusOutlined />
@@ -39,13 +39,13 @@
             <td class="px-6 py-4 whitespace-nowrap text-center">
               <span
                 v-if="row.status === 'active'"
-                class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"
+                class="px-2 inline-flex text-xs leading-5 font-semibold rounded-md bg-green-100 text-green-800"
               >
                 Active
               </span>
               <span
                 v-else
-                class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800"
+                class="px-2 inline-flex text-xs leading-5 font-semibold rounded-md bg-gray-100 text-gray-800"
               >
                 Draft
               </span>

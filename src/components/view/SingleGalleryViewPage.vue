@@ -16,7 +16,7 @@ onMounted(async () => {
 
 <template>
   <div class="w-full min-h-screen flex justify-center items-start px-3 py-3 sm:p-6 lg:p-8 box-border">
-    <div class="w-full max-w-7xl mx-auto bg-white rounded-lg shadow-md p-4 sm:p-8 lg:px-12 lg:py-10">
+    <div class="w-full max-w-7xl mx-auto bg-white rounded-md shadow-md p-4 sm:p-8 lg:px-12 lg:py-10">
       <div v-if="loading" class="flex justify-center items-center min-h-64 w-full">
         <a-spin size="large" />
       </div>
@@ -41,7 +41,7 @@ onMounted(async () => {
             :key="item.id"
             class="break-inside-avoid mb-4 sm:mb-5 md:mb-6"
           >
-            <div class="bg-white rounded-lg overflow-hidden shadow-md transition-shadow duration-300 hover:shadow-lg">
+            <div class="bg-white rounded-md overflow-hidden shadow-md transition-shadow duration-300 hover:shadow-lg">
               <div class="w-full [&_.ant-image-img]:w-full [&_.ant-image-img]:h-auto [&_.ant-image-img]:block">
                 <a-image
                   :src="item.imageUrl"
