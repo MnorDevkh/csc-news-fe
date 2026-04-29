@@ -136,6 +136,11 @@ onMounted(() => {
           </p>
         </div>
         <RouterLink
+            v-if="
+              latestReading?.id !== null &&
+              latestReading?.id !== undefined &&
+              String(latestReading?.id).trim() !== ''
+            "
           :to="{ name: 'dailyBibleDetail', params: { id: latestReading.id } }"
           class="shrink-0 inline-flex items-center px-3 py-1.5 rounded-md text-xs font-medium bg-indigo-50 text-indigo-600 hover:bg-indigo-100 hover:text-indigo-700 transition-colors"
         >
@@ -147,7 +152,12 @@ onMounted(() => {
         v-if="props.showControls"
         class="flex items-center justify-between pt-2 border-t border-gray-100 text-xs"
       >
-        <RouterLink
+          <RouterLink
+            v-if="
+              latestReading?.id !== null &&
+              latestReading?.id !== undefined &&
+              String(latestReading?.id).trim() !== ''
+            "
           :to="{ name: 'dailyBibleDetail', params: { id: latestReading.id } }"
           class="inline-flex items-center text-indigo-600 hover:text-indigo-800 font-medium"
         >

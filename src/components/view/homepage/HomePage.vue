@@ -27,7 +27,9 @@ onMounted(async () => {
       NewsService.getNewsCategories()
     ]);
     featuredArticles.value = articles;
-    latestHeadlines.value = headlines;
+    latestHeadlines.value = (Array.isArray(headlines) ? headlines : []).filter(
+      (h) => h && h.id !== null && h.id !== undefined
+    );
     newsCategories.value = categories;
   } catch (error) {
     console.error("Failed to fetch homepage data:", error);

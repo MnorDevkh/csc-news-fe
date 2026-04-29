@@ -385,13 +385,15 @@ function closeAllDesktopDropdowns() {
     structureDropdownOpen.value = false;
 }
 
-function buildCategoryMenuChildren(categories: any[]): MenuChild[] {
-    const parents = categories
+function buildCategoryMenuChildren(categories: any): MenuChild[] {
+    const list: any[] = Array.isArray(categories) ? categories : [];
+
+    const parents = list
         .filter(c => !c.parent_id && c.status === 'active')
         .sort((a, b) => a.order_no - b.order_no);
 
     return parents.map(parent => {
-        const children = categories
+        const children = list
             .filter(c => c.parent_id === parent.id && c.status === 'active')
             .sort((a, b) => a.order_no - b.order_no)
             .map(child => ({

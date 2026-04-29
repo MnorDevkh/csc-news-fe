@@ -5,7 +5,13 @@ export const CategoryService = {
         try {
             const response = await BaseAPI.publicClient.get('/categories/', { params });
             // Helper to consistently return items array if paginated, or data if list
-            return response.data.items || response.data || [];
+            const items = response?.data?.items;
+            if (Array.isArray(items)) return items;
+
+            // Some APIs might return a raw array as `response.data`
+            if (Array.isArray(response?.data)) return response.data;
+
+            return [];
         } catch (error) {
             console.error('Error fetching categories:', error);
             throw error;

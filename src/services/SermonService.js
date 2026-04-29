@@ -4,7 +4,12 @@ export const SermonService = {
   async getAllSermons(params = {}) {
     try {
       const response = await BaseAPI.publicClient.get('/sermons/', { params });
-      return response.data.items || response.data || [];
+      const items = response?.data?.items;
+      if (Array.isArray(items)) return items;
+
+      if (Array.isArray(response?.data)) return response.data;
+
+      return [];
     } catch (error) {
       console.error('Error fetching sermons:', error);
       throw error;

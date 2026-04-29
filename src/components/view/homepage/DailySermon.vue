@@ -18,7 +18,10 @@ function formatDate(value) {
 onMounted(async () => {
   try {
     const data = await SermonService.getAllSermons({ limit: 5 });
-    sermons.value = data;
+    const list = Array.isArray(data) ? data : [];
+    sermons.value = list.filter(
+      (s) => s && s.id !== null && s.id !== undefined && String(s.id).trim() !== ''
+    );
   } catch (error) {
     console.error('Failed to load sermons for homepage', error);
   }
