@@ -66,8 +66,10 @@ export const SermonService = {
     formData.append('file', file);
 
     try {
-      const response = await BaseAPI.publicClient.post('/file/', formData, {
+      const token = localStorage.getItem('token');
+      const response = await BaseAPI.authClient.post('/file/', formData, {
         headers: {
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
           'Content-Type': 'multipart/form-data',
         },
       });

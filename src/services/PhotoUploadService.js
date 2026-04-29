@@ -1,14 +1,4 @@
-import axios from 'axios';
-import { getApiBaseUrl } from '@/config/api';
-
-const baseURL = getApiBaseUrl();
-
-const api = axios.create({
-  baseURL,
-  headers: {
-    'Content-Type': 'application/json'
-  }
-});
+import BaseAPI from './BaseAPI';
 
 /**
  * Upload a photo (multipart/form-data). Do not set Content-Type so axios sends boundary.
@@ -18,8 +8,12 @@ const api = axios.create({
 export async function uploadPhoto(file) {
   const formData = new FormData();
   formData.append('file', file);
-  const { data } = await api.post('/file/', formData, {
-    headers: { 'Content-Type': 'multipart/form-data' }
+  const token = localStorage.getItem('token');
+  const { data } = await BaseAPI.authClient.post('/file/', formData, {
+    headers: {
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      'Content-Type': 'multipart/form-data',
+    },
   });
   return data;
 }
@@ -32,7 +26,7 @@ export async function uploadPhoto(file) {
  * @returns {Promise<Array<{ id, type, size, key, url, filename, created_at }>>}
  */
 export async function getPhotos(skip = 0, limit = 100) {
-  const { data } = await api.get('/file/', { params: { skip, limit, type: 'photo' } });
+  const { data } = await BaseAPI.publicClient.get('/file/', { params: { skip, limit, type: 'photo' } });
   return data;
 }
 
@@ -42,7 +36,7 @@ export async function getPhotos(skip = 0, limit = 100) {
  * @returns {Promise<string>} Presigned URL
  */
 export async function getPhotoUrl(key) {
-  const { data } = await api.get('/file/', { params: { key, type: 'photo' } });
+  const { data } = await BaseAPI.publicClient.get('/file/', { params: { key, type: 'photo' } });
   const item = Array.isArray(data) ? data[0] : null;
   return item?.url || '';
 }
