@@ -220,8 +220,13 @@ async function handlePdfSelect(event) {
     form.pdf_url = url;
   } catch (err) {
     console.error('Failed to upload PDF', err);
-    pdfError.value =
-      err.response?.data?.detail || err.message || 'Failed to upload PDF file.';
+    const status = err.response?.status;
+    const detail = err.response?.data?.detail;
+    if (status === 401 || status === 403) {
+      pdfError.value = 'Your session has expired. Please log in again, then retry the upload.';
+    } else {
+      pdfError.value = detail || err.message || 'Failed to upload PDF file.';
+    }
   } finally {
     pdfUploading.value = false;
     event.target.value = '';
