@@ -259,7 +259,7 @@ const formatDate = (dateString) => {
                 <span class="absolute bottom-0 left-0 w-10 h-0.5 bg-gradient-to-r from-[#d4a853] to-transparent rounded-full"></span>
               </h2>
               <div v-if="hierarchicalCategories.length === 0" class="text-gray-400 text-sm">
-                No categories available.
+                No categories available. 
               </div>
               <ul v-else class="space-y-1">
                 <template v-for="({ parent, children }) in hierarchicalCategories" :key="parent.id">
@@ -268,7 +268,7 @@ const formatDate = (dateString) => {
                     <div class="text-sm font-semibold text-gray-700 px-2 py-1.5">{{ parent.name }}</div>
                     <ul class="ml-3 mt-0.5 space-y-0.5 border-l border-gray-200 pl-2">
                       <li v-for="child in children" :key="child.id">
-                        <RouterLink :to="{ name: 'categoryView', params: { name: child.name } }"
+                        <RouterLink :to="{ name: 'categoryView', params: { name: child.slug } }"
                           class="flex items-center justify-between py-1.5 px-2 rounded-md text-gray-600 hover:bg-[#1a365d]/[0.04] hover:text-[#1a365d] duration-200 ease-out group text-sm transition-colors">
                           <span>{{ child.name }}</span>
                           <ArrowRightOutlined class="text-xs opacity-0 group-hover:opacity-100 duration-200 shrink-0 text-[#d4a853]" />
