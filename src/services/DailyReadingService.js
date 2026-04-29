@@ -1,7 +1,7 @@
 import BaseAPI from './BaseAPI';
 
 export const DailyReadingService = {
-  async getAllReadings(params = {}) {
+  async getAllReadings(params = {public_only:false, skip:0, limit:50}) {
     try {
       const response = await BaseAPI.publicClient.get('/daily-bible-readings/', { params });
       return response.data.items || response.data || [];
