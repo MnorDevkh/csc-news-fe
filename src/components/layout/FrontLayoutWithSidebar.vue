@@ -70,7 +70,7 @@ onMounted(async () => {
                 <ul v-else class="space-y-2">
                   <li v-for="category in activeCategories" :key="category.id">
                     <RouterLink
-                      :to="{ name: 'categoryView', params: { name: category.name } }"
+                      :to="{ name: 'categoryView', params: { name: category.slug } }"
                       class="flex items-center justify-between p-2.5 rounded-md text-gray-600 hover:bg-[#1a365d]/[0.04] hover:text-[#1a365d] transition-all duration-200 group text-sm"
                     >
                       <span>{{ category.name }}</span>
