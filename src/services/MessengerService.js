@@ -73,8 +73,10 @@ export const MessengerService = {
 
     try {
       // POST /file is protected; use authClient so Authorization header is attached.
-      // Do not set Content-Type manually; axios will add the boundary for multipart.
-      const response = await BaseAPI.authClient.post('/file/', formData);
+      // authClient defaults to application/json; override for FormData upload.
+      const response = await BaseAPI.authClient.post('/file/', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
       return response.data;
     } catch (error) {
       console.error('Error uploading messenger PDF:', error);

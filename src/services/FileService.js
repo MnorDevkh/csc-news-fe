@@ -14,8 +14,10 @@ export async function uploadFile(file) {
   const formData = new FormData();
   formData.append('file', file);
   // POST /file is protected; use authClient so Authorization header is attached.
-  // Do not set Content-Type manually; axios will add the boundary for multipart.
-  const { data } = await BaseAPI.authClient.post('/file/', formData);
+  // authClient defaults to application/json; override for FormData upload.
+  const { data } = await BaseAPI.authClient.post('/file/', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  });
   return data;
 }
 
