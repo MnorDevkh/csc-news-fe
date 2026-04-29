@@ -278,7 +278,7 @@ const formatDate = (dateString) => {
                   </li>
                   <!-- Parent without children: single link -->
                   <li v-else>
-                    <RouterLink :to="{ name: 'categoryView', params: { name: parent.name } }"
+                    <RouterLink :to="{ name: 'categoryView', params: { name: parent.slug } }"
                       class="flex items-center justify-between p-2 rounded-md text-gray-600 hover:bg-[#1a365d]/[0.04] hover:text-[#1a365d] duration-200 ease-out group transition-colors">
                       <span>{{ parent.name }}</span>
                       <ArrowRightOutlined class="text-xs opacity-0 group-hover:opacity-100 duration-200 text-[#d4a853]" />
