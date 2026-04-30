@@ -182,6 +182,8 @@ const childToParentMap = {
   adminBibleEdit: 'bible',
   createMessengerIssue: 'adminMessengerIssues',
   editMessengerIssue: 'adminMessengerIssues',
+  createSaint: 'adminSaints',
+  editSaint: 'adminSaints',
   createStructurePage: 'adminStructurePages',
   editStructurePage: 'adminStructurePages',
 };

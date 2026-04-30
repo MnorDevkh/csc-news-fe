@@ -33,6 +33,28 @@ const contentBlocks = computed(() => {
 
 const pageTitle = computed(() => content.value?.title || '');
 
+function stripHtml(v) {
+  if (!v) return '';
+  return String(v).replace(/<[^>]*>/g, '').trim();
+}
+
+function safeColumns(raw) {
+  const n = typeof raw === 'number' && Number.isFinite(raw) ? Math.trunc(raw) : 3;
+  return Math.min(6, Math.max(1, n));
+}
+
+function gridColsClass(columns) {
+  const c = safeColumns(columns);
+  return {
+    1: 'grid-cols-1',
+    2: 'grid-cols-1 sm:grid-cols-2',
+    3: 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3',
+    4: 'grid-cols-1 sm:grid-cols-2 md:grid-cols-4',
+    5: 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5',
+    6: 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6',
+  }[c];
+}
+
 async function loadContent() {
   const slug = route.params.slug;
   if (!slug || typeof slug !== 'string') {
@@ -208,15 +230,24 @@ onMounted(() => {
                 />
                 <div
                   v-else-if="block.type === 'image' && block.images && block.images.length"
-                  class="article-body-images flex flex-wrap justify-center gap-4 my-6"
+                  class="article-body-images my-6"
                 >
-                  <img
-                    v-for="(img, i) in block.images"
-                    :key="img.key || i"
-                    :src="img.url"
-                    :alt="pageTitle + ' image ' + (i + 1)"
-                    class="rounded-md max-w-full h-auto object-contain"
-                  />
+                  <div class="grid gap-4" :class="gridColsClass(block.columns)">
+                    <figure
+                      v-for="(img, i) in block.images"
+                      :key="img.key || i"
+                      class="m-0"
+                    >
+                      <img
+                        :src="img.url"
+                        :alt="stripHtml(img.title) || pageTitle + ' image ' + (i + 1)"
+                        class="rounded-md w-full h-auto object-contain bg-gray-50 border border-gray-100"
+                      />
+                      <figcaption v-if="img.title && String(img.title).trim()" class="mt-2 text-center">
+                        <div class="ck-content text-sm text-gray-500 font-light leading-snug" v-html="img.title" />
+                      </figcaption>
+                    </figure>
+                  </div>
                 </div>
               </div>
             </template>
@@ -292,6 +323,20 @@ onMounted(() => {
 }
 
 .article-body :deep(a:hover) {
+  color: #1d4ed8;
+}
+
+.ck-content :deep(p) {
+  margin: 0;
+}
+
+.ck-content :deep(a) {
+  color: #2563eb;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.ck-content :deep(a:hover) {
   color: #1d4ed8;
 }
 

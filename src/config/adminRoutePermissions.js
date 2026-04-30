@@ -39,6 +39,8 @@ export const ADMIN_ROUTE_PERMISSIONS = {
   adminGalleryCreate: ['CREATE-GALLERY'],
   adminGalleryEdit: ['UPDATE-GALLERY'],
   adminSaints: ['READ-SAINT'],
+  createSaint: ['CREATE-SAINT'],
+  editSaint: ['UPDATE-SAINT'],
   adminChurchHistory: ['READ-CHURCH-HISTORY'],
   adminStructurePages: ['READ-STRUCTURE-PAGE'],
   createStructurePage: ['CREATE-STRUCTURE-PAGE'],

@@ -29,9 +29,9 @@ onMounted(load);
 
 <template>
   <div
-    class="structure-index min-h-screen bg-gray-50/80 font-[Kantumruy_Pro,'Khmer','Koh_Santepheap',sans-serif]"
+    class="structure-index min-h-screen bg-gray-50/80 font-[Kantumruy_Pro,'Khmer','Koh_Santepheap',sans-serif] flex justify-center"
   >
-    <div class="w-full max-w-5xl mx-auto px-3 py-6 sm:px-4 sm:py-10">
+    <div class="w-full max-w-7xl px-3 py-6 sm:px-4 sm:py-10">
       <header class="mb-8 sm:mb-10">
         <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight m-0">
           រចនាសម្ព័ន្ធព្រះសហគមន៍

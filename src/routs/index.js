@@ -170,6 +170,13 @@ const router = createRouter({
             import("@/components/view/homepage/SaintListPage.vue"),
         },
         {
+          path: "saints/:slug",
+          name: "saintDetail",
+          component: () =>
+            import("@/components/view/homepage/SaintDetailPage.vue"),
+          props: true,
+        },
+        {
           path: "photos/upload",
           name: "photoUpload",
           component: PhotoUploadPage,
@@ -467,9 +474,26 @@ const router = createRouter({
         },
         {
           path: "saints",
-          name: "adminSaints",
-          component: () =>
-            import("@/components/view/admin/saints/SaintListComponent.vue"),
+          children: [
+            {
+              path: "",
+              name: "adminSaints",
+              component: () =>
+                import("@/components/view/admin/saints/SaintListComponent.vue"),
+            },
+            {
+              path: "create",
+              name: "createSaint",
+              component: () =>
+                import("@/components/view/admin/saints/SaintForm.vue"),
+            },
+            {
+              path: "edit/:id",
+              name: "editSaint",
+              component: () =>
+                import("@/components/view/admin/saints/SaintForm.vue"),
+            },
+          ],
         },
         {
           path: "church-history",
