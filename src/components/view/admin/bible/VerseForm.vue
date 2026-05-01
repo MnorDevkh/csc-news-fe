@@ -40,6 +40,17 @@
       </div>
 
       <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">Verse language</label>
+        <select
+          v-model="form.language"
+          class="w-full px-4 py-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none"
+        >
+          <option value="km">Khmer (km)</option>
+          <option value="en">English (en)</option>
+        </select>
+      </div>
+
+      <div>
         <label class="block text-sm font-medium text-gray-700 mb-2">Chapter</label>
         <select
           v-model="form.chapter_id"
@@ -93,7 +104,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed, onMounted } from 'vue';
+import { ref, reactive, computed, onMounted, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import VerseService from '@/services/VerseService';
 import ChapterService from '@/services/ChapterService';
@@ -181,6 +192,11 @@ const chaptersLoading = ref(false);
 const langKm = ref(true);
 const langEn = ref(false);
 
+const selectedVerseLanguage = computed(() => {
+  if (langEn.value && !langKm.value) return 'en';
+  return 'km';
+});
+
 const chaptersFiltered = computed(() => {
   const filtered = chapters.value.filter((ch) => {
     if (!ch?.bible) return true;
@@ -197,6 +213,7 @@ const form = reactive({
   verse_number: 1,
   verse_text: '',
   chapter_id: '',
+  language: 'km',
 });
 
 async function loadChapters() {
@@ -225,6 +242,7 @@ onMounted(async () => {
   if (chapterId.value) {
     form.chapter_id = chapterId.value;
   }
+  form.language = selectedVerseLanguage.value;
   pageLoading.value = isEditMode.value;
   if (!isEditMode.value) {
     pageLoading.value = false;
@@ -237,12 +255,19 @@ onMounted(async () => {
       verse_number: v.verse_number ?? 1,
       verse_text: v.verse_text || '',
       chapter_id: v.chapter_id || chapterId.value,
+      language: (v.language || 'km').toString().trim().toLowerCase(),
     });
   } catch (err) {
     console.error('Error loading verse:', err);
     loadError.value = 'Failed to load verse. Please try again.';
   } finally {
     pageLoading.value = false;
+  }
+});
+
+watch([langKm, langEn], () => {
+  if (!isEditMode.value) {
+    form.language = selectedVerseLanguage.value;
   }
 });
 
@@ -260,6 +285,7 @@ async function handleSubmit() {
       verse_number: form.verse_number,
       verse_text: form.verse_text,
       chapter_id: form.chapter_id,
+      language: (form.language || 'km').toString().trim().toLowerCase(),
     };
     if (isEditMode.value) {
       await VerseService.updateVerse(route.params.verseId, payload);

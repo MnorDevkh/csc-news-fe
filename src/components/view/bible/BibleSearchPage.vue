@@ -20,7 +20,7 @@ const filteredBibleResults = computed(() => bibleResults.value)
 const filteredVerseResults = computed(() => verseResults.value)
 
 const goToBible = (bible) => {
-  const type = bible.type || 'NT'
+  const type = bible.bible_type_code || 'NT'
   router.push({
     name: 'bibleReadBook',
     params: { type, bibleId: bible.id },
@@ -28,7 +28,7 @@ const goToBible = (bible) => {
 }
 
 const goToVerse = (item) => {
-  const type = item.bible?.type || 'NT'
+  const type = item.bible?.bible_type_code || 'NT'
   router.push({
     name: 'bibleReadChapter',
     params: {

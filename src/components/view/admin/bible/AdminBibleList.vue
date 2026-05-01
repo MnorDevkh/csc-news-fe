@@ -102,8 +102,8 @@
               <div v-if="bible.slug" class="text-xs text-gray-500">{{ bible.slug }}</div>
             </td>
             <td class="px-6 py-4 text-sm text-gray-600">
-              <span v-if="bible.type">
-                {{ bibleTypesById[bible.type] || bible.type }}
+              <span v-if="bible.bible_type_code">
+                {{ bibleTypesById[bible.bible_type_code] || bible.bible_type_code }}
               </span>
               <span v-else>-</span>
             </td>
@@ -216,9 +216,9 @@ async function loadBibles() {
       order_by: filters.value.order_by || 'bible_number',
     };
 
-    const type = route.query.type;
-    if (type) {
-      params.type = type;
+    const bibleTypeCode = route.query.bible_type_code;
+    if (bibleTypeCode) {
+      params.bible_type_code = bibleTypeCode;
     }
 
     const res = await BibleService.getBibles(params);
@@ -314,7 +314,7 @@ onMounted(() => {
 });
 
 watch(
-  () => route.query.type,
+  () => route.query.bible_type_code,
   () => {
     pageIndex.value = 1;
     loadBibles();

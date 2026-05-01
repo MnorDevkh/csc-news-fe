@@ -15,12 +15,20 @@ const chapterVerses = ref({});
 /** @type {import('vue').Ref<Record<string, { id: string; title?: string; start_verse: number; end_verse: number; order_no: number }[]>> */
 const chapterSections = ref({});
 
+function normalizeLanguageCode(raw) {
+  if (!raw) return 'km';
+  const s = String(raw).trim().toLowerCase();
+  const first = s.split(',')[0]?.trim();
+  return first || 'km';
+}
+
 const fetchVersesForChapter = async (chapterId) => {
   try {
     const res = await VerseService.getVerses({
       chapter_id: chapterId,
       skip: 0,
       limit: 500,
+      language: normalizeLanguageCode(item.value?.language),
       order_by: 'verse_number',
     });
     const items = res.data?.items || [];

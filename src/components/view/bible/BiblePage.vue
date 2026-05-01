@@ -20,7 +20,7 @@ const bibleTypeOptions = [
   { value: 'OT', label: 'ព្រះគម្ពីរសម្ព័ន្ធមេត្រីចាស់' },
 ]
 
-const selectedType = computed(() => (route.params.type || route.query.type || 'NT').toString().toUpperCase())
+const selectedType = computed(() => (route.params.type || route.query.bible_type_code || 'NT').toString().toUpperCase())
 
 const typeLabel = computed(() => {
   switch (selectedType.value) {
@@ -54,7 +54,7 @@ const fetchBibles = async () => {
       limit: size,
       language: filters.value.language || undefined,
       order_by: filters.value.order_by || 'bible_number',
-      type: selectedType.value,
+      bible_type_code: selectedType.value,
     }
 
     const res = await BibleService.getBibles(params)
@@ -108,7 +108,7 @@ onUnmounted(() => {
 })
 
 watch(
-  () => route.params.type || route.query.type,
+  () => route.params.type || route.query.bible_type_code,
   () => {
     pageIndex.value = 1
     syncPageMeta()

@@ -5,7 +5,7 @@ import { BibleService } from '@/services/BibleService'
 
 const router = useRouter()
 
-const testamentCards = ref([])
+const bibleTypeCards = ref([])
 
 const gradientForType = () => 'from-indigo-600 via-indigo-500 to-indigo-400'
 
@@ -15,7 +15,7 @@ onMounted(async () => {
     const items = Array.isArray(data) ? data : Array.isArray(data?.items) ? data.items : []
     if (!items.length) return
 
-    testamentCards.value = items.map((t, index) => {
+    bibleTypeCards.value = items.map((t, index) => {
       const type = t.id || t.slug || `type-${index}`
       const isOT = type === 'OT'
       const isNT = type === 'NT'
@@ -39,14 +39,14 @@ onMounted(async () => {
         description: t.description || '',
         gradient: gradientForType(type, index),
         badge: isOT
-          ? 'OLD TESTAMENT'
+          ? 'OLD'
           : isNT
-            ? 'NEW TESTAMENT'
+            ? 'NEW'
             : isIntro
               ? 'INTRODUCTION'
               : isPW
                 ? 'POETRY & WISDOM'
-                : 'BIBLE TYPE',
+                : 'TYPE',
       }
     })
   } catch (error) {
@@ -54,7 +54,7 @@ onMounted(async () => {
   }
 })
 
-const goToTestament = (type) => {
+const goToBibleType = (type) => {
   if (!type) return
   router.push({ name: 'bibleReadType', params: { type } })
 }
@@ -69,22 +69,22 @@ const goToTestament = (type) => {
           Bible Reading
         </p>
         <h1 class="mt-3 text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900">
-          ជ្រើសរើសសម្ព័ន្ធព្រះគម្ពីរ
+          ជ្រើសរើសប្រភេទព្រះគម្ពីរ
         </h1>
         <p class="mt-3 max-w-xl mx-auto text-sm sm:text-base text-slate-600 text-center">
-          ចាប់ផ្តើមដោយជ្រើសរើសសម្ព័ន្ធចាស់ ឬសម្ព័ន្ធថ្មី។ បន្ទាប់មក អ្នកអាចជ្រើសសៀវភៅ ជំពូក និងខណ្ឌបានយ៉ាងងាយស្រួល។
+          ចាប់ផ្តើមដោយជ្រើសរើសប្រភេទ។ បន្ទាប់មក អ្នកអាចជ្រើសសៀវភៅ ជំពូក និងខណ្ឌបានយ៉ាងងាយស្រួល។
         </p>
       </section>
 
-      <!-- Testament cards -->
+      <!-- Bible type cards -->
       <section
         class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8 mt-4 justify-items-center w-full"
       >
         <button
-          v-for="card in testamentCards"
+          v-for="card in bibleTypeCards"
           :key="card.id"
           type="button"
-          @click="goToTestament(card.type)"
+          @click="goToBibleType(card.type)"
           class="group relative overflow-hidden rounded-3xl w-full focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-amber-50"
         >
           <div class="absolute inset-0 bg-gradient-to-br" :class="card.gradient" />

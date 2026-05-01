@@ -17,12 +17,20 @@ const versesPagination = ref({
 });
 const loading = ref(false);
 
+function normalizeLanguageCode(raw) {
+  if (!raw) return undefined;
+  const s = String(raw).trim().toLowerCase();
+  const first = s.split(',')[0]?.trim();
+  return first || undefined;
+}
+
 const fetchVerses = async (chapterId) => {
   try {
     const versesResponse = await VerseService.getVerses({
       chapter_id: chapterId,
       skip: (versesPagination.value.current - 1) * versesPagination.value.pageSize,
       limit: versesPagination.value.pageSize,
+      language: normalizeLanguageCode(chapter.value?.bible?.language),
       order_by: 'verse_number',
     });
     if (versesResponse.data) {

@@ -60,7 +60,7 @@
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">Type</label>
           <select
-            v-model="form.type"
+            v-model="form.bible_type_code"
             class="w-full px-4 py-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none"
             :disabled="bibleTypeLoading || !bibleTypeOptions.length"
           >
@@ -258,7 +258,7 @@ const form = reactive({
   slug: '',
   description: '',
   thumbnail: '',
-  type: '',
+  bible_type_code: '',
   language: 'km',
   audio_url: '',
   video_url: '',
@@ -287,8 +287,8 @@ onMounted(async () => {
       value: t.id,
       label: t.name,
     }));
-    if (!isEditMode.value && !form.type && bibleTypeOptions.value.length) {
-      form.type = bibleTypeOptions.value[0].value;
+    if (!isEditMode.value && !form.bible_type_code && bibleTypeOptions.value.length) {
+      form.bible_type_code = bibleTypeOptions.value[0].value;
     }
   } catch (err) {
     console.error('Failed to load bible types:', err);
@@ -312,7 +312,7 @@ onMounted(async () => {
       slug: b.slug || '',
       description: b.description || '',
       thumbnail: b.thumbnail || '',
-      type: b.type || '',
+      bible_type_code: b.bible_type_code || '',
       language: b.language || 'km',
       audio_url: b.audio_url || '',
       video_url: b.video_url || '',
@@ -338,7 +338,7 @@ async function handleSubmit() {
       slug: form.slug || null,
       description: form.description || null,
       thumbnail: form.thumbnail || null,
-      type: form.type || null,
+      bible_type_code: form.bible_type_code || null,
       language: form.language || null,
       audio_url: form.audio_url || null,
       video_url: form.video_url || null,

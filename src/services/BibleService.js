@@ -10,7 +10,7 @@ const endpoint = '/bibles';
 
 export const BibleService = {
   /**
-   * Admin: list bibles with optional params (skip, limit, language, type)
+   * Admin: list bibles with optional params (skip, limit, language, bible_type_code)
    */
   getBibles(params = {}) {
     return BaseAPI.publicClient.get(endpoint, { params });
@@ -124,9 +124,9 @@ export const BibleService = {
       throw error;
     }
   },
-  async getBibleList(language, type) {
+  async getBibleList(language, bible_type_code) {
     try {
-      const response = await fetch(`${BASE_URL}?skip=0&limit=100&language=${language}&type=${type}`);
+      const response = await fetch(`${BASE_URL}?skip=0&limit=100&language=${language}&bible_type_code=${bible_type_code}`);
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }

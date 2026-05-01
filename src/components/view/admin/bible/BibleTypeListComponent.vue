@@ -136,7 +136,7 @@ function goToCreate() {
 
 function goToType(typeId) {
   if (!typeId) return;
-  router.push({ name: 'adminBibleManagement', query: { type: typeId } });
+  router.push({ name: 'adminBibleManagement', query: { bible_type_code: typeId } });
 }
 
 onMounted(() => {
