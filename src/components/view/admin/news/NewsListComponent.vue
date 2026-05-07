@@ -77,9 +77,21 @@
                             </div>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-[#1a365d]/8 text-[#1a365d]">
-                                {{ article.category?.name || 'Uncategorized' }}
-                            </span>
+                            <div class="flex flex-wrap gap-1.5">
+                                <span
+                                    v-for="cat in (article.categories?.length ? article.categories : (article.category ? [article.category] : []))"
+                                    :key="cat.id || cat.slug || cat.name"
+                                    class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-[#1a365d]/8 text-[#1a365d]"
+                                >
+                                    {{ cat.name }}
+                                </span>
+                                <span
+                                    v-if="!(article.categories?.length) && !article.category"
+                                    class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-500"
+                                >
+                                    Uncategorized
+                                </span>
+                            </div>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                             {{ article.author }}

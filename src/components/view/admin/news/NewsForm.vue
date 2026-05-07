@@ -1,8 +1,19 @@
 <template>
   <div class="bg-white rounded-2xl shadow-sm ring-1 ring-gray-100 p-6 md:p-8 max-w-4xl mx-auto">
     <div class="flex items-center justify-between mb-6">
-      <h2 class="text-xl font-bold text-gray-50">{{ isEditMode ? 'Edit Article' : 'Create Article' }}</h2>
-      <button @click="$router.push({ name: 'adminNews' })" class="text-gray-400 hover:text-gray-600 text-sm font-medium hover:bg-gray-100 px-3 py-1.5 rounded-md transition-all">
+      <div class="min-w-0">
+        <h2 class="text-xl font-bold text-gray-900 tracking-tight">
+          {{ isEditMode ? 'Edit Article' : 'Create Article' }}
+        </h2>
+        <p class="text-sm text-gray-400 mt-0.5">
+          {{ isEditMode ? 'Update your article content and publishing settings.' : 'Write and publish a new article.' }}
+        </p>
+      </div>
+      <button
+        @click="$router.push({ name: 'adminNews' })"
+        type="button"
+        class="text-gray-500 hover:text-gray-700 text-sm font-medium hover:bg-gray-100 px-3 py-2 rounded-md transition-all"
+      >
         Cancel
       </button>
     </div>
@@ -16,16 +27,63 @@
           placeholder="Enter article title" />
       </div>
 
-      <!-- Category -->
+      <!-- Categories -->
       <div>
-        <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Category</label>
-        <select v-model="form.category_id" required
-          class="w-full px-4 py-2.5 border border-gray-200 bg-gray-50/80 rounded-md focus:ring-2 focus:ring-[#1a365d]/10 focus:border-[#1a365d] focus:bg-white outline-none text-sm transition-all cursor-pointer">
-          <option value="" disabled>Select a category</option>
-          <option v-for="cat in categories" :key="cat.id" :value="cat.id">
-            {{ cat.name }}
-          </option>
-        </select>
+        <div class="flex items-end justify-between gap-3 mb-2">
+          <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider">Categories</label>
+          <div class="text-xs text-gray-400 font-medium">
+            Selected: {{ form.category_ids.length }}
+          </div>
+        </div>
+
+        <div class="rounded-xl border border-gray-200 bg-white overflow-hidden shadow-sm">
+          <div class="p-3 border-b border-gray-100 bg-gray-50/60">
+            <input
+              v-model="categoryFilter"
+              type="text"
+              placeholder="Search categories..."
+              class="w-full px-3 py-2 border border-gray-200 bg-white rounded-md focus:ring-2 focus:ring-[#1a365d]/10 focus:border-[#1a365d] outline-none text-sm transition-all"
+            />
+          </div>
+
+          <div class="max-h-60 overflow-y-auto p-2">
+            <label
+              v-for="cat in filteredCategories"
+              :key="cat.id"
+              class="group flex items-center gap-3 px-2.5 py-2 rounded-lg hover:bg-gray-50 cursor-pointer select-none transition-colors"
+            >
+              <input
+                type="checkbox"
+                :value="cat.id"
+                v-model="form.category_ids"
+                class="w-4 h-4 text-[#1a365d] rounded border-gray-300 focus:ring-[#1a365d]/20"
+              />
+              <span class="text-sm text-gray-700 truncate group-hover:text-gray-900">
+                {{ cat.name }}
+              </span>
+            </label>
+
+            <div v-if="!filteredCategories.length" class="text-sm text-gray-400 px-3 py-4">
+              No categories found.
+            </div>
+          </div>
+
+          <div class="p-3 border-t border-gray-100 bg-gray-50/40 flex items-center justify-between gap-3">
+            <button
+              type="button"
+              class="text-xs font-semibold text-gray-600 hover:text-gray-800 transition-colors"
+              @click="form.category_ids = []"
+            >
+              Clear
+            </button>
+            <div v-if="form.category_ids.length" class="text-xs text-gray-500 truncate">
+              {{ selectedCategoryNames }}
+            </div>
+            <div v-else class="text-xs text-gray-400">
+              Pick one or more categories.
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- Thumbnail (cover-style picker) -->
@@ -255,6 +313,19 @@ const router = useRouter();
 const isEditMode = computed(() => !!route.params.id);
 const isSubmitting = ref(false);
 const categories = ref([]);
+const categoryFilter = ref('');
+const filteredCategories = computed(() => {
+  const q = (categoryFilter.value || '').trim().toLowerCase();
+  const list = Array.isArray(categories.value) ? categories.value : [];
+  if (!q) return list;
+  return list.filter((c) => (c?.name || '').toLowerCase().includes(q));
+});
+const selectedCategoryNames = computed(() => {
+  const list = Array.isArray(categories.value) ? categories.value : [];
+  const selected = new Set(Array.isArray(form.category_ids) ? form.category_ids : []);
+  const names = list.filter((c) => selected.has(c.id)).map((c) => c.name).filter(Boolean);
+  return names.slice(0, 3).join(', ') + (names.length > 3 ? ` +${names.length - 3} more` : '');
+});
 
 // Thumbnail picker state
 const thumbnailModalOpen = ref(false);
@@ -263,7 +334,7 @@ const thumbnailKey = ref('');
 
 const form = reactive({
   title: '',
-  category_id: '',
+  category_ids: [],
   thumbnail: '',
   excerpt: '',
   content: '',
@@ -397,9 +468,15 @@ onMounted(async () => {
     // If edit mode, fetch article details
     if (isEditMode.value) {
       const article = await NewsService.getArticleById(route.params.id);
+      const categoryIds =
+        Array.isArray(article?.categories) && article.categories.length
+          ? article.categories.map((c) => c.id).filter(Boolean)
+          : article?.category_id
+            ? [article.category_id]
+            : [];
       Object.assign(form, {
         title: article.title,
-        category_id: article.category_id,
+        category_ids: categoryIds,
         thumbnail: article.thumbnail,
         excerpt: article.excerpt,
         content: article.content,
@@ -432,6 +509,7 @@ const handleSubmit = async () => {
     form.content = JSON.stringify(serializeBlocks());
     const payload = {
       ...form,
+      category_ids: Array.isArray(form.category_ids) ? form.category_ids : [],
       publish_at: publishAtLocal.value ? toIsoWithOffset(publishAtLocal.value) : undefined,
     };
 

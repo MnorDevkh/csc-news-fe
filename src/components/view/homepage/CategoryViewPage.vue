@@ -58,7 +58,7 @@ async function fetchArticlesByCategory() {
       snippet: a.excerpt ?? a.snippet ?? '',
       date: a.publish_at ?? a.published_at ?? a.date ?? '',
       image: a.thumbnail ?? a.image ?? null,
-      category: a.category,
+      categories: a.categories ?? (a.category ? [a.category] : []),
     }));
   } catch (err) {
     console.error('Failed to load category articles:', err);

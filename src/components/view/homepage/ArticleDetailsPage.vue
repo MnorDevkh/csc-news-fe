@@ -182,10 +182,11 @@ onUnmounted(() => {
           <div class="absolute bottom-0 left-0 right-0 p-4 sm:p-8 text-white">
             <div class="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-white/80 mb-4">
               <span
-                v-if="article.category?.name"
+                v-for="cat in (article.categories?.length ? article.categories : (article.category ? [article.category] : []))"
+                :key="cat.id || cat.slug || cat.name"
                 class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#d4a853]/80 backdrop-blur-sm font-semibold shadow-sm text-white"
               >
-                <TagOutlined /> {{ article.category.name }}
+                <TagOutlined /> {{ cat.name }}
               </span>
               <span class="inline-flex items-center gap-1.5">
                 <CalendarOutlined /> {{ formatDate(article.publish_at || article.created_at) }}
