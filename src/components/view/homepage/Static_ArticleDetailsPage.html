@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The Ledger | The Future of Journalism in the Digital Age</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;0,8..60,700;1,8..60,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-high": "#dce9ff",
+                        "inverse-primary": "#bec6e0",
+                        "surface-variant": "#d3e4fe",
+                        "secondary-container": "#708cfd",
+                        "secondary": "#3755c3",
+                        "primary-container": "#131b2e",
+                        "surface-tint": "#565e74",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary-container": "#00217a",
+                        "error": "#ba1a1a",
+                        "secondary-fixed-dim": "#b8c4ff",
+                        "on-surface": "#0b1c30",
+                        "surface-container-low": "#eff4ff",
+                        "error-container": "#ffdad6",
+                        "on-tertiary": "#ffffff",
+                        "surface-dim": "#cbdbf5",
+                        "on-tertiary-fixed-variant": "#444749",
+                        "surface": "#f8f9ff",
+                        "tertiary-fixed-dim": "#c4c7c9",
+                        "on-tertiary-fixed": "#191c1e",
+                        "on-error": "#ffffff",
+                        "primary-fixed": "#dae2fd",
+                        "on-primary-fixed": "#131b2e",
+                        "on-background": "#0b1c30",
+                        "on-secondary": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "tertiary-fixed": "#e0e3e5",
+                        "surface-container-highest": "#d3e4fe",
+                        "on-secondary-fixed": "#001453",
+                        "secondary-fixed": "#dde1ff",
+                        "on-surface-variant": "#45464d",
+                        "on-primary-container": "#7c839b",
+                        "primary": "#000000",
+                        "on-error-container": "#93000a",
+                        "background": "#f8f9ff",
+                        "on-tertiary-container": "#818486",
+                        "primary-fixed-dim": "#bec6e0",
+                        "surface-container": "#e5eeff",
+                        "surface-bright": "#f8f9ff",
+                        "outline": "#76777d",
+                        "inverse-on-surface": "#eaf1ff",
+                        "tertiary-container": "#191c1e",
+                        "tertiary": "#000000",
+                        "inverse-surface": "#213145",
+                        "on-primary-fixed-variant": "#3f465c",
+                        "on-secondary-fixed-variant": "#173bab",
+                        "outline-variant": "#c6c6cd"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "stack-lg": "1.5rem",
+                        "container-max": "1200px",
+                        "section-gap": "4rem",
+                        "stack-sm": "0.5rem",
+                        "article-max": "720px",
+                        "stack-md": "1rem",
+                        "gutter": "2rem"
+                    },
+                    "fontFamily": {
+                        "hankenGrotesk": ["Hanken Grotesk", "sans-serif"],
+                        "sourceSerifFour": ["Source Serif 4", "serif"],
+                        "display-lg": ["Source Serif 4"],
+                        "headline-lg": ["Source Serif 4"],
+                        "display-md": ["Source Serif 4"],
+                        "label-sm": ["Hanken Grotesk"],
+                        "label-lg": ["Hanken Grotesk"],
+                        "headline-md": ["Source Serif 4"],
+                        "body-md": ["Hanken Grotesk"],
+                        "body-lg": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["48px", {"lineHeight": "1.1", "fontWeight": "700"}],
+                        "headline-lg": ["28px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "display-md": ["36px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                        "label-sm": ["12px", {"lineHeight": "1.2", "letterSpacing": "0.04em", "fontWeight": "500"}],
+                        "label-lg": ["14px", {"lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                        "headline-md": ["22px", {"lineHeight": "1.4", "fontWeight": "500"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "body-lg": ["18px", {"lineHeight": "1.65", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #f8f9ff;
+            color: #0b1c30;
+        }
+        .reading-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 2px;
+            background: #3755c3;
+            width: 35%;
+            z-index: 100;
+        }
+    </style>
+</head>
+<body class="font-body-md text-on-surface">
+<div class="reading-progress"></div>
+<!-- TopNavBar -->
+<nav class="bg-surface border-b border-outline-variant font-hankenGrotesk text-label-lg docked full-width top-0 z-50 sticky">
+<div class="flex justify-between items-center w-full px-gutter h-16 max-w-container-max mx-auto">
+<div class="font-display-lg text-headline-lg font-bold text-on-surface">The Ledger</div>
+<div class="hidden md:flex items-center space-x-stack-lg">
+<a class="text-on-surface-variant hover:text-secondary transition-colors duration-200" href="#">World News</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors duration-200" href="#">Tech</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors duration-200" href="#">Culture</a>
+</div>
+<div class="flex items-center space-x-stack-md">
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer" data-icon="search">search</span>
+<button class="bg-primary text-on-primary px-4 py-2 text-label-lg font-bold hover:opacity-80 transition-opacity">Subscribe</button>
+</div>
+</div>
+</nav>
+<!-- Article Header -->
+<header class="max-w-container-max mx-auto px-gutter py-section-gap">
+<div class="max-w-article-max mx-auto text-center mb-12">
+<div class="flex justify-center mb-6">
+<span class="bg-surface-container-high text-secondary px-3 py-1 text-label-sm uppercase tracking-widest rounded-full">Journalism</span>
+</div>
+<h1 class="font-display-lg text-display-lg mb-8 text-on-surface">The Future of Journalism in the Digital Age</h1>
+<div class="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-stack-lg text-on-surface-variant border-t border-b border-outline-variant py-6">
+<div class="flex items-center space-x-stack-sm">
+<img alt="Author profile" class="w-10 h-10 rounded-full grayscale" data-alt="A professional close-up portrait of a middle-aged male journalist with a thoughtful expression, set against a blurred newsroom background. The image is styled in high-contrast black and white, maintaining a sophisticated editorial aesthetic. Soft natural light illuminates one side of his face, emphasizing texture and authority in a premium digital journal style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB2bldJ8EIjpLCwWgKbS0d9v04rREmXfua0SjV2f9iCkPHmHtPu0Myy2fZL5HiKuPfgfmVOLAkbPG18wbQoZj2To6cCx9jE3ESXASU1b025hnN1b8TzJnP6cvT6oWZ7T4Zd_9GjMvRg4bolfLbByUjsNxYARy2nPOJe_x0VNClwpUJS5niDZBly1EuJIcvCJ6pKiFP80pg6JKOjsafVg7exg37KH2OVc_8nvimiEHcXBuukPKQcwgFnmz4TAUS6cnlcbRTI6ASdagc"/>
+<span class="font-label-lg text-on-surface">Julian Thorne</span>
+</div>
+<div class="hidden md:block w-1 h-1 bg-outline-variant rounded-full"></div>
+<span class="text-label-sm uppercase">October 24, 2024</span>
+<div class="hidden md:block w-1 h-1 bg-outline-variant rounded-full"></div>
+<span class="text-label-sm uppercase">12 Min Read</span>
+</div>
+</div>
+<div class="w-full h-[600px] mb-12 overflow-hidden">
+<img alt="Antique typewriter" class="w-full h-full object-cover grayscale" data-alt="A cinematic, high-detail photograph of a classic vintage typewriter resting on a minimalist dark wood desk. The lighting is moody and directional, casting long, soft shadows and highlighting the metallic texture of the keys and the grain of the paper. The overall aesthetic is one of quiet contemplation and intellectual rigor, utilizing a palette of deep slates and warm whites in a professional editorial layout." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBpIAxrdHgN9pNcN7xSu1SrLPtwmGh0vHvnARA1PXruwrE64O0WIMgwYrx2ItOeD_Yl54xGI8QnqefkVizR6ItN-z65GldC2R997vnuUfgrwDK6DbTLe5rP43TAv3H5S-HVho5e_ayAb8NAbA1WfmoqJDUJPFLAly6rvRuXpTl9ZKKdp5gV9oAXWeXIv751scjTnMiFdHKXQ9DfGi3bYixmJ-r2pou6i9NPJ7ZnLd82lOT6_qh2DJxdVt-q_0qzdkJ5bSMeLbFxRC4"/>
+</div>
+</header>
+<!-- Main Content Layout -->
+<main class="max-w-container-max mx-auto px-gutter grid grid-cols-1 lg:grid-cols-12 gap-stack-lg pb-section-gap">
+<!-- Left Sidebar: Social Sharing (Sticky) -->
+<aside class="hidden lg:block lg:col-span-1">
+<div class="sticky top-24 flex flex-col space-y-6 items-center border-r border-outline-variant pr-8">
+<span class="text-label-sm uppercase vertical-text tracking-widest text-outline mb-4">Share</span>
+<a class="text-on-surface-variant hover:text-secondary transition-colors" href="#"><span class="material-symbols-outlined">share</span></a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors" href="#"><span class="material-symbols-outlined">chat_bubble</span></a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors" href="#"><span class="material-symbols-outlined">bookmark</span></a>
+</div>
+</aside>
+<!-- Article Content -->
+<article class="lg:col-span-7 lg:col-start-2 max-w-article-max">
+<div class="font-sourceSerifFour text-body-lg text-on-surface space-y-8 leading-relaxed">
+<p class="first-letter:text-7xl first-letter:font-bold first-letter:mr-3 first-letter:float-left first-letter:text-primary">In an era where information travels at the speed of a fiber-optic pulse, the fundamental nature of the story is undergoing a radical transformation. What was once the sole province of the printing press has now become a decentralized, multi-channel dialogue between the observer and the observed.</p>
+<p>The transition from ink to pixel was merely the beginning. Today, we stand at the precipice of a new editorial frontier, where artificial intelligence and decentralized networks are redefining the parameters of truth and authority in public discourse. The challenge is no longer access to information, but the curation of meaning from noise.</p>
+<h2 class="font-headline-lg text-headline-lg pt-8 text-on-surface">The Paradox of Abundance</h2>
+<p>As the barrier to entry for content creation has dissolved, we have entered a period of hyper-saturation. For the modern journalist, the task has shifted from "finding the story" to "filtering the reality." The editorial voice must now act as a compass in a sea of algorithmic feedback loops.</p>
+<blockquote class="my-12 py-8 px-12 border-l-4 border-secondary bg-surface-container-low italic text-display-md font-sourceSerifFour text-on-surface-variant">
+                    "Journalism is not just about recording facts; it is about providing the context that makes those facts meaningful in a chaotic world."
+                </blockquote>
+<p>Consider the rise of niche newsletters and long-form journals. In a marketplace of fleeting attention spans, there is a counter-intuitive surge in demand for depth. Readers are retreating from the shallow waters of social media feeds toward the structured tranquility of high-fidelity reading environments.</p>
+<h2 class="font-headline-lg text-headline-lg pt-8 text-on-surface">The Intelligence Revolution</h2>
+<p>The integration of generative models into the newsroom is often framed as a threat, yet it represents the most significant augmentative tool since the telegraph. By automating the rote tasks of data synthesis, we free the human intellect to focus on investigation, empathy, and ethical nuance—qualities that remain stubbornly resistant to silicon replication.</p>
+<div class="my-12 aspect-video bg-surface-container overflow-hidden">
+<img alt="Future tech visualization" class="w-full h-full object-cover" data-alt="A sophisticated digital rendering of a futuristic command center, with transparent glass screens displaying complex data visualizations and glowing geometric nodes. The lighting is a cool azure and deep slate, creating a high-tech yet calm atmosphere. The image is sharp and clean, embodying a premium modern editorial style focused on the intersection of technology and information." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCmqxFuVmnM-EQbYZV8Zf2Nq54ekGLSKI8AwcgX5NFZvl-wogBpWpC9fnjhBjcTBaiwvezLRv2TyZfr7iZoH0r2frRkJq1E6relbckpAz5AgIfwaZbOtwms6eUw60TFtqPkONyIZlz7g_Rgmj6rs6QQEiwFK0-1kDKsZYpKhk0LR7ImEmrDJhmcclbgUvp_N4e_jN2zwut4kLk_VY3vfRGXZxM3T0usfE6SMoqFmWMPygzGZDavQK0TC_Tw6W2de12Av2Rw8CYIGmw"/>
+</div>
+<p>Ultimately, the future of journalism depends not on the technology of distribution, but on the integrity of the intent. The writer-to-reader connection is a sacred trust, one that requires a commitment to clarity, authority, and the preservation of the public record.</p>
+</div>
+<!-- Author Bio Section -->
+<section class="mt-24 pt-12 border-t border-outline-variant">
+<div class="flex items-start space-x-stack-lg">
+<img alt="Author avatar" class="w-24 h-24 grayscale border border-outline-variant p-1" data-alt="A formal black and white portrait of an experienced male journalist with glasses, looking directly at the camera with a subtle, knowing smile. The background is a minimalist studio setting with soft gray tones. The image captures a sense of intellectual depth and professional reliability, fitting for a prestigious news publication." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC9nI6GeEtf1IdeOi2MERWPnqKJ_g_55aq3ZfLyqoKLhwH4eNysL5HFORQvpXYD3qbWVzGi-vI4UE_Frj7D2QQG2rsPp1_2lJih_WmpQ4uMPrqOa2pcDnxEw9s_M7LikChurx7xhUpe6HvgrjbdqoCGq4yK7urcsXZ7pWecNVOxrDXqz3v_3JTK8tPoZB4Ym-0X7h3H4__NCnFm99ZiLwch2Hd7oNJJri9zfz0fpEkYAMvOBO6ORWFaJVlQZ3Jn_WHChb3A6ajpTbQ"/>
+<div>
+<h4 class="font-label-lg text-on-surface text-lg mb-2">About Julian Thorne</h4>
+<p class="font-hankenGrotesk text-body-md text-on-surface-variant">Julian Thorne is an award-winning investigative journalist and digital strategist focusing on the intersection of technology and democratic institutions. He has previously served as an editor at The Global Review and currently leads the Innovation Lab at The Ledger.</p>
+</div>
+</div>
+</section>
+</article>
+<!-- Right Sidebar: Recommended -->
+<aside class="lg:col-span-3 lg:col-start-10">
+<div class="space-y-12">
+<div>
+<h3 class="font-label-lg text-secondary uppercase tracking-widest border-b border-secondary pb-2 mb-6">Recommended</h3>
+<div class="space-y-8">
+<a class="group block" href="#">
+<span class="text-label-sm text-outline uppercase block mb-2">Tech • 5 min read</span>
+<h4 class="font-headline-md text-on-surface group-hover:text-secondary transition-colors leading-tight">The Silicon Valley Exodus: Why Talent is Moving East</h4>
+</a>
+<a class="group block" href="#">
+<span class="text-label-sm text-outline uppercase block mb-2">Culture • 8 min read</span>
+<h4 class="font-headline-md text-on-surface group-hover:text-secondary transition-colors leading-tight">Reviving the Lost Art of the Personal Essay</h4>
+</a>
+<a class="group block" href="#">
+<span class="text-label-sm text-outline uppercase block mb-2">World • 10 min read</span>
+<h4 class="font-headline-md text-on-surface group-hover:text-secondary transition-colors leading-tight">Global Trade Routes in a Post-Globalized World</h4>
+</a>
+</div>
+</div>
+<div class="bg-surface-container-low p-gutter">
+<h3 class="font-label-lg text-on-surface uppercase tracking-widest mb-4">The Weekly Brief</h3>
+<p class="font-hankenGrotesk text-label-sm text-on-surface-variant mb-6">Deep dives into the stories that matter, delivered to your inbox every Sunday morning.</p>
+<input class="w-full bg-surface border-0 border-b border-outline focus:ring-0 focus:border-secondary text-label-lg mb-4 p-2" placeholder="Email address" type="email"/>
+<button class="w-full bg-primary text-on-primary py-3 font-bold text-label-lg hover:opacity-90 transition-opacity">Subscribe</button>
+</div>
+<div>
+<h3 class="font-label-lg text-outline uppercase tracking-widest mb-6">Trending Topics</h3>
+<div class="flex flex-wrap gap-2">
+<span class="px-3 py-1 bg-surface-container-high text-on-primary-container text-label-sm rounded-full">AI Ethics</span>
+<span class="px-3 py-1 bg-surface-container-high text-on-primary-container text-label-sm rounded-full">Sovereignty</span>
+<span class="px-3 py-1 bg-surface-container-high text-on-primary-container text-label-sm rounded-full">Media Reform</span>
+<span class="px-3 py-1 bg-surface-container-high text-on-primary-container text-label-sm rounded-full">Hyper-Local</span>
+</div>
+</div>
+</div>
+</aside>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-low border-t border-outline-variant font-hankenGrotesk text-label-sm py-section-gap">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-stack-lg px-gutter max-w-container-max mx-auto">
+<div class="space-y-6">
+<div class="font-display-md text-headline-md text-on-surface">The Ledger</div>
+<p class="text-on-surface-variant leading-relaxed">Dedicated to the pursuit of truth through deep investigative journalism and modern editorial excellence.</p>
+<div class="text-on-surface-variant">© 2024 The Ledger. All rights reserved.</div>
+</div>
+<div class="space-y-4">
+<h5 class="text-on-surface font-bold uppercase tracking-widest">Company</h5>
+<ul class="space-y-2">
+<li><a class="text-on-surface-variant hover:text-secondary transition-colors" href="#">About</a></li>
+<li><a class="text-on-surface-variant hover:text-secondary transition-colors" href="#">Contact</a></li>
+<li><a class="text-on-surface-variant hover:text-secondary transition-colors" href="#">Careers</a></li>
+</ul>
+</div>
+<div class="space-y-4">
+<h5 class="text-on-surface font-bold uppercase tracking-widest">Legal</h5>
+<ul class="space-y-2">
+<li><a class="text-on-surface-variant hover:text-secondary transition-colors" href="#">Privacy Policy</a></li>
+<li><a class="text-on-surface-variant hover:text-secondary transition-colors" href="#">Terms of Service</a></li>
+<li><a class="text-on-surface-variant hover:text-secondary transition-colors" href="#">Archive</a></li>
+</ul>
+</div>
+<div class="space-y-4">
+<h5 class="text-on-surface font-bold uppercase tracking-widest">Social</h5>
+<div class="flex space-x-4">
+<a class="text-on-surface-variant hover:text-secondary transition-colors" href="#"><span class="material-symbols-outlined">public</span></a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors" href="#"><span class="material-symbols-outlined">rss_feed</span></a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors" href="#"><span class="material-symbols-outlined">alternate_email</span></a>
+</div>
+</div>
+</div>
+</footer>
+</body></html>

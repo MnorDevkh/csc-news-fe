@@ -113,12 +113,6 @@ const router = createRouter({
           props: true,
         },
         {
-          path: "article/:id",
-          name: "articleDetails",
-          component: ArticleDetailsPage,
-          props: true, // Allows passing route params as props
-        },
-        {
           path: "search",
           name: "searchResults",
           component: SearchResultsPage,
@@ -187,6 +181,12 @@ const router = createRouter({
           component: InstallAppPage,
         },
       ],
+    },
+    {
+      path: "/article/:id",
+      name: "articleDetails",
+      component: ArticleDetailsPage,
+      props: true, // Allows passing route params as props
     },
     {
       path: "/church-history",

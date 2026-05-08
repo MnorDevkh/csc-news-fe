@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;0,8..60,700;1,8..60,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container": "#e5eeff",
+                        "primary-container": "#131b2e",
+                        "error": "#ba1a1a",
+                        "surface-container-highest": "#d3e4fe",
+                        "outline-variant": "#c6c6cd",
+                        "secondary": "#3755c3",
+                        "surface": "#f8f9ff",
+                        "on-tertiary-fixed-variant": "#444749",
+                        "error-container": "#ffdad6",
+                        "secondary-fixed": "#dde1ff",
+                        "on-surface": "#0b1c30",
+                        "surface-bright": "#f8f9ff",
+                        "secondary-container": "#708cfd",
+                        "primary": "#000000",
+                        "on-error-container": "#93000a",
+                        "secondary-fixed-dim": "#b8c4ff",
+                        "surface-variant": "#d3e4fe",
+                        "surface-dim": "#cbdbf5",
+                        "inverse-primary": "#bec6e0",
+                        "surface-tint": "#565e74",
+                        "tertiary-fixed-dim": "#c4c7c9",
+                        "on-secondary": "#ffffff",
+                        "surface-container-low": "#eff4ff",
+                        "on-primary-fixed-variant": "#3f465c",
+                        "outline": "#76777d",
+                        "on-primary": "#ffffff",
+                        "inverse-on-surface": "#eaf1ff",
+                        "on-tertiary-fixed": "#191c1e",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary-fixed": "#001453",
+                        "on-secondary-container": "#00217a",
+                        "on-primary-container": "#7c839b",
+                        "tertiary-container": "#191c1e",
+                        "on-primary-fixed": "#131b2e",
+                        "on-secondary-fixed-variant": "#173bab",
+                        "inverse-surface": "#213145",
+                        "on-tertiary": "#ffffff",
+                        "background": "#f8f9ff",
+                        "on-background": "#0b1c30",
+                        "primary-fixed": "#dae2fd",
+                        "tertiary-fixed": "#e0e3e5",
+                        "on-surface-variant": "#45464d",
+                        "tertiary": "#000000",
+                        "on-error": "#ffffff",
+                        "primary-fixed-dim": "#bec6e0",
+                        "surface-container-high": "#dce9ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "container-max": "1200px",
+                        "article-max": "720px",
+                        "section-gap": "4rem",
+                        "stack-lg": "1.5rem",
+                        "gutter": "2rem",
+                        "stack-sm": "0.5rem",
+                        "stack-md": "1rem"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Hanken Grotesk"],
+                        "body-md": ["Hanken Grotesk"],
+                        "display-lg": ["Source Serif 4"],
+                        "headline-md": ["Source Serif 4"],
+                        "body-lg": ["Hanken Grotesk"],
+                        "display-md": ["Source Serif 4"],
+                        "headline-lg": ["Source Serif 4"],
+                        "label-lg": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", {"lineHeight": "1.2", "letterSpacing": "0.04em", "fontWeight": "500"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "display-lg": ["48px", {"lineHeight": "1.1", "fontWeight": "700"}],
+                        "headline-md": ["22px", {"lineHeight": "1.4", "fontWeight": "500"}],
+                        "body-lg": ["18px", {"lineHeight": "1.65", "fontWeight": "400"}],
+                        "display-md": ["36px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                        "headline-lg": ["28px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "label-lg": ["14px", {"lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "600"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .editorial-focus:focus {
+            outline: none;
+            border-bottom: 1px solid #000000;
+        }
+        .reading-progress {
+            width: 35%;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md min-h-screen">
+<!-- Reading Progress Bar (Style Guidance) -->
+<div class="fixed top-0 left-0 h-[2px] bg-secondary reading-progress z-[100]"></div>
+<!-- TopNavBar (Shared Component JSON) -->
+<header class="flex justify-between items-center w-full px-8 py-4 max-w-full mx-auto fixed top-0 bg-surface border-b border-outline-variant z-50 transition-all duration-200 ease-in-out">
+<div class="font-headline-md text-headline-md font-bold text-on-surface">Chronicle CMS</div>
+<nav class="hidden md:flex items-center space-x-8">
+<a class="font-label-lg text-label-lg text-on-surface-variant hover:text-primary transition-colors" href="#">Dashboard</a>
+<a class="font-label-lg text-label-lg text-primary border-b-2 border-primary pb-1" href="#">Articles</a>
+<a class="font-label-lg text-label-lg text-on-surface-variant hover:text-primary transition-colors" href="#">Analytics</a>
+<a class="font-label-lg text-label-lg text-on-surface-variant hover:text-primary transition-colors" href="#">Media</a>
+</nav>
+<div class="flex items-center space-x-4">
+<button class="font-label-lg text-label-lg px-6 py-2 border border-outline-variant hover:bg-surface-container-low transition-colors">Save Draft</button>
+<button class="font-label-lg text-label-lg px-6 py-2 bg-primary text-on-primary hover:bg-on-surface-variant transition-colors">Publish</button>
+</div>
+</header>
+<!-- SideNavBar (Shared Component JSON) -->
+<aside class="fixed left-0 top-0 h-full flex flex-col pt-24 pb-8 w-64 bg-surface-container-low border-r border-outline-variant hidden lg:flex">
+<div class="px-6 mb-8">
+<div class="flex items-center space-x-3 mb-2">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest overflow-hidden">
+<img alt="Editor Profile" class="w-full h-full object-cover" data-alt="A professional headshot of a senior news editor with a thoughtful expression. The lighting is soft and directional, creating a clean, modern editorial portrait aesthetic. The background is a blurred, high-end office interior with a neutral color palette that matches the minimalist UI." src="https://lh3.googleusercontent.com/aida-public/AB6AXuATDPYaWTRxPQl4aEcF5LcNKZCI5WmmwSKWZ3huJbUPNDBwpn1oP_g4v5M5RjZxRwRc1NhJMDBOLLcutkH9Zit_V8GX_3dSz4W6AophzNkx0DA7vBEDvBEgGslpJDl9JX9cF_c4IIgwvglwPT6t1V5BBDcNs300_k5wqC0wqmm5gIy_imEM5QGmKfRG3H151aWb-xm68PPnlu9VpwyjMpAmaYrNCDL7IBtU3E7smjWMqZE488jwoSVJ_cnxPRnaORZbs25R-GACZA8"/>
+</div>
+<div>
+<p class="font-label-lg text-label-lg font-bold text-primary">Editorial Suite</p>
+<p class="text-xs text-on-surface-variant">Drafting: New Article</p>
+</div>
+</div>
+</div>
+<nav class="flex-1">
+<a class="flex items-center font-label-lg text-label-lg text-primary font-bold border-l-4 border-primary pl-4 py-3" href="#">
+<span class="material-symbols-outlined mr-3">edit_note</span>
+                Editor
+            </a>
+<a class="flex items-center font-label-lg text-label-lg text-on-surface-variant pl-5 py-3 hover:bg-surface-variant transition-colors" href="#">
+<span class="material-symbols-outlined mr-3">image</span>
+                Assets
+            </a>
+<a class="flex items-center font-label-lg text-label-lg text-on-surface-variant pl-5 py-3 hover:bg-surface-variant transition-colors" href="#">
+<span class="material-symbols-outlined mr-3">search_check</span>
+                SEO
+            </a>
+<a class="flex items-center font-label-lg text-label-lg text-on-surface-variant pl-5 py-3 hover:bg-surface-variant transition-colors" href="#">
+<span class="material-symbols-outlined mr-3">history</span>
+                Revisions
+            </a>
+<a class="flex items-center font-label-lg text-label-lg text-on-surface-variant pl-5 py-3 hover:bg-surface-variant transition-colors mt-auto" href="#">
+<span class="material-symbols-outlined mr-3">settings</span>
+                Settings
+            </a>
+</nav>
+</aside>
+<!-- Main Content Canvas -->
+<main class="lg:pl-64 pt-24 min-h-screen">
+<div class="max-w-[1400px] mx-auto px-8 py-12">
+<div class="grid grid-cols-1 xl:grid-cols-[1fr_380px] gap-16 items-start">
+<!-- Main Editor Column -->
+<section class="max-w-article-max mx-auto w-full">
+<!-- Title Input -->
+<div class="mb-12">
+<input class="w-full bg-transparent border-none p-0 font-display-lg text-display-lg focus:ring-0 placeholder:text-outline-variant text-primary" placeholder="Enter article title..." type="text"/>
+</div>
+<!-- Toolbar -->
+<div class="sticky top-20 bg-surface py-4 border-y border-outline-variant flex items-center space-x-6 mb-8 z-40">
+<div class="flex items-center space-x-2 border-r border-outline-variant pr-6">
+<button class="p-1 hover:text-secondary transition-colors"><span class="material-symbols-outlined">format_bold</span></button>
+<button class="p-1 hover:text-secondary transition-colors"><span class="material-symbols-outlined">format_italic</span></button>
+<button class="p-1 hover:text-secondary transition-colors"><span class="material-symbols-outlined">link</span></button>
+</div>
+<div class="flex items-center space-x-2 border-r border-outline-variant pr-6">
+<button class="p-1 hover:text-secondary transition-colors"><span class="material-symbols-outlined">format_h1</span></button>
+<button class="p-1 hover:text-secondary transition-colors"><span class="material-symbols-outlined">format_h2</span></button>
+<button class="p-1 hover:text-secondary transition-colors"><span class="material-symbols-outlined">format_quote</span></button>
+</div>
+<div class="flex items-center space-x-2">
+<button class="p-1 hover:text-secondary transition-colors"><span class="material-symbols-outlined">format_list_bulleted</span></button>
+<button class="p-1 hover:text-secondary transition-colors"><span class="material-symbols-outlined">add_photo_alternate</span></button>
+<button class="p-1 hover:text-secondary transition-colors"><span class="material-symbols-outlined">code</span></button>
+</div>
+</div>
+<!-- Rich Text Body -->
+<div class="prose prose-slate max-w-none">
+<textarea class="w-full bg-transparent border-none p-0 font-body-lg text-body-lg focus:ring-0 placeholder:text-outline-variant leading-relaxed resize-none" placeholder="Start writing your story..." rows="12"></textarea>
+</div>
+<!-- Add Media Block -->
+<div class="mt-12 group">
+<div class="border-2 border-dashed border-outline-variant p-12 rounded-lg flex flex-col items-center justify-center bg-surface-container-low hover:bg-surface-container-high hover:border-secondary transition-all cursor-pointer">
+<span class="material-symbols-outlined text-4xl text-outline mb-4 group-hover:text-secondary">upload_file</span>
+<p class="font-label-lg text-label-lg text-on-surface-variant mb-1">Drag and drop images or media files</p>
+<p class="text-xs text-outline">Supported formats: JPG, PNG, WebP (Max 10MB)</p>
+</div>
+</div>
+<!-- Pull Quote Example (Style Guidance) -->
+<div class="mt-12 border-l-4 border-secondary pl-8 py-4">
+<p class="font-headline-md text-headline-md italic text-primary">"Journalism is the first rough draft of history. Let the clarity of your layout reflect the importance of your words."</p>
+</div>
+</section>
+<!-- Sidebar Controls -->
+<aside class="space-y-8">
+<!-- Publishing Card -->
+<div class="bg-surface-container-lowest p-8 border border-outline-variant rounded-lg">
+<h3 class="font-label-lg text-label-lg uppercase tracking-wider text-on-surface-variant mb-6">Status &amp; Visibility</h3>
+<div class="space-y-6">
+<div class="flex justify-between items-center text-sm">
+<span class="text-on-surface-variant">Status</span>
+<span class="font-semibold text-error">Draft</span>
+</div>
+<div class="flex justify-between items-center text-sm">
+<span class="text-on-surface-variant">Visibility</span>
+<span class="font-semibold text-primary">Public</span>
+</div>
+<div class="flex justify-between items-center text-sm">
+<span class="text-on-surface-variant">Publish date</span>
+<span class="font-semibold text-primary">Immediately</span>
+</div>
+<hr class="border-outline-variant"/>
+<div class="flex flex-col space-y-3">
+<button class="w-full py-3 bg-primary text-on-primary font-label-lg text-label-lg hover:bg-on-surface-variant transition-colors">Publish Now</button>
+<button class="w-full py-3 border border-outline-variant font-label-lg text-label-lg hover:bg-surface-container-low transition-colors">Save Draft</button>
+</div>
+</div>
+</div>
+<!-- Featured Image -->
+<div class="bg-surface-container-lowest p-8 border border-outline-variant rounded-lg">
+<h3 class="font-label-lg text-label-lg uppercase tracking-wider text-on-surface-variant mb-4">Featured Image</h3>
+<div class="aspect-video bg-surface-container-low rounded border border-outline-variant overflow-hidden relative group cursor-pointer">
+<img alt="Article Cover" class="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-500" data-alt="A cinematic, wide-angle shot of a classic typewriter on a clean wooden desk with morning sunlight streaming through a window. The scene is bright and airy with a sophisticated editorial mood, using high-key lighting and a soft neutral palette. Minimalist professional aesthetic consistent with high-end journalism." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA_CweGYC0G0ZyVQkMX85ixJR1VodNqLmm4R9xHymcRXOkZUCUv457nLAhQjVXSIEvGsx-Lki4BofKvG0slTHPYeUkAlZ-GULbGSwzvmJR2eeJvHkTTiVKvOkfC7xnxFvhn0eudxn4DD72OGyWEjaEcakD9Re_4PSMVGCrMgeCqLsLiZASdrlfn7hrxV847PwuGJHYgtMW9GUyPBqOeDsx09O44tcXFK0X55h6BMLSkGlmdyylLnPISpPlvtNziflplkKV_FW5dzVA"/>
+<div class="absolute inset-0 flex items-center justify-center">
+<button class="bg-white/90 backdrop-blur px-4 py-2 text-xs font-bold border border-outline-variant shadow-sm">Replace Image</button>
+</div>
+</div>
+</div>
+<!-- Metadata -->
+<div class="bg-surface-container-lowest p-8 border border-outline-variant rounded-lg space-y-6">
+<div>
+<h3 class="font-label-lg text-label-lg uppercase tracking-wider text-on-surface-variant mb-4">Category</h3>
+<select class="w-full bg-transparent border-b border-outline-variant focus:border-secondary focus:ring-0 py-2 font-body-md text-body-md">
+<option>World News</option>
+<option>Technology</option>
+<option>Politics</option>
+<option>Opinion</option>
+</select>
+</div>
+<div>
+<h3 class="font-label-lg text-label-lg uppercase tracking-wider text-on-surface-variant mb-4">SEO Description</h3>
+<textarea class="w-full bg-transparent border border-outline-variant focus:border-secondary focus:ring-0 p-3 font-body-md text-body-md text-sm leading-relaxed" placeholder="Briefly summarize for search engines..." rows="3"></textarea>
+</div>
+<div>
+<h3 class="font-label-lg text-label-lg uppercase tracking-wider text-on-surface-variant mb-4">Tags</h3>
+<div class="flex flex-wrap gap-2">
+<span class="px-3 py-1 bg-surface-container-low rounded-full text-xs font-medium text-on-surface-variant border border-outline-variant">Journalism</span>
+<span class="px-3 py-1 bg-surface-container-low rounded-full text-xs font-medium text-on-surface-variant border border-outline-variant">Media</span>
+<button class="px-3 py-1 bg-transparent rounded-full text-xs font-medium text-secondary border border-secondary border-dashed">+ Add Tag</button>
+</div>
+</div>
+</div>
+</aside>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation for Mobile -->
+<nav class="md:hidden fixed bottom-0 left-0 right-0 bg-surface border-t border-outline-variant px-6 py-4 flex justify-around items-center z-50">
+<button class="flex flex-col items-center text-primary">
+<span class="material-symbols-outlined">edit_note</span>
+<span class="text-[10px] font-bold mt-1">Editor</span>
+</button>
+<button class="flex flex-col items-center text-on-surface-variant">
+<span class="material-symbols-outlined">image</span>
+<span class="text-[10px] mt-1">Assets</span>
+</button>
+<button class="flex flex-col items-center text-on-surface-variant">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-[10px] mt-1">Settings</span>
+</button>
+<button class="flex flex-col items-center text-secondary">
+<span class="material-symbols-outlined">publish</span>
+<span class="text-[10px] mt-1 font-bold">Post</span>
+</button>
+</nav>
+</body></html>

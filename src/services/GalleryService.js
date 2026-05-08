@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { getApiBaseUrl } from '@/config/api';
+import BaseAPI from './BaseAPI';
 
 const baseURL = getApiBaseUrl();
 const api = axios.create({ baseURL, headers: { 'Content-Type': 'application/json' } });
@@ -33,7 +34,7 @@ export const GalleryService = {
    * @param {GalleryPayload} payload
    */
   async create(payload) {
-    const { data } = await api.post('/galleries/', payload);
+    const { data } = await BaseAPI.authClient.post('/galleries/', payload);
     return data;
   },
 
@@ -42,7 +43,7 @@ export const GalleryService = {
    * @param {Partial<GalleryPayload>} payload
    */
   async update(id, payload) {
-    const { data } = await api.put(`/galleries/${id}`, payload);
+    const { data } = await BaseAPI.authClient.put(`/galleries/${id}`, payload);
     return data;
   },
 
