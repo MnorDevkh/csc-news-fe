@@ -43,7 +43,6 @@
           </div>
         </div>
 
-        <!-- Title -->
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">Title</label>
           <input v-model="form.title" type="text" required
@@ -51,7 +50,6 @@
             placeholder="Enter page title" />
         </div>
 
-        <!-- Thumbnail (cover-style picker) -->
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">Thumbnail</label>
           <div
@@ -70,7 +68,6 @@
           </button>
         </div>
 
-        <!-- Excerpt -->
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">Excerpt</label>
           <textarea v-model="form.excerpt" rows="2"
@@ -86,185 +83,196 @@
               <p class="text-xs text-gray-500">Add blocks (text, text+image, images) in any order.</p>
             </div>
             <div class="flex flex-wrap gap-2">
-              <button
-                type="button"
+              <button type="button"
                 class="inline-flex items-center gap-2 px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-md font-medium transition-colors text-sm"
-                @click="addBlock('text')"
-              >
+                @click="addBlock('text')">
                 Add text
               </button>
-              <button
-                type="button"
+              <button type="button"
                 class="inline-flex items-center gap-2 px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-md font-medium transition-colors text-sm"
-                @click="addBlock('text_image')"
-              >
+                @click="addBlock('text_image')">
                 Add text + image
               </button>
-              <button
-                type="button"
+              <button type="button"
                 class="inline-flex items-center gap-2 px-3 py-2 bg-blue-100 hover:bg-blue-200 text-blue-700 rounded-md font-medium transition-colors text-sm"
-                @click="openContentImageModal"
-              >
+                @click="openContentImageModal">
                 <PictureOutlined /> Add images
               </button>
             </div>
           </div>
+
           <div class="space-y-4">
             <div v-for="(block, index) in contentBlocks" :key="block.id"
               class="rounded-md border border-gray-200 bg-white overflow-hidden">
-              <details :open="index === 0" class="group">
-                <summary
-                  class="list-none cursor-pointer select-none px-4 py-3 bg-gray-50/60 border-b border-gray-100 flex flex-wrap items-center justify-between gap-3"
-                >
-                  <div class="flex items-center gap-2">
-                    <span class="text-xs font-semibold text-gray-600 uppercase tracking-wide">
-                      {{ uiBlockKind(block).replaceAll('_', ' ') }}
-                    </span>
-                    <span class="text-xs text-gray-400">#{{ index + 1 }}</span>
-                  </div>
-                  <div class="flex items-center gap-2">
-                    <button
-                      type="button"
-                      class="text-xs px-2 py-1 rounded border border-gray-200 bg-white hover:bg-gray-50"
-                      :disabled="index === 0"
-                      @click.prevent="moveBlock(index, -1)"
-                    >
-                      Up
-                    </button>
-                    <button
-                      type="button"
-                      class="text-xs px-2 py-1 rounded border border-gray-200 bg-white hover:bg-gray-50"
-                      :disabled="index === contentBlocks.length - 1"
-                      @click.prevent="moveBlock(index, 1)"
-                    >
-                      Down
-                    </button>
-                    <select
-                      class="text-sm border border-gray-300 rounded-md px-2 py-1 bg-white focus:ring-2 focus:ring-blue-500 outline-none"
-                      :value="uiBlockKind(block)"
-                      @change="onBlockKindChange(index, $event.target.value)"
-                      @click.prevent
-                    >
-                      <option value="text">Text (full)</option>
-                      <option value="text_image_full">Text + image (full)</option>
-                      <option value="text_image_left">Text + image (left)</option>
-                      <option value="text_image_right">Text + image (right)</option>
-                      <option value="image">Image(s)</option>
-                    </select>
-                    <button
-                      type="button"
-                      class="text-xs text-red-600 hover:text-red-800"
-                      @click.prevent="removeBlock(index)"
-                    >
-                      Remove
-                    </button>
-                  </div>
-                </summary>
-
-                <div class="p-4 bg-white">
-
-              <template v-if="block.type === 'text'">
-                <div class="prose max-w-none [&_.ck-editor__editable]:min-h-[120px]">
-                  <ckeditor :editor="editor" v-model="block.html" :config="editorConfig" />
+              <div
+                class="px-4 py-3 bg-gray-50/60 border-b border-gray-100 flex flex-wrap items-center justify-between gap-3">
+                <div class="flex items-center gap-2">
+                  <span class="text-xs font-semibold text-gray-600 uppercase tracking-wide">
+                    {{ uiBlockKind(block).replaceAll('_', ' ') }}
+                  </span>
+                  <span class="text-xs text-gray-400">#{{ index + 1 }}</span>
                 </div>
-              </template>
-              <template v-else-if="block.type === 'text_image'">
-                <div class="grid grid-cols-1 gap-4">
-                  <div class="prose max-w-none [&_.ck-editor__editable]:min-h-[120px]">
-                    <ckeditor :editor="editor" v-model="block.html" :config="editorConfig" />
-                  </div>
+                <div class="flex items-center gap-2">
+                  <button type="button"
+                    class="text-xs px-2 py-1 rounded border border-gray-200 bg-white hover:bg-gray-50"
+                    :disabled="index === 0" @click="moveBlock(index, -1)">
+                    Up
+                  </button>
+                  <button type="button"
+                    class="text-xs px-2 py-1 rounded border border-gray-200 bg-white hover:bg-gray-50"
+                    :disabled="index === contentBlocks.length - 1" @click="moveBlock(index, 1)">
+                    Down
+                  </button>
+                  <select
+                    class="text-sm border border-gray-300 rounded-md px-2 py-1 bg-white focus:ring-2 focus:ring-blue-500 outline-none"
+                    :value="uiBlockKind(block)" @change="onBlockKindChange(index, $event.target.value)">
+                    <option value="text">Text (full)</option>
+                    <option value="text_image_full">Text + image (full)</option>
+                    <option value="text_image_left">Text + image (left)</option>
+                    <option value="text_image_right">Text + image (right)</option>
+                    <option value="image">Image(s)</option>
+                  </select>
+                  <button type="button" class="text-xs text-red-600 hover:text-red-800"
+                    @click="removeBlock(index)">
+                    Remove
+                  </button>
+                </div>
+              </div>
 
-                  <div class="rounded-md border border-gray-200 bg-white p-3">
-                    <div class="flex items-center justify-between gap-3">
-                      <div class="text-sm font-medium text-gray-700">Block image</div>
-                      <div class="flex items-center gap-2">
-                        <button type="button"
-                          class="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-100 hover:bg-blue-200 text-blue-700 rounded-md font-medium transition-colors text-sm"
-                          @click="openTextImageModal(index)">
-                          <PictureOutlined /> Choose image
-                        </button>
-                        <button v-if="block.image && block.image.url" type="button"
-                          class="text-xs text-red-500 hover:text-red-700 transition-colors"
-                          @click="removeTextImage(index)">
-                          Remove image
-                        </button>
-                      </div>
+              <div class="p-4 bg-white">
+                <template v-if="block.type === 'text'">
+                  <div class="structure-editor-wrap">
+                    <ckeditor :key="`${block.id}-html`" :editor="editor" v-model="block.html"
+                      :config="editorConfig" />
+                  </div>
+                </template>
+
+                <template v-else-if="block.type === 'text_image'">
+                  <div class="grid grid-cols-1 gap-4">
+                    <div class="structure-editor-wrap">
+                      <ckeditor :key="`${block.id}-html`" :editor="editor" v-model="block.html"
+                        :config="editorConfig" />
                     </div>
 
-                    <div class="mt-3 flex flex-wrap items-center gap-2">
-                      <label class="text-xs text-gray-500">Columns</label>
-                      <select
-                        class="text-sm border border-gray-300 rounded-md px-2 py-1 bg-white focus:ring-2 focus:ring-blue-500 outline-none"
-                        v-model="block.ratio">
-                        <option value="1/2">Image 1/2 - Text 1/2</option>
-                        <option value="1/3">Image 1/3 - Text 2/3</option>
-                        <option value="2/3">Image 2/3 - Text 1/3</option>
+                    <div class="rounded-md border border-gray-200 bg-gray-50/50 p-3 space-y-3">
+                      <div class="flex flex-wrap items-center justify-between gap-3">
+                        <div class="text-sm font-medium text-gray-700">Block image</div>
+                        <div class="flex items-center gap-2">
+                          <button type="button"
+                            class="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-100 hover:bg-blue-200 text-blue-700 rounded-md font-medium transition-colors text-sm"
+                            @click="openTextImageModal(index)">
+                            <PictureOutlined /> Choose image
+                          </button>
+                          <button v-if="block.image && block.image.url" type="button"
+                            class="text-xs text-red-500 hover:text-red-700 transition-colors"
+                            @click="removeTextImage(index)">
+                            Remove image
+                          </button>
+                        </div>
+                      </div>
+
+                      <div>
+                        <label class="block text-xs text-gray-500 mb-1.5">Layout</label>
+                        <div class="inline-flex rounded-md border border-gray-200 overflow-hidden bg-white">
+                          <button type="button" class="px-3 py-1.5 text-xs font-medium transition-colors"
+                            :class="block.layout === 'full' ? 'bg-blue-600 text-white' : 'text-gray-600 hover:bg-gray-50'"
+                            @click="block.layout = 'full'">
+                            Full width
+                          </button>
+                          <button type="button" class="px-3 py-1.5 text-xs font-medium border-l border-gray-200 transition-colors"
+                            :class="block.layout === 'left' ? 'bg-blue-600 text-white' : 'text-gray-600 hover:bg-gray-50'"
+                            @click="block.layout = 'left'">
+                            Image left
+                          </button>
+                          <button type="button" class="px-3 py-1.5 text-xs font-medium border-l border-gray-200 transition-colors"
+                            :class="block.layout === 'right' ? 'bg-blue-600 text-white' : 'text-gray-600 hover:bg-gray-50'"
+                            @click="block.layout = 'right'">
+                            Image right
+                          </button>
+                        </div>
+                      </div>
+
+                      <div v-if="block.layout !== 'full'">
+                        <label class="block text-xs text-gray-500 mb-1.5">Image / text ratio</label>
+                        <div class="inline-flex rounded-md border border-gray-200 overflow-hidden bg-white">
+                          <button type="button" class="px-3 py-1.5 text-xs font-medium transition-colors"
+                            :class="block.ratio === '1/2' ? 'bg-gray-800 text-white' : 'text-gray-600 hover:bg-gray-50'"
+                            @click="block.ratio = '1/2'">
+                            1:1
+                          </button>
+                          <button type="button" class="px-3 py-1.5 text-xs font-medium border-l border-gray-200 transition-colors"
+                            :class="block.ratio === '1/3' ? 'bg-gray-800 text-white' : 'text-gray-600 hover:bg-gray-50'"
+                            @click="block.ratio = '1/3'">
+                            1:2
+                          </button>
+                          <button type="button" class="px-3 py-1.5 text-xs font-medium border-l border-gray-200 transition-colors"
+                            :class="block.ratio === '2/3' ? 'bg-gray-800 text-white' : 'text-gray-600 hover:bg-gray-50'"
+                            @click="block.ratio = '2/3'">
+                            2:1
+                          </button>
+                        </div>
+                      </div>
+
+                      <div v-if="block.image && block.image.url">
+                        <img :src="block.image.url" alt="Block image"
+                          class="w-full max-w-xs rounded-md border border-gray-200 object-contain bg-white" />
+                      </div>
+                      <div v-else class="text-xs text-gray-400">No image selected.</div>
+
+                      <div>
+                        <label class="block text-xs text-gray-500 mb-1">Image caption (optional)</label>
+                        <div class="structure-editor-wrap structure-editor-wrap--compact">
+                          <ckeditor :key="`${block.id}-caption`" :editor="editor" v-model="block.caption"
+                            :config="captionEditorConfig" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </template>
+
+                <template v-else-if="block.type === 'image'">
+                  <div class="space-y-3">
+                    <div class="flex flex-wrap items-center gap-2">
+                      <label class="text-xs text-gray-500">Columns per row</label>
+                      <select v-model.number="block.columns"
+                        class="text-sm border border-gray-300 rounded-md px-2 py-1 bg-white focus:ring-2 focus:ring-blue-500 outline-none">
+                        <option :value="1">1</option>
+                        <option :value="2">2</option>
+                        <option :value="3">3</option>
+                        <option :value="4">4</option>
+                        <option :value="5">5</option>
+                        <option :value="6">6</option>
                       </select>
                     </div>
 
-                    <div v-if="block.image && block.image.url" class="mt-3">
-                      <img :src="block.image.url" alt="Block image"
-                        class="w-full max-w-xs rounded-md border border-gray-200 object-contain bg-gray-50" />
-                      <div class="mt-1 text-xs text-gray-400 truncate">{{ block.image.url }}</div>
-                    </div>
-                    <div v-else class="mt-3 text-xs text-gray-400">No image selected.</div>
-
-                    <div class="mt-3">
-                      <label class="block text-xs text-gray-500 mb-1">Image title</label>
-                      <input v-model="block.caption" type="text"
-                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none text-sm"
-                        placeholder="Optional caption" />
-                    </div>
-                  </div>
-                </div>
-              </template>
-              <template v-else-if="block.type === 'image'">
-                <div class="space-y-3">
-                  <div class="flex flex-wrap items-center gap-2">
-                    <label class="text-xs text-gray-500">Columns</label>
-                    <select
-                      class="text-sm border border-gray-300 rounded-md px-2 py-1 bg-white focus:ring-2 focus:ring-blue-500 outline-none"
-                      v-model.number="block.columns">
-                      <option :value="1">1</option>
-                      <option :value="2">2</option>
-                      <option :value="3">3</option>
-                      <option :value="4">4</option>
-                      <option :value="5">5</option>
-                      <option :value="6">6</option>
-                    </select>
-                    <span class="text-xs text-gray-400">Controls how many images per row on the public page.</span>
-                  </div>
-
-                  <div class="flex flex-wrap gap-3">
-                    <div v-for="(img, imgIdx) in block.images" :key="img.key || imgIdx"
-                      class="relative rounded-md overflow-hidden border border-gray-200 bg-white p-2 w-[152px]">
-                      <img :src="img.url" :alt="img.title || 'Image'" class="w-full h-28 object-cover rounded" />
-                      <div class="mt-2">
-                        <label class="block text-[11px] text-gray-500 mb-1">Description (supports links)</label>
-                        <div v-if="img.title && String(img.title).trim()"
-                          class="ck-content text-xs text-gray-600 leading-snug line-clamp-3" v-html="img.title" />
-                        <div v-else class="text-xs text-gray-400">No description.</div>
-                        <button type="button"
-                          class="mt-2 inline-flex items-center gap-2 px-2.5 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-md font-medium transition-colors text-xs"
-                          @click="openImageCaptionEditor(index, imgIdx)">
-                          Edit description
+                    <div class="flex flex-wrap gap-3">
+                      <div v-for="(img, imgIdx) in block.images" :key="img.key || imgIdx"
+                        class="rounded-md border border-gray-200 bg-white p-2 w-full sm:w-[220px]">
+                        <img :src="img.url" :alt="img.title || 'Image'"
+                          class="w-full h-28 object-cover rounded" />
+                        <div class="mt-2">
+                          <label class="block text-[11px] text-gray-500 mb-1">Description</label>
+                          <div class="structure-editor-wrap structure-editor-wrap--compact">
+                            <ckeditor :key="`${block.id}-img-${imgIdx}`" :editor="editor" v-model="img.title"
+                              :config="captionEditorConfig" />
+                          </div>
+                        </div>
+                        <button type="button" class="mt-2 text-xs text-red-500 hover:text-red-700 transition-colors"
+                          @click="removeImageFromBlock(index, imgIdx)">
+                          Remove
                         </button>
                       </div>
-                      <button type="button" class="mt-2 text-xs text-red-500 hover:text-red-700 transition-colors"
-                        @click="removeImageFromBlock(index, imgIdx)">
-                        Remove
+
+                      <button type="button"
+                        class="w-full sm:w-[220px] min-h-[120px] rounded-md border-2 border-dashed border-gray-300 bg-gray-50 hover:border-blue-400 hover:bg-blue-50/30 flex flex-col items-center justify-center gap-2 text-gray-500 hover:text-blue-600 transition-colors"
+                        @click="openAddMoreImages(index)">
+                        <PictureOutlined class="text-2xl" />
+                        <span class="text-xs font-medium">Add more images</span>
                       </button>
                     </div>
                   </div>
-                </div>
-              </template>
-              <div class="mt-2 text-xs text-gray-400">
-                <span v-if="block.type === 'text'">Text block</span>
-                <span v-else-if="block.type === 'text_image'">Text + image block ({{ block.layout }})</span>
-                <span v-else>Image block</span>
+                </template>
               </div>
-                </div>
-              </details>
             </div>
           </div>
         </div>
@@ -285,25 +293,6 @@
         confirm-label="Add to page" @confirm="onContentImagesSelected" />
       <ImageSelectModal v-model:open="textImageModalOpen" mode="single" title="Select image for text+image block"
         confirm-label="Select" @confirm="onTextImageSelected" />
-
-      <a-modal :open="imageCaptionModalOpen" title="Image description" width="760px" :footer="null"
-        @update:open="(v) => (imageCaptionModalOpen = v)">
-        <div class="prose max-w-none [&_.ck-editor__editable]:min-h-[140px]">
-          <ckeditor :editor="editor" v-model="imageCaptionDraft" :config="editorConfig" />
-        </div>
-        <div class="flex justify-end gap-2 mt-4 pt-4 border-t border-gray-200">
-          <button type="button"
-            class="inline-flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50"
-            @click="closeImageCaptionEditor">
-            Cancel
-          </button>
-          <button type="button"
-            class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md font-medium"
-            @click="saveImageCaptionEditor">
-            Save
-          </button>
-        </div>
-      </a-modal>
       </div>
 
       <!-- Right: preview sidebar -->
@@ -313,31 +302,26 @@
             <div class="text-sm font-semibold text-gray-800">Preview</div>
             <div class="flex items-center gap-2">
               <div class="inline-flex rounded-md border border-gray-200 overflow-hidden bg-white">
-                <button
-                  type="button"
-                  class="px-2.5 py-1.5 text-xs font-medium"
+                <button type="button" class="px-2.5 py-1.5 text-xs font-medium"
                   :class="previewDevice === 'desktop' ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50'"
-                  @click="previewDevice = 'desktop'"
-                >
+                  @click="previewDevice = 'desktop'">
                   Desktop
                 </button>
-                <button
-                  type="button"
-                  class="px-2.5 py-1.5 text-xs font-medium"
+                <button type="button" class="px-2.5 py-1.5 text-xs font-medium"
                   :class="previewDevice === 'mobile' ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50'"
-                  @click="previewDevice = 'mobile'"
-                >
+                  @click="previewDevice = 'mobile'">
                   Mobile
                 </button>
               </div>
-              <button type="button" class="text-xs text-gray-500 hover:text-gray-700" @click="previewOpen = !previewOpen">
+              <button type="button" class="text-xs text-gray-500 hover:text-gray-700"
+                @click="previewOpen = !previewOpen">
                 {{ previewOpen ? 'Hide' : 'Show' }}
               </button>
             </div>
           </div>
           <div v-if="previewOpen" class="mt-4 rounded-xl border border-gray-100 bg-gray-50/50 overflow-hidden">
             <div v-if="form.thumbnail" class="aspect-video w-full bg-gray-100 overflow-hidden">
-              <img :src="form.thumbnail" :alt="stripHtml(form.title) || 'thumbnail'" class="w-full h-full object-cover" />
+              <img :src="form.thumbnail" :alt="form.title || 'thumbnail'" class="w-full h-full object-cover" />
             </div>
             <div v-else class="aspect-video w-full bg-gradient-to-br from-blue-600 to-indigo-700" />
             <div class="p-4 sm:p-6 mx-auto" :class="previewDevice === 'mobile' ? 'max-w-[390px]' : ''">
@@ -347,47 +331,8 @@
               <div v-if="form.excerpt" class="mt-2 text-gray-600">
                 {{ form.excerpt }}
               </div>
-
-              <div class="mt-5 space-y-6">
-                <div v-for="(block, i) in contentBlocks" :key="block.id || i">
-                  <div v-if="block.type === 'text' && block.html" class="ck-content prose prose-gray max-w-none"
-                    v-html="block.html" />
-                  <div v-else-if="block.type === 'text_image'" class="rounded-xl border border-gray-100 bg-white p-4">
-                    <div class="flex flex-col gap-5" :class="block.layout === 'left'
-                      ? 'xl:flex-row'
-                      : block.layout === 'right'
-                        ? 'xl:flex-row-reverse'
-                        : ''
-                      ">
-                      <figure v-if="block.image && block.image.url" class="m-0 w-full xl:flex-shrink-0" :class="block.ratio === '2/3'
-                        ? 'xl:w-2/3'
-                        : block.ratio === '1/2'
-                          ? 'xl:w-1/2'
-                          : 'xl:w-1/3'
-                        ">
-                        <img :src="block.image.url" :alt="block.caption || 'image'"
-                          class="rounded-md w-full h-auto object-contain bg-gray-50 border border-gray-100" />
-                        <figcaption v-if="block.caption" class="mt-2 text-sm text-gray-500 text-center xl:text-left">
-                          {{ block.caption }}
-                        </figcaption>
-                      </figure>
-                      <div class="w-full">
-                        <div v-if="block.html" class="ck-content prose prose-gray max-w-none" v-html="block.html" />
-                      </div>
-                    </div>
-                  </div>
-                  <div v-else-if="block.type === 'image' && block.images && block.images.length" class="my-2">
-                    <div class="grid gap-4" :class="gridColsClass(block.columns)">
-                      <figure v-for="(img, j) in block.images" :key="img.key || j" class="m-0">
-                        <img :src="img.url" :alt="stripHtml(img.title) || 'image'"
-                          class="rounded-md w-full h-auto object-contain bg-gray-50 border border-gray-100" />
-                        <figcaption v-if="img.title && String(img.title).trim()" class="mt-2 text-center">
-                          <div class="ck-content text-sm text-gray-500 font-light leading-snug" v-html="img.title" />
-                        </figcaption>
-                      </figure>
-                    </div>
-                  </div>
-                </div>
+              <div class="mt-5">
+                <StructureContentBlocks :blocks="contentBlocks" :page-title="form.title" compact />
               </div>
             </div>
           </div>
@@ -400,8 +345,25 @@
 <script setup>
 import { ref, reactive, computed, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
-import { ClassicEditor, Essentials, Paragraph, Bold, Italic, Link, List, Heading, BlockQuote, Table, TableToolbar, Font, Alignment, PasteFromOffice } from 'ckeditor5';
+import {
+  ClassicEditor,
+  Essentials,
+  Paragraph,
+  Bold,
+  Italic,
+  Link,
+  List,
+  Heading,
+  BlockQuote,
+  Table,
+  TableToolbar,
+  Font,
+  Alignment,
+  PasteFromOffice,
+  GeneralHtmlSupport,
+} from 'ckeditor5';
 import ImageSelectModal from '@/components/ImageSelectModal.vue';
+import StructureContentBlocks from '@/components/content/StructureContentBlocks.vue';
 import { PictureOutlined } from '@ant-design/icons-vue';
 import { StructurePageService } from '@/services/StructurePageService';
 
@@ -434,6 +396,7 @@ const editorConfig = {
     Font,
     Alignment,
     PasteFromOffice,
+    GeneralHtmlSupport,
   ],
   toolbar: [
     'heading',
@@ -453,6 +416,24 @@ const editorConfig = {
     'undo',
     'redo',
   ],
+  heading: {
+    options: [
+      { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+      { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
+      { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' },
+    ],
+  },
+  alignment: {
+    options: ['left', 'center', 'right', 'justify'],
+  },
+  htmlSupport: {
+    allow: [{ name: /.*/, attributes: true, classes: true, styles: true }],
+  },
+};
+
+const captionEditorConfig = {
+  ...editorConfig,
+  toolbar: ['bold', 'italic', 'link', '|', 'alignment', '|', 'undo', 'redo'],
 };
 
 const isSubmitting = ref(false);
@@ -475,12 +456,10 @@ const contentBlocks = ref([]);
 const contentImageModalOpen = ref(false);
 const textImageModalOpen = ref(false);
 const activeTextImageBlockIndex = ref(-1);
+const addMoreImagesTargetIndex = ref(-1);
 const previewOpen = ref(true);
-const previewDevice = ref('desktop'); // 'desktop' | 'mobile'
+const previewDevice = ref('desktop');
 
-const imageCaptionModalOpen = ref(false);
-const imageCaptionDraft = ref('');
-const imageCaptionTarget = ref({ blockIndex: -1, imageIndex: -1 });
 let nextBlockId = 0;
 function nextId() {
   return `block-${++nextBlockId}-${Date.now()}`;
@@ -515,6 +494,7 @@ function onBlockKindChange(index, kind) {
     contentBlocks.value[index] = {
       id: current.id || nextId(),
       type: 'image',
+      columns: current.columns || 3,
       images: current.images || [],
     };
     return;
@@ -600,7 +580,7 @@ function parseContentToBlocks(contentStr) {
               url: img.url || '',
               key: img.key || '',
               title: img.title != null ? String(img.title) : '',
-            }))
+            })),
           };
         }
         return { id: nextId(), type: 'text', html: '' };
@@ -628,13 +608,9 @@ function serializeBlocks() {
     return {
       type: 'image',
       columns: typeof b.columns === 'number' ? b.columns : 3,
-      images: (b.images || []).map((img) => ({ url: img.url, key: img.key, title: img.title || '' }))
+      images: (b.images || []).map((img) => ({ url: img.url, key: img.key, title: img.title || '' })),
     };
   });
-}
-
-function addContentBlock() {
-  contentBlocks.value.push({ id: nextId(), type: 'text', html: '' });
 }
 
 function addBlock(type) {
@@ -654,7 +630,6 @@ function addBlock(type) {
     });
     return;
   }
-  // image blocks should be created via image picker
   contentBlocks.value.push({ id: nextId(), type: 'image', columns: 3, images: [] });
 }
 
@@ -672,35 +647,28 @@ function moveBlock(index, delta) {
 }
 
 function openContentImageModal() {
+  addMoreImagesTargetIndex.value = -1;
+  contentImageModalOpen.value = true;
+}
+
+function openAddMoreImages(blockIndex) {
+  addMoreImagesTargetIndex.value = blockIndex;
   contentImageModalOpen.value = true;
 }
 
 function onContentImagesSelected(items) {
   if (!items || !items.length) return;
   const images = items.map((item) => ({ url: item.url, key: item.key || '', title: item.title || '' }));
+
+  const appendIdx = addMoreImagesTargetIndex.value;
+  if (appendIdx >= 0 && contentBlocks.value[appendIdx]?.type === 'image') {
+    contentBlocks.value[appendIdx].images.push(...images);
+    addMoreImagesTargetIndex.value = -1;
+    return;
+  }
+  addMoreImagesTargetIndex.value = -1;
+
   contentBlocks.value.push({ id: nextId(), type: 'image', columns: 3, images });
-}
-
-function stripHtml(v) {
-  if (!v) return '';
-  return String(v).replace(/<[^>]*>/g, '').trim();
-}
-
-function safeColumns(raw) {
-  const n = typeof raw === 'number' && Number.isFinite(raw) ? Math.trunc(raw) : 3;
-  return Math.min(6, Math.max(1, n));
-}
-
-function gridColsClass(columns) {
-  const c = safeColumns(columns);
-  return {
-    1: 'grid-cols-1',
-    2: 'grid-cols-1 sm:grid-cols-2',
-    3: 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3',
-    4: 'grid-cols-1 sm:grid-cols-2 md:grid-cols-4',
-    5: 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5',
-    6: 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6',
-  }[c];
 }
 
 function removeImageFromBlock(blockIndex, imageIndex) {
@@ -710,33 +678,6 @@ function removeImageFromBlock(blockIndex, imageIndex) {
   if (!block.images.length) {
     contentBlocks.value.splice(blockIndex, 1);
   }
-}
-
-function openImageCaptionEditor(blockIndex, imageIndex) {
-  const block = contentBlocks.value[blockIndex];
-  const img = block?.type === 'image' ? block.images?.[imageIndex] : null;
-  if (!img) return;
-  imageCaptionTarget.value = { blockIndex, imageIndex };
-  imageCaptionDraft.value = img.title || '';
-  imageCaptionModalOpen.value = true;
-}
-
-function closeImageCaptionEditor() {
-  imageCaptionModalOpen.value = false;
-  imageCaptionDraft.value = '';
-  imageCaptionTarget.value = { blockIndex: -1, imageIndex: -1 };
-}
-
-function saveImageCaptionEditor() {
-  const { blockIndex, imageIndex } = imageCaptionTarget.value || { blockIndex: -1, imageIndex: -1 };
-  const block = contentBlocks.value[blockIndex];
-  const img = block?.type === 'image' ? block.images?.[imageIndex] : null;
-  if (!img) {
-    closeImageCaptionEditor();
-    return;
-  }
-  img.title = imageCaptionDraft.value || '';
-  closeImageCaptionEditor();
 }
 
 const openThumbnailModal = () => {
@@ -826,17 +767,26 @@ const handleSubmit = async () => {
 </script>
 
 <style scoped>
-.ck-content :deep(p) {
-  margin: 0;
+.structure-editor-wrap :deep(.ck.ck-editor) {
+  border: 0;
+  box-shadow: none;
 }
 
-.ck-content :deep(a) {
-  color: #2563eb;
-  text-decoration: underline;
-  text-underline-offset: 2px;
+.structure-editor-wrap :deep(.ck-editor__top) {
+  border-bottom: 1px solid #e5eeff;
 }
 
-.ck-content :deep(a:hover) {
-  color: #1d4ed8;
+.structure-editor-wrap :deep(.ck-toolbar) {
+  background: #f8f9ff;
+}
+
+.structure-editor-wrap :deep(.ck-editor__editable) {
+  min-height: 120px;
+  border: 0;
+  box-shadow: none;
+}
+
+.structure-editor-wrap--compact :deep(.ck-editor__editable) {
+  min-height: 80px;
 }
 </style>

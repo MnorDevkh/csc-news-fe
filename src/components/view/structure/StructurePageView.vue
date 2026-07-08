@@ -2,6 +2,7 @@
 import { ref, computed, watch, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { ArrowLeftOutlined, ExclamationCircleOutlined, ReloadOutlined } from '@ant-design/icons-vue';
+import StructureContentBlocks from '@/components/content/StructureContentBlocks.vue';
 import { StructurePageService } from '@/services/StructurePageService';
 
 const route = useRoute();
@@ -32,28 +33,6 @@ const contentBlocks = computed(() => {
 });
 
 const pageTitle = computed(() => content.value?.title || '');
-
-function stripHtml(v) {
-  if (!v) return '';
-  return String(v).replace(/<[^>]*>/g, '').trim();
-}
-
-function safeColumns(raw) {
-  const n = typeof raw === 'number' && Number.isFinite(raw) ? Math.trunc(raw) : 3;
-  return Math.min(6, Math.max(1, n));
-}
-
-function gridColsClass(columns) {
-  const c = safeColumns(columns);
-  return {
-    1: 'grid-cols-1',
-    2: 'grid-cols-1 sm:grid-cols-2',
-    3: 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3',
-    4: 'grid-cols-1 sm:grid-cols-2 md:grid-cols-4',
-    5: 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5',
-    6: 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6',
-  }[c];
-}
 
 async function loadContent() {
   const slug = route.params.slug;
@@ -160,100 +139,14 @@ onMounted(() => {
           </p>
 
           <div class="article-body-wrapper">
-            <template v-if="contentBlocks">
-              <div
-                v-for="(block, index) in contentBlocks"
-                :key="index"
-                class="article-body-block mb-8 sm:mb-10 last:mb-0"
-              >
-                <div
-                  v-if="block.type === 'text_image'"
-                  class="article-body-text-image rounded-xl border border-gray-100 bg-gray-50/60 p-4 sm:p-6"
-                >
-                  <div
-                    class="flex flex-col gap-5"
-                    :class="
-                      block.layout === 'left'
-                        ? 'xl:flex-row'
-                        : block.layout === 'right'
-                          ? 'xl:flex-row-reverse'
-                          : ''
-                    "
-                  >
-                    <figure
-                      v-if="block.image && block.image.url"
-                      class="m-0 w-full xl:flex-shrink-0"
-                      :class="
-                        block.ratio === '2/3'
-                          ? 'xl:w-2/3'
-                          : block.ratio === '1/2'
-                            ? 'xl:w-1/2'
-                            : 'xl:w-1/3'
-                      "
-                    >
-                      <img
-                        :src="block.image.url"
-                        :alt="block.caption || pageTitle + ' image'"
-                        class="rounded-md w-full h-auto max-h-[480px] object-contain mx-auto"
-                      />
-                      <figcaption
-                        v-if="block.caption"
-                        class="mt-2 text-sm text-gray-500 font-light leading-snug text-center xl:text-left"
-                      >
-                        {{ block.caption }}
-                      </figcaption>
-                    </figure>
-                    <div
-                      class="w-full"
-                      :class="
-                        block.image && block.image.url
-                          ? block.ratio === '2/3'
-                            ? 'xl:w-1/3'
-                            : block.ratio === '1/2'
-                              ? 'xl:w-1/2'
-                              : 'xl:w-2/3'
-                          : ''
-                      "
-                    >
-                      <div
-                        v-if="block.html"
-                        class="article-body prose prose-gray prose-lg max-w-none"
-                        v-html="block.html"
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div
-                  v-else-if="block.type === 'text' && block.html"
-                  class="article-body prose prose-gray prose-lg max-w-none"
-                  v-html="block.html"
-                />
-                <div
-                  v-else-if="block.type === 'image' && block.images && block.images.length"
-                  class="article-body-images my-6"
-                >
-                  <div class="grid gap-4" :class="gridColsClass(block.columns)">
-                    <figure
-                      v-for="(img, i) in block.images"
-                      :key="img.key || i"
-                      class="m-0"
-                    >
-                      <img
-                        :src="img.url"
-                        :alt="stripHtml(img.title) || pageTitle + ' image ' + (i + 1)"
-                        class="rounded-md w-full h-auto object-contain bg-gray-50 border border-gray-100"
-                      />
-                      <figcaption v-if="img.title && String(img.title).trim()" class="mt-2 text-center">
-                        <div class="ck-content text-sm text-gray-500 font-light leading-snug" v-html="img.title" />
-                      </figcaption>
-                    </figure>
-                  </div>
-                </div>
-              </div>
-            </template>
+            <StructureContentBlocks
+              v-if="contentBlocks"
+              :blocks="contentBlocks"
+              :page-title="pageTitle"
+            />
             <div
               v-else-if="content.content"
-              class="article-body prose prose-gray prose-lg max-w-none"
+              class="article-body ck-content prose prose-gray prose-lg max-w-none"
               v-html="content.content"
             />
             <p v-else class="text-gray-500 text-center py-8">មិនទាន់មានខ្លឹមសារ</p>
@@ -288,26 +181,14 @@ onMounted(() => {
 
 .article-body :deep(h1),
 .article-body :deep(h2),
-.article-body :deep(h3) {
+.article-body :deep(h3),
+.article-body :deep(h4),
+.article-body :deep(h5),
+.article-body :deep(h6) {
   font-weight: 700;
   color: #111827;
   margin-top: 2rem;
   margin-bottom: 0.75rem;
-}
-
-.article-body :deep(h1) {
-  font-size: 1.5rem;
-  line-height: 2rem;
-}
-
-.article-body :deep(h2) {
-  font-size: 1.25rem;
-  line-height: 1.75rem;
-}
-
-.article-body :deep(h3) {
-  font-size: 1.125rem;
-  line-height: 1.75rem;
 }
 
 .article-body :deep(p) {
@@ -326,61 +207,18 @@ onMounted(() => {
   color: #1d4ed8;
 }
 
-.ck-content :deep(p) {
-  margin: 0;
+.article-body :deep([style*='text-align: center']),
+.article-body :deep([style*='text-align:center']) {
+  text-align: center;
 }
 
-.ck-content :deep(a) {
-  color: #2563eb;
-  text-decoration: underline;
-  text-underline-offset: 2px;
+.article-body :deep([style*='text-align: right']),
+.article-body :deep([style*='text-align:right']) {
+  text-align: right;
 }
 
-.ck-content :deep(a:hover) {
-  color: #1d4ed8;
-}
-
-.article-body :deep(ul),
-.article-body :deep(ol) {
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-  padding-left: 1.5rem;
-}
-
-.article-body :deep(ul) {
-  list-style-type: disc;
-}
-
-.article-body :deep(ol) {
-  list-style-type: decimal;
-}
-
-.article-body :deep(li) {
-  margin-bottom: 0.25rem;
-  color: #374151;
-}
-
-.article-body :deep(blockquote) {
-  border-left: 4px solid #d1d5db;
-  padding-left: 1rem;
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
-  margin-top: 1.25rem;
-  margin-bottom: 1.25rem;
-  font-style: italic;
-  color: #4b5563;
-}
-
-.article-body :deep(img) {
-  border-radius: 0.5rem;
-  margin-top: 1.25rem;
-  margin-bottom: 1.25rem;
-  max-width: 100%;
-  height: auto;
-}
-
-.article-body-block + .article-body-block {
-  padding-top: 1.5rem;
-  border-top: 1px solid #f3f4f6;
+.article-body :deep([style*='text-align: justify']),
+.article-body :deep([style*='text-align:justify']) {
+  text-align: justify;
 }
 </style>
