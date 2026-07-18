@@ -1,0 +1,70 @@
+import {
+  ClassicEditor,
+  Essentials,
+  Paragraph,
+  Bold,
+  Italic,
+  Link,
+  List,
+  Heading,
+  BlockQuote,
+  Table,
+  TableToolbar,
+  Font,
+  Alignment,
+  PasteFromOffice,
+  GeneralHtmlSupport,
+} from 'ckeditor5';
+
+export const editor = ClassicEditor;
+
+export const editorConfig = {
+  licenseKey: 'GPL',
+  plugins: [
+    Essentials,
+    Paragraph,
+    Bold,
+    Italic,
+    Link,
+    List,
+    Heading,
+    BlockQuote,
+    Table,
+    TableToolbar,
+    Font,
+    Alignment,
+    PasteFromOffice,
+    GeneralHtmlSupport,
+  ],
+  toolbar: [
+    'heading',
+    '|',
+    'bold',
+    'italic',
+    'link',
+    'bulletedList',
+    'numberedList',
+    'blockQuote',
+    'insertTable',
+    '|',
+    'fontColor',
+    'fontBackgroundColor',
+    'alignment',
+    '|',
+    'undo',
+    'redo',
+  ],
+  heading: {
+    options: [
+      { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+      { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
+      { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' },
+    ],
+  },
+  alignment: {
+    options: ['left', 'center', 'right', 'justify'],
+  },
+  htmlSupport: {
+    allow: [{ name: /.*/, attributes: true, classes: true, styles: true }],
+  },
+};

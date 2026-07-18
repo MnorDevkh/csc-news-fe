@@ -12,6 +12,7 @@ import {
   ReloadOutlined,
 } from '@ant-design/icons-vue';
 import { NewsService } from '@/services/NewsService.js';
+import ArticleCommentsSection from './ArticleCommentsSection.vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -403,6 +404,8 @@ onUnmounted(() => {
                   </span>
                 </div>
               </div>
+
+              <ArticleCommentsSection v-if="article?.id" :article-id="article.id" />
 
               <!-- Back + mobile share -->
               <footer class="mt-12 pt-10 border-t border-gray-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">

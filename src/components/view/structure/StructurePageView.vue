@@ -1,8 +1,10 @@
-<script setup>
+﻿<script setup>
 import { ref, computed, watch, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { ArrowLeftOutlined, ExclamationCircleOutlined, ReloadOutlined } from '@ant-design/icons-vue';
 import StructureContentBlocks from '@/components/content/StructureContentBlocks.vue';
+import PageRenderer from '@/components/structure-builder/renderer/PageRenderer.vue';
+import { parseContentDocument, isBuilderDocument } from '@/components/structure-builder/document';
 import { StructurePageService } from '@/services/StructurePageService';
 
 const route = useRoute();
@@ -11,7 +13,7 @@ const content = ref(null);
 const isLoading = ref(true);
 const hasError = ref(false);
 
-function parseContentBlocks(raw) {
+function parseLegacyContentBlocks(raw) {
   if (!raw || !String(raw).trim()) return null;
   const s = String(raw).trim();
   if (!s.startsWith('[') || !s.endsWith(']')) return null;
@@ -27,12 +29,21 @@ function parseContentBlocks(raw) {
   }
 }
 
-const contentBlocks = computed(() => {
-  if (!content.value || content.value.content == null) return null;
-  return parseContentBlocks(content.value.content);
+const pageTitle = computed(() => content.value?.title || '');
+
+const builderSections = computed(() => {
+  if (!content.value?.content) return null;
+  if (isBuilderDocument(content.value.content)) {
+    return parseContentDocument(content.value.content).sections;
+  }
+  return null;
 });
 
-const pageTitle = computed(() => content.value?.title || '');
+const legacyContentBlocks = computed(() => {
+  if (!content.value || content.value.content == null) return null;
+  if (builderSections.value) return null;
+  return parseLegacyContentBlocks(content.value.content);
+});
 
 async function loadContent() {
   const slug = route.params.slug;
@@ -107,14 +118,15 @@ onMounted(() => {
       </div>
 
       <article v-else-if="content" class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-        <header class="relative aspect-video w-full overflow-hidden">
+        <header
+          v-if="content.thumbnail"
+          class="relative aspect-video w-full overflow-hidden"
+        >
           <img
-            v-if="content.thumbnail"
             :src="content.thumbnail"
             :alt="pageTitle"
             class="w-full h-full object-cover"
           />
-          <div v-else class="w-full h-full bg-gradient-to-br from-blue-600 to-indigo-700" />
           <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" aria-hidden="true" />
           <div class="absolute bottom-0 left-0 right-0 p-6 sm:p-8 text-white">
             <nav class="text-xs sm:text-sm text-white/80 mb-2">
@@ -131,6 +143,17 @@ onMounted(() => {
         </header>
 
         <div class="px-4 sm:px-10 py-6 sm:py-10">
+          <header v-if="!content.thumbnail" class="mb-8 sm:mb-10">
+            <nav class="text-xs sm:text-sm text-gray-500 mb-2">
+              <router-link :to="{ name: 'home' }" class="hover:underline">ទំព័រដើម</router-link>
+              <span class="mx-2">/</span>
+              <router-link :to="{ name: 'structureIndex' }" class="hover:underline">រចនាសម្ព័ន្ធ</router-link>
+            </nav>
+            <h1 class="text-2xl sm:text-4xl font-bold leading-tight tracking-tight text-gray-900 m-0">
+              {{ pageTitle || route.params.slug }}
+            </h1>
+          </header>
+
           <p
             v-if="content.excerpt"
             class="article-lead text-lg sm:text-xl text-gray-600 leading-relaxed mb-10 pl-4 border-l-4 border-blue-500"
@@ -139,9 +162,13 @@ onMounted(() => {
           </p>
 
           <div class="article-body-wrapper">
+            <PageRenderer
+              v-if="builderSections"
+              :sections="builderSections"
+            />
             <StructureContentBlocks
-              v-if="contentBlocks"
-              :blocks="contentBlocks"
+              v-else-if="legacyContentBlocks"
+              :blocks="legacyContentBlocks"
               :page-title="pageTitle"
             />
             <div
