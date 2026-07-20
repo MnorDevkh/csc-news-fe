@@ -139,6 +139,18 @@
             </button>
           </label>
 
+          <label v-if="thumbnailUrl" class="mt-3 block text-sm font-medium text-slate-700">
+            Thumbnail fit
+            <select
+              v-model="thumbnailFit"
+              class="mt-1 block w-full rounded-lg border border-slate-300 bg-white px-3 py-2"
+            >
+              <option value="cover">Fit container (crop)</option>
+              <option value="natural">Fit image size</option>
+              <option value="contain">Fit contain (scale)</option>
+            </select>
+          </label>
+
           <label class="mt-3 block text-sm font-medium text-slate-700">
             Excerpt
             <textarea
@@ -225,8 +237,16 @@
             class="mx-auto bg-white min-h-full"
             :class="previewDevice === 'mobile' ? 'max-w-[390px] shadow-sm' : ''"
           >
-            <div v-if="form.thumbnail" class="aspect-video w-full bg-gray-100 overflow-hidden">
-              <img :src="form.thumbnail" :alt="form.title || 'thumbnail'" class="w-full h-full object-cover" />
+            <div
+              v-if="form.thumbnail"
+              class="relative w-full overflow-hidden bg-gray-100"
+              :class="thumbnailFit !== 'natural' && 'aspect-video'"
+            >
+              <img
+                :src="form.thumbnail"
+                :alt="form.title || 'thumbnail'"
+                :class="thumbnailImgClass"
+              />
             </div>
             <div class="p-4 sm:p-6">
               <div class="text-xl sm:text-2xl font-bold text-gray-900 leading-tight mb-2">
@@ -268,6 +288,7 @@ import { createBlock, createLayout } from '@/components/structure-builder/blockC
 import {
   parseContentDocument,
   serializeContentDocument,
+  normalizeThumbnailFit,
 } from '@/components/structure-builder/document';
 import { StructurePageService } from '@/services/StructurePageService';
 
@@ -289,6 +310,7 @@ const message = ref('');
 const messageType = ref('info');
 const thumbnailModalOpen = ref(false);
 const thumbnailUrl = ref('');
+const thumbnailFit = ref('cover');
 const pickerOpen = ref(false);
 const addTarget = ref(null);
 const previewDevice = ref('desktop');
@@ -302,6 +324,13 @@ const form = reactive({
   excerpt: '',
   order_no: 0,
   status: 'active',
+});
+
+const thumbnailImgClass = computed(() => {
+  const fit = normalizeThumbnailFit(thumbnailFit.value);
+  if (fit === 'natural') return 'block h-auto w-auto max-w-full mx-auto';
+  if (fit === 'contain') return 'w-full h-full object-contain';
+  return 'w-full h-full object-cover';
 });
 
 function setMessage(text, type = 'info') {
@@ -357,6 +386,7 @@ function viewPage() {
 function captureSnapshot() {
   initialSnapshot.value = JSON.stringify({
     form: { ...form },
+    thumbnailFit: thumbnailFit.value,
     sections: sections.value,
   });
 }
@@ -364,6 +394,7 @@ function captureSnapshot() {
 async function loadPage() {
   if (!isEdit.value) {
     sections.value = [];
+    thumbnailFit.value = 'cover';
     captureSnapshot();
     return;
   }
@@ -379,6 +410,7 @@ async function loadPage() {
     thumbnailUrl.value = data.thumbnail || '';
     const doc = parseContentDocument(data.content || '');
     sections.value = doc.sections;
+    thumbnailFit.value = normalizeThumbnailFit(doc.thumbnailFit);
     if (doc.source === 'legacy-blocks' || doc.source === 'legacy-html') {
       setMessage('Loaded legacy content into the visual builder. Save to upgrade to the new format.');
     }
@@ -406,7 +438,9 @@ async function handleSubmit() {
       setMessage('Title is required.', 'error');
       return;
     }
-    const contentJson = serializeContentDocument(sections.value);
+    const contentJson = serializeContentDocument(sections.value, {
+      thumbnailFit: thumbnailFit.value,
+    });
     if (isEdit.value) {
       await StructurePageService.update(editSlug.value, {
         title: form.title,

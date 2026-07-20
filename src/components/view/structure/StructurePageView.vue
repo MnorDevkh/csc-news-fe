@@ -4,7 +4,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { ArrowLeftOutlined, ExclamationCircleOutlined, ReloadOutlined } from '@ant-design/icons-vue';
 import StructureContentBlocks from '@/components/content/StructureContentBlocks.vue';
 import PageRenderer from '@/components/structure-builder/renderer/PageRenderer.vue';
-import { parseContentDocument, isBuilderDocument } from '@/components/structure-builder/document';
+import { parseContentDocument, isBuilderDocument, normalizeThumbnailFit } from '@/components/structure-builder/document';
 import { StructurePageService } from '@/services/StructurePageService';
 
 const route = useRoute();
@@ -31,12 +31,31 @@ function parseLegacyContentBlocks(raw) {
 
 const pageTitle = computed(() => content.value?.title || '');
 
-const builderSections = computed(() => {
+const builderDocument = computed(() => {
   if (!content.value?.content) return null;
   if (isBuilderDocument(content.value.content)) {
-    return parseContentDocument(content.value.content).sections;
+    return parseContentDocument(content.value.content);
   }
   return null;
+});
+
+const builderSections = computed(() => builderDocument.value?.sections ?? null);
+
+const thumbnailFit = computed(() =>
+  normalizeThumbnailFit(builderDocument.value?.thumbnailFit)
+);
+
+const thumbnailHeroClass = computed(() => {
+  const fit = thumbnailFit.value;
+  if (fit === 'natural') return 'relative w-full overflow-hidden bg-slate-100';
+  return 'relative aspect-video w-full overflow-hidden bg-slate-100';
+});
+
+const thumbnailImgClass = computed(() => {
+  const fit = thumbnailFit.value;
+  if (fit === 'natural') return 'block h-auto w-auto max-w-full mx-auto';
+  if (fit === 'contain') return 'w-full h-full object-contain';
+  return 'w-full h-full object-cover';
 });
 
 const legacyContentBlocks = computed(() => {
@@ -120,12 +139,12 @@ onMounted(() => {
       <article v-else-if="content" class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
         <header
           v-if="content.thumbnail"
-          class="relative aspect-video w-full overflow-hidden"
+          :class="thumbnailHeroClass"
         >
           <img
             :src="content.thumbnail"
             :alt="pageTitle"
-            class="w-full h-full object-cover"
+            :class="thumbnailImgClass"
           />
           <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" aria-hidden="true" />
           <div class="absolute bottom-0 left-0 right-0 p-6 sm:p-8 text-white">

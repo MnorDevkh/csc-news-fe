@@ -1,10 +1,27 @@
 <script setup>
+import { computed } from 'vue';
 import { blockWrapperClass, blockInlineStyle } from '../utils/blockStyles';
 import { cn } from '../utils/cn';
 
-defineProps({
+const props = defineProps({
   data: { type: Object, default: () => ({}) },
 });
+
+const fit = computed(() => {
+  const v = props.data.objectFit;
+  if (v === 'contain' || v === 'natural') return v;
+  return 'cover';
+});
+
+const imageClass = computed(() =>
+  cn(
+    'mx-auto bg-slate-100',
+    props.data.rounded !== false && 'rounded-2xl',
+    fit.value === 'natural' && 'h-auto w-auto max-w-full',
+    fit.value === 'cover' && 'aspect-video w-full max-w-4xl object-cover',
+    fit.value === 'contain' && 'aspect-video w-full max-w-4xl object-contain'
+  )
+);
 </script>
 
 <template>
@@ -16,13 +33,7 @@ defineProps({
       v-if="data.src"
       :src="data.src"
       :alt="data.alt || data.caption || ''"
-      :class="cn(
-        'mx-auto w-full max-w-4xl object-cover',
-        data.rounded !== false && 'rounded-2xl',
-        data.objectFit === 'contain' && 'object-contain',
-        data.objectFit === 'fill' && 'object-fill',
-        'aspect-video bg-slate-100'
-      )"
+      :class="imageClass"
     />
     <figcaption
       v-if="data.caption"

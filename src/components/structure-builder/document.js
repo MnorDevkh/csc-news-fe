@@ -8,15 +8,23 @@
 
 export const SCHEMA_VERSION = 2;
 
+const THUMBNAIL_FIT_VALUES = new Set(['cover', 'contain', 'natural']);
+
 const LAYOUT_TYPES = new Set(['container', 'row', 'column']);
 
 function newId(prefix = 'block') {
   return `${prefix}-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
 }
 
+export function normalizeThumbnailFit(value) {
+  if (THUMBNAIL_FIT_VALUES.has(value)) return value;
+  return 'cover';
+}
+
 export function createEmptyDocument() {
   return {
     schemaVersion: SCHEMA_VERSION,
+    thumbnailFit: 'cover',
     sections: [],
   };
 }
@@ -99,7 +107,7 @@ function convertLegacyArray(arr) {
 
 /**
  * Parse stored content into a mutable v2 document for the editor/renderer.
- * @returns {{ schemaVersion: number, sections: Array, source: 'v2'|'legacy-blocks'|'legacy-html'|'empty' }}
+ * @returns {{ schemaVersion: number, thumbnailFit: string, sections: Array, source: 'v2'|'legacy-blocks'|'legacy-html'|'empty' }}
  */
 export function parseContentDocument(contentStr) {
   if (contentStr == null || !String(contentStr).trim()) {
@@ -114,6 +122,7 @@ export function parseContentDocument(contentStr) {
       if (isV2Document(obj)) {
         return {
           schemaVersion: SCHEMA_VERSION,
+          thumbnailFit: normalizeThumbnailFit(obj.thumbnailFit),
           sections: normalizeSections(obj.sections),
           source: 'v2',
         };
@@ -129,6 +138,7 @@ export function parseContentDocument(contentStr) {
       if (Array.isArray(arr)) {
         return {
           schemaVersion: SCHEMA_VERSION,
+          thumbnailFit: 'cover',
           sections: convertLegacyArray(arr),
           source: 'legacy-blocks',
         };
@@ -140,6 +150,7 @@ export function parseContentDocument(contentStr) {
 
   return {
     schemaVersion: SCHEMA_VERSION,
+    thumbnailFit: 'cover',
     sections: [
       {
         id: newId('rich-text'),
@@ -173,10 +184,13 @@ export function normalizeSections(sections) {
 
 /**
  * Serialize editor sections to the stored content string (v2 document).
+ * @param {Array} sections
+ * @param {{ thumbnailFit?: string }} [options]
  */
-export function serializeContentDocument(sections) {
+export function serializeContentDocument(sections, options = {}) {
   const doc = {
     schemaVersion: SCHEMA_VERSION,
+    thumbnailFit: normalizeThumbnailFit(options.thumbnailFit),
     sections: sanitizeSectionsForSave(sections || []),
   };
   return JSON.stringify(doc);

@@ -112,9 +112,9 @@ export const blockCatalog = [
         label: 'Image fit',
         type: 'select',
         options: [
-          { label: 'Cover', value: 'cover' },
-          { label: 'Contain', value: 'contain' },
-          { label: 'Fill', value: 'fill' },
+          { label: 'Fit container (crop)', value: 'cover' },
+          { label: 'Fit image size', value: 'natural' },
+          { label: 'Fit contain (scale)', value: 'contain' },
         ],
       },
       animationField,
@@ -132,6 +132,7 @@ export const blockCatalog = [
       html: '',
       image: '',
       imagePosition: 'left',
+      objectFit: 'cover',
       animation: 'slide-up',
     },
     fields: [
@@ -147,6 +148,18 @@ export const blockCatalog = [
         options: [
           { label: 'Left', value: 'left' },
           { label: 'Right', value: 'right' },
+          { label: 'Top', value: 'top' },
+          { label: 'Bottom', value: 'bottom' },
+        ],
+      },
+      {
+        key: 'objectFit',
+        label: 'Image fit',
+        type: 'select',
+        options: [
+          { label: 'Fit container (crop)', value: 'cover' },
+          { label: 'Fit image size', value: 'natural' },
+          { label: 'Fit contain (scale)', value: 'contain' },
         ],
       },
       { key: 'buttonText', label: 'Button text', type: 'text' },

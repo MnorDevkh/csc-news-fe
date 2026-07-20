@@ -8,7 +8,49 @@ const props = defineProps({
   data: { type: Object, default: () => ({}) },
 });
 
-const imageLeft = computed(() => (props.data.imagePosition ?? 'left') === 'left');
+const position = computed(() => {
+  const v = props.data.imagePosition;
+  if (v === 'right' || v === 'top' || v === 'bottom') return v;
+  return 'left';
+});
+
+const isStacked = computed(() => position.value === 'top' || position.value === 'bottom');
+
+const fit = computed(() => {
+  const v = props.data.objectFit;
+  if (v === 'contain' || v === 'natural') return v;
+  return 'cover';
+});
+
+const imageClass = computed(() =>
+  cn(
+    'rounded-2xl bg-slate-100',
+    fit.value === 'natural' && 'mx-auto h-auto w-auto max-w-full',
+    fit.value === 'cover' && 'aspect-[4/3] w-full object-cover',
+    fit.value === 'contain' && 'aspect-[4/3] w-full object-contain'
+  )
+);
+
+const imagePlaceholderClass = computed(() =>
+  cn(
+    'w-full rounded-2xl bg-slate-100',
+    fit.value === 'natural' && 'min-h-[12rem]',
+    fit.value !== 'natural' && 'aspect-[4/3]'
+  )
+);
+
+const layoutClass = computed(() => {
+  if (isStacked.value) {
+    return cn(
+      'mx-auto grid max-w-6xl items-start gap-8 grid-cols-1',
+      position.value === 'bottom' && '[&>*:first-child]:order-2'
+    );
+  }
+  return cn(
+    'mx-auto grid max-w-6xl items-center gap-8 lg:grid-cols-2',
+    position.value === 'right' && '[&>*:first-child]:lg:order-2'
+  );
+});
 
 function isExternal(link) {
   return /^https?:\/\//.test(link || '');
@@ -20,19 +62,14 @@ function isExternal(link) {
     :class="blockWrapperClass(data, 'px-4 py-12')"
     :style="blockInlineStyle(data)"
   >
-    <div
-      :class="cn(
-        'mx-auto grid max-w-6xl items-center gap-8 lg:grid-cols-2',
-        !imageLeft && '[&>*:first-child]:lg:order-2'
-      )"
-    >
+    <div :class="layoutClass">
       <img
         v-if="data.image"
         :src="data.image"
         :alt="data.imageAlt || data.title || ''"
-        class="aspect-[4/3] w-full rounded-2xl object-cover bg-slate-100"
+        :class="imageClass"
       />
-      <div v-else class="aspect-[4/3] w-full rounded-2xl bg-slate-100" />
+      <div v-else :class="imagePlaceholderClass" />
 
       <div>
         <h2
