@@ -176,6 +176,7 @@ const pageLoading = ref(false);
 const loadError = ref(null);
 const feedbackMsg = ref('');
 const feedbackType = ref('success');
+const resolvedIssueId = ref(null);
 
 const pdfInputRef = ref(null);
 const pdfUploading = ref(false);
@@ -190,6 +191,13 @@ const form = reactive({
   thumbnail_url: '',
   is_published: false,
 });
+
+const UUID_RE =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+function isUuid(value) {
+  return UUID_RE.test(String(value || ''));
+}
 
 function slugify(value) {
   return value
@@ -237,7 +245,11 @@ onMounted(async () => {
   pageLoading.value = isEditMode.value;
   try {
     if (isEditMode.value) {
-      const issue = await MessengerService.getIssueById(route.params.id);
+      const param = route.params.id;
+      const issue = isUuid(param)
+        ? await MessengerService.getAdminIssueById(param)
+        : await MessengerService.getAdminIssueBySlug(param);
+      resolvedIssueId.value = issue.id;
       Object.assign(form, {
         title: issue.title,
         slug: issue.slug,
@@ -274,7 +286,7 @@ async function handleSubmit() {
     }
 
     if (isEditMode.value) {
-      await MessengerService.updateIssue(route.params.id, payload);
+      await MessengerService.updateIssue(resolvedIssueId.value || route.params.id, payload);
       feedbackType.value = 'success';
       feedbackMsg.value = 'Issue updated successfully!';
     } else {

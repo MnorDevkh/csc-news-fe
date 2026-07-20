@@ -32,6 +32,31 @@ export const MessengerService = {
     }
   },
 
+  async getAdminIssueById(id, params = {}) {
+    try {
+      const response = await BaseAPI.authClient.get(`/messenger-issues/admin/${id}`, {
+        params,
+      });
+      return response.data;
+    } catch (error) {
+      console.error(`Error fetching admin messenger issue ${id}:`, error);
+      throw error;
+    }
+  },
+
+  async getAdminIssueBySlug(slug, params = {}) {
+    try {
+      const response = await BaseAPI.authClient.get(
+        `/messenger-issues/admin/slug/${encodeURIComponent(slug)}`,
+        { params }
+      );
+      return response.data;
+    } catch (error) {
+      console.error(`Error fetching admin messenger issue by slug ${slug}:`, error);
+      throw error;
+    }
+  },
+
   async createIssue(data) {
     try {
       const response = await BaseAPI.authClient.post('/messenger-issues/', data);
