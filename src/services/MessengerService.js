@@ -12,9 +12,10 @@ export const MessengerService = {
     }
   },
 
-  async getIssueById(id) {
+  async getIssueById(id, params = {}) {
     try {
-      const response = await BaseAPI.publicClient.get(`/messenger-issues/${id}`);
+      const client = params.public_only === false ? BaseAPI.authClient : BaseAPI.publicClient;
+      const response = await client.get(`/messenger-issues/${id}`, { params });
       return response.data;
     } catch (error) {
       console.error(`Error fetching messenger issue ${id}:`, error);
@@ -22,37 +23,16 @@ export const MessengerService = {
     }
   },
 
-  async getIssueBySlug(slug) {
+  async getIssueBySlug(slug, params = {}) {
     try {
-      const response = await BaseAPI.publicClient.get(`/messenger-issues/slug/${encodeURIComponent(slug)}`);
-      return response.data;
-    } catch (error) {
-      console.error(`Error fetching messenger issue by slug ${slug}:`, error);
-      throw error;
-    }
-  },
-
-  async getAdminIssueById(id, params = {}) {
-    try {
-      const response = await BaseAPI.authClient.get(`/messenger-issues/admin/${id}`, {
-        params,
-      });
-      return response.data;
-    } catch (error) {
-      console.error(`Error fetching admin messenger issue ${id}:`, error);
-      throw error;
-    }
-  },
-
-  async getAdminIssueBySlug(slug, params = {}) {
-    try {
-      const response = await BaseAPI.authClient.get(
-        `/messenger-issues/admin/slug/${encodeURIComponent(slug)}`,
+      const client = params.public_only === false ? BaseAPI.authClient : BaseAPI.publicClient;
+      const response = await client.get(
+        `/messenger-issues/slug/${encodeURIComponent(slug)}`,
         { params }
       );
       return response.data;
     } catch (error) {
-      console.error(`Error fetching admin messenger issue by slug ${slug}:`, error);
+      console.error(`Error fetching messenger issue by slug ${slug}:`, error);
       throw error;
     }
   },

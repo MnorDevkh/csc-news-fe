@@ -247,8 +247,8 @@ onMounted(async () => {
     if (isEditMode.value) {
       const param = route.params.id;
       const issue = isUuid(param)
-        ? await MessengerService.getAdminIssueById(param)
-        : await MessengerService.getAdminIssueBySlug(param);
+        ? await MessengerService.getIssueById(param, { public_only: false })
+        : await MessengerService.getIssueBySlug(param, { public_only: false });
       resolvedIssueId.value = issue.id;
       Object.assign(form, {
         title: issue.title,
