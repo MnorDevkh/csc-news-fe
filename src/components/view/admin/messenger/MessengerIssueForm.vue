@@ -97,16 +97,42 @@
         />
       </div>
 
-      <!-- Thumbnail URL -->
+      <!-- Thumbnail -->
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-2">Thumbnail URL (optional)</label>
-        <input
-          v-model="form.thumbnail_url"
-          type="url"
-          class="w-full px-4 py-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none"
-          placeholder="https://example.com/cover.jpg"
-        />
-        <p class="mt-1 text-xs text-gray-500">You can reuse an image from the gallery or an external URL.</p>
+        <label class="block text-sm font-medium text-gray-700 mb-2">Thumbnail (optional)</label>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <div class="w-full sm:w-64">
+            <div class="relative w-full h-36 rounded-md border border-gray-200 bg-gray-50 overflow-hidden">
+              <img
+                v-if="form.thumbnail_url"
+                :src="form.thumbnail_url"
+                alt="Thumbnail"
+                class="w-full h-full object-cover"
+              />
+              <div v-else class="w-full h-full flex items-center justify-center text-gray-400 text-sm">
+                No image selected
+              </div>
+            </div>
+          </div>
+          <div class="flex-1 flex items-start gap-3">
+            <button
+              type="button"
+              class="inline-flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50 text-sm font-medium"
+              @click="thumbnailModalOpen = true"
+            >
+              <PictureOutlined />
+              Select image
+            </button>
+            <button
+              v-if="form.thumbnail_url"
+              type="button"
+              class="inline-flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50 text-sm font-medium"
+              @click="form.thumbnail_url = ''"
+            >
+              Clear
+            </button>
+          </div>
+        </div>
       </div>
 
       <!-- PDF upload -->
@@ -158,13 +184,22 @@
         </button>
       </div>
     </form>
+
+    <ImageSelectModal
+      v-model:open="thumbnailModalOpen"
+      mode="single"
+      title="Select thumbnail image"
+      confirm-label="Select"
+      @confirm="onThumbnailSelected"
+    />
   </div>
 </template>
 
 <script setup>
 import { ref, reactive, computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { PlusOutlined } from '@ant-design/icons-vue';
+import { PlusOutlined, PictureOutlined } from '@ant-design/icons-vue';
+import ImageSelectModal from '@/components/ImageSelectModal.vue';
 import { MessengerService } from '@/services/MessengerService';
 
 const route = useRoute();
@@ -177,6 +212,7 @@ const loadError = ref(null);
 const feedbackMsg = ref('');
 const feedbackType = ref('success');
 const resolvedIssueId = ref(null);
+const thumbnailModalOpen = ref(false);
 
 const pdfInputRef = ref(null);
 const pdfUploading = ref(false);
@@ -216,6 +252,14 @@ function autoGenerateSlug() {
 
 function triggerPdfInput() {
   pdfInputRef.value?.click();
+}
+
+function onThumbnailSelected(payload) {
+  const item = Array.isArray(payload) ? payload[0] : payload;
+  const url = item?.url || item?.public_url || item?.thumbnail || item;
+  if (typeof url === 'string') {
+    form.thumbnail_url = url;
+  }
 }
 
 async function handlePdfSelect(event) {

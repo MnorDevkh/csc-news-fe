@@ -25,7 +25,7 @@
                         <input
                             v-model="searchQuery"
                             type="search"
-                            placeholder="ស្វែងរកអត្ថបទ..."
+                            :placeholder="t('menu.searchPlaceholder')"
                             class="flex-1 min-w-0 py-2 bg-transparent border-0 text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-0 text-sm"
                             @keydown.enter="performSearch"
                         />
@@ -34,13 +34,28 @@
                             class="px-5 py-2 rounded-md bg-[#1a365d] text-white text-sm font-medium hover:bg-[#2a4a7f] shadow-sm shadow-[#1a365d]/15 shrink-0 transition-all"
                             @click="performSearch"
                         >
-                            Search
+                            {{ t('menu.search') }}
                         </button>
+                    </div>
+                    <!-- Language switcher -->
+                    <div class="flex items-center rounded-full ring-1 ring-gray-200 bg-gray-50 p-0.5 shrink-0">
+                        <button
+                            type="button"
+                            class="px-2.5 py-1.5 rounded-full text-xs font-semibold transition-all"
+                            :class="lang === 'km' ? 'bg-[#1a365d] text-white shadow-sm' : 'text-gray-500 hover:text-[#1a365d]'"
+                            @click="setLang('km')"
+                        >ខ្មែរ</button>
+                        <button
+                            type="button"
+                            class="px-2.5 py-1.5 rounded-full text-xs font-semibold transition-all"
+                            :class="lang === 'en' ? 'bg-[#1a365d] text-white shadow-sm' : 'text-gray-500 hover:text-[#1a365d]'"
+                            @click="setLang('en')"
+                        >EN</button>
                     </div>
                     <router-link v-if="isAuthenticated" :to="{ name: 'dashboard' }"
                         class="flex items-center gap-2 px-4 py-2 rounded-md bg-[#d4a853] text-white text-sm font-medium hover:bg-[#c49843] shadow-sm shadow-[#d4a853]/20 shrink-0 transition-all">
                         <DashboardIcon class="w-5 h-5" />
-                        <span>Dashboard</span>
+                        <span>{{ t('menu.dashboard') }}</span>
                     </router-link>
                 </div>
 
@@ -182,12 +197,12 @@
 
                 <div class="flex-1 p-6 flex flex-col gap-8">
                     <div>
-                        <h3 class="text-sm font-bold text-muted uppercase tracking-wider mb-2">Search</h3>
+                        <h3 class="text-sm font-bold text-muted uppercase tracking-wider mb-2">{{ t('menu.search') }}</h3>
                         <div class="flex flex-1 min-w-0 items-center rounded-full bg-gray-50 pl-4 pr-1 py-1 ring-1 ring-gray-200 focus-within:ring-2 focus-within:ring-[#1a365d]/20 transition-all">
                             <input
                                 v-model="searchQuery"
                                 type="search"
-                                placeholder="Search news..."
+                                :placeholder="t('menu.searchPlaceholder')"
                                 class="flex-1 min-w-0 py-2 bg-transparent border-0 focus:outline-none focus:ring-0"
                                 @keydown.enter="() => { performSearch(); mobileMenuOpen = false; }"
                             />
@@ -196,8 +211,24 @@
                                 class="px-4 py-2 rounded-md bg-[#1a365d] text-white text-sm font-medium hover:bg-[#2a4a7f] shadow-sm transition-all"
                                 @click="() => { performSearch(); mobileMenuOpen = false; }"
                             >
-                                Search
+                                {{ t('menu.search') }}
                             </button>
+                        </div>
+                        <div class="flex items-center gap-2 mt-3">
+                            <div class="flex items-center rounded-full ring-1 ring-gray-200 bg-gray-50 p-0.5">
+                                <button
+                                    type="button"
+                                    class="px-3 py-1.5 rounded-full text-xs font-semibold transition-all"
+                                    :class="lang === 'km' ? 'bg-[#1a365d] text-white shadow-sm' : 'text-gray-500'"
+                                    @click="setLang('km')"
+                                >ខ្មែរ</button>
+                                <button
+                                    type="button"
+                                    class="px-3 py-1.5 rounded-full text-xs font-semibold transition-all"
+                                    :class="lang === 'en' ? 'bg-[#1a365d] text-white shadow-sm' : 'text-gray-500'"
+                                    @click="setLang('en')"
+                                >EN</button>
+                            </div>
                         </div>
                     </div>
 
@@ -300,13 +331,13 @@
                             @click="mobileMenuOpen = false"
                         >
                             <DashboardIcon class="w-5 h-5" />
-                            <span>Dashboard</span>
+                            <span>{{ t('menu.dashboard') }}</span>
                         </router-link>
                     </div>
 
                     <div class="mt-auto pt-8 border-t border-stone-200/70">
-                        <a href="#" class="block text-center text-muted text-sm mb-2">Privacy Policy</a>
-                        <div class="text-center text-stone-400 text-xs">© 2026 CSC News. All rights reserved.</div>
+                        <a href="#" class="block text-center text-muted text-sm mb-2">{{ t('menu.privacy') }}</a>
+                        <div class="text-center text-stone-400 text-xs">{{ t('menu.copyright') }}</div>
                     </div>
                 </div>
             </div>
@@ -315,9 +346,11 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 import { useAuth } from '@/composables/useAuth';
+import { useSiteLanguage } from '@/composables/useSiteLanguage';
 import { CategoryService } from '@/services/CategoryService';
 import { StructurePageService } from '@/services/StructurePageService';
 import MenuIcon from './icons/MenuIcon.vue';
@@ -338,11 +371,15 @@ interface MenuItem {
     children?: MenuChild[];
     /** Which dropdown state to use when item has children */
     dropdown?: 'news' | 'structure';
+    /** i18n key for static labels */
+    labelKey?: string;
 }
 
 const searchQuery = ref('');
 const router = useRouter();
 const route = useRoute();
+const { t } = useI18n();
+const { lang, setLang } = useSiteLanguage();
 const { isAuthenticated, initAuth } = useAuth();
 
 const mobileMenuOpen = ref(false);
@@ -358,16 +395,23 @@ const STRUCTURE_MENU_FALLBACK: MenuChild[] = [
     { label: 'គណៈកម្មការអន្តរភូមិភាគ', path: '/structure/inter-diocesan-committee' },
 ];
 
-const menuItems = ref<MenuItem[]>([
-    { label: 'ទំព័រដើម', path: '/' },
-    { label: 'ព្រះគម្ពីរ', path: '/read' },
-    { label: 'ពត៌មាន', path: '/news', children: [], dropdown: 'news' },
-    { label: 'រចនាសម្ព័ន្ធព្រះសហគមន៍', path: '/structure', children: [], dropdown: 'structure' },
-    { label: 'The Messenger', path: '/the-messenger' },
-    { label: 'ប្រវត្តិព្រះសហគមន៍', path: '/church-history' },
-    { label: 'Download App', path: '/install-app' },
-    { label: 'Links', href: 'https://antdv.com' },
+const rawMenuItems = ref<MenuItem[]>([
+    { labelKey: 'menu.home', label: '', path: '/' },
+    { labelKey: 'menu.bible', label: '', path: '/read' },
+    { labelKey: 'menu.news', label: '', path: '/news', children: [], dropdown: 'news' },
+    { labelKey: 'menu.structure', label: '', path: '/structure', children: [], dropdown: 'structure' },
+    { labelKey: 'menu.messenger', label: '', path: '/the-messenger' },
+    { labelKey: 'menu.churchHistory', label: '', path: '/church-history' },
+    { labelKey: 'menu.downloadApp', label: '', path: '/install-app' },
+    { labelKey: 'menu.links', label: '', href: 'https://antdv.com' },
 ]);
+
+const menuItems = computed(() =>
+    rawMenuItems.value.map((item) => ({
+        ...item,
+        label: item.labelKey ? t(item.labelKey) : item.label,
+    }))
+);
 
 const isNewsActive = computed(() => {
     const path = route.path;
@@ -428,20 +472,22 @@ function buildStructureMenuChildren(pages: { slug: string; title?: string | null
     }));
 }
 
-onMounted(async () => {
-    initAuth();
+async function loadCategoryMenu() {
     try {
-        const categories = await CategoryService.getAllCategories();
-        const newsItem = menuItems.value.find(item => item.path === '/news');
+        const categories = await CategoryService.getAllCategories({ lang: lang.value });
+        const newsItem = rawMenuItems.value.find(item => item.path === '/news');
         if (newsItem) {
             newsItem.children = buildCategoryMenuChildren(categories);
         }
     } catch (error) {
         console.error('Failed to load category menu:', error);
     }
+}
+
+async function loadStructureMenu() {
     try {
         const pages = await StructurePageService.listPublic();
-        const structureItem = menuItems.value.find(item => item.dropdown === 'structure');
+        const structureItem = rawMenuItems.value.find(item => item.dropdown === 'structure');
         if (structureItem && Array.isArray(pages) && pages.length) {
             structureItem.children = buildStructureMenuChildren(pages);
         } else if (structureItem) {
@@ -449,11 +495,21 @@ onMounted(async () => {
         }
     } catch (error) {
         console.error('Failed to load structure menu:', error);
-        const structureItem = menuItems.value.find(item => item.dropdown === 'structure');
+        const structureItem = rawMenuItems.value.find(item => item.dropdown === 'structure');
         if (structureItem) {
             structureItem.children = [...STRUCTURE_MENU_FALLBACK];
         }
     }
+}
+
+onMounted(async () => {
+    initAuth();
+    await loadCategoryMenu();
+    await loadStructureMenu();
+});
+
+watch(lang, () => {
+    loadCategoryMenu();
 });
 </script>
 

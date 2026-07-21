@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref, onBeforeUnmount, watch } from 'vue';
+import { nextTick, onMounted, onBeforeUnmount, ref, watch } from 'vue';
 import { PageFlip } from 'page-flip';
 
 const props = defineProps({
@@ -28,6 +28,10 @@ function destroyFlip() {
   }
 }
 
+function getPageElements() {
+  return bookContainer.value?.querySelectorAll('.page') ?? [];
+}
+
 function initFlip() {
   if (!bookContainer.value) return;
   destroyFlip();
@@ -45,18 +49,32 @@ function initFlip() {
     mobileScrollSupport: true,
   });
 
-  pageFlip.loadFromHTML(bookContainer.value.querySelectorAll('.page'));
+  pageFlip.loadFromHTML(getPageElements());
+}
+
+async function syncFlipPages() {
+  await nextTick();
+  if (!bookContainer.value) return;
+
+  const items = getPageElements();
+  if (!items.length) return;
+
+  if (pageFlip) {
+    // Preserve current page while new PDF pages stream in.
+    pageFlip.updateFromHtml(items);
+  } else {
+    initFlip();
+  }
 }
 
 onMounted(() => {
-  initFlip();
+  syncFlipPages();
 });
 
 watch(
   () => props.pages,
   () => {
-    // Rebuild when page images change (e.g. after PDF renders)
-    initFlip();
+    syncFlipPages();
   },
   { deep: true }
 );
@@ -76,7 +94,7 @@ onBeforeUnmount(() => {
         </div>
       </div>
 
-      <div v-for="(page, index) in props.pages" :key="index" class="page">
+      <div v-for="(page, index) in props.pages" :key="page.url || index" class="page">
         <div class="page-content">
           <div v-if="page.type === 'image'" class="image-container">
             <img :src="page.url" :alt="'Page ' + (index + 1)" />
@@ -153,4 +171,3 @@ onBeforeUnmount(() => {
   user-select: none;
 }
 </style>
-

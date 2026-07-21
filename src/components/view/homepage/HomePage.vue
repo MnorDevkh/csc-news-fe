@@ -1,8 +1,11 @@
 <script setup>
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, computed, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { RouterLink } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 import { NewsService } from '../../../services/NewsService';
+import { useSiteLanguage } from '@/composables/useSiteLanguage';
+import { localizedArticleRoute } from '@/utils/articleRoutes';
 import { ReadOutlined, PictureOutlined, TeamOutlined, FireOutlined, ArrowRightOutlined } from '@ant-design/icons-vue';
 import Saint from './Saint.vue';
 import GalleryGridViewPage from './GalleryGridViewPage.vue';
@@ -18,26 +21,34 @@ const hasError = ref(false);
 const currentFeaturedIndex = ref(0);
 
 const router = useRouter();
+const { t } = useI18n();
+const { lang } = useSiteLanguage();
 
-onMounted(async () => {
+async function loadHomepageData() {
+  isLoading.value = true;
+  hasError.value = false;
   try {
     const [articles, headlines, categories] = await Promise.all([
-      NewsService.getFeaturedArticles(),
-      NewsService.getLatestHeadlines(),
-      NewsService.getNewsCategories()
+      NewsService.getFeaturedArticles(lang.value),
+      NewsService.getLatestHeadlines(lang.value),
+      NewsService.getNewsCategories(lang.value)
     ]);
     featuredArticles.value = articles;
     latestHeadlines.value = (Array.isArray(headlines) ? headlines : []).filter(
       (h) => h && h.id !== null && h.id !== undefined
     );
     newsCategories.value = categories;
+    currentFeaturedIndex.value = 0;
   } catch (error) {
     console.error("Failed to fetch homepage data:", error);
     hasError.value = true;
   } finally {
     isLoading.value = false;
   }
-});
+}
+
+onMounted(loadHomepageData);
+watch(lang, loadHomepageData);
 
 const activeCategories = computed(() =>
   (newsCategories.value || []).filter((c) => c.status === 'active')
@@ -121,7 +132,7 @@ const formatDate = (dateString) => {
         <a-carousel autoplay class="home-hero-carousel rounded-2xl overflow-hidden shadow-xl ring-1 ring-gray-200/50">
           <div v-for="article in latestHeadlines.slice(0, 5)" :key="article.id"
             class="relative h-[420px] sm:h-[500px] md:h-[600px] w-full cursor-pointer"
-            @click="router.push({ name: 'articleDetails', params: { id: article.id } })">
+            @click="router.push(localizedArticleRoute(article, lang))">
             <img :src="article.thumbnail" :alt="article.title" class="h-full w-full object-cover" />
             <div
               class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/35 to-transparent flex flex-col justify-end p-4 sm:p-8 md:p-12">
@@ -214,7 +225,7 @@ const formatDate = (dateString) => {
           <div class="flex items-center justify-between mb-4 sm:mb-6 px-1 sm:px-2 gap-3">
             <div class="flex items-center gap-3 min-w-0">
               <span class="h-8 w-1.5 shrink-0 rounded-full bg-gradient-to-b from-[#1a365d] to-[#d4a853]" aria-hidden="true" />
-              <h2 class="text-2xl font-bold text-stone-800 tracking-tight m-0">ព័ត៌មានថ្មីៗបំផុត</h2>
+              <h2 class="text-2xl font-bold text-stone-800 tracking-tight m-0">{{ t('home.latestNews') }}</h2>
             </div>
             <RouterLink to="/news" class="text-[#1a365d] hover:text-[#d4a853] font-semibold flex items-center text-sm shrink-0 transition-colors">
               មើលទាំងអស់
@@ -228,7 +239,7 @@ const formatDate = (dateString) => {
             </div>
             <ul v-else class="divide-y divide-gray-50">
               <li v-for="headline in latestHeadlines" :key="headline.id" class="group">
-                <RouterLink :to="{ name: 'articleDetails', params: { id: headline.id } }"
+                <RouterLink :to="localizedArticleRoute(headline, lang)"
                   class="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 hover:bg-[#1a365d]/[0.02] duration-200 ease-out rounded-md">
                   <div class="w-28 h-[76px] flex-shrink-0 rounded-md overflow-hidden bg-gray-100 ring-1 ring-gray-100">
                     <img v-if="headline.thumbnail" :src="headline.thumbnail" :alt="headline.title"

@@ -189,6 +189,13 @@ const router = createRouter({
       props: true, // Allows passing route params as props
     },
     {
+      // Localized article URLs, e.g. /en/articles/how-to-learn-spring-boot
+      path: "/:lang([a-z]{2})/articles/:slug",
+      name: "localizedArticle",
+      component: ArticleDetailsPage,
+      props: true,
+    },
+    {
       path: "/church-history",
       name: "churchHistory",
       component: () => import("@/components/view/ChurchHistoryPage.vue"),

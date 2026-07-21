@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from 'vue';
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import {
   ShareAltOutlined,
@@ -12,17 +12,50 @@ import {
   ReloadOutlined,
 } from '@ant-design/icons-vue';
 import { NewsService } from '@/services/NewsService.js';
+import { useSiteLanguage } from '@/composables/useSiteLanguage';
+import { localizedArticleRoute } from '@/utils/articleRoutes';
 import ArticleCommentsSection from './ArticleCommentsSection.vue';
+
+const LANGUAGE_LABELS = {
+  en: 'English',
+  km: 'ខ្មែរ',
+};
 
 const route = useRoute();
 const router = useRouter();
+const { lang: siteLang, setLang } = useSiteLanguage();
+
 const article = ref(null);
+const groupTranslations = ref([]);
 const isLoading = ref(true);
 const hasError = ref(false);
+const notFound = ref(false);
 const shareCopied = ref(false);
 const readProgress = ref(0);
 const recommended = ref([]);
 const isLoadingRecommended = ref(false);
+/** Skip lang-watch after syncing site lang from a loaded article (matches category pages). */
+let suppressLangNav = false;
+
+let seoNodes = [];
+
+const isLocalizedRoute = computed(() => route.name === 'localizedArticle');
+
+const otherTranslations = computed(() => {
+  const list = groupTranslations.value?.length
+    ? groupTranslations.value
+    : (article.value?.translations || []);
+  if (!list.length) return [];
+  const currentLang = article.value?.lang || route.params.lang || 'km';
+  const currentId = article.value?.id;
+  return list.filter(
+    (t) => t.lang !== currentLang && t.slug && String(t.id) !== String(currentId)
+  );
+});
+
+function languageLabel(code) {
+  return LANGUAGE_LABELS[code] || code?.toUpperCase?.() || code;
+}
 
 const formatDate = (dateStr) => {
   if (!dateStr) return '';
@@ -141,26 +174,162 @@ function onLightboxKey(e) {
   if (e.key === 'ArrowRight') lightboxNext();
 }
 
+function syncTranslations(data) {
+  const siblings = Array.isArray(data?.translations) ? data.translations : [];
+  // Include current row so language switch can resolve any pair consistently.
+  const self = data?.id
+    ? [{
+        id: data.id,
+        lang: data.lang || 'km',
+        slug: data.slug,
+        title: data.title,
+        effective_status: data.effective_status || data.status,
+      }]
+    : [];
+  const byLang = new Map();
+  for (const row of [...self, ...siblings]) {
+    if (row?.lang) byLang.set(row.lang, row);
+  }
+  groupTranslations.value = Array.from(byLang.values());
+}
+
 async function loadArticle() {
   isLoading.value = true;
   hasError.value = false;
+  notFound.value = false;
   article.value = null;
+  groupTranslations.value = [];
   try {
-    const data = await NewsService.getArticleById(route.params.id);
+    let data;
+    if (isLocalizedRoute.value) {
+      data = await NewsService.getArticleBySlug(route.params.lang, route.params.slug);
+      const nextLang = data.lang || route.params.lang;
+      if (nextLang && nextLang !== siteLang.value) {
+        suppressLangNav = true;
+        setLang(nextLang);
+      }
+    } else {
+      data = await NewsService.getArticleById(route.params.id);
+      if (data?.slug && data?.lang) {
+        await router.replace(
+          localizedArticleRoute(data)
+        );
+        return;
+      }
+    }
     article.value = data;
+    syncTranslations(data);
+    applySeo(data);
   } catch (error) {
     console.error('Failed to load article:', error);
-    hasError.value = true;
+    article.value = null;
+    groupTranslations.value = [];
+    if (error?.response?.status === 404) {
+      notFound.value = true;
+    } else {
+      hasError.value = true;
+    }
+    clearSeo();
   } finally {
     isLoading.value = false;
+  }
+}
+
+function clearSeo() {
+  seoNodes.forEach((node) => node.remove());
+  seoNodes = [];
+}
+
+function applySeo(data) {
+  clearSeo();
+  if (!data || typeof document === 'undefined') return;
+
+  const title = data.meta_title || data.title || 'Article';
+  document.title = title;
+
+  const head = document.head;
+  const desc = data.meta_description || data.excerpt || '';
+  if (desc) {
+    let meta = document.querySelector('meta[name="description"]');
+    if (!meta) {
+      meta = document.createElement('meta');
+      meta.setAttribute('name', 'description');
+      head.appendChild(meta);
+      seoNodes.push(meta);
+    }
+    meta.setAttribute('content', desc);
+  }
+
+  const origin = window.location.origin;
+  const canonicalHref = data.slug && data.lang
+    ? `${origin}/${data.lang}/articles/${encodeURIComponent(data.slug)}`
+    : window.location.href;
+
+  const canonical = document.createElement('link');
+  canonical.rel = 'canonical';
+  canonical.href = canonicalHref;
+  head.appendChild(canonical);
+  seoNodes.push(canonical);
+
+  const allLinks = [
+    { lang: data.lang, slug: data.slug },
+    ...(data.translations || []),
+  ].filter((t) => t.slug);
+
+  for (const t of allLinks) {
+    const link = document.createElement('link');
+    link.rel = 'alternate';
+    link.hreflang = t.lang;
+    link.href = `${origin}/${t.lang}/articles/${encodeURIComponent(t.slug)}`;
+    head.appendChild(link);
+    seoNodes.push(link);
+  }
+}
+
+function switchLanguage(translation) {
+  if (!translation?.slug) return;
+  suppressLangNav = true;
+  setLang(translation.lang);
+  router.push({
+    name: 'localizedArticle',
+    params: { lang: translation.lang, slug: translation.slug },
+  });
+}
+
+/**
+ * Header language switcher: go to the paired article URL, or home if none.
+ * Example: /km/articles/khmer-slug + EN → /en/articles/english-slug
+ */
+function navigateForLanguage(newLang) {
+  if (route.name !== 'localizedArticle' && route.name !== 'articleDetails') return;
+  if (suppressLangNav) {
+    suppressLangNav = false;
+    return;
+  }
+  if (!article.value || isLoading.value) return;
+
+  const currentLang = article.value.lang || 'km';
+  if (newLang === currentLang) return;
+
+  const sibling = (groupTranslations.value || []).find(
+    (tr) => tr.lang === newLang && tr.slug && String(tr.id) !== String(article.value.id)
+  );
+
+  if (sibling?.slug) {
+    router.push({
+      name: 'localizedArticle',
+      params: { lang: sibling.lang, slug: sibling.slug },
+    });
+  } else {
+    router.push({ name: 'home' });
   }
 }
 
 async function loadRecommended() {
   isLoadingRecommended.value = true;
   try {
-    const items = await NewsService.getFeaturedArticles();
-    const currentId = String(route.params.id);
+    const items = await NewsService.getFeaturedArticles(article.value?.lang || siteLang.value);
+    const currentId = String(article.value?.id || route.params.id || '');
     recommended.value = (items || [])
       .filter((x) => String(x?.id) !== currentId)
       .slice(0, 5);
@@ -202,16 +371,30 @@ async function handleShare() {
 }
 
 onMounted(() => {
-  loadArticle();
-  loadRecommended();
   window.addEventListener('scroll', updateReadProgress, { passive: true });
   window.addEventListener('keydown', onLightboxKey);
+});
+
+watch(
+  () => [route.name, route.params.id, route.params.lang, route.params.slug],
+  () => {
+    if (route.name === 'localizedArticle' || route.name === 'articleDetails') {
+      loadArticle();
+      loadRecommended();
+    }
+  },
+  { immediate: true }
+);
+
+watch(siteLang, (newLang) => {
+  navigateForLanguage(newLang);
 });
 
 onUnmounted(() => {
   window.removeEventListener('scroll', updateReadProgress);
   window.removeEventListener('keydown', onLightboxKey);
   document.body.style.overflow = '';
+  clearSeo();
 });
 </script>
 
@@ -251,6 +434,15 @@ onUnmounted(() => {
       </div>
 
       <!-- Error State -->
+      <div v-else-if="notFound" class="py-12 sm:py-16">
+        <div class="bg-white rounded-2xl shadow-sm ring-1 ring-gray-100 p-6 sm:p-10 md:p-12 text-center max-w-3xl mx-auto">
+          <p class="text-gray-700 text-lg font-medium mb-2">404 — Article not found</p>
+          <p class="text-gray-500 text-sm mb-6">This article is not available in this language.</p>
+          <router-link to="/" class="text-[#1a365d] font-medium hover:underline">Back to home</router-link>
+        </div>
+      </div>
+
+      <!-- Error State -->
       <div v-else-if="hasError" class="py-12 sm:py-16">
         <div class="bg-white rounded-2xl shadow-sm ring-1 ring-gray-100 p-6 sm:p-10 md:p-12 text-center max-w-3xl mx-auto">
           <ExclamationCircleOutlined class="text-5xl text-gray-300 mb-4 block mx-auto" aria-hidden="true" />
@@ -284,6 +476,22 @@ onUnmounted(() => {
               <h1 class="text-xl sm:text-3xl font-extrabold tracking-tight text-gray-900 leading-tight mb-8">
                 {{ article.title }}
               </h1>
+
+              <div
+                v-if="otherTranslations.length"
+                class="flex flex-wrap items-center justify-center gap-2 mb-6"
+              >
+                <span class="text-xs text-gray-500 uppercase tracking-wider">Read in:</span>
+                <button
+                  v-for="t in otherTranslations"
+                  :key="t.lang"
+                  type="button"
+                  class="px-3 py-1 rounded-full text-sm font-medium bg-[#1a365d]/10 text-[#1a365d] hover:bg-[#1a365d]/15 transition"
+                  @click="switchLanguage(t)"
+                >
+                  {{ languageLabel(t.lang) }}
+                </button>
+              </div>
 
               <div
                 class="flex flex-col md:flex-row items-center justify-center gap-y-3 md:gap-y-0 md:gap-x-6 text-gray-500 border-t border-b border-gray-100 py-5">
@@ -441,7 +649,7 @@ onUnmounted(() => {
 
                   <div v-else-if="recommended.length" class="space-y-6">
                     <RouterLink v-for="rec in recommended" :key="rec.id" class="group block"
-                      :to="{ name: 'articleDetails', params: { id: rec.id } }">
+                      :to="localizedArticleRoute(rec, article?.lang || siteLang)">
                       <span class="text-[11px] text-gray-400 uppercase block mb-1 tracking-widest">
                         <span v-if="rec.category?.name">{{ rec.category.name }}</span>
                         <span v-else-if="rec.categories?.length">{{ rec.categories[0]?.name }}</span>

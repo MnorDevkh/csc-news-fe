@@ -28,6 +28,16 @@ export const CategoryService = {
         }
     },
 
+    async getTranslations(id) {
+        try {
+            const response = await BaseAPI.publicClient.get(`/categories/${id}/translations`);
+            return Array.isArray(response?.data) ? response.data : [];
+        } catch (error) {
+            console.error(`Error fetching category translations ${id}:`, error);
+            throw error;
+        }
+    },
+
     async createCategory(data) {
         try {
             const response = await BaseAPI.authClient.post('/categories/', data);

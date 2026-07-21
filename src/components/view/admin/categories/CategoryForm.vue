@@ -1,7 +1,12 @@
 <template>
   <div class="category-form bg-white p-8 rounded-md shadow-sm border border-gray-200 max-w-2xl mx-auto my-6">
     <div class="flex items-center justify-between mb-8">
-      <h2 class="text-2xl font-bold text-gray-800">{{ isEditMode ? 'Edit Category' : 'Create Category' }}</h2>
+      <div>
+        <h2 class="text-2xl font-bold text-gray-800">{{ isEditMode ? 'Edit Category' : 'Create Category' }}</h2>
+        <p v-if="translationOfId && !isEditMode" class="text-sm text-gray-500 mt-1">
+          Adding a {{ form.lang === 'en' ? 'English' : 'Khmer' }} translation linked to an existing category.
+        </p>
+      </div>
       <button @click="$router.push({ name: 'adminCategories' })" class="text-gray-500 hover:text-gray-700">
         Cancel
       </button>
@@ -54,7 +59,7 @@
              <select v-model="form.parent_id" class="w-full px-4 py-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none">
                  <option :value="null">None (Top Level)</option>
                  <option v-for="cat in parentCategories" :key="cat.id" :value="cat.id">
-                     {{ cat.name }}
+                     {{ cat.name }}{{ cat.lang ? ` (${cat.lang})` : '' }}
                  </option>
              </select>
         </div>
@@ -64,6 +69,59 @@
             class="w-full px-4 py-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none"
             placeholder="0" />
         </div>
+      </div>
+
+      <!-- Language -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Language</label>
+          <select v-model="form.lang" :disabled="langLocked"
+            class="w-full px-4 py-2.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none disabled:bg-gray-100 disabled:cursor-not-allowed">
+            <option value="km">ខ្មែរ (Khmer)</option>
+            <option value="en">English</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Translations (edit mode) -->
+      <div v-if="isEditMode" class="rounded-md border border-gray-200 p-4 bg-gray-50">
+        <h3 class="text-xs font-semibold uppercase tracking-wider text-gray-600 mb-3">Translations</h3>
+        <ul v-if="groupTranslations.length" class="space-y-2 mb-3">
+          <li
+            v-for="tr in groupTranslations"
+            :key="tr.id"
+            class="flex items-center justify-between gap-2 text-sm border border-gray-200 bg-white rounded px-3 py-2"
+          >
+            <div class="min-w-0">
+              <span class="font-semibold text-gray-800 uppercase text-xs">{{ tr.lang }}</span>
+              <span class="text-gray-600 ml-2 truncate">{{ tr.name }}</span>
+            </div>
+            <button
+              v-if="String(tr.id) !== String(route.params.id)"
+              type="button"
+              class="text-xs font-semibold text-blue-600 hover:text-blue-800 shrink-0"
+              @click="router.push({ name: 'editCategory', params: { id: tr.id } })"
+            >
+              Edit
+            </button>
+            <span v-else class="text-xs text-gray-400 shrink-0">Current</span>
+          </li>
+        </ul>
+        <p v-else class="text-sm text-gray-500 mb-3">No linked translations yet.</p>
+        <div v-if="missingTranslationLangs.length" class="flex flex-wrap gap-2">
+          <button
+            v-for="code in missingTranslationLangs"
+            :key="code"
+            type="button"
+            class="inline-flex items-center px-3 py-1.5 text-xs font-bold rounded bg-indigo-600 hover:bg-indigo-700 text-white transition-colors"
+            @click="startAddTranslation(code)"
+          >
+            +{{ code.toUpperCase() }}
+          </button>
+        </div>
+        <p v-if="missingTranslationLangs.length" class="mt-2 text-xs text-gray-500">
+          Add a language pair for this category.
+        </p>
       </div>
 
       <!-- Thumbnail (cover-style picker) -->
@@ -193,6 +251,23 @@ const route = useRoute();
 const router = useRouter();
 
 const isEditMode = computed(() => !!route.params.id);
+const translationOfId = computed(() => route.query.translation_of || null);
+const langLocked = computed(() => !!translationOfId.value);
+const groupTranslations = ref([]);
+
+const ALL_LANGS = ['km', 'en'];
+const missingTranslationLangs = computed(() => {
+  const present = new Set((groupTranslations.value || []).map((t) => t.lang));
+  return ALL_LANGS.filter((l) => !present.has(l));
+});
+
+function startAddTranslation(langCode) {
+  router.push({
+    name: 'createCategory',
+    query: { translation_of: route.params.id, lang: langCode },
+  });
+}
+
 const isSubmitting = ref(false);
 const pageLoading = ref(false);
 const loadError = ref(null);
@@ -214,7 +289,8 @@ const form = reactive({
   parent_id: null,
   order_no: 0,
   is_featured: false,
-  status: 'active'
+  status: 'active',
+  lang: 'km',
 });
 
 const slugManuallyEdited = ref(false);
@@ -266,6 +342,13 @@ function removeThumbnail() {
 onMounted(async () => {
   pageLoading.value = isEditMode.value;
   try {
+    if (translationOfId.value) {
+      const qLang = String(route.query.lang || '').toLowerCase();
+      if (qLang === 'en' || qLang === 'km') {
+        form.lang = qLang;
+      }
+    }
+
     const allCats = await CategoryService.getAllCategories();
     categories.value = allCats;
     parentCategories.value = isEditMode.value
@@ -274,6 +357,13 @@ onMounted(async () => {
 
     if (isEditMode.value) {
       const category = await CategoryService.getCategoryById(route.params.id);
+      try {
+        groupTranslations.value = await CategoryService.getTranslations(route.params.id);
+      } catch {
+        groupTranslations.value = category.translations
+          ? [{ id: category.id, lang: category.lang, name: category.name, slug: category.slug, status: category.status }, ...category.translations]
+          : [];
+      }
       Object.assign(form, {
         name: category.name,
         slug: category.slug,
@@ -282,10 +372,25 @@ onMounted(async () => {
         parent_id: category.parent_id,
         order_no: category.order_no || 0,
         is_featured: category.is_featured || false,
-        status: category.status
+        status: category.status,
+        lang: category.lang || 'km',
       });
       if (category.thumbnail) {
         thumbnailUrl.value = category.thumbnail;
+      }
+    } else if (translationOfId.value) {
+      // Prefill sensible defaults from the source category
+      try {
+        const source = await CategoryService.getCategoryById(translationOfId.value);
+        form.thumbnail = source.thumbnail || '';
+        if (source.thumbnail) thumbnailUrl.value = source.thumbnail;
+        form.is_featured = source.is_featured || false;
+        form.order_no = source.order_no || 0;
+        form.status = source.status || 'active';
+        // Prefer parent in the target language if one exists in the same group
+        form.parent_id = source.parent_id || null;
+      } catch (e) {
+        console.warn('Could not pre-fill source category for translation:', e);
       }
     }
   } catch (err) {
@@ -300,11 +405,15 @@ const handleSubmit = async () => {
   feedbackMsg.value = '';
   try {
     isSubmitting.value = true;
+    const payload = { ...form };
+    if (!isEditMode.value && translationOfId.value) {
+      payload.translation_of = translationOfId.value;
+    }
     if (isEditMode.value) {
-      await CategoryService.updateCategory(route.params.id, form);
+      await CategoryService.updateCategory(route.params.id, payload);
       showFeedback('Category updated successfully!');
     } else {
-      await CategoryService.createCategory(form);
+      await CategoryService.createCategory(payload);
       showFeedback('Category created successfully!');
     }
     setTimeout(() => router.push({ name: 'adminCategories' }), 800);

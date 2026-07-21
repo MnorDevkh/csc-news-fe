@@ -34,7 +34,13 @@
                             <div v-else class="h-10 w-10 rounded bg-gray-100 flex items-center justify-center text-gray-400 text-xs">No Img</div>
                         </td>
                         <td class="px-6 py-4">
-                            <div class="text-sm font-medium text-gray-900">{{ category.name }}</div>
+                            <div class="flex items-center gap-2">
+                                <div class="text-sm font-medium text-gray-900">{{ category.name }}</div>
+                                <span
+                                    class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wide"
+                                    :class="(category.lang || 'km') === 'en' ? 'bg-indigo-50 text-indigo-700' : 'bg-amber-50 text-amber-800'"
+                                >{{ (category.lang || 'km').toUpperCase() }}</span>
+                            </div>
                             <div class="text-xs text-gray-500 max-w-xs truncate" :title="stripHtml(category.description)">{{ stripHtml(category.description) }}</div>
                         </td>
                          <td class="px-6 py-4 text-sm text-gray-500">
@@ -59,6 +65,14 @@
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                             <div class="flex justify-end gap-2">
+                                <button
+                                    v-if="missingLang(category)"
+                                    @click="addTranslation(category, missingLang(category))"
+                                    class="text-indigo-600 hover:text-indigo-900 p-1 hover:bg-indigo-50 rounded text-xs font-semibold"
+                                    :title="`Add ${missingLang(category) === 'en' ? 'English' : 'Khmer'} translation`"
+                                >
+                                    +{{ (missingLang(category) || '').toUpperCase() }}
+                                </button>
                                 <button @click="router.push({ name: 'editCategory', params: { id: category.id } })" class="text-blue-600 hover:text-blue-900 p-1 hover:bg-blue-50 rounded">
                                     <EditOutlined />
                                 </button>
@@ -90,6 +104,25 @@ const loadCategories = async () => {
     } catch (error) {
         console.error("Failed to load categories", error);
     }
+};
+
+/** Return the missing language code for a category group, or null if both exist. */
+const missingLang = (category) => {
+    const gid = category.translation_group_id || category.id;
+    const siblings = (categories.value || []).filter(
+        (c) => (c.translation_group_id || c.id) === gid
+    );
+    const present = new Set(siblings.map((c) => c.lang || 'km'));
+    if (!present.has('en')) return 'en';
+    if (!present.has('km')) return 'km';
+    return null;
+};
+
+const addTranslation = (category, langCode) => {
+    router.push({
+        name: 'createCategory',
+        query: { translation_of: category.id, lang: langCode },
+    });
 };
 
 const stripHtml = (html) => {

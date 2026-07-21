@@ -9,8 +9,12 @@
             {{ isEditMode ? 'Edit Article' : 'Create Article' }}
           </h2>
           <p class="text-sm text-[#45464d] mt-1">
-            {{ isEditMode ? 'Update your article content and publishing settings.' : 'Write and publish a new article.'
-            }}
+            <template v-if="translationOfId && !isEditMode">
+              Adding a {{ form.lang === 'en' ? 'English' : 'Khmer' }} translation linked to an existing article.
+            </template>
+            <template v-else>
+              {{ isEditMode ? 'Update your article content and publishing settings.' : 'Write and publish a new article.' }}
+            </template>
           </p>
         </div>
         <div class="flex items-center gap-3">
@@ -224,6 +228,15 @@
               </h3>
               <div class="space-y-4">
                 <div>
+                  <label class="block text-xs font-semibold text-[#45464d] uppercase tracking-wider mb-2">Language</label>
+                  <select v-model="form.lang" @change="onLangChange" :disabled="langLocked"
+                    class="w-full px-4 py-2.5 border border-[#c6c6cd] bg-[#f8f9ff] rounded focus:ring-0 focus:border-[#3755c3] outline-none text-sm text-[#0b1c30] transition-colors cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed">
+                    <option value="km">ខ្មែរ (Khmer)</option>
+                    <option value="en">English</option>
+                  </select>
+                </div>
+
+                <div>
                   <label class="block text-xs font-semibold text-[#45464d] uppercase tracking-wider mb-2">Status</label>
                   <select v-model="form.status" @change="onStatusChange"
                     class="w-full px-4 py-2.5 border border-[#c6c6cd] bg-[#f8f9ff] rounded focus:ring-0 focus:border-[#3755c3] outline-none text-sm text-[#0b1c30] transition-colors cursor-pointer">
@@ -259,6 +272,72 @@
                       class="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full"></span>
                     {{ isEditMode ? 'Update Article' : 'Publish Article' }}
                   </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Translations (edit mode) -->
+            <div v-if="isEditMode" class="bg-white rounded border border-[#c6c6cd] shadow-sm p-6">
+              <h3 class="text-xs font-semibold uppercase tracking-wider text-[#45464d] mb-4">Translations</h3>
+              <ul v-if="groupTranslations.length" class="space-y-2 mb-4">
+                <li
+                  v-for="tr in groupTranslations"
+                  :key="tr.id"
+                  class="flex items-center justify-between gap-2 text-sm border border-[#e5eeff] rounded px-3 py-2"
+                >
+                  <div class="min-w-0">
+                    <span class="font-semibold text-[#0b1c30] uppercase text-xs">{{ tr.lang }}</span>
+                    <span class="text-[#76777d] ml-2 truncate">{{ tr.title }}</span>
+                  </div>
+                  <router-link
+                    v-if="String(tr.id) !== String(route.params.id)"
+                    :to="{ name: 'editNews', params: { id: tr.id } }"
+                    class="text-xs font-semibold text-[#3755c3] hover:underline shrink-0"
+                  >Edit</router-link>
+                  <span v-else class="text-xs text-[#76777d] shrink-0">Current</span>
+                </li>
+              </ul>
+              <p v-else class="text-sm text-[#76777d] mb-3">No linked translations yet.</p>
+              <div v-if="missingTranslationLangs.length" class="flex flex-wrap gap-2">
+                <button
+                  v-for="code in missingTranslationLangs"
+                  :key="code"
+                  type="button"
+                  class="inline-flex items-center px-3 py-1.5 text-xs font-bold rounded bg-indigo-600 hover:bg-indigo-700 text-white transition-colors"
+                  @click="startAddTranslation(code)"
+                >
+                  +{{ code.toUpperCase() }}
+                </button>
+              </div>
+              <p v-if="missingTranslationLangs.length" class="mt-2 text-xs text-[#76777d]">
+                Add a language pair for this article. Categories map to the matching language automatically.
+              </p>
+            </div>
+
+            <!-- Slug & SEO -->
+            <div class="bg-white rounded border border-[#c6c6cd] shadow-sm p-6">
+              <h3 class="text-xs font-semibold uppercase tracking-wider text-[#45464d] mb-4">Slug &amp; SEO</h3>
+              <div class="space-y-4">
+                <div>
+                  <label class="block text-xs font-semibold text-[#45464d] uppercase tracking-wider mb-2">URL slug</label>
+                  <input v-model="form.slug" type="text" placeholder="auto-generated from title if empty"
+                    class="w-full px-4 py-2.5 border border-[#c6c6cd] bg-[#f8f9ff] rounded focus:ring-0 focus:border-[#3755c3] outline-none text-sm text-[#0b1c30] transition-colors" />
+                  <p class="mt-1 text-xs text-[#76777d]">Public URL: /{{ form.lang || 'km' }}/articles/{{ form.slug || '…' }}</p>
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-[#45464d] uppercase tracking-wider mb-2">Meta title</label>
+                  <input v-model="form.meta_title" type="text"
+                    class="w-full px-4 py-2.5 border border-[#c6c6cd] bg-[#f8f9ff] rounded focus:ring-0 focus:border-[#3755c3] outline-none text-sm text-[#0b1c30] transition-colors" />
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-[#45464d] uppercase tracking-wider mb-2">Meta description</label>
+                  <textarea v-model="form.meta_description" rows="2"
+                    class="w-full px-4 py-2.5 border border-[#c6c6cd] bg-[#f8f9ff] rounded focus:ring-0 focus:border-[#3755c3] outline-none text-sm text-[#0b1c30] transition-colors resize-none"></textarea>
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-[#45464d] uppercase tracking-wider mb-2">Meta keywords</label>
+                  <input v-model="form.meta_keywords" type="text"
+                    class="w-full px-4 py-2.5 border border-[#c6c6cd] bg-[#f8f9ff] rounded focus:ring-0 focus:border-[#3755c3] outline-none text-sm text-[#0b1c30] transition-colors" />
                 </div>
               </div>
             </div>
@@ -312,12 +391,19 @@
                   class="group flex items-center gap-3 px-3 py-2 rounded hover:bg-[#eff4ff] cursor-pointer select-none transition-colors">
                   <input type="checkbox" :value="cat.id" v-model="form.category_ids"
                     class="w-4 h-4 rounded border-[#c6c6cd] text-[#3755c3] focus:ring-[#3755c3]/20" />
-                  <span class="text-sm text-[#0b1c30] truncate">{{ cat.name }}</span>
+                  <span class="text-sm text-[#0b1c30] truncate flex-1">{{ cat.name }}</span>
+                  <span
+                    class="shrink-0 text-[10px] font-bold uppercase tracking-wide px-1.5 py-0.5 rounded"
+                    :class="(cat.lang || 'km') === 'en' ? 'bg-indigo-50 text-indigo-700' : 'bg-amber-50 text-amber-800'"
+                  >{{ (cat.lang || 'km').toUpperCase() }}</span>
                 </label>
                 <div v-if="!filteredCategories.length" class="text-sm text-[#76777d] px-3 py-6 text-center">
                   No categories found.
                 </div>
               </div>
+              <p v-if="categoryMapWarning" class="px-4 py-2 text-xs text-amber-700 bg-amber-50 border-t border-amber-100">
+                {{ categoryMapWarning }}
+              </p>
 
               <div class="p-4 border-t border-[#e5eeff] bg-[#eff4ff]/50 flex items-center justify-between gap-3">
                 <button type="button"
@@ -452,19 +538,95 @@ const route = useRoute();
 const router = useRouter();
 
 const isEditMode = computed(() => !!route.params.id);
+const translationOfId = computed(() => route.query.translation_of || null);
+const langLocked = computed(() => !!translationOfId.value);
+const groupTranslations = ref([]);
+
+const ALL_LANGS = ['km', 'en'];
+const missingTranslationLangs = computed(() => {
+  const present = new Set((groupTranslations.value || []).map((t) => t.lang));
+  return ALL_LANGS.filter((l) => !present.has(l));
+});
+
+function startAddTranslation(langCode) {
+  router.push({
+    name: 'createNews',
+    query: { translation_of: route.params.id, lang: langCode },
+  });
+}
 const isSubmitting = ref(false);
 const categories = ref([]);
 const categoryFilter = ref('');
+const categoryMapWarning = ref('');
+
+/**
+ * Map category ids to the sibling in targetLang when a translation group exists.
+ * When requireTargetLang is true (adding an article translation), only keep
+ * categories that exist in the target language — never leave the source-lang id selected.
+ */
+function mapCategoryIdsToLang(ids, targetLang, allCats, { requireTargetLang = false, sourceCats = [] } = {}) {
+  const list = Array.isArray(allCats) ? allCats : [];
+  const byId = new Map(list.map((c) => [String(c.id), c]));
+  const byGroupLang = new Map();
+  for (const c of list) {
+    const gid = String(c.translation_group_id || c.id);
+    byGroupLang.set(`${gid}:${c.lang || 'km'}`, c);
+  }
+
+  // Prefer richer objects from the source article when available (includes translation_group_id).
+  const sourceById = new Map(
+    (Array.isArray(sourceCats) ? sourceCats : []).map((c) => [String(c.id), c])
+  );
+
+  const mapped = [];
+  const seen = new Set();
+  let missed = 0;
+
+  for (const id of ids || []) {
+    const key = String(id);
+    const src = sourceById.get(key) || byId.get(key);
+    if (!src) {
+      missed += 1;
+      continue;
+    }
+    const gid = String(src.translation_group_id || src.id);
+    const sibling = byGroupLang.get(`${gid}:${targetLang}`);
+    if (sibling) {
+      const chosenKey = String(sibling.id);
+      if (!seen.has(chosenKey)) {
+        seen.add(chosenKey);
+        mapped.push(sibling.id);
+      }
+    } else if (!requireTargetLang) {
+      const chosenKey = String(src.id);
+      if (!seen.has(chosenKey)) {
+        seen.add(chosenKey);
+        mapped.push(src.id);
+      }
+    } else {
+      missed += 1;
+    }
+  }
+
+  return { ids: mapped, missed };
+}
+
 const filteredCategories = computed(() => {
   const q = (categoryFilter.value || '').trim().toLowerCase();
   const list = Array.isArray(categories.value) ? categories.value : [];
-  if (!q) return list;
-  return list.filter((c) => (c?.name || '').toLowerCase().includes(q));
+  const selected = new Set((form.category_ids || []).map(String));
+  // Prefer categories matching article language; always include currently selected.
+  const byLang = list.filter(
+    (c) => (c.lang || 'km') === form.lang || selected.has(String(c.id))
+  );
+  const source = byLang.length ? byLang : list;
+  if (!q) return source;
+  return source.filter((c) => (c?.name || '').toLowerCase().includes(q));
 });
 const selectedCategoryNames = computed(() => {
   const list = Array.isArray(categories.value) ? categories.value : [];
-  const selected = new Set(Array.isArray(form.category_ids) ? form.category_ids : []);
-  const names = list.filter((c) => selected.has(c.id)).map((c) => c.name).filter(Boolean);
+  const selected = new Set((form.category_ids || []).map(String));
+  const names = list.filter((c) => selected.has(String(c.id))).map((c) => c.name).filter(Boolean);
   return names.slice(0, 3).join(', ') + (names.length > 3 ? ` +${names.length - 3} more` : '');
 });
 
@@ -475,15 +637,35 @@ const thumbnailKey = ref('');
 
 const form = reactive({
   title: '',
+  slug: '',
   category_ids: [],
   thumbnail: '',
   excerpt: '',
   content: '',
   is_featured: true,
-  status: 'public'
+  status: 'public',
+  lang: 'km',
+  meta_title: '',
+  meta_description: '',
+  meta_keywords: '',
 });
 
 const publishAtLocal = ref('');
+
+function onLangChange() {
+  categoryMapWarning.value = '';
+  const { ids, missed } = mapCategoryIdsToLang(
+    form.category_ids || [],
+    form.lang,
+    categories.value,
+    { requireTargetLang: true }
+  );
+  form.category_ids = ids;
+  if (missed > 0) {
+    categoryMapWarning.value =
+      `Could not map ${missed} categor${missed === 1 ? 'y' : 'ies'} to ${form.lang === 'en' ? 'English' : 'Khmer'}. Create the category translation pair first, then select it here.`;
+  }
+}
 
 // Block-based content (internal UI model): list of { id, type: 'text'|'image'|'mixed', html?, images?: [{ url, key }], ... }
 const contentBlocks = ref([]);
@@ -700,6 +882,13 @@ const removeThumbnail = () => {
 
 onMounted(async () => {
   try {
+    if (translationOfId.value) {
+      const qLang = String(route.query.lang || '').toLowerCase();
+      if (qLang === 'en' || qLang === 'km') {
+        form.lang = qLang;
+      }
+    }
+
     // Fetch categories for dropdown
     const cats = await CategoryService.getAllCategories();
     categories.value = cats;
@@ -707,6 +896,13 @@ onMounted(async () => {
     // If edit mode, fetch article details
     if (isEditMode.value) {
       const article = await NewsService.getArticleById(route.params.id);
+      try {
+        groupTranslations.value = await NewsService.getTranslations(route.params.id);
+      } catch {
+        groupTranslations.value = article.translations
+          ? [{ ...article, lang: article.lang }, ...article.translations]
+          : [];
+      }
       const categoryIds =
         Array.isArray(article?.categories) && article.categories.length
           ? article.categories.map((c) => c.id).filter(Boolean)
@@ -715,12 +911,17 @@ onMounted(async () => {
             : [];
       Object.assign(form, {
         title: article.title,
+        slug: article.slug || '',
         category_ids: categoryIds,
         thumbnail: article.thumbnail,
         excerpt: article.excerpt,
         content: article.content,
         is_featured: article.is_featured,
-        status: article.status
+        status: article.status,
+        lang: article.lang || 'km',
+        meta_title: article.meta_title || '',
+        meta_description: article.meta_description || '',
+        meta_keywords: article.meta_keywords || '',
       });
 
       if (article.thumbnail) {
@@ -735,6 +936,39 @@ onMounted(async () => {
     } else {
       // Create mode: start with one empty text block
       contentBlocks.value = [{ id: nextId(), type: 'text', html: '' }];
+
+      // When adding a translation, pre-inherit categories from the source article
+      // mapped to the target language (KM category → EN category pair).
+      if (translationOfId.value) {
+        try {
+          const source = await NewsService.getArticleById(translationOfId.value);
+          const sourceCatObjects = Array.isArray(source?.categories) ? source.categories : [];
+          const sourceCategories = sourceCatObjects.length
+            ? sourceCatObjects.map((c) => c.id).filter(Boolean)
+            : source?.category_id ? [source.category_id] : [];
+          const { ids, missed } = mapCategoryIdsToLang(
+            sourceCategories,
+            form.lang,
+            categories.value,
+            { requireTargetLang: true, sourceCats: sourceCatObjects }
+          );
+          form.category_ids = ids;
+          if (missed > 0 || (sourceCategories.length && !ids.length)) {
+            categoryMapWarning.value =
+              `No ${form.lang === 'en' ? 'English' : 'Khmer'} category pair found for the source categories. Create the category translation (+EN / +KM) first, then select it here.`;
+          } else {
+            categoryMapWarning.value = '';
+          }
+          // Also pre-fill thumbnail and is_featured from source as sensible defaults
+          if (source?.thumbnail) {
+            thumbnailUrl.value = source.thumbnail;
+            form.thumbnail = source.thumbnail;
+          }
+          form.is_featured = source?.is_featured ?? false;
+        } catch (e) {
+          console.warn('Could not pre-fill source article data for translation:', e);
+        }
+      }
     }
   } catch (error) {
     console.error("Error loading data:", error);
@@ -749,8 +983,13 @@ const handleSubmit = async () => {
     const payload = {
       ...form,
       category_ids: Array.isArray(form.category_ids) ? form.category_ids : [],
+      lang: form.lang || 'km',
+      slug: form.slug || undefined,
       publish_at: publishAtLocal.value ? toIsoWithOffset(publishAtLocal.value) : undefined,
     };
+    if (!isEditMode.value && translationOfId.value) {
+      payload.translation_of = translationOfId.value;
+    }
 
     if (isEditMode.value) {
       await NewsService.updateArticle(route.params.id, payload);
@@ -762,7 +1001,13 @@ const handleSubmit = async () => {
     router.push({ name: 'adminNews' });
   } catch (error) {
     console.error("Error saving article:", error);
-    alert("Failed to save article. Please check console.");
+    const detail = error.response?.data?.detail;
+    const msg = typeof detail === 'string'
+      ? detail
+      : Array.isArray(detail)
+        ? detail.map((d) => d.msg || d).join(', ')
+        : 'Failed to save article. Please check console.';
+    alert(msg);
   } finally {
     isSubmitting.value = false;
   }

@@ -15,8 +15,7 @@
                         <span class="text-2xl font-bold tracking-tight text-white">CSC NEWS</span>
                     </div>
                     <p class="text-white/40 text-sm leading-relaxed">
-                        Leading Catholic news source in Cambodia. Bringing you the latest updates from the community,
-                        readings, and spiritual resources.
+                        {{ t('footer.tagline') }}
                     </p>
                     <div class="flex gap-2.5 pt-1">
                         <a href="#"
@@ -41,27 +40,25 @@
                 <!-- Quick Links -->
                 <div>
                     <h3 class="text-sm font-bold mb-6 text-white uppercase tracking-wider relative inline-block">
-                        Quick Links
+                        {{ t('footer.quickLinks') }}
                         <span class="absolute bottom-[-6px] left-0 w-8 h-0.5 bg-gradient-to-r from-[#d4a853] to-transparent rounded-full"></span>
                     </h3>
                     <ul class="space-y-3 text-white/40 text-sm">
-                        <li><router-link to="/" class="hover:text-[#d4a853] transition-colors">Home Page</router-link>
+                        <li><router-link to="/" class="hover:text-[#d4a853] transition-colors">{{ t('footer.homePage') }}</router-link>
                         </li>
-                        <li><router-link to="/news" class="hover:text-[#d4a853] transition-colors">News</router-link>
+                        <li><router-link to="/news" class="hover:text-[#d4a853] transition-colors">{{ t('footer.news') }}</router-link>
                         </li>
-                        <li><router-link to="/read" class="hover:text-[#d4a853] transition-colors">Holy
-                                Bible</router-link></li>
-                        <li><router-link to="/daily-readings" class="hover:text-[#d4a853] transition-colors">Daily
-                                Readings</router-link></li>
+                        <li><router-link to="/read" class="hover:text-[#d4a853] transition-colors">{{ t('footer.holyBible') }}</router-link></li>
+                        <li><router-link to="/daily-readings" class="hover:text-[#d4a853] transition-colors">{{ t('footer.dailyReadings') }}</router-link></li>
                         <li><router-link to="/gallery"
-                                class="hover:text-[#d4a853] transition-colors">Gallery</router-link></li>
+                                class="hover:text-[#d4a853] transition-colors">{{ t('footer.gallery') }}</router-link></li>
                     </ul>
                 </div>
 
                 <!-- Categories -->
                 <div>
                     <h3 class="text-sm font-bold mb-6 text-white uppercase tracking-wider relative inline-block">
-                        Categories
+                        {{ t('footer.categories') }}
                         <span class="absolute bottom-[-6px] left-0 w-8 h-0.5 bg-gradient-to-r from-[#d4a853] to-transparent rounded-full"></span>
                     </h3>
                     <ul class="space-y-3 text-white/40 text-sm">
@@ -76,7 +73,7 @@
                 <!-- Contact -->
                 <div>
                     <h3 class="text-sm font-bold mb-6 text-white uppercase tracking-wider relative inline-block">
-                        Contact Us
+                        {{ t('footer.contactUs') }}
                         <span class="absolute bottom-[-6px] left-0 w-8 h-0.5 bg-gradient-to-r from-[#d4a853] to-transparent rounded-full"></span>
                     </h3>
                     <ul class="space-y-4 text-white/40 text-sm">
@@ -99,9 +96,9 @@
 
             <!-- Bottom Bar -->
             <div class="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-                <p class="text-xs text-white/25">&copy; 2026 CSC News. All rights reserved.</p>
+                <p class="text-xs text-white/25">{{ t('menu.copyright') }}</p>
                 <div class="flex gap-6 text-xs text-white/25">
-                    <a href="#" class="hover:text-[#d4a853]/60 transition-colors">Privacy Policy</a>
+                    <a href="#" class="hover:text-[#d4a853]/60 transition-colors">{{ t('menu.privacy') }}</a>
                     <a href="#" class="hover:text-[#d4a853]/60 transition-colors">Terms of Service</a>
                     <a href="#" class="hover:text-[#d4a853]/60 transition-colors">Cookie Policy</a>
                 </div>
@@ -111,6 +108,7 @@
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n';
 import {
     FacebookFilled,
     TwitterSquareFilled,
@@ -120,4 +118,6 @@ import {
     PhoneFilled,
     MailFilled
 } from '@ant-design/icons-vue';
+
+const { t } = useI18n();
 </script>

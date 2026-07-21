@@ -1,8 +1,13 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { RouterLink, RouterView } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 import { ArrowRightOutlined } from '@ant-design/icons-vue';
 import { NewsService } from '@/services/NewsService';
+import { useSiteLanguage } from '@/composables/useSiteLanguage';
+
+const { t } = useI18n();
+const { lang } = useSiteLanguage();
 
 const newsCategories = ref([]);
 const isLoadingCategories = ref(false);
@@ -23,17 +28,22 @@ function setPageMeta(meta) {
   pageSubtitle.value = meta.subtitle || '';
 }
 
-onMounted(async () => {
+async function loadCategories() {
   try {
     isLoadingCategories.value = true;
-    const categories = await NewsService.getNewsCategories();
+    const categories = await NewsService.getNewsCategories(lang.value);
     newsCategories.value = categories || [];
   } catch (error) {
     console.error('Failed to load categories for sidebar', error);
+    newsCategories.value = [];
   } finally {
     isLoadingCategories.value = false;
   }
-});
+}
+
+watch(lang, () => {
+  loadCategories();
+}, { immediate: true });
 </script>
 
 <template>
@@ -61,11 +71,11 @@ onMounted(async () => {
             <slot name="sidebar">
               <div class="bg-white rounded-2xl shadow-sm ring-1 ring-gray-100 p-6 m-2">
                 <h2 class="text-lg font-bold text-gray-900 mb-4 pb-3 relative">
-                  មាតិការ
+                  {{ t('category.sidebarTitle') }}
                   <span class="absolute bottom-0 left-0 w-10 h-0.5 bg-gradient-to-r from-[#d4a853] to-transparent rounded-full"></span>
                 </h2>
                 <div v-if="isLoadingCategories" class="text-sm text-gray-400">
-                  Loading categories...
+                  {{ t('category.loading') }}
                 </div>
                 <ul v-else class="space-y-2">
                   <li v-for="category in activeCategories" :key="category.id">
@@ -88,4 +98,3 @@ onMounted(async () => {
     </div>
   </div>
 </template>
-

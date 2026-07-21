@@ -1,32 +1,62 @@
 <script setup>
 import { useRoute, useRouter } from 'vue-router';
-import { computed, ref, onMounted } from 'vue';
+import { computed, ref, watch, onMounted } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { SearchOutlined, ArrowRightOutlined } from '@ant-design/icons-vue';
+import { NewsService } from '@/services/NewsService';
+import { useSiteLanguage } from '@/composables/useSiteLanguage';
+import { articlePublicPath } from '@/utils/articleRoutes';
 
 const route = useRoute();
 const router = useRouter();
+const { t } = useI18n();
+const { lang } = useSiteLanguage();
 const query = computed(() => route.query.q || '');
 const results = ref([]);
 const loading = ref(false);
 
-const performSearch = () => {
+const performSearch = async () => {
+  if (!query.value) {
+    results.value = [];
+    return;
+  }
   loading.value = true;
-  // Simulate API search latency
-  setTimeout(() => {
-    results.value = [
-      { id: 1, title: `Result for ${query.value} - 1`, snippet: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', date: '2024-01-30', category: 'News' },
-      { id: 2, title: `Result for ${query.value} - 2`, snippet: 'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', date: '2024-01-29', category: 'Bible' },
-      { id: 3, title: `Result for ${query.value} - 3`, snippet: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco.', date: '2024-01-28', category: 'Sermon' },
-    ];
+  try {
+    const data = await NewsService.getAllArticles({
+      search: query.value,
+      lang: lang.value,
+      public_only: true,
+      limit: 50,
+    });
+    const items = data.items ?? data ?? [];
+    results.value = items.map((a) => ({
+      id: a.id,
+      slug: a.slug,
+      lang: a.lang,
+      title: a.title,
+      snippet: a.excerpt || '',
+      date: a.publish_at || a.created_at,
+      category: a.categories?.[0]?.name || 'News',
+    }));
+  } catch (err) {
+    console.error('Search failed:', err);
+    results.value = [];
+  } finally {
     loading.value = false;
-  }, 800);
-}
+  }
+};
 
-// Watch/Initial search logic
 onMounted(() => {
   if (query.value) performSearch();
 });
 
+watch(query, () => {
+  if (query.value) performSearch();
+});
+
+watch(lang, () => {
+  if (query.value) performSearch();
+});
 </script>
 
 <template>
@@ -35,10 +65,10 @@ onMounted(() => {
 
       <div class="mb-8 text-center sm:text-left">
         <h1 class="text-3xl font-bold text-gray-900 mb-2">
-          Search Results
+          {{ t('search.title') }}
         </h1>
         <p class="text-gray-500 text-lg">
-          Found {{ results.length }} results for <span class="font-semibold text-blue-600">"{{ query }}"</span>
+          {{ t('search.found', { count: results.length }) }} <span class="font-semibold text-blue-600">"{{ query }}"</span>
         </p>
       </div>
 
@@ -49,7 +79,7 @@ onMounted(() => {
       <div v-else-if="results.length > 0" class="space-y-4">
         <div v-for="item in results" :key="item.id"
           class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow cursor-pointer group"
-          @click="router.push(`/article/${item.id}`)">
+          @click="router.push(articlePublicPath(item, lang))">
           <div class="flex items-start justify-between">
             <div>
               <div class="flex items-center gap-2 mb-2">
@@ -74,8 +104,8 @@ onMounted(() => {
 
       <div v-else class="text-center py-20 bg-white rounded-xl shadow-sm border border-gray-100">
         <SearchOutlined class="text-6xl text-gray-200 mb-4" />
-        <h3 class="text-xl font-medium text-gray-500">No results found</h3>
-        <p class="text-gray-400">Try adjusting your search terms.</p>
+        <h3 class="text-xl font-medium text-gray-500">{{ t('search.noResults') }}</h3>
+        <p class="text-gray-400">{{ t('search.tryAdjusting') }}</p>
       </div>
 
     </div>

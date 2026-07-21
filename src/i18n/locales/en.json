@@ -1,0 +1,58 @@
+{
+  "menu": {
+    "home": "Home",
+    "bible": "Holy Bible",
+    "news": "News",
+    "structure": "Church Structure",
+    "messenger": "The Messenger",
+    "churchHistory": "Church History",
+    "downloadApp": "Download App",
+    "links": "Links",
+    "searchPlaceholder": "Search articles...",
+    "search": "Search",
+    "dashboard": "Dashboard",
+    "privacy": "Privacy Policy",
+    "copyright": "© 2026 CSC News. All rights reserved."
+  },
+  "footer": {
+    "tagline": "Leading Catholic news source in Cambodia. Bringing you the latest updates from the community, readings, and spiritual resources.",
+    "quickLinks": "Quick Links",
+    "homePage": "Home Page",
+    "news": "News",
+    "holyBible": "Holy Bible",
+    "dailyReadings": "Daily Readings",
+    "gallery": "Gallery",
+    "categories": "Categories",
+    "contactUs": "Contact Us"
+  },
+  "home": {
+    "latestNews": "Latest News",
+    "readMore": "Read more",
+    "featured": "Featured",
+    "categories": "Categories"
+  },
+  "category": {
+    "title": "Category: {name}",
+    "noArticles": "No articles in this category",
+    "loadingError": "Failed to load articles",
+    "sidebarTitle": "Contents",
+    "loading": "Loading categories..."
+  },
+  "article": {
+    "readInEnglish": "Read in English",
+    "readInKhmer": "អានជាភាសាខ្មែរ",
+    "share": "Share",
+    "featured": "Featured",
+    "related": "Related articles"
+  },
+  "search": {
+    "title": "Search Results",
+    "found": "Found {count} results for",
+    "noResults": "No results found",
+    "tryAdjusting": "Try adjusting your search terms."
+  },
+  "lang": {
+    "km": "ខ្មែរ",
+    "en": "EN"
+  }
+}

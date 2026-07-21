@@ -25,6 +25,7 @@ const error = ref('');
 
 const objectUrls = [];
 let activeRenderToken = 0;
+let activeLoadingTask = null;
 
 function cleanupObjectUrls() {
   for (const url of objectUrls) {
@@ -46,14 +47,26 @@ async function canvasToObjectUrl(canvas) {
 }
 
 function getScale() {
-  // Keep memory reasonable while still readable.
-  // You can tune this later or make it responsive to container width.
   const dpr = Math.min(window.devicePixelRatio || 1, 2);
   return 1.35 * dpr;
 }
 
+async function cancelActiveLoad() {
+  activeRenderToken++;
+  if (activeLoadingTask) {
+    try {
+      await activeLoadingTask.destroy();
+    } catch {
+      // ignore
+    }
+    activeLoadingTask = null;
+  }
+}
+
 async function renderPdfToPages(pdfUrl) {
-  const token = ++activeRenderToken;
+  await cancelActiveLoad();
+  const token = activeRenderToken;
+
   error.value = '';
   isLoading.value = true;
   pages.value = [];
@@ -61,15 +74,21 @@ async function renderPdfToPages(pdfUrl) {
   cleanupObjectUrls();
 
   try {
-    const loadingTask = pdfjsLib.getDocument({ url: pdfUrl });
-    const pdf = await loadingTask.promise;
+    // Stream from S3 via range requests instead of waiting for the full object.
+    const loadingTask = pdfjsLib.getDocument({
+      url: pdfUrl,
+      disableStream: false,
+      disableAutoFetch: false,
+      disableRange: false,
+      rangeChunkSize: 65536,
+    });
+    activeLoadingTask = loadingTask;
 
+    const pdf = await loadingTask.promise;
     if (token !== activeRenderToken) return;
 
     const total = pdf.numPages || 0;
     progress.value = { current: 0, total };
-
-    const rendered = [];
 
     const scale = getScale();
     for (let pageNumber = 1; pageNumber <= total; pageNumber++) {
@@ -86,29 +105,33 @@ async function renderPdfToPages(pdfUrl) {
       canvas.height = Math.floor(viewport.height);
 
       await page.render({ canvasContext: ctx, viewport }).promise;
+      if (token !== activeRenderToken) return;
 
       const url = await canvasToObjectUrl(canvas);
-      rendered.push({ type: 'image', url });
+      if (token !== activeRenderToken) return;
 
+      // Open flipbook as soon as the first page is ready; keep appending the rest.
+      pages.value.push({ type: 'image', url });
       progress.value = { current: pageNumber, total };
 
-      // Yield to the UI occasionally for large PDFs.
       if (pageNumber % 2 === 0) await new Promise((r) => setTimeout(r, 0));
     }
-
-    if (token !== activeRenderToken) return;
-    pages.value = rendered;
   } catch (e) {
+    if (token !== activeRenderToken) return;
     console.error('Failed to render PDF for flipbook:', e);
     error.value =
       e?.message ||
       'Failed to load PDF. If this is a cross-origin URL, ensure it allows CORS for pdf.js.';
   } finally {
-    if (token === activeRenderToken) isLoading.value = false;
+    if (token === activeRenderToken) {
+      isLoading.value = false;
+      activeLoadingTask = null;
+    }
   }
 }
 
 const hasPdf = computed(() => !!props.pdfUrl);
+const showViewer = computed(() => pages.value.length > 0 && !error.value);
 
 watch(
   () => props.pdfUrl,
@@ -120,7 +143,7 @@ watch(
 );
 
 onBeforeUnmount(() => {
-  activeRenderToken++;
+  cancelActiveLoad();
   cleanupObjectUrls();
 });
 </script>
@@ -136,7 +159,10 @@ onBeforeUnmount(() => {
         <div class="min-w-0">
           <div class="text-sm font-semibold text-gray-900 truncate">{{ props.title }}</div>
           <div v-if="isLoading" class="text-xs text-gray-500">
-            Rendering pages… {{ progress.current }}/{{ progress.total }}
+            <span v-if="progress.total">
+              Loading pages… {{ progress.current }}/{{ progress.total }}
+            </span>
+            <span v-else>Opening PDF…</span>
           </div>
         </div>
         <button
@@ -153,8 +179,8 @@ onBeforeUnmount(() => {
         {{ error }}
       </div>
 
-      <div v-else-if="isLoading && pages.length === 0" class="p-6 sm:p-10 flex items-center justify-center">
-        <div class="text-sm text-gray-500">Loading PDF…</div>
+      <div v-else-if="!showViewer" class="p-6 sm:p-10 flex items-center justify-center">
+        <div class="text-sm text-gray-500">Opening PDF…</div>
       </div>
 
       <div v-else class="p-4 sm:p-6 bg-gray-50">
@@ -167,4 +193,3 @@ onBeforeUnmount(() => {
     </div>
   </section>
 </template>
-

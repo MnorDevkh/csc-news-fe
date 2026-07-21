@@ -1,15 +1,15 @@
 import BaseAPI from './BaseAPI';
 
 export const NewsService = {
-  async getFeaturedArticles() {
+  async getFeaturedArticles(lang) {
     try {
-      const response = await BaseAPI.publicClient.get('/articles/', {
-        params: {
-          is_featured: true,
-          public_only: true,
-          limit: 4
-        }
-      });
+      const params = {
+        is_featured: true,
+        public_only: true,
+        limit: 4
+      };
+      if (lang) params.lang = lang;
+      const response = await BaseAPI.publicClient.get('/articles/', { params });
       return response.data.items || [];
     } catch (error) {
       console.error('Error fetching featured articles:', error);
@@ -17,14 +17,14 @@ export const NewsService = {
     }
   },
 
-  async getLatestHeadlines() {
+  async getLatestHeadlines(lang) {
     try {
-      const response = await BaseAPI.publicClient.get('/articles/', {
-        params: {
-          public_only: true,
-          limit: 5
-        }
-      });
+      const params = {
+        public_only: true,
+        limit: 5
+      };
+      if (lang) params.lang = lang;
+      const response = await BaseAPI.publicClient.get('/articles/', { params });
       return response.data.items || [];
     } catch (error) {
       console.error('Error fetching latest headlines:', error);
@@ -32,9 +32,11 @@ export const NewsService = {
     }
   },
 
-  async getNewsCategories() {
+  async getNewsCategories(lang) {
     try {
-      const response = await BaseAPI.publicClient.get('/categories/');
+      const params = {};
+      if (lang) params.lang = lang;
+      const response = await BaseAPI.publicClient.get('/categories/', { params });
       // The API returns a list of category objects. 
       // If the UI expects just names, we might need to map it, 
       // but let's return the full objects and update the UI to handle it.
@@ -79,6 +81,27 @@ export const NewsService = {
     }
   },
 
+  async getArticleBySlug(lang, slug) {
+    try {
+      const url = `/articles/by-slug/${encodeURIComponent(lang)}/${encodeURIComponent(slug)}`;
+      const response = await BaseAPI.publicClient.get(url);
+      return response.data;
+    } catch (error) {
+      console.error(`Error fetching article ${lang}/${slug}:`, error);
+      throw error;
+    }
+  },
+
+  async getTranslations(id) {
+    try {
+      const response = await BaseAPI.authClient.get(`/articles/${id}/translations`);
+      return response.data;
+    } catch (error) {
+      console.error(`Error fetching translations for ${id}:`, error);
+      throw error;
+    }
+  },
+
   async createArticle(data) {
     try {
       const response = await BaseAPI.authClient.post('/articles/', data);
@@ -99,9 +122,11 @@ export const NewsService = {
     }
   },
 
-  async deleteArticle(id) {
+  async deleteArticle(id, { includeTranslations = false } = {}) {
     try {
-      const response = await BaseAPI.authClient.delete(`/articles/${id}`);
+      const response = await BaseAPI.authClient.delete(`/articles/${id}`, {
+        params: includeTranslations ? { include_translations: true } : {},
+      });
       return response.data;
     } catch (error) {
       console.error(`Error deleting article ${id}:`, error);

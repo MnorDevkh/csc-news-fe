@@ -25,6 +25,26 @@
                     @keyup.enter="onFilterChange"
                 >
             </div>
+            <div class="flex items-center rounded-md border border-gray-200 bg-gray-50/80 p-0.5">
+                <button
+                    type="button"
+                    class="px-3 py-2 rounded text-xs font-semibold transition-all"
+                    :class="langFilter === '' ? 'bg-white text-[#1a365d] shadow-sm' : 'text-gray-500 hover:text-[#1a365d]'"
+                    @click="setLangFilter('')"
+                >All</button>
+                <button
+                    type="button"
+                    class="px-3 py-2 rounded text-xs font-semibold transition-all"
+                    :class="langFilter === 'km' ? 'bg-white text-[#1a365d] shadow-sm' : 'text-gray-500 hover:text-[#1a365d]'"
+                    @click="setLangFilter('km')"
+                >ខ្មែរ</button>
+                <button
+                    type="button"
+                    class="px-3 py-2 rounded text-xs font-semibold transition-all"
+                    :class="langFilter === 'en' ? 'bg-white text-[#1a365d] shadow-sm' : 'text-gray-500 hover:text-[#1a365d]'"
+                    @click="setLangFilter('en')"
+                >EN</button>
+            </div>
             <select
                 v-model="selectedCategoryId"
                 class="border border-gray-200 bg-gray-50/80 rounded-md px-4 py-2.5 focus:ring-2 focus:ring-[#1a365d]/10 focus:border-[#1a365d] focus:bg-white outline-none cursor-pointer text-sm transition-all"
@@ -36,7 +56,7 @@
                     :key="category.id"
                     :value="category.id"
                 >
-                    {{ category.name }}
+                    {{ category.name }}{{ category.lang ? ` (${category.lang})` : '' }}
                 </option>
             </select>
         </div>
@@ -71,7 +91,13 @@
                                     <FileTextOutlined class="text-[#1a365d]/40" />
                                 </div>
                                 <div class="min-w-0">
-                                    <div class="text-sm font-semibold text-gray-900 line-clamp-1">{{ article.title }}</div>
+                                    <div class="flex items-center gap-2">
+                                        <div class="text-sm font-semibold text-gray-900 line-clamp-1">{{ article.title }}</div>
+                                        <span
+                                            class="shrink-0 inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wide"
+                                            :class="(article.lang || 'km') === 'en' ? 'bg-indigo-50 text-indigo-700' : 'bg-amber-50 text-amber-800'"
+                                        >{{ (article.lang || 'km').toUpperCase() }}</span>
+                                    </div>
                                     <div class="text-xs text-gray-400 line-clamp-1 mt-0.5">{{ article.excerpt }}</div>
                                 </div>
                             </div>
@@ -123,12 +149,21 @@
                             </span>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                            <div class="flex justify-end gap-1">
+                            <div class="flex justify-end gap-1 items-center">
+                                <button
+                                    v-if="missingLang(article)"
+                                    type="button"
+                                    @click="addTranslation(article, missingLang(article))"
+                                    class="px-2 py-1 text-indigo-600 hover:text-indigo-900 hover:bg-indigo-50 rounded-md text-xs font-bold transition-all"
+                                    :title="`Add ${missingLang(article) === 'en' ? 'English' : 'Khmer'} translation`"
+                                >
+                                    +{{ (missingLang(article) || '').toUpperCase() }}
+                                </button>
                                 <button @click="$router.push({ name: 'editNews', params: { id: article.id } })"
                                     class="p-2 text-gray-400 hover:text-[#1a365d] hover:bg-[#1a365d]/5 rounded-md transition-all">
                                     <EditOutlined />
                                 </button>
-                                <button @click="deleteArticle(article.id)"
+                                <button @click="deleteArticle(article)"
                                     class="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-md transition-all">
                                     <DeleteOutlined />
                                 </button>
@@ -166,6 +201,7 @@ const articles = ref([]);
 const categories = ref([]);
 const searchQuery = ref('');
 const selectedCategoryId = ref('');
+const langFilter = ref('');
 const pagination = ref({
     total_elements: 0,
     page_size: pageSize,
@@ -205,6 +241,7 @@ const loadArticles = async () => {
         const params = {
             skip: (currentPage.value - 1) * pageSize,
             limit: pageSize,
+            public_only: false,
         };
 
         if (searchQuery.value) {
@@ -213,6 +250,10 @@ const loadArticles = async () => {
 
         if (selectedCategoryId.value) {
             params.category_id = selectedCategoryId.value;
+        }
+
+        if (langFilter.value) {
+            params.lang = langFilter.value;
         }
 
         const data = await NewsService.getAllArticles(params);
@@ -235,6 +276,28 @@ const loadCategories = async () => {
     }
 };
 
+const setLangFilter = (value) => {
+    langFilter.value = value;
+    onFilterChange();
+};
+
+/** Missing language for this article's translation group, or null if both exist. */
+const missingLang = (article) => {
+    const present = new Set(
+        (article.group_langs || [article.lang || 'km']).map((l) => String(l).toLowerCase())
+    );
+    if (!present.has('en')) return 'en';
+    if (!present.has('km')) return 'km';
+    return null;
+};
+
+const addTranslation = (article, langCode) => {
+    router.push({
+        name: 'createNews',
+        query: { translation_of: article.id, lang: langCode },
+    });
+};
+
 const onFilterChange = () => {
     currentPage.value = 1;
     loadArticles();
@@ -245,10 +308,24 @@ const onPageChange = (page) => {
     loadArticles();
 };
 
-const deleteArticle = async (id) => {
-    if(!confirm("Are you sure you want to delete this article?")) return;
+const deleteArticle = async (article) => {
+    if (!confirm('Delete this article translation?')) return;
+    let includeTranslations = false;
     try {
-        await NewsService.deleteArticle(id);
+        const translations = await NewsService.getTranslations(article.id);
+        const others = (translations || []).filter(
+            (t) => String(t.id) !== String(article.id)
+        ).length;
+        if (others > 0) {
+            includeTranslations = confirm(
+                `This article has ${others} other translation(s). Delete the entire group (all languages)?\n\nOK = delete all translations\nCancel = delete only this language`
+            );
+        }
+    } catch (error) {
+        console.warn('Could not load translations for delete prompt', error);
+    }
+    try {
+        await NewsService.deleteArticle(article.id, { includeTranslations });
         await loadArticles();
     } catch (error) {
          console.error("Failed to delete", error);
