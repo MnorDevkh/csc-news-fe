@@ -401,6 +401,7 @@ const rawMenuItems = ref<MenuItem[]>([
     { labelKey: 'menu.news', label: '', path: '/news', children: [], dropdown: 'news' },
     { labelKey: 'menu.structure', label: '', path: '/structure', children: [], dropdown: 'structure' },
     { labelKey: 'menu.messenger', label: '', path: '/the-messenger' },
+    { labelKey: 'menu.sermon', label: '', path: '/the-sermon' },
     { labelKey: 'menu.churchHistory', label: '', path: '/church-history' },
     { labelKey: 'menu.downloadApp', label: '', path: '/install-app' },
     { labelKey: 'menu.links', label: '', href: 'https://antdv.com' },

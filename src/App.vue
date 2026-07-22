@@ -51,6 +51,13 @@ const mainMobileNavItems = [
     accent: 'blue',
     pathPrefix: '/the-messenger',
   },
+  {
+    to: { name: 'sermonIssueList' },
+    label: 'Sermon',
+    icon: 'messenger',
+    accent: 'blue',
+    pathPrefix: '/the-sermon',
+  },
 ];
 
 const pullToRefreshEnabled = computed(() => {

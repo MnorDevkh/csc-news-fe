@@ -26,6 +26,8 @@ import BibleBookmarksPage from "@/components/view/bible/BibleBookmarksPage.vue";
 import BibleSettingsPage from "@/components/view/bible/BibleSettingsPage.vue";
 import MessengerListingPage from "@/components/view/messenger/MessengerListingPage.vue";
 import MessengerDetailsPage from "@/components/view/messenger/MessengerDetailsPage.vue";
+import SermonIssueListingPage from "@/components/view/sermon-issue/SermonIssueListingPage.vue";
+import SermonIssueDetailsPage from "@/components/view/sermon-issue/SermonIssueDetailsPage.vue";
 import { ensureSession, hasPermissionCode } from "@/composables/useAuth";
 import { ADMIN_ROUTE_PERMISSIONS } from "@/config/adminRoutePermissions";
 
@@ -155,6 +157,17 @@ const router = createRouter({
           path: "the-messenger/:slug",
           name: "messengerDetail",
           component: MessengerDetailsPage,
+          props: true,
+        },
+        {
+          path: "the-sermon",
+          name: "sermonIssueList",
+          component: SermonIssueListingPage,
+        },
+        {
+          path: "the-sermon/:slug",
+          name: "sermonIssueDetail",
+          component: SermonIssueDetailsPage,
           props: true,
         },
         {
@@ -458,6 +471,29 @@ const router = createRouter({
               name: "editMessengerIssue",
               component: () =>
                 import("@/components/view/admin/messenger/MessengerIssueForm.vue"),
+            },
+          ],
+        },
+        {
+          path: "sermon-issues",
+          children: [
+            {
+              path: "",
+              name: "adminSermonIssues",
+              component: () =>
+                import("@/components/view/admin/sermon-issue/SermonIssueList.vue"),
+            },
+            {
+              path: "create",
+              name: "createSermonIssue",
+              component: () =>
+                import("@/components/view/admin/sermon-issue/SermonIssueForm.vue"),
+            },
+            {
+              path: "edit/:id",
+              name: "editSermonIssue",
+              component: () =>
+                import("@/components/view/admin/sermon-issue/SermonIssueForm.vue"),
             },
           ],
         },

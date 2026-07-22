@@ -12,6 +12,7 @@ import GalleryGridViewPage from './GalleryGridViewPage.vue';
 import DailyBible from './DailyBible.vue';
 import DailySermon from './DailySermon.vue';
 import MessengerListingPage from '../messenger/MessengerListingPage.vue';
+import SermonIssueListingPage from '../sermon-issue/SermonIssueListingPage.vue';
 
 const featuredArticles = ref([]);
 const latestHeadlines = ref([]);
@@ -214,6 +215,16 @@ const formatDate = (dateString) => {
             <h3 class="text-xl font-bold text-stone-800 mb-2">The Messenger</h3>
             <p class="text-muted text-sm mb-0">Magazine issues in flipbook format</p>
           </RouterLink>
+          <RouterLink :to="{ name: 'sermonIssueList' }"
+            class="bg-white p-4 sm:p-6 rounded-2xl ring-1 ring-gray-100 shadow-sm hover:shadow-lg duration-300 ease-out hover:-translate-y-1 cursor-pointer group text-center flex flex-col items-center no-underline relative overflow-hidden">
+            <div class="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-[#d4a853] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <div
+              class="h-14 w-14 bg-indigo-100/80 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-[#1a365d] duration-300 group-hover:shadow-lg group-hover:shadow-[#1a365d]/20">
+              <ReadOutlined class="text-2xl text-indigo-700/80 group-hover:text-white transition-colors" />
+            </div>
+            <h3 class="text-xl font-bold text-stone-800 mb-2">The Sermon</h3>
+            <p class="text-muted text-sm mb-0">Sermon magazine issues in flipbook format</p>
+          </RouterLink>
         </div>
       </section>
 
@@ -383,6 +394,26 @@ const formatDate = (dateString) => {
           </div>
           <div class="bg-white p-4 sm:p-6 rounded-2xl shadow-sm ring-1 ring-gray-100">
             <MessengerListingPage embed />
+          </div>
+        </section>
+
+        <!-- The Sermon -->
+        <section class="px-2 py-3 sm:px-4 sm:py-4">
+          <div class="flex items-center justify-between mb-5 sm:mb-8 px-1 sm:px-2 gap-3">
+            <div class="flex items-center gap-3 min-w-0">
+              <span class="h-8 w-1.5 shrink-0 rounded-full bg-gradient-to-b from-[#1a365d] to-[#d4a853]" aria-hidden="true" />
+              <h2 class="text-2xl font-bold text-stone-800 tracking-tight m-0">The Sermon</h2>
+            </div>
+            <RouterLink
+              :to="{ name: 'sermonIssueList' }"
+              class="text-[#1a365d] hover:text-[#d4a853] font-semibold flex items-center text-sm shrink-0 transition-colors"
+            >
+              មើលបន្ថែម
+              <ArrowRightOutlined class="ml-1 text-xs" />
+            </RouterLink>
+          </div>
+          <div class="bg-white p-4 sm:p-6 rounded-2xl shadow-sm ring-1 ring-gray-100">
+            <SermonIssueListingPage embed />
           </div>
         </section>
 
