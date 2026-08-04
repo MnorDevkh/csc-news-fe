@@ -171,9 +171,6 @@ onBeforeUnmount(() => {
             </span>
             <span v-else>Opening PDF…</span>
           </div>
-          <div v-else-if="showViewer" class="mt-0.5 text-xs text-muted">
-            Drag a corner or use the arrows to flip
-          </div>
         </div>
 
         <div class="flex items-center gap-2">
@@ -226,7 +223,7 @@ onBeforeUnmount(() => {
       <div v-else class="bg-[linear-gradient(180deg,#eef2f7_0%,#f8f9fa_45%,#eef2f7_100%)] p-3 sm:p-6">
         <div class="mx-auto flex w-full max-w-5xl items-center justify-center">
           <div class="flex h-[min(72vh,820px)] min-h-[420px] w-full items-center justify-center">
-            <Flipbook :pages="pages" :title="props.title" :show-cover="true" />
+            <Flipbook :pages="pages" :title="props.title" :show-cover="false" />
           </div>
         </div>
       </div>

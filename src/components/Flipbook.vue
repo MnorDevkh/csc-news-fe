@@ -9,7 +9,7 @@ const props = defineProps({
   },
   showCover: {
     type: Boolean,
-    default: true,
+    default: false,
   },
   title: {
     type: String,
