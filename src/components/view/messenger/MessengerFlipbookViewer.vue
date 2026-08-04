@@ -74,7 +74,6 @@ async function renderPdfToPages(pdfUrl) {
   cleanupObjectUrls();
 
   try {
-    // Stream from S3 via range requests instead of waiting for the full object.
     const loadingTask = pdfjsLib.getDocument({
       url: pdfUrl,
       disableStream: false,
@@ -110,7 +109,6 @@ async function renderPdfToPages(pdfUrl) {
       const url = await canvasToObjectUrl(canvas);
       if (token !== activeRenderToken) return;
 
-      // Open flipbook as soon as the first page is ready; keep appending the rest.
       pages.value.push({ type: 'image', url });
       progress.value = { current: pageNumber, total };
 
@@ -132,6 +130,10 @@ async function renderPdfToPages(pdfUrl) {
 
 const hasPdf = computed(() => !!props.pdfUrl);
 const showViewer = computed(() => pages.value.length > 0 && !error.value);
+const progressPct = computed(() => {
+  if (!progress.value.total) return 8;
+  return Math.round((progress.value.current / progress.value.total) * 100);
+});
 
 watch(
   () => props.pdfUrl,
@@ -150,43 +152,81 @@ onBeforeUnmount(() => {
 
 <template>
   <section class="w-full">
-    <div v-if="!hasPdf" class="bg-white border border-gray-200 rounded-xl p-6 text-sm text-gray-600">
+    <div
+      v-if="!hasPdf"
+      class="rounded-xl border border-gray-200 bg-white px-5 py-8 text-center text-sm text-muted"
+    >
       PDF not available.
     </div>
 
-    <div v-else class="bg-white border border-gray-200 rounded-xl overflow-hidden">
-      <div class="px-3 sm:px-4 py-2.5 sm:py-3 border-b border-gray-100 flex items-center justify-between gap-2 sm:gap-3">
+    <div v-else class="overflow-hidden rounded-xl border border-primary/10 bg-white shadow-sm">
+      <div
+        class="flex flex-wrap items-center justify-between gap-2 border-b border-primary/8 bg-primary-light/40 px-3 py-2.5 sm:px-4 sm:py-3"
+      >
         <div class="min-w-0">
-          <div class="text-sm font-semibold text-gray-900 truncate">{{ props.title }}</div>
-          <div v-if="isLoading" class="text-xs text-gray-500">
+          <div class="truncate text-sm font-semibold text-primary">{{ props.title }}</div>
+          <div v-if="isLoading" class="mt-0.5 text-xs text-muted">
             <span v-if="progress.total">
               Loading pages… {{ progress.current }}/{{ progress.total }}
             </span>
             <span v-else>Opening PDF…</span>
           </div>
+          <div v-else-if="showViewer" class="mt-0.5 text-xs text-muted">
+            Drag a corner or use the arrows to flip
+          </div>
         </div>
-        <button
-          v-if="error"
-          type="button"
-          class="text-sm text-blue-600 hover:text-blue-800 font-medium"
-          @click="renderPdfToPages(props.pdfUrl)"
-        >
-          Retry
-        </button>
+
+        <div class="flex items-center gap-2">
+          <a
+            v-if="props.pdfUrl"
+            :href="props.pdfUrl"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-1.5 rounded-md border border-primary/15 bg-white px-2.5 py-1.5 text-xs font-medium text-primary transition hover:border-primary hover:bg-primary hover:text-white"
+          >
+            Open PDF
+          </a>
+          <button
+            v-if="error"
+            type="button"
+            class="text-sm font-medium text-primary hover:text-primary-hover"
+            @click="renderPdfToPages(props.pdfUrl)"
+          >
+            Retry
+          </button>
+        </div>
       </div>
 
-      <div v-if="error" class="p-6 text-sm text-red-700 bg-red-50 border-t border-red-100">
+      <div
+        v-if="isLoading"
+        class="h-1 w-full overflow-hidden bg-primary-light"
+        aria-hidden="true"
+      >
+        <div
+          class="h-full bg-accent transition-[width] duration-300 ease-out"
+          :style="{ width: `${progressPct}%` }"
+        />
+      </div>
+
+      <div v-if="error" class="border-t border-red-100 bg-red-50 p-6 text-sm text-red-700">
         {{ error }}
       </div>
 
-      <div v-else-if="!showViewer" class="p-6 sm:p-10 flex items-center justify-center">
-        <div class="text-sm text-gray-500">Opening PDF…</div>
+      <div
+        v-else-if="!showViewer"
+        class="flex min-h-[280px] flex-col items-center justify-center gap-3 bg-surface p-8 sm:min-h-[420px]"
+      >
+        <div
+          class="h-9 w-9 animate-spin rounded-full border-2 border-primary/20 border-t-primary"
+          aria-hidden="true"
+        />
+        <div class="text-sm text-muted">Preparing your magazine…</div>
       </div>
 
-      <div v-else class="p-4 sm:p-6 bg-gray-50">
-        <div class="w-full flex justify-center">
-          <div class="max-w-5xl w-full h-[70vh] min-h-[520px] flex items-center justify-center">
-            <Flipbook :pages="pages" :title="props.title" />
+      <div v-else class="bg-[linear-gradient(180deg,#eef2f7_0%,#f8f9fa_45%,#eef2f7_100%)] p-3 sm:p-6">
+        <div class="mx-auto flex w-full max-w-5xl items-center justify-center">
+          <div class="flex h-[min(72vh,820px)] min-h-[420px] w-full items-center justify-center">
+            <Flipbook :pages="pages" :title="props.title" :show-cover="true" />
           </div>
         </div>
       </div>

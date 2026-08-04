@@ -1,5 +1,5 @@
 <script setup>
-import { nextTick, onMounted, onBeforeUnmount, ref, watch } from 'vue';
+import { computed, nextTick, onMounted, onBeforeUnmount, ref, watch } from 'vue';
 import { PageFlip } from 'page-flip';
 
 const props = defineProps({
@@ -11,7 +11,6 @@ const props = defineProps({
     type: Boolean,
     default: true,
   },
-  // Optional title for the cover page
   title: {
     type: String,
     default: '',
@@ -19,10 +18,24 @@ const props = defineProps({
 });
 
 const bookContainer = ref(null);
+const currentPage = ref(0);
+const pageCount = ref(0);
 let pageFlip = null;
+
+const canGoPrev = computed(() => currentPage.value > 0);
+const canGoNext = computed(() => currentPage.value < Math.max(pageCount.value - 1, 0));
+
+const pageLabel = computed(() => {
+  const total = pageCount.value || props.pages.length;
+  if (!total) return '';
+  // With cover mode, odd spreads show two pages after the cover
+  const current = currentPage.value + 1;
+  return `${current} / ${total}`;
+});
 
 function destroyFlip() {
   if (pageFlip) {
+    pageFlip.off('flip');
     pageFlip.destroy();
     pageFlip = null;
   }
@@ -30,6 +43,12 @@ function destroyFlip() {
 
 function getPageElements() {
   return bookContainer.value?.querySelectorAll('.page') ?? [];
+}
+
+function syncPageState() {
+  if (!pageFlip) return;
+  currentPage.value = pageFlip.getCurrentPageIndex();
+  pageCount.value = pageFlip.getPageCount();
 }
 
 function initFlip() {
@@ -40,16 +59,20 @@ function initFlip() {
     width: 420,
     height: 600,
     size: 'stretch',
-    minWidth: 300,
+    minWidth: 280,
     maxWidth: 1400,
-    minHeight: 420,
+    minHeight: 400,
     maxHeight: 1800,
-    maxShadowOpacity: 0.45,
+    maxShadowOpacity: 0.35,
     showCover: props.showCover,
     mobileScrollSupport: true,
+    usePortrait: true,
+    autoSize: true,
   });
 
   pageFlip.loadFromHTML(getPageElements());
+  pageFlip.on('flip', () => syncPageState());
+  syncPageState();
 }
 
 async function syncFlipPages() {
@@ -60,11 +83,30 @@ async function syncFlipPages() {
   if (!items.length) return;
 
   if (pageFlip) {
-    // Preserve current page while new PDF pages stream in.
+    const saved = pageFlip.getCurrentPageIndex();
     pageFlip.updateFromHtml(items);
+    // Keep reader on the same page while later PDF pages stream in
+    const max = Math.max(pageFlip.getPageCount() - 1, 0);
+    pageFlip.turnToPage(Math.min(saved, max));
+    syncPageState();
   } else {
     initFlip();
   }
+}
+
+function goPrev() {
+  pageFlip?.flipPrev();
+}
+
+function goNext() {
+  pageFlip?.flipNext();
+}
+
+function densityFor(index) {
+  if (!props.showCover) return 'soft';
+  const last = props.pages.length - 1;
+  if (index === 0 || index === last) return 'hard';
+  return 'soft';
 }
 
 onMounted(() => {
@@ -85,47 +127,77 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="w-full flex justify-center items-center overflow-hidden">
-    <div class="flipbook" ref="bookContainer">
-      <div v-if="props.showCover" class="page cover" data-density="hard">
-        <div class="page-content">
-          <h2 class="text-xl font-semibold">{{ props.title || 'The Messenger' }}</h2>
-          <p class="text-sm opacity-80 mt-2">Click or drag to flip</p>
-        </div>
-      </div>
-
-      <div v-for="(page, index) in props.pages" :key="page.url || index" class="page">
-        <div class="page-content">
-          <div v-if="page.type === 'image'" class="image-container">
-            <img :src="page.url" :alt="'Page ' + (index + 1)" />
-            <span class="page-number">{{ index + 1 }}</span>
+  <div class="flipbook-wrap">
+    <div class="flipbook-stage">
+      <div class="flipbook" ref="bookContainer">
+        <div
+          v-for="(page, index) in props.pages"
+          :key="page.url || index"
+          class="page"
+          :data-density="densityFor(index)"
+        >
+          <div class="page-content">
+            <div v-if="page.type === 'image'" class="image-container">
+              <img :src="page.url" :alt="`${props.title || 'Page'} ${index + 1}`" draggable="false" />
+            </div>
+            <div v-else class="text-content">
+              <h3 class="text-lg font-semibold">Page {{ index + 1 }}</h3>
+              <p class="mt-2 text-sm text-gray-700">{{ page.content || '' }}</p>
+              <span class="page-number">{{ index + 1 }}</span>
+            </div>
           </div>
-          <div v-else class="text-content">
-            <h3 class="text-lg font-semibold">Page {{ index + 1 }}</h3>
-            <p class="mt-2 text-sm text-gray-700">{{ page.content || '' }}</p>
-            <span class="page-number">{{ index + 1 }}</span>
-          </div>
         </div>
       </div>
+    </div>
 
-      <div v-if="props.showCover" class="page cover" data-density="hard">
-        <div class="page-content">
-          <h2 class="text-xl font-semibold">The End</h2>
-        </div>
-      </div>
+    <div v-if="props.pages.length" class="flipbook-controls">
+      <button
+        type="button"
+        class="nav-btn"
+        :disabled="!canGoPrev"
+        aria-label="Previous page"
+        @click="goPrev"
+      >
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M15 18l-6-6 6-6" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </button>
+      <span class="page-indicator">{{ pageLabel }}</span>
+      <button
+        type="button"
+        class="nav-btn"
+        :disabled="!canGoNext"
+        aria-label="Next page"
+        @click="goNext"
+      >
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M9 18l6-6-6-6" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </button>
     </div>
   </div>
 </template>
 
 <style scoped>
-.flipbook {
-  /* page-flip handles sizing */
+.flipbook-wrap {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.flipbook-stage {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
 }
 
 .page {
   background-color: #fff;
-  border: 1px solid rgba(148, 163, 184, 0.5);
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 24px rgba(15, 23, 42, 0.12);
   overflow: hidden;
 }
 
@@ -137,14 +209,8 @@ onBeforeUnmount(() => {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 16px;
   box-sizing: border-box;
-}
-
-.cover {
-  background-color: #0f172a;
-  color: #fff;
-  border: 1px solid rgba(2, 6, 23, 0.8);
+  padding: 0;
 }
 
 .image-container {
@@ -154,12 +220,22 @@ onBeforeUnmount(() => {
   display: flex;
   align-items: center;
   justify-content: center;
+  background: #f8f9fa;
 }
 
 .image-container img {
-  max-width: 100%;
-  max-height: 100%;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.text-content {
+  padding: 16px;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
 }
 
 .page-number {
@@ -169,5 +245,46 @@ onBeforeUnmount(() => {
   font-size: 12px;
   color: rgba(100, 116, 139, 0.9);
   user-select: none;
+}
+
+.flipbook-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  user-select: none;
+}
+
+.nav-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(26, 54, 93, 0.15);
+  background: #fff;
+  color: #1a365d;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease, opacity 0.15s ease;
+}
+
+.nav-btn:hover:not(:disabled) {
+  background: #1a365d;
+  color: #fff;
+  border-color: #1a365d;
+}
+
+.nav-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.page-indicator {
+  min-width: 4.5rem;
+  text-align: center;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #1a365d;
 }
 </style>
