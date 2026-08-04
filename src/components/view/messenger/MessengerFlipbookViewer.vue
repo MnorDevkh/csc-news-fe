@@ -154,23 +154,19 @@ onBeforeUnmount(() => {
   <section class="w-full">
     <div
       v-if="!hasPdf"
-      class="rounded-xl border border-gray-200 bg-white px-5 py-8 text-center text-sm text-muted"
+      class="rounded-2xl border border-dashed border-primary/20 bg-white px-5 py-10 text-center text-sm text-muted"
     >
       PDF not available.
     </div>
 
-    <div v-else class="overflow-hidden rounded-xl border border-primary/10 bg-white shadow-sm">
-      <div
-        class="flex flex-wrap items-center justify-between gap-2 border-b border-primary/8 bg-primary-light/40 px-3 py-2.5 sm:px-4 sm:py-3"
-      >
-        <div class="min-w-0">
-          <div class="truncate text-sm font-semibold text-primary">{{ props.title }}</div>
-          <div v-if="isLoading" class="mt-0.5 text-xs text-muted">
-            <span v-if="progress.total">
-              Loading pages… {{ progress.current }}/{{ progress.total }}
-            </span>
-            <span v-else>Opening PDF…</span>
-          </div>
+    <div v-else class="overflow-hidden rounded-2xl border border-primary/8 bg-white/80 shadow-[0_20px_60px_-28px_rgba(26,54,93,0.35)] backdrop-blur-sm">
+      <div class="flex items-center justify-between gap-3 px-4 py-3 sm:px-5">
+        <div class="min-w-0 text-xs text-muted">
+          <span v-if="isLoading && progress.total">
+            Loading {{ progress.current }}/{{ progress.total }}
+          </span>
+          <span v-else-if="isLoading">Opening PDF…</span>
+          <span v-else>Flipbook</span>
         </div>
 
         <div class="flex items-center gap-2">
@@ -179,7 +175,7 @@ onBeforeUnmount(() => {
             :href="props.pdfUrl"
             target="_blank"
             rel="noopener noreferrer"
-            class="inline-flex items-center gap-1.5 rounded-md border border-primary/15 bg-white px-2.5 py-1.5 text-xs font-medium text-primary transition hover:border-primary hover:bg-primary hover:text-white"
+            class="inline-flex items-center rounded-full border border-primary/15 bg-primary px-3.5 py-1.5 text-xs font-semibold text-white transition hover:bg-primary-hover"
           >
             Open PDF
           </a>
@@ -196,7 +192,7 @@ onBeforeUnmount(() => {
 
       <div
         v-if="isLoading"
-        class="h-1 w-full overflow-hidden bg-primary-light"
+        class="h-0.5 w-full overflow-hidden bg-primary-light"
         aria-hidden="true"
       >
         <div
@@ -222,7 +218,7 @@ onBeforeUnmount(() => {
 
       <div
         v-else
-        class="flex min-h-[min(72vh,820px)] items-center justify-center bg-[linear-gradient(180deg,#eef2f7_0%,#f8f9fa_45%,#eef2f7_100%)] p-3 sm:p-6"
+        class="flex min-h-[min(72vh,820px)] items-center justify-center bg-[radial-gradient(ellipse_at_center,_#f8fafc_0%,_#e8edf5_70%)] p-3 sm:p-6"
       >
         <div class="mx-auto flex h-[min(72vh,820px)] min-h-[420px] w-full max-w-5xl items-center justify-center">
           <Flipbook :pages="pages" :title="props.title" :show-cover="true" />
