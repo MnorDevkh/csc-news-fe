@@ -13,7 +13,7 @@
                     <div class="flex flex-col">
                         <!-- <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight text-blue-600 m-0 leading-none">
                             CSC NEWS</h1> -->
-                        <p class="text-xs sm:text-lg font-semibold text-[#1a365d] m-0 tracking-wide uppercase">
+                        <p class="text-xs sm:text-lg font-semibold text-primary m-0 tracking-wide uppercase">
                             Catholic Cambodia
                         </p>
                     </div>
@@ -21,7 +21,7 @@
 
                 <!-- Desktop Search & Actions -->
                 <div class="hidden md:flex flex-1 max-w-xl mx-8 justify-end items-center gap-3">
-                    <div class="flex flex-1 min-w-0 items-center rounded-full bg-gray-50 pl-4 pr-1 py-1 ring-1 ring-gray-200 focus-within:ring-2 focus-within:ring-[#1a365d]/20 transition-all">
+                    <div class="flex flex-1 min-w-0 items-center rounded-full bg-gray-50 pl-4 pr-1 py-1 ring-1 ring-gray-200 focus-within:ring-2 focus-within:ring-primary/25 transition-all">
                         <input
                             v-model="searchQuery"
                             type="search"
@@ -31,7 +31,7 @@
                         />
                         <button
                             type="button"
-                            class="px-5 py-2 rounded-md bg-[#1a365d] text-white text-sm font-medium hover:bg-[#2a4a7f] shadow-sm shadow-[#1a365d]/15 shrink-0 transition-all"
+                            class="btn-primary shrink-0"
                             @click="performSearch"
                         >
                             {{ t('menu.search') }}
@@ -42,18 +42,18 @@
                         <button
                             type="button"
                             class="px-2.5 py-1.5 rounded-full text-xs font-semibold transition-all"
-                            :class="lang === 'km' ? 'bg-[#1a365d] text-white shadow-sm' : 'text-gray-500 hover:text-[#1a365d]'"
+                            :class="lang === 'km' ? 'bg-primary text-white shadow-sm' : 'text-gray-500 hover:text-primary'"
                             @click="setLang('km')"
                         >ខ្មែរ</button>
                         <button
                             type="button"
                             class="px-2.5 py-1.5 rounded-full text-xs font-semibold transition-all"
-                            :class="lang === 'en' ? 'bg-[#1a365d] text-white shadow-sm' : 'text-gray-500 hover:text-[#1a365d]'"
+                            :class="lang === 'en' ? 'bg-primary text-white shadow-sm' : 'text-gray-500 hover:text-primary'"
                             @click="setLang('en')"
                         >EN</button>
                     </div>
                     <router-link v-if="isAuthenticated" :to="{ name: 'dashboard' }"
-                        class="flex items-center gap-2 px-4 py-2 rounded-md bg-[#d4a853] text-white text-sm font-medium hover:bg-[#c49843] shadow-sm shadow-[#d4a853]/20 shrink-0 transition-all">
+                        class="btn-accent shrink-0 no-underline">
                         <DashboardIcon class="w-5 h-5" />
                         <span>{{ t('menu.dashboard') }}</span>
                     </router-link>
@@ -61,7 +61,7 @@
 
                 <button
                     type="button"
-                    class="md:hidden p-2 text-gray-600 hover:text-[#1a365d] transition-colors"
+                    class="md:hidden p-2 text-gray-600 hover:text-primary transition-colors"
                     aria-label="Open menu"
                     @click="mobileMenuOpen = true"
                 >
@@ -76,12 +76,12 @@
                         <!-- Simple link -->
                         <template v-if="!item.children?.length">
                             <a v-if="item.href" :href="item.href" target="_blank" rel="noopener"
-                                class="menu-link block px-6 py-3 text-gray-600 hover:text-[#1a365d] transition-colors">
+                                class="menu-link nav-link-brand block px-6 py-3">
                                 {{ item.label }}
                             </a>
                             <router-link v-else :to="item.path!"
-                                class="menu-link block px-6 py-3 no-underline text-gray-600 hover:text-[#1a365d] transition-colors"
-                                exact-active-class="!text-[#1a365d] !font-semibold border-b-2 border-[#d4a853]">
+                                class="menu-link nav-link-brand block px-6 py-3 no-underline"
+                                exact-active-class="is-active border-b-2 border-accent">
                                 {{ item.label }}
                             </router-link>
                         </template>
@@ -92,8 +92,8 @@
                                 class="menu-link menu-dropdown-trigger flex items-center gap-1 px-6 py-3 w-full text-left border-0 bg-transparent cursor-pointer transition-colors"
                                 :class="
                                     (itemDropdownKey(item) === 'news' ? isNewsActive : isStructureActive)
-                                        ? 'text-[#1a365d] font-semibold border-b-2 border-[#d4a853]'
-                                        : 'text-gray-600 hover:text-[#1a365d]'
+                                        ? 'text-primary font-semibold border-b-2 border-accent'
+                                        : 'nav-link-brand'
                                 "
                                 :aria-expanded="itemDropdownKey(item) === 'news' ? newsDropdownOpen : structureDropdownOpen"
                                 aria-haspopup="true"
@@ -119,13 +119,13 @@
                             </button>
                             <div
                                 v-show="itemDropdownKey(item) === 'news' ? newsDropdownOpen : structureDropdownOpen"
-                                class="menu-dropdown absolute left-0 top-full min-w-[220px] py-2 bg-white shadow-xl shadow-gray-200/50 ring-1 ring-gray-100 rounded-2xl z-50"
+                                class="menu-dropdown absolute left-0 top-full min-w-[220px] py-2 bg-white shadow-xl shadow-primary/8 ring-1 ring-primary/8 rounded-2xl z-50"
                                 @mouseleave="itemDropdownKey(item) === 'news' ? (newsDropdownOpen = false) : (structureDropdownOpen = false)"
                             >
                                 <router-link
                                     v-if="itemDropdownKey(item) === 'structure'"
                                     :to="item.path!"
-                                    class="block px-4 py-2 text-gray-800 font-medium hover:bg-gray-50 hover:text-[#1a365d] border-b border-gray-100 transition-colors"
+                                    class="interactive-row interactive-row--tint block px-4 py-2 text-gray-800 font-medium border-b border-gray-100"
                                     @click="structureDropdownOpen = false"
                                 >
                                     ទាំងអស់
@@ -134,7 +134,7 @@
                                     <div v-if="group.children?.length" class="py-1">
                                         <router-link
                                             :to="group.path!"
-                                            class="block px-4 py-2 text-gray-800 font-medium hover:bg-gray-50 hover:text-[#1a365d] transition-colors"
+                                            class="interactive-row interactive-row--tint block px-4 py-2 text-gray-800 font-medium"
                                             @click="closeAllDesktopDropdowns"
                                         >
                                             {{ group.label }}
@@ -143,7 +143,7 @@
                                             v-for="child in group.children"
                                             :key="child.path"
                                             :to="child.path!"
-                                            class="block py-1.5 pl-6 pr-4 text-gray-500 hover:bg-gray-50 hover:text-[#1a365d] text-sm transition-colors"
+                                            class="interactive-row interactive-row--tint block py-1.5 pl-6 pr-4 text-gray-500 text-sm"
                                             @click="closeAllDesktopDropdowns"
                                         >
                                             {{ child.label }}
@@ -152,7 +152,7 @@
                                     <router-link
                                         v-else
                                         :to="group.path!"
-                                        class="block px-4 py-2 text-gray-600 hover:bg-gray-50 hover:text-[#1a365d] transition-colors"
+                                        class="interactive-row interactive-row--tint block px-4 py-2 text-gray-600"
                                         @click="closeAllDesktopDropdowns"
                                     >
                                         {{ group.label }}
@@ -183,7 +183,7 @@
                             alt="CSC News logo"
                             class="h-8 w-auto object-contain"
                         />
-                        <h1 class="text-2xl font-extrabold text-[#1a365d] leading-none">CSC NEWS</h1>
+                        <h1 class="text-2xl font-extrabold text-primary leading-none">CSC NEWS</h1>
                     </div>
                     <button
                         type="button"
@@ -198,7 +198,7 @@
                 <div class="flex-1 p-6 flex flex-col gap-8">
                     <div>
                         <h3 class="text-sm font-bold text-muted uppercase tracking-wider mb-2">{{ t('menu.search') }}</h3>
-                        <div class="flex flex-1 min-w-0 items-center rounded-full bg-gray-50 pl-4 pr-1 py-1 ring-1 ring-gray-200 focus-within:ring-2 focus-within:ring-[#1a365d]/20 transition-all">
+                        <div class="flex flex-1 min-w-0 items-center rounded-full bg-gray-50 pl-4 pr-1 py-1 ring-1 ring-gray-200 focus-within:ring-2 focus-within:ring-primary/25 transition-all">
                             <input
                                 v-model="searchQuery"
                                 type="search"
@@ -208,7 +208,7 @@
                             />
                             <button
                                 type="button"
-                                class="px-4 py-2 rounded-md bg-[#1a365d] text-white text-sm font-medium hover:bg-[#2a4a7f] shadow-sm transition-all"
+                                class="btn-primary"
                                 @click="() => { performSearch(); mobileMenuOpen = false; }"
                             >
                                 {{ t('menu.search') }}
@@ -219,13 +219,13 @@
                                 <button
                                     type="button"
                                     class="px-3 py-1.5 rounded-full text-xs font-semibold transition-all"
-                                    :class="lang === 'km' ? 'bg-[#1a365d] text-white shadow-sm' : 'text-gray-500'"
+                                    :class="lang === 'km' ? 'bg-primary text-white shadow-sm' : 'text-gray-500 hover:text-primary'"
                                     @click="setLang('km')"
                                 >ខ្មែរ</button>
                                 <button
                                     type="button"
                                     class="px-3 py-1.5 rounded-full text-xs font-semibold transition-all"
-                                    :class="lang === 'en' ? 'bg-[#1a365d] text-white shadow-sm' : 'text-gray-500'"
+                                    :class="lang === 'en' ? 'bg-primary text-white shadow-sm' : 'text-gray-500 hover:text-primary'"
                                     @click="setLang('en')"
                                 >EN</button>
                             </div>
@@ -327,7 +327,7 @@
                     <div v-if="isAuthenticated" class="pt-4 border-t border-stone-200/70">
                         <router-link
                             :to="{ name: 'dashboard' }"
-                            class="flex items-center justify-center gap-2 w-full py-3 px-4 rounded-md bg-primary text-white font-medium hover:bg-primary-hover"
+                            class="btn-accent w-full no-underline"
                             @click="mobileMenuOpen = false"
                         >
                             <DashboardIcon class="w-5 h-5" />

@@ -121,7 +121,7 @@ const formatDate = (dateString) => {
           <h3 class="text-xl font-bold text-gray-800 mb-2">Something went wrong</h3>
           <p class="text-gray-500 text-sm mb-6">Failed to load homepage content. Please check your connection and try again.</p>
           <button @click="() => { hasError = false; isLoading = true; location.reload(); }"
-            class="px-6 py-2.5 bg-[#1a365d] text-white rounded-md text-sm font-medium hover:bg-[#2a4a7f] shadow-sm transition-all">
+            class="btn-primary">
             Try Again
           </button>
         </div>
@@ -166,63 +166,63 @@ const formatDate = (dateString) => {
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           <RouterLink to="/news"
-            class="bg-white p-4 sm:p-6 rounded-2xl ring-1 ring-gray-100 shadow-sm hover:shadow-lg duration-300 ease-out hover:-translate-y-1 cursor-pointer group text-center flex flex-col items-center no-underline relative overflow-hidden">
-            <div class="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-[#d4a853] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            class="tile-interactive bg-white p-4 sm:p-6 rounded-2xl ring-1 ring-gray-100 shadow-sm cursor-pointer group text-center flex flex-col items-center no-underline relative overflow-hidden">
+            <div class="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-accent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             <div
-              class="h-14 w-14 bg-[#1a365d]/8 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-[#1a365d] duration-300 group-hover:shadow-lg group-hover:shadow-[#1a365d]/20">
-              <TeamOutlined class="text-2xl text-[#1a365d] group-hover:text-white transition-colors" />
+              class="tile-icon h-14 w-14 bg-primary-light text-primary rounded-2xl flex items-center justify-center mb-4">
+              <TeamOutlined class="text-2xl" />
             </div>
-            <h3 class="text-lg font-bold text-gray-900 mb-2 group-hover:text-[#1a365d] transition-colors">ពត៍មានព្រះសហគមន៍</h3>
+            <h3 class="tile-title text-lg font-bold text-gray-900 mb-2 transition-colors">ពត៍មានព្រះសហគមន៍</h3>
             <p class="text-muted text-sm mb-0">ពត៍មានភូមិភាគ និងសកម្មភាពផ្សេងៗ</p>
           </RouterLink>
           <RouterLink to="/read"
-            class="bg-white p-4 sm:p-6 rounded-2xl ring-1 ring-gray-100 shadow-sm hover:shadow-lg duration-300 ease-out hover:-translate-y-1 cursor-pointer group text-center flex flex-col items-center no-underline relative overflow-hidden">
-            <div class="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-[#d4a853] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            class="tile-interactive bg-white p-4 sm:p-6 rounded-2xl ring-1 ring-gray-100 shadow-sm cursor-pointer group text-center flex flex-col items-center no-underline relative overflow-hidden">
+            <div class="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-accent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             <div
-              class="h-14 w-14 bg-sky-100/80 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-[#1a365d] duration-300 group-hover:shadow-lg group-hover:shadow-[#1a365d]/20">
-              <ReadOutlined class="text-2xl text-sky-700/90 group-hover:text-white transition-colors" />
+              class="tile-icon h-14 w-14 bg-primary-light text-primary rounded-2xl flex items-center justify-center mb-4">
+              <ReadOutlined class="text-2xl" />
             </div>
-            <h3 class="text-xl font-bold text-stone-800 mb-2">ព្រះគម្ពីរ</h3>
+            <h3 class="tile-title text-lg font-bold text-gray-900 mb-2 transition-colors">ព្រះគម្ពីរ</h3>
             <p class="text-muted text-sm mb-0">អត្ថបទ និងការសិក្សាព្រះគម្ពីរ</p>
           </RouterLink>
           <RouterLink :to="{ name: 'saintList' }"
-            class="bg-white p-4 sm:p-6 rounded-2xl ring-1 ring-gray-100 shadow-sm hover:shadow-lg duration-300 ease-out hover:-translate-y-1 cursor-pointer group text-center flex flex-col items-center no-underline relative overflow-hidden">
-            <div class="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-[#d4a853] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            class="tile-interactive bg-white p-4 sm:p-6 rounded-2xl ring-1 ring-gray-100 shadow-sm cursor-pointer group text-center flex flex-col items-center no-underline relative overflow-hidden">
+            <div class="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-accent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             <div
-              class="h-14 w-14 bg-amber-100/70 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-[#1a365d] duration-300 group-hover:shadow-lg group-hover:shadow-[#1a365d]/20">
-              <FireOutlined class="text-2xl text-amber-800/80 group-hover:text-white transition-colors" />
+              class="tile-icon h-14 w-14 bg-accent-light text-accent-hover rounded-2xl flex items-center justify-center mb-4">
+              <FireOutlined class="text-2xl" />
             </div>
-            <h3 class="text-xl font-bold text-stone-800 mb-2">សន្តសន្តី</h3>
+            <h3 class="tile-title text-lg font-bold text-gray-900 mb-2 transition-colors">សន្តសន្តី</h3>
             <p class="text-muted text-sm mb-0">ប្រវត្តិ និងគំរូជីវិតសន្តបុគ្គល</p>
           </RouterLink>
           <RouterLink :to="{ name: 'galleryGridView' }"
-            class="bg-white p-4 sm:p-6 rounded-2xl ring-1 ring-gray-100 shadow-sm hover:shadow-lg duration-300 ease-out hover:-translate-y-1 cursor-pointer group text-center flex flex-col items-center no-underline relative overflow-hidden">
-            <div class="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-[#d4a853] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            class="tile-interactive bg-white p-4 sm:p-6 rounded-2xl ring-1 ring-gray-100 shadow-sm cursor-pointer group text-center flex flex-col items-center no-underline relative overflow-hidden">
+            <div class="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-accent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             <div
-              class="h-14 w-14 bg-emerald-100/70 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-[#1a365d] duration-300 group-hover:shadow-lg group-hover:shadow-[#1a365d]/20">
-              <PictureOutlined class="text-2xl text-emerald-800/75 group-hover:text-white transition-colors" />
+              class="tile-icon h-14 w-14 bg-primary-light text-primary rounded-2xl flex items-center justify-center mb-4">
+              <PictureOutlined class="text-2xl" />
             </div>
-            <h3 class="text-xl font-bold text-stone-800 mb-2">កម្រងរូបភាព</h3>
+            <h3 class="tile-title text-lg font-bold text-gray-900 mb-2 transition-colors">កម្រងរូបភាព</h3>
             <p class="text-muted text-sm mb-0">រូបភាពសកម្មភាព និងពិធីបុណ្យ</p>
           </RouterLink>
           <RouterLink :to="{ name: 'messengerList' }"
-            class="bg-white p-4 sm:p-6 rounded-2xl ring-1 ring-gray-100 shadow-sm hover:shadow-lg duration-300 ease-out hover:-translate-y-1 cursor-pointer group text-center flex flex-col items-center no-underline relative overflow-hidden">
-            <div class="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-[#d4a853] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            class="tile-interactive bg-white p-4 sm:p-6 rounded-2xl ring-1 ring-gray-100 shadow-sm cursor-pointer group text-center flex flex-col items-center no-underline relative overflow-hidden">
+            <div class="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-accent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             <div
-              class="h-14 w-14 bg-slate-200/80 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-[#1a365d] duration-300 group-hover:shadow-lg group-hover:shadow-[#1a365d]/20">
-              <ReadOutlined class="text-2xl text-slate-600 group-hover:text-white transition-colors" />
+              class="tile-icon h-14 w-14 bg-primary-light text-primary rounded-2xl flex items-center justify-center mb-4">
+              <ReadOutlined class="text-2xl" />
             </div>
-            <h3 class="text-xl font-bold text-stone-800 mb-2">The Messenger</h3>
+            <h3 class="tile-title text-lg font-bold text-gray-900 mb-2 transition-colors">The Messenger</h3>
             <p class="text-muted text-sm mb-0">Magazine issues in flipbook format</p>
           </RouterLink>
           <RouterLink :to="{ name: 'sermonIssueList' }"
-            class="bg-white p-4 sm:p-6 rounded-2xl ring-1 ring-gray-100 shadow-sm hover:shadow-lg duration-300 ease-out hover:-translate-y-1 cursor-pointer group text-center flex flex-col items-center no-underline relative overflow-hidden">
-            <div class="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-[#d4a853] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            class="tile-interactive bg-white p-4 sm:p-6 rounded-2xl ring-1 ring-gray-100 shadow-sm cursor-pointer group text-center flex flex-col items-center no-underline relative overflow-hidden">
+            <div class="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-accent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             <div
-              class="h-14 w-14 bg-indigo-100/80 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-[#1a365d] duration-300 group-hover:shadow-lg group-hover:shadow-[#1a365d]/20">
-              <ReadOutlined class="text-2xl text-indigo-700/80 group-hover:text-white transition-colors" />
+              class="tile-icon h-14 w-14 bg-accent-light text-accent-hover rounded-2xl flex items-center justify-center mb-4">
+              <ReadOutlined class="text-2xl" />
             </div>
-            <h3 class="text-xl font-bold text-stone-800 mb-2">The Sermon</h3>
+            <h3 class="tile-title text-lg font-bold text-gray-900 mb-2 transition-colors">The Sermon</h3>
             <p class="text-muted text-sm mb-0">Sermon magazine issues in flipbook format</p>
           </RouterLink>
         </div>
@@ -238,7 +238,7 @@ const formatDate = (dateString) => {
               <span class="h-8 w-1.5 shrink-0 rounded-full bg-gradient-to-b from-[#1a365d] to-[#d4a853]" aria-hidden="true" />
               <h2 class="text-2xl font-bold text-stone-800 tracking-tight m-0">{{ t('home.latestNews') }}</h2>
             </div>
-            <RouterLink to="/news" class="text-[#1a365d] hover:text-[#d4a853] font-semibold flex items-center text-sm shrink-0 transition-colors">
+            <RouterLink to="/news" class="link-brand font-semibold flex items-center text-sm shrink-0">
               មើលទាំងអស់
               <ArrowRightOutlined class="ml-1 text-xs" />
             </RouterLink>
@@ -251,7 +251,7 @@ const formatDate = (dateString) => {
             <ul v-else class="divide-y divide-gray-50">
               <li v-for="headline in latestHeadlines" :key="headline.id" class="group">
                 <RouterLink :to="localizedArticleRoute(headline, lang)"
-                  class="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 hover:bg-[#1a365d]/[0.02] duration-200 ease-out rounded-md">
+                  class="interactive-row flex items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-md">
                   <div class="w-28 h-[76px] flex-shrink-0 rounded-md overflow-hidden bg-gray-100 ring-1 ring-gray-100">
                     <img v-if="headline.thumbnail" :src="headline.thumbnail" :alt="headline.title"
                       class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
@@ -259,11 +259,11 @@ const formatDate = (dateString) => {
                   </div>
                   <div class="flex-1 min-w-0 flex flex-col justify-center">
                     <h4
-                      class="text-base font-semibold text-gray-900 group-hover:text-[#1a365d] duration-200 leading-snug line-clamp-2 mb-1">
+                      class="text-base font-semibold text-gray-900 group-hover:text-primary duration-200 leading-snug line-clamp-2 mb-1">
                       {{ headline.title }}</h4>
                     <div class="flex items-center gap-2 flex-wrap">
                       <span v-if="headline.category?.name"
-                        class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold bg-[#1a365d]/8 text-[#1a365d]">
+                        class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold bg-primary-light text-primary">
                         {{ headline.category.name }}
                       </span>
                       <span class="text-xs text-gray-400">{{ formatDate(headline.publish_at) }}</span>
@@ -293,9 +293,9 @@ const formatDate = (dateString) => {
                     <ul class="ml-3 mt-0.5 space-y-0.5 border-l border-gray-200 pl-2">
                       <li v-for="child in children" :key="child.id">
                         <RouterLink :to="{ name: 'categoryView', params: { name: child.slug } }"
-                          class="flex items-center justify-between py-1.5 px-2 rounded-md text-gray-600 hover:bg-[#1a365d]/[0.04] hover:text-[#1a365d] duration-200 ease-out group text-sm transition-colors">
+                          class="interactive-row interactive-row--tint flex items-center justify-between py-1.5 px-2 rounded-md text-gray-600 group text-sm">
                           <span>{{ child.name }}</span>
-                          <ArrowRightOutlined class="text-xs opacity-0 group-hover:opacity-100 duration-200 shrink-0 text-[#d4a853]" />
+                          <ArrowRightOutlined class="text-xs opacity-0 group-hover:opacity-100 duration-200 shrink-0 text-accent" />
                         </RouterLink>
                       </li>
                     </ul>
@@ -303,9 +303,9 @@ const formatDate = (dateString) => {
                   <!-- Parent without children: single link -->
                   <li v-else>
                     <RouterLink :to="{ name: 'categoryView', params: { name: parent.slug } }"
-                      class="flex items-center justify-between p-2 rounded-md text-gray-600 hover:bg-[#1a365d]/[0.04] hover:text-[#1a365d] duration-200 ease-out group transition-colors">
+                      class="interactive-row interactive-row--tint flex items-center justify-between p-2 rounded-md text-gray-600 group">
                       <span>{{ parent.name }}</span>
-                      <ArrowRightOutlined class="text-xs opacity-0 group-hover:opacity-100 duration-200 text-[#d4a853]" />
+                      <ArrowRightOutlined class="text-xs opacity-0 group-hover:opacity-100 duration-200 text-accent" />
                     </RouterLink>
                   </li>
                 </template>
@@ -326,7 +326,7 @@ const formatDate = (dateString) => {
               <h2 class="text-2xl font-bold text-stone-800 tracking-tight m-0">សន្តសន្តី</h2>
             </div>
             <RouterLink :to="{ name: 'saintList' }"
-              class="text-[#1a365d] hover:text-[#d4a853] font-semibold flex items-center text-sm shrink-0 transition-colors">
+              class="link-brand font-semibold flex items-center text-sm shrink-0">
               មើលបន្ថែម
               <ArrowRightOutlined class="ml-1 text-xs" />
             </RouterLink>
@@ -349,7 +349,7 @@ const formatDate = (dateString) => {
                 <h2 class="text-2xl font-bold text-stone-800 tracking-tight m-0">អត្ថបទព្រះគម្ពីរប្រចាំថ្ងៃ</h2>
               </div>
               <RouterLink :to="{ name: 'dailyBibleList' }"
-                class="text-[#1a365d] hover:text-[#d4a853] font-semibold flex items-center text-sm shrink-0 transition-colors">
+                class="link-brand font-semibold flex items-center text-sm shrink-0">
                 មើលបន្ថែម
                 <ArrowRightOutlined class="ml-1 text-xs" />
               </RouterLink>
@@ -366,7 +366,7 @@ const formatDate = (dateString) => {
                 <h2 class="text-2xl font-bold text-stone-800 tracking-tight m-0">ធម្មទេសនា​ប្រចាំថ្ងៃ</h2>
               </div>
               <RouterLink :to="{ name: 'dailySermonList' }"
-                class="text-[#1a365d] hover:text-[#d4a853] font-semibold flex items-center text-sm shrink-0 transition-colors">
+                class="link-brand font-semibold flex items-center text-sm shrink-0">
                 មើលបន្ថែម
                 <ArrowRightOutlined class="ml-1 text-xs" />
               </RouterLink>
@@ -386,7 +386,7 @@ const formatDate = (dateString) => {
             </div>
             <RouterLink
               :to="{ name: 'messengerList' }"
-              class="text-[#1a365d] hover:text-[#d4a853] font-semibold flex items-center text-sm shrink-0 transition-colors"
+              class="link-brand font-semibold flex items-center text-sm shrink-0"
             >
               មើលបន្ថែម
               <ArrowRightOutlined class="ml-1 text-xs" />
@@ -406,7 +406,7 @@ const formatDate = (dateString) => {
             </div>
             <RouterLink
               :to="{ name: 'sermonIssueList' }"
-              class="text-[#1a365d] hover:text-[#d4a853] font-semibold flex items-center text-sm shrink-0 transition-colors"
+              class="link-brand font-semibold flex items-center text-sm shrink-0"
             >
               មើលបន្ថែម
               <ArrowRightOutlined class="ml-1 text-xs" />
@@ -425,7 +425,7 @@ const formatDate = (dateString) => {
               <h2 class="text-2xl font-bold text-stone-800 tracking-tight m-0">កម្រងរូបភាព</h2>
             </div>
             <RouterLink :to="{ name: 'galleryGridView' }"
-              class="text-[#1a365d] hover:text-[#d4a853] font-semibold flex items-center text-sm shrink-0 transition-colors">
+              class="link-brand font-semibold flex items-center text-sm shrink-0">
               មើលបន្ថែម
               <ArrowRightOutlined class="ml-1 text-xs" />
             </RouterLink>

@@ -33,6 +33,13 @@ import { ADMIN_ROUTE_PERMISSIONS } from "@/config/adminRoutePermissions";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
+  scrollBehavior(to) {
+    if (to.hash) {
+      return { el: to.hash, top: 0, behavior: "smooth" };
+    }
+    // Always land at the top when the URL changes
+    return { left: 0, top: 0 };
+  },
   routes: [
     {
       path: "/",
@@ -590,6 +597,16 @@ router.beforeEach(async (to, from, next) => {
     return;
   }
   next();
+});
+
+router.afterEach((to) => {
+  if (to.hash) return;
+  // Ensure scroll resets even when async page content loads late
+  requestAnimationFrame(() => {
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  });
 });
 
 export default router;

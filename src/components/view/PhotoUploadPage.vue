@@ -65,7 +65,7 @@ onMounted(loadPhotos);
       <h1 class="text-2xl font-bold text-gray-800 border-l-4 border-indigo-500 pl-4 mb-2">
         Photo upload
       </h1>
-      <p class="text-gray-500 text-sm">Upload images to display in the gallery. JPEG, PNG, and WebP up to 10 MB.</p>
+      <p class="text-gray-500 text-sm">Upload images to display in the gallery. JPEG, PNG, and WebP up to 30 MB.</p>
     </div>
 
     <!-- Upload area -->

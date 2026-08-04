@@ -134,6 +134,7 @@
               <PlusOutlined />
               {{ mediaUploading ? 'Uploading…' : (form.media_url ? 'Replace media' : 'Upload media') }}
             </button>
+            <p class="mt-2 text-xs text-gray-500">Audio or video up to 100 MB. Videos are compressed on the server for web playback.</p>
             <p v-if="mediaError" class="mt-2 text-xs text-red-600">{{ mediaError }}</p>
           </div>
           <div class="md:text-right text-sm text-gray-500">
