@@ -220,11 +220,12 @@ onBeforeUnmount(() => {
         <div class="text-sm text-muted">Preparing your magazine…</div>
       </div>
 
-      <div v-else class="bg-[linear-gradient(180deg,#eef2f7_0%,#f8f9fa_45%,#eef2f7_100%)] p-3 sm:p-6">
-        <div class="mx-auto flex w-full max-w-5xl items-center justify-center">
-          <div class="flex h-[min(72vh,820px)] min-h-[420px] w-full items-center justify-center">
-            <Flipbook :pages="pages" :title="props.title" :show-cover="false" />
-          </div>
+      <div
+        v-else
+        class="flex min-h-[min(72vh,820px)] items-center justify-center bg-[linear-gradient(180deg,#eef2f7_0%,#f8f9fa_45%,#eef2f7_100%)] p-3 sm:p-6"
+      >
+        <div class="mx-auto flex h-[min(72vh,820px)] min-h-[420px] w-full max-w-5xl items-center justify-center">
+          <Flipbook :pages="pages" :title="props.title" :show-cover="true" />
         </div>
       </div>
     </div>

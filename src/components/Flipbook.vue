@@ -9,7 +9,7 @@ const props = defineProps({
   },
   showCover: {
     type: Boolean,
-    default: false,
+    default: true,
   },
   title: {
     type: String,
@@ -20,15 +20,30 @@ const props = defineProps({
 const bookContainer = ref(null);
 const currentPage = ref(0);
 const pageCount = ref(0);
+const isLandscape = ref(true);
 let pageFlip = null;
 
 const canGoPrev = computed(() => currentPage.value > 0);
 const canGoNext = computed(() => currentPage.value < Math.max(pageCount.value - 1, 0));
+const isFrontCover = computed(
+  () =>
+    props.showCover &&
+    isLandscape.value &&
+    pageCount.value > 0 &&
+    currentPage.value === 0
+);
+const isBackCover = computed(
+  () =>
+    props.showCover &&
+    isLandscape.value &&
+    pageCount.value > 1 &&
+    currentPage.value === pageCount.value - 1
+);
+const isClosedBook = computed(() => isFrontCover.value || isBackCover.value);
 
 const pageLabel = computed(() => {
   const total = pageCount.value || props.pages.length;
   if (!total) return '';
-  // With cover mode, odd spreads show two pages after the cover
   const current = currentPage.value + 1;
   return `${current} / ${total}`;
 });
@@ -36,6 +51,7 @@ const pageLabel = computed(() => {
 function destroyFlip() {
   if (pageFlip) {
     pageFlip.off('flip');
+    pageFlip.off('changeOrientation');
     pageFlip.destroy();
     pageFlip = null;
   }
@@ -49,6 +65,7 @@ function syncPageState() {
   if (!pageFlip) return;
   currentPage.value = pageFlip.getCurrentPageIndex();
   pageCount.value = pageFlip.getPageCount();
+  isLandscape.value = pageFlip.getOrientation() === 'landscape';
 }
 
 function initFlip() {
@@ -65,6 +82,7 @@ function initFlip() {
     maxHeight: 1800,
     maxShadowOpacity: 0.35,
     showCover: props.showCover,
+    startPage: 0,
     mobileScrollSupport: true,
     usePortrait: true,
     autoSize: true,
@@ -72,6 +90,10 @@ function initFlip() {
 
   pageFlip.loadFromHTML(getPageElements());
   pageFlip.on('flip', () => syncPageState());
+  pageFlip.on('changeOrientation', (e) => {
+    isLandscape.value = e.data === 'landscape';
+    syncPageState();
+  });
   syncPageState();
 }
 
@@ -128,7 +150,14 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="flipbook-wrap">
-    <div class="flipbook-stage">
+    <div
+      class="flipbook-stage"
+      :class="{
+        'is-closed': isClosedBook,
+        'is-front-cover': isFrontCover,
+        'is-back-cover': isBackCover,
+      }"
+    >
       <div class="flipbook" ref="bookContainer">
         <div
           v-for="(page, index) in props.pages"
@@ -189,10 +218,35 @@ onBeforeUnmount(() => {
 
 .flipbook-stage {
   width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
   display: flex;
   justify-content: center;
   align-items: center;
   overflow: hidden;
+}
+
+/* Closed book (front/back cover): single page centered on screen */
+.flipbook-stage.is-front-cover :deep(.stf__parent),
+.flipbook-stage.is-front-cover .flipbook {
+  transform: translateX(-25%);
+  transition: transform 0.28s ease;
+}
+
+.flipbook-stage.is-back-cover :deep(.stf__parent),
+.flipbook-stage.is-back-cover .flipbook {
+  transform: translateX(25%);
+  transition: transform 0.28s ease;
+}
+
+.flipbook-stage:not(.is-closed) :deep(.stf__parent),
+.flipbook-stage:not(.is-closed) .flipbook {
+  transform: translateX(0);
+  transition: transform 0.28s ease;
+}
+
+.flipbook-stage.is-closed :deep(.stf__item) {
+  box-shadow: 0 12px 40px rgba(15, 23, 42, 0.18);
 }
 
 .page {
