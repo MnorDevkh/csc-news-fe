@@ -16,15 +16,16 @@ const antdTheme = {
     colorSuccess: '#059669',
     colorWarning: '#d97706',
     colorError: '#dc2626',
-    colorLinkHover: '#d4a853',
+    colorLinkHover: '#b8954a',
     colorPrimaryHover: '#2a4a7f',
     colorPrimaryActive: '#142848',
     controlOutline: 'rgba(26, 54, 93, 0.18)',
     controlItemBgHover: '#e8edf5',
     controlItemBgActive: '#e8edf5',
-    borderRadiusLG: 12,
-    borderRadius: 6,
-    fontFamily: "'Kantumruy Pro', 'Khmer', 'Koh Santepheap', 'Inter', sans-serif",
+    borderRadiusLG: 8,
+    borderRadius: 4,
+    fontFamily: "'Kantumruy Pro', 'Khmer', 'Koh Santepheap', sans-serif",
+    colorBgContainer: '#ffffff',
   },
 }
 
@@ -85,7 +86,7 @@ const contentPullStyle = computed(() => {
 
 <template>
   <ConfigProvider :theme="antdTheme">
-  <div id="app" class="w-full" :class="{ 'bg-surface': !isAdminOrLogin }">
+  <div id="app" class="w-full" :class="{ 'bg-cream': !isAdminOrLogin }">
     <div
       v-if="pullToRefreshEnabled"
       class="fixed left-0 right-0 top-0 z-[60] pointer-events-none flex justify-center items-start overflow-hidden text-primary transition-[height] duration-75 ease-out"
@@ -104,6 +105,7 @@ const contentPullStyle = computed(() => {
     >
       <Menus v-if="!isAdminOrLogin" />
       <div
+        class="flex-1"
         :class="[
           showMobileTabBar
             ? 'pb-[calc(4rem+env(safe-area-inset-bottom,0px))] md:pb-0'
@@ -112,7 +114,7 @@ const contentPullStyle = computed(() => {
       >
         <RouterView
           :class="{
-            'px-[5px] sm:px-5 md:px-6 lg:px-8 xl:px-10': !isAdminOrLogin,
+            'px-3 sm:px-5 md:px-6 lg:px-8 xl:px-10': !isAdminOrLogin,
           }"
         />
       </div>

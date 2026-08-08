@@ -16,7 +16,7 @@
         <p class="text-red-600 mb-4">{{ error }}</p>
         <button
           type="button"
-          class="text-blue-600 hover:text-blue-800 font-medium"
+          class="text-primary hover:text-burgundy font-medium"
           @click="loadSaints"
         >
           Retry
@@ -52,7 +52,7 @@
 
               <div class="flex-1 min-w-0">
                 <div class="flex items-start justify-between gap-3">
-                  <h3 class="font-semibold text-gray-900 group-hover:text-amber-600 transition-colors">
+                  <h3 class="font-semibold text-gray-900 group-hover:text-burgundy transition-colors">
                     {{ saint.name }}
                   </h3>
                   <span class="text-xs text-gray-500 shrink-0">

@@ -160,8 +160,8 @@ watch(lang, (newLang) => {
 </script>
 
 <template>
-  <div class="w-full min-h-screen flex justify-center items-start px-3 py-3 sm:px-4 sm:py-4 box-border bg-[#f8f9fa]">
-    <div class="w-full max-w-4xl mx-auto rounded-2xl bg-white p-3 sm:p-8 lg:p-8 lg:py-8 ring-1 ring-gray-100 shadow-sm">
+  <div class="w-full min-h-0 flex justify-center items-start py-2 box-border">
+    <div class="w-full panel p-4 sm:p-6 lg:p-8">
       <h1 class="mb-6 text-2xl sm:text-3xl font-bold text-[#1a365d] relative pb-3">
         {{ t('category.title', { name: categoryName }) }}
         <span class="absolute bottom-0 left-0 w-12 h-0.5 bg-gradient-to-r from-[#d4a853] to-transparent rounded-full"></span>

@@ -34,7 +34,7 @@ defineProps({
     <div class="flex flex-col bg-white p-4 sm:p-6 rounded-2xl shadow-sm border border-gray-100 transition-shadow duration-300 group-hover:shadow-md h-full">
       <div class="flex flex-col justify-between h-full">
         <div>
-          <h3 class="text-xl font-bold text-gray-800 group-hover:text-purple-600 transition-colors">{{ title }}</h3>
+          <h3 class="text-xl font-bold text-gray-800 group-hover:text-burgundy transition-colors">{{ title }}</h3>
           <p class="text-sm text-gray-500 mt-1">
             <template v-if="preacher">by {{ preacher }}</template>
             <template v-if="date">{{ preacher ? ' · ' : '' }}{{ date }}</template>
@@ -55,7 +55,7 @@ defineProps({
     <div class="flex flex-col bg-white p-4 sm:p-6 rounded-2xl shadow-sm border border-gray-100 transition-shadow duration-300 group-hover:shadow-md h-full">
       <div class="flex flex-col justify-between h-full">
         <div>
-          <h3 class="text-xl font-bold text-gray-800 group-hover:text-purple-600 transition-colors">{{ title }}</h3>
+          <h3 class="text-xl font-bold text-gray-800 group-hover:text-burgundy transition-colors">{{ title }}</h3>
           <p class="text-sm text-gray-500 mt-1">
             <template v-if="preacher">by {{ preacher }}</template>
             <template v-if="date">{{ preacher ? ' · ' : '' }}{{ date }}</template>

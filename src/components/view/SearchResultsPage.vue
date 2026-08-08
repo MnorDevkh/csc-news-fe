@@ -60,15 +60,17 @@ watch(lang, () => {
 </script>
 
 <template>
-  <div class="w-full min-h-screen flex justify-center items-start p-4 sm:p-6 lg:p-8 box-border bg-gray-50">
-    <div class="w-full max-w-4xl mx-auto py-8 px-4 sm:py-10 sm:px-6 lg:py-12 lg:px-8">
+  <div class="w-full min-h-[50vh] flex justify-center items-start py-6 sm:py-10 box-border">
+    <div class="w-full max-w-4xl mx-auto">
 
-      <div class="mb-8 text-center sm:text-left">
-        <h1 class="text-3xl font-bold text-gray-900 mb-2">
+      <div class="mb-8">
+        <h1 class="font-display text-3xl font-semibold text-navy mb-2 m-0">
           {{ t('search.title') }}
         </h1>
-        <p class="text-gray-500 text-lg">
-          {{ t('search.found', { count: results.length }) }} <span class="font-semibold text-blue-600">"{{ query }}"</span>
+        <div class="gold-rule-left mt-3 mb-3"></div>
+        <p class="text-ink-soft text-lg m-0">
+          {{ t('search.found', { count: results.length }) }}
+          <span class="font-semibold text-burgundy">"{{ query }}"</span>
         </p>
       </div>
 
@@ -76,36 +78,39 @@ watch(lang, () => {
         <a-spin size="large" />
       </div>
 
-      <div v-else-if="results.length > 0" class="space-y-4">
-        <div v-for="item in results" :key="item.id"
-          class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow cursor-pointer group"
-          @click="router.push(articlePublicPath(item, lang))">
-          <div class="flex items-start justify-between">
-            <div>
-              <div class="flex items-center gap-2 mb-2">
-                <span class="bg-blue-50 text-blue-600 text-xs px-2 py-1 rounded-full font-medium uppercase">{{
+      <div v-else-if="results.length > 0" class="space-y-3">
+        <div
+          v-for="item in results"
+          :key="item.id"
+          class="panel p-5 sm:p-6 cursor-pointer group card-hover"
+          @click="router.push(articlePublicPath(item, lang))"
+        >
+          <div class="flex items-start justify-between gap-4">
+            <div class="min-w-0">
+              <div class="flex items-center gap-2 mb-2 flex-wrap">
+                <span class="bg-primary-light text-primary text-xs px-2 py-1 font-medium uppercase">{{
                   item.category }}</span>
-                <span class="text-xs text-gray-400">{{ item.date }}</span>
+                <span class="text-xs text-muted">{{ item.date }}</span>
               </div>
-              <h3 class="text-xl font-bold text-gray-800 group-hover:text-blue-600 transition-colors mb-2">
+              <h3 class="font-display text-xl font-semibold text-navy group-hover:text-burgundy transition-colors mb-2 m-0">
                 {{ item.title }}
               </h3>
-              <p class="text-gray-600 line-clamp-2">
+              <p class="text-ink-soft line-clamp-2 m-0">
                 {{ item.snippet }}
               </p>
             </div>
             <div
-              class="hidden sm:flex h-10 w-10 bg-gray-50 rounded-full items-center justify-center group-hover:bg-blue-50 transition-colors">
-              <ArrowRightOutlined class="text-gray-400 group-hover:text-blue-600" />
+              class="hidden sm:flex h-10 w-10 border border-line items-center justify-center group-hover:border-gold shrink-0">
+              <ArrowRightOutlined class="text-muted group-hover:text-burgundy" />
             </div>
           </div>
         </div>
       </div>
 
-      <div v-else class="text-center py-20 bg-white rounded-xl shadow-sm border border-gray-100">
-        <SearchOutlined class="text-6xl text-gray-200 mb-4" />
-        <h3 class="text-xl font-medium text-gray-500">{{ t('search.noResults') }}</h3>
-        <p class="text-gray-400">{{ t('search.tryAdjusting') }}</p>
+      <div v-else class="text-center py-16 panel">
+        <SearchOutlined class="text-5xl text-line mb-4" />
+        <h3 class="font-display text-xl text-navy m-0 mb-2">{{ t('search.noResults') }}</h3>
+        <p class="text-muted m-0">{{ t('search.tryAdjusting') }}</p>
       </div>
 
     </div>

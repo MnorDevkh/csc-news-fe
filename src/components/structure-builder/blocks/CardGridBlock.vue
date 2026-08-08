@@ -14,72 +14,111 @@ const cols = computed(
       2: 'sm:grid-cols-2',
       3: 'sm:grid-cols-2 lg:grid-cols-3',
       4: 'sm:grid-cols-2 lg:grid-cols-4',
-    })[props.data.columns ?? 3]
+    })[props.data.columns ?? 4]
 );
 
 function isExternal(link) {
   return /^https?:\/\//.test(link || '');
 }
+
+function linkLabel(card) {
+  return card.linkLabel || 'បើក';
+}
 </script>
 
 <template>
   <section
-    :class="blockWrapperClass(data, 'px-4 py-12')"
+    :class="
+      blockWrapperClass(
+        data,
+        'border-y border-line bg-surface-soft section-pad'
+      )
+    "
     :style="blockInlineStyle(data)"
   >
-    <div class="mx-auto max-w-6xl">
-      <div v-if="data.title || data.subtitle" class="mb-10 text-center">
+    <div class="container-site mx-auto">
+      <div v-if="data.title || data.subtitle" class="mx-auto mb-10 max-w-2xl text-center sm:mb-12">
         <h2
           v-if="data.title"
-          class="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl"
+          class="font-display text-3xl font-semibold tracking-tight text-navy sm:text-5xl m-0"
         >
           {{ data.title }}
         </h2>
-        <p v-if="data.subtitle" class="mt-2 text-slate-600">
+        <div v-if="data.title" class="gold-rule mx-auto mt-4"></div>
+        <p
+          v-if="data.subtitle"
+          class="mt-4 text-base leading-relaxed text-ink-soft sm:text-lg m-0"
+        >
           {{ data.subtitle }}
         </p>
       </div>
 
-      <div :class="cn('grid gap-6', cols)">
-        <article
-          v-for="(card, i) in data.cards || []"
-          :key="i"
-          class="flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-md"
-        >
-          <img
-            v-if="card.image"
-            :src="card.image"
-            :alt="card.title"
-            class="aspect-video w-full object-cover bg-slate-100"
-          />
-          <div class="flex flex-1 flex-col p-5">
-            <div v-if="card.icon" class="mb-2 text-2xl" aria-hidden="true">{{ card.icon }}</div>
-            <h3 class="text-lg font-semibold text-slate-900">{{ card.title }}</h3>
+      <ul :class="cn('grid list-none gap-4 p-0 m-0 sm:gap-5', cols)">
+        <li v-for="(card, i) in data.cards || []" :key="i" class="min-h-0">
+          <component
+            :is="card.link ? (isExternal(card.link) ? 'a' : RouterLink) : 'article'"
+            v-bind="
+              card.link
+                ? isExternal(card.link)
+                  ? { href: card.link, target: '_blank', rel: 'noopener noreferrer' }
+                  : { to: card.link }
+                : {}
+            "
+            class="archive-card group"
+          >
+            <img
+              v-if="card.image"
+              :src="card.image"
+              :alt="card.title"
+              class="mb-4 aspect-[16/10] w-full object-cover bg-cream-dark"
+            />
+
+            <div
+              v-if="card.icon"
+              class="archive-card__icon"
+              aria-hidden="true"
+            >
+              <span class="text-xl leading-none">{{ card.icon }}</span>
+            </div>
+            <div
+              v-else-if="!card.image"
+              class="h-5 w-5 border border-gold/40"
+              aria-hidden="true"
+            />
+
+            <h3 class="archive-card__title">
+              {{ card.title }}
+            </h3>
+
             <p
               v-if="card.description"
-              class="mt-2 flex-1 text-sm leading-relaxed text-slate-600"
+              class="archive-card__text"
             >
               {{ card.description }}
             </p>
-            <a
-              v-if="card.link && isExternal(card.link)"
-              :href="card.link"
-              class="mt-4 text-sm font-semibold text-blue-600 hover:text-blue-500"
-              target="_blank"
-              rel="noopener noreferrer"
+
+            <span
+              v-if="card.link"
+              class="archive-card__cta"
             >
-              Learn more →
-            </a>
-            <RouterLink
-              v-else-if="card.link"
-              :to="card.link"
-              class="mt-4 text-sm font-semibold text-blue-600 hover:text-blue-500"
-            >
-              Learn more →
-            </RouterLink>
-          </div>
-        </article>
-      </div>
+              {{ linkLabel(card) }}
+              <svg
+                class="archive-card__cta-icon h-4 w-4"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M5 12h14" />
+                <path d="m12 5 7 7-7 7" />
+              </svg>
+            </span>
+          </component>
+        </li>
+      </ul>
     </div>
   </section>
 </template>

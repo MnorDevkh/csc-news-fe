@@ -1,75 +1,48 @@
 /* ─── CSC News Design System: Base Variables ─── */
 
 :root {
-  /* Legacy palette (keep for compatibility) */
   --vt-c-white: #ffffff;
-  --vt-c-white-soft: #f8f9fa;
-  --vt-c-white-mute: #f1f3f5;
+  --vt-c-white-soft: #f7f3eb;
+  --vt-c-white-mute: #ebe4d6;
 
-  --vt-c-black: #0f172a;
-  --vt-c-black-soft: #1e293b;
+  --vt-c-black: #121c33;
+  --vt-c-black-soft: #1a2744;
   --vt-c-black-mute: #334155;
 
   --vt-c-indigo: #1a365d;
 
   --vt-c-divider-light-1: rgba(26, 54, 93, 0.12);
   --vt-c-divider-light-2: rgba(26, 54, 93, 0.06);
-  --vt-c-divider-dark-1: rgba(148, 163, 184, 0.35);
-  --vt-c-divider-dark-2: rgba(148, 163, 184, 0.2);
 
-  --vt-c-text-light-1: #111827;
-  --vt-c-text-light-2: #4b5563;
-  --vt-c-text-dark-1: #f1f5f9;
-  --vt-c-text-dark-2: rgba(226, 232, 240, 0.72);
+  --vt-c-text-light-1: #1c1a17;
+  --vt-c-text-light-2: #3d3832;
+
+  --color-background: #f7f3eb;
+  --color-background-soft: #f3eee4;
+  --color-background-mute: #ebe4d6;
+
+  --color-border: #d9d0c0;
+  --color-border-hover: #b8954a;
+
+  --color-heading: #1a2744;
+  --color-text: #3d3832;
+
+  --section-gap: 4rem;
+  --shadow-soft: 0 8px 30px rgba(26, 39, 68, 0.06);
 }
 
-/* ─── Semantic Colors (Light Mode) ─── */
-:root {
-  --color-background: #f8f9fa;
-  --color-background-soft: #f1f3f5;
-  --color-background-mute: #e5e7eb;
-
-  --color-border: rgba(26, 54, 93, 0.08);
-  --color-border-hover: rgba(26, 54, 93, 0.16);
-
-  --color-heading: #111827;
-  --color-text: #374151;
-
-  --section-gap: 160px;
-}
-
-/* ─── Dark Mode ─── */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-background: #0f172a;
-    --color-background-soft: #1e293b;
-    --color-background-mute: #334155;
-
-    --color-border: rgba(148, 163, 184, 0.15);
-    --color-border-hover: rgba(148, 163, 184, 0.25);
-
-    --color-heading: #f1f5f9;
-    --color-text: #cbd5e1;
-  }
-}
-
-/* ─── Global Reset ─── */
 *,
 *::before,
 *::after {
   box-sizing: border-box;
   margin: 0;
-  font-weight: normal;
 }
 
 body {
   min-height: 100vh;
   color: var(--color-text);
   background: var(--color-background);
-  transition:
-    color 0.4s ease,
-    background-color 0.4s ease;
-  line-height: 1.6;
+  line-height: 1.65;
   font-size: 15px;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;

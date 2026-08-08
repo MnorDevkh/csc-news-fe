@@ -44,7 +44,14 @@ function list(key) {
 
 function addListItem(key) {
   const defaults = {
-    cards: { title: 'New card', description: 'Card description', image: '', link: '' },
+    cards: {
+      title: 'New card',
+      description: 'Card description',
+      icon: '✦',
+      image: '',
+      link: '',
+      linkLabel: 'បើក',
+    },
     images: { src: '', alt: 'Gallery image', caption: '' },
     items:
       props.section.type === 'faq'
@@ -229,10 +236,15 @@ function onMediaSelected(items) {
             rows="2"
             class="mb-2 w-full rounded-md border border-slate-300 bg-white px-2.5 py-2 text-sm"
           />
+          <input
+            v-model="card.icon"
+            placeholder="Icon (emoji or symbol)"
+            class="mb-2 w-full rounded-md border border-slate-300 bg-white px-2.5 py-2 text-sm"
+          />
           <div class="mb-2 flex gap-2">
             <input
               v-model="card.image"
-              placeholder="Image URL"
+              placeholder="Image URL (optional)"
               class="flex-1 rounded-md border border-slate-300 bg-white px-2.5 py-2 text-sm"
             />
             <button
@@ -246,6 +258,11 @@ function onMediaSelected(items) {
           <input
             v-model="card.link"
             placeholder="Link"
+            class="mb-2 w-full rounded-md border border-slate-300 bg-white px-2.5 py-2 text-sm"
+          />
+          <input
+            v-model="card.linkLabel"
+            placeholder="Link label (default: បើក)"
             class="w-full rounded-md border border-slate-300 bg-white px-2.5 py-2 text-sm"
           />
         </div>

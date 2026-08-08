@@ -111,7 +111,7 @@ onMounted(() => {
     >
       <div class="flex items-start gap-4">
         <div class="flex-1 min-w-0">
-          <p class="text-xs font-semibold uppercase tracking-wide text-indigo-600 mb-1">
+          <p class="text-xs font-semibold uppercase tracking-wide text-burgundy mb-1">
             អត្ថបទព្រះគម្ពីរប្រចាំថ្ងៃ
           </p>
           <h3 class="text-lg font-bold text-gray-900">
@@ -142,7 +142,7 @@ onMounted(() => {
               String(latestReading?.id).trim() !== ''
             "
           :to="{ name: 'dailyBibleDetail', params: { id: latestReading.id } }"
-          class="shrink-0 inline-flex items-center px-3 py-1.5 rounded-md text-xs font-medium bg-indigo-50 text-indigo-600 hover:bg-indigo-100 hover:text-indigo-700 transition-colors"
+          class="shrink-0 inline-flex items-center px-3 py-1.5 text-xs font-medium bg-accent-light text-burgundy hover:bg-gold-pale hover:text-navy transition-colors"
         >
           អានលម្អិត
         </RouterLink>
@@ -159,7 +159,7 @@ onMounted(() => {
               String(latestReading?.id).trim() !== ''
             "
           :to="{ name: 'dailyBibleDetail', params: { id: latestReading.id } }"
-          class="inline-flex items-center text-indigo-600 hover:text-indigo-800 font-medium"
+          class="inline-flex items-center text-burgundy hover:text-navy font-medium"
         >
           <span>អានអត្ថបទពេញ</span>
         </RouterLink>

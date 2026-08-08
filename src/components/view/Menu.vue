@@ -1,19 +1,20 @@
 <template>
-    <nav class="menu-nav bg-white/90 backdrop-blur-xl border-b border-gray-200/60 shadow-[0_1px_8px_rgba(26,54,93,0.04)] mb-3 sm:mb-4 sticky top-0 z-50 flex justify-center w-full font-[Kantumruy_Pro,'Khmer','Koh_Santepheap',sans-serif]">
-        <div class="w-full max-w-[1400px] px-[5px] sm:px-5 md:px-6 lg:px-8 xl:px-10 mx-auto">
+    <nav class="menu-nav sticky top-0 z-50 mb-0 flex w-full justify-center border-b border-line/70 bg-ivory/95 backdrop-blur-md shadow-soft">
+        <div class="container-site w-full px-3 sm:px-5 md:px-6 lg:px-8 xl:px-10 mx-auto">
 
             <!-- Top Header Bar -->
-            <div class="flex justify-between items-center py-3 sm:py-4">
-                <div class="flex items-center gap-3 cursor-pointer z-50" @click="router.push('/')">
+            <div class="flex justify-between items-center py-3 sm:py-3.5">
+                <div class="group flex min-w-0 items-center gap-2.5 sm:gap-3 cursor-pointer z-50" @click="router.push('/')">
                     <img
                         src="/image/cropped-logo-1.jpg"
                         alt="CSC News logo"
-                        class="h-10 sm:h-12 w-auto object-contain"
+                        class="h-10 sm:h-11 w-auto object-contain"
                     />
-                    <div class="flex flex-col">
-                        <!-- <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight text-blue-600 m-0 leading-none">
-                            CSC NEWS</h1> -->
-                        <p class="text-xs sm:text-lg font-semibold text-primary m-0 tracking-wide uppercase">
+                    <div class="flex min-w-0 flex-col">
+                        <p class="font-display m-0 truncate text-base font-semibold tracking-wide text-navy sm:text-xl">
+                            CSC News
+                        </p>
+                        <p class="m-0 hidden text-[10px] font-medium tracking-[0.18em] text-gold uppercase sm:block">
                             Catholic Cambodia
                         </p>
                     </div>
@@ -21,39 +22,39 @@
 
                 <!-- Desktop Search & Actions -->
                 <div class="hidden md:flex flex-1 max-w-xl mx-8 justify-end items-center gap-3">
-                    <div class="flex flex-1 min-w-0 items-center rounded-full bg-gray-50 pl-4 pr-1 py-1 ring-1 ring-gray-200 focus-within:ring-2 focus-within:ring-primary/25 transition-all">
+                    <div class="flex flex-1 min-w-0 items-center border border-line bg-surface-elevated pl-4 pr-1 py-1 focus-within:border-gold transition-all">
                         <input
                             v-model="searchQuery"
                             type="search"
                             :placeholder="t('menu.searchPlaceholder')"
-                            class="flex-1 min-w-0 py-2 bg-transparent border-0 text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-0 text-sm"
+                            class="flex-1 min-w-0 py-2 bg-transparent border-0 text-ink placeholder:text-muted focus:outline-none focus:ring-0 text-sm"
                             @keydown.enter="performSearch"
                         />
                         <button
                             type="button"
-                            class="btn-primary shrink-0"
+                            class="px-5 py-2 bg-navy text-cream text-sm font-semibold hover:bg-primary-hover shrink-0 transition-all"
                             @click="performSearch"
                         >
                             {{ t('menu.search') }}
                         </button>
                     </div>
                     <!-- Language switcher -->
-                    <div class="flex items-center rounded-full ring-1 ring-gray-200 bg-gray-50 p-0.5 shrink-0">
+                    <div class="flex items-center border border-line bg-surface-sunken p-0.5 shrink-0">
                         <button
                             type="button"
-                            class="px-2.5 py-1.5 rounded-full text-xs font-semibold transition-all"
-                            :class="lang === 'km' ? 'bg-primary text-white shadow-sm' : 'text-gray-500 hover:text-primary'"
+                            class="px-2.5 py-1.5 text-xs font-semibold transition-all"
+                            :class="lang === 'km' ? 'bg-navy text-cream' : 'text-muted hover:text-navy'"
                             @click="setLang('km')"
                         >ខ្មែរ</button>
                         <button
                             type="button"
-                            class="px-2.5 py-1.5 rounded-full text-xs font-semibold transition-all"
-                            :class="lang === 'en' ? 'bg-primary text-white shadow-sm' : 'text-gray-500 hover:text-primary'"
+                            class="px-2.5 py-1.5 text-xs font-semibold transition-all"
+                            :class="lang === 'en' ? 'bg-navy text-cream' : 'text-muted hover:text-navy'"
                             @click="setLang('en')"
                         >EN</button>
                     </div>
                     <router-link v-if="isAuthenticated" :to="{ name: 'dashboard' }"
-                        class="btn-accent shrink-0 no-underline">
+                        class="flex items-center gap-2 px-4 py-2 bg-gold text-navy-deep text-sm font-semibold hover:bg-gold-soft shrink-0 transition-all">
                         <DashboardIcon class="w-5 h-5" />
                         <span>{{ t('menu.dashboard') }}</span>
                     </router-link>
@@ -61,7 +62,7 @@
 
                 <button
                     type="button"
-                    class="md:hidden p-2 text-gray-600 hover:text-primary transition-colors"
+                    class="md:hidden inline-flex h-11 w-11 items-center justify-center border border-navy/20 bg-surface-elevated text-navy hover:border-gold hover:text-burgundy transition-colors"
                     aria-label="Open menu"
                     @click="mobileMenuOpen = true"
                 >
@@ -70,18 +71,18 @@
             </div>
 
             <!-- Desktop Navigation Menu -->
-            <div class="hidden md:block border-t border-gray-100">
-                <ul class="menu-list flex flex-wrap items-center gap-0 list-none m-0 p-0 text-base font-medium">
+            <div class="hidden md:block border-t border-line/60">
+                <ul class="menu-list flex flex-wrap items-center gap-0 list-none m-0 p-0 text-[13px] font-medium tracking-wide">
                     <li v-for="item in menuItems" :key="item.path || item.href" class="menu-item-wrapper relative">
                         <!-- Simple link -->
                         <template v-if="!item.children?.length">
                             <a v-if="item.href" :href="item.href" target="_blank" rel="noopener"
-                                class="menu-link nav-link-brand block px-6 py-3">
+                                class="menu-link block px-4 lg:px-5 py-3 text-ink-soft hover:text-navy transition-colors">
                                 {{ item.label }}
                             </a>
                             <router-link v-else :to="item.path!"
-                                class="menu-link nav-link-brand block px-6 py-3 no-underline"
-                                exact-active-class="is-active border-b-2 border-accent">
+                                class="menu-link block px-4 lg:px-5 py-3 no-underline text-ink-soft hover:text-navy transition-colors"
+                                exact-active-class="!text-burgundy !font-semibold border-b-2 border-gold">
                                 {{ item.label }}
                             </router-link>
                         </template>
@@ -89,11 +90,11 @@
                         <template v-else>
                             <button
                                 type="button"
-                                class="menu-link menu-dropdown-trigger flex items-center gap-1 px-6 py-3 w-full text-left border-0 bg-transparent cursor-pointer transition-colors"
+                                class="menu-link menu-dropdown-trigger flex items-center gap-1 px-4 lg:px-5 py-3 w-full text-left border-0 bg-transparent cursor-pointer transition-colors"
                                 :class="
                                     (itemDropdownKey(item) === 'news' ? isNewsActive : isStructureActive)
-                                        ? 'text-primary font-semibold border-b-2 border-accent'
-                                        : 'nav-link-brand'
+                                        ? 'text-burgundy font-semibold border-b-2 border-gold'
+                                        : 'text-ink-soft hover:text-navy'
                                 "
                                 :aria-expanded="itemDropdownKey(item) === 'news' ? newsDropdownOpen : structureDropdownOpen"
                                 aria-haspopup="true"
@@ -119,13 +120,13 @@
                             </button>
                             <div
                                 v-show="itemDropdownKey(item) === 'news' ? newsDropdownOpen : structureDropdownOpen"
-                                class="menu-dropdown absolute left-0 top-full min-w-[220px] py-2 bg-white shadow-xl shadow-primary/8 ring-1 ring-primary/8 rounded-2xl z-50"
+                                class="menu-dropdown absolute left-0 top-full min-w-[240px] py-2 bg-ivory border border-line shadow-soft z-50"
                                 @mouseleave="itemDropdownKey(item) === 'news' ? (newsDropdownOpen = false) : (structureDropdownOpen = false)"
                             >
                                 <router-link
                                     v-if="itemDropdownKey(item) === 'structure'"
                                     :to="item.path!"
-                                    class="interactive-row interactive-row--tint block px-4 py-2 text-gray-800 font-medium border-b border-gray-100"
+                                    class="block px-4 py-2.5 text-navy font-medium hover:bg-cream-dark hover:text-burgundy border-b border-line transition-colors"
                                     @click="structureDropdownOpen = false"
                                 >
                                     ទាំងអស់
@@ -134,7 +135,7 @@
                                     <div v-if="group.children?.length" class="py-1">
                                         <router-link
                                             :to="group.path!"
-                                            class="interactive-row interactive-row--tint block px-4 py-2 text-gray-800 font-medium"
+                                            class="block px-4 py-2 text-navy font-medium hover:bg-cream-dark hover:text-burgundy transition-colors"
                                             @click="closeAllDesktopDropdowns"
                                         >
                                             {{ group.label }}
@@ -143,7 +144,7 @@
                                             v-for="child in group.children"
                                             :key="child.path"
                                             :to="child.path!"
-                                            class="interactive-row interactive-row--tint block py-1.5 pl-6 pr-4 text-gray-500 text-sm"
+                                            class="block py-1.5 pl-6 pr-4 text-ink-soft hover:bg-cream-dark hover:text-navy text-sm transition-colors"
                                             @click="closeAllDesktopDropdowns"
                                         >
                                             {{ child.label }}
@@ -152,7 +153,7 @@
                                     <router-link
                                         v-else
                                         :to="group.path!"
-                                        class="interactive-row interactive-row--tint block px-4 py-2 text-gray-600"
+                                        class="block px-4 py-2.5 text-ink-soft hover:bg-cream-dark hover:text-burgundy transition-colors"
                                         @click="closeAllDesktopDropdowns"
                                     >
                                         {{ group.label }}
@@ -175,19 +176,19 @@
             leave-to-class="opacity-0 translate-x-full"
         >
             <div v-if="mobileMenuOpen"
-                class="fixed inset-0 z-[60] bg-white flex flex-col overflow-y-auto w-full h-full">
-                <div class="flex justify-between items-center p-4 border-b border-gray-200/70 bg-white/95 backdrop-blur-xl sticky top-0 z-10">
-                    <div class="flex items-center gap-2">
+                class="fixed inset-0 z-[60] bg-ivory flex flex-col overflow-y-auto w-full h-full">
+                <div class="flex justify-between items-center p-4 border-b border-line bg-ivory/95 backdrop-blur-md sticky top-0 z-10">
+                    <div class="flex items-center gap-2.5">
                         <img
                             src="/image/cropped-logo-1.jpg"
                             alt="CSC News logo"
                             class="h-8 w-auto object-contain"
                         />
-                        <h1 class="text-2xl font-extrabold text-primary leading-none">CSC NEWS</h1>
+                        <h1 class="font-display text-xl font-semibold text-navy leading-none m-0">CSC News</h1>
                     </div>
                     <button
                         type="button"
-                        class="p-2 text-gray-500 hover:text-red-500 transition-colors"
+                        class="inline-flex h-10 w-10 items-center justify-center border border-navy/15 text-navy hover:text-burgundy transition-colors"
                         aria-label="Close menu"
                         @click="mobileMenuOpen = false"
                     >
@@ -195,10 +196,10 @@
                     </button>
                 </div>
 
-                <div class="flex-1 p-6 flex flex-col gap-8">
+                <div class="flex-1 p-5 flex flex-col gap-8">
                     <div>
-                        <h3 class="text-sm font-bold text-muted uppercase tracking-wider mb-2">{{ t('menu.search') }}</h3>
-                        <div class="flex flex-1 min-w-0 items-center rounded-full bg-gray-50 pl-4 pr-1 py-1 ring-1 ring-gray-200 focus-within:ring-2 focus-within:ring-primary/25 transition-all">
+                        <h3 class="text-xs font-semibold text-gold uppercase tracking-[0.2em] mb-3">{{ t('menu.search') }}</h3>
+                        <div class="flex flex-1 min-w-0 items-center border border-line bg-surface-elevated pl-4 pr-1 py-1 focus-within:border-gold transition-all">
                             <input
                                 v-model="searchQuery"
                                 type="search"
@@ -208,24 +209,24 @@
                             />
                             <button
                                 type="button"
-                                class="btn-primary"
+                                class="px-4 py-2 bg-navy text-cream text-sm font-semibold hover:bg-primary-hover transition-all"
                                 @click="() => { performSearch(); mobileMenuOpen = false; }"
                             >
                                 {{ t('menu.search') }}
                             </button>
                         </div>
                         <div class="flex items-center gap-2 mt-3">
-                            <div class="flex items-center rounded-full ring-1 ring-gray-200 bg-gray-50 p-0.5">
+                            <div class="flex items-center border border-line bg-surface-sunken p-0.5">
                                 <button
                                     type="button"
-                                    class="px-3 py-1.5 rounded-full text-xs font-semibold transition-all"
-                                    :class="lang === 'km' ? 'bg-primary text-white shadow-sm' : 'text-gray-500 hover:text-primary'"
+                                    class="px-3 py-1.5 text-xs font-semibold transition-all"
+                                    :class="lang === 'km' ? 'bg-navy text-cream' : 'text-muted'"
                                     @click="setLang('km')"
                                 >ខ្មែរ</button>
                                 <button
                                     type="button"
-                                    class="px-3 py-1.5 rounded-full text-xs font-semibold transition-all"
-                                    :class="lang === 'en' ? 'bg-primary text-white shadow-sm' : 'text-gray-500 hover:text-primary'"
+                                    class="px-3 py-1.5 text-xs font-semibold transition-all"
+                                    :class="lang === 'en' ? 'bg-navy text-cream' : 'text-muted'"
                                     @click="setLang('en')"
                                 >EN</button>
                             </div>
@@ -233,13 +234,13 @@
                     </div>
 
                     <div class="flex-1">
-                        <h3 class="text-sm font-bold text-muted uppercase tracking-wider mb-2">Menu</h3>
-                        <ul class="mobile-menu-list list-none p-0 m-0 flex flex-col text-lg">
+                        <h3 class="text-xs font-semibold text-gold uppercase tracking-[0.2em] mb-3">ម៉ឺនុយ</h3>
+                        <ul class="mobile-menu-list list-none p-0 m-0 flex flex-col text-base">
                             <template v-for="item in menuItems" :key="item.path || item.href">
                                 <template v-if="!item.children?.length">
                                     <li v-if="item.href">
                                         <a :href="item.href" target="_blank" rel="noopener"
-                                            class="block py-3 text-stone-700 hover:text-primary"
+                                            class="block rounded-sm px-3 py-3.5 text-ink-soft hover:bg-cream hover:text-navy"
                                             @click="mobileMenuOpen = false">
                                             {{ item.label }}
                                         </a>
@@ -247,8 +248,8 @@
                                     <li v-else>
                                         <router-link
                                             :to="item.path!"
-                                            class="block py-3 text-stone-700 hover:text-primary"
-                                            :class="{ 'text-primary font-medium': route.path === item.path }"
+                                            class="block rounded-sm px-3 py-3.5 text-ink-soft hover:bg-cream hover:text-navy"
+                                            :class="{ 'bg-cream-dark text-burgundy font-medium': route.path === item.path }"
                                             @click="mobileMenuOpen = false"
                                         >
                                             {{ item.label }}
@@ -258,7 +259,7 @@
                                 <li v-else>
                                     <button
                                         type="button"
-                                        class="flex items-center justify-between w-full py-3 text-left text-stone-700 hover:text-primary"
+                                        class="flex items-center justify-between w-full rounded-sm px-3 py-3.5 text-left text-ink-soft hover:bg-cream hover:text-navy"
                                         @click="
                                             itemDropdownKey(item) === 'news'
                                                 ? (mobileNewsOpen = !mobileNewsOpen)
@@ -281,8 +282,8 @@
                                         <router-link
                                             v-if="itemDropdownKey(item) === 'structure' && item.path"
                                             :to="item.path"
-                                            class="block py-2 text-stone-800 font-medium"
-                                            :class="{ 'text-primary': route.path === item.path }"
+                                            class="block py-2 px-3 text-navy font-medium"
+                                            :class="{ 'text-burgundy': route.path === item.path }"
                                             @click="mobileMenuOpen = false"
                                         >
                                             ទាំងអស់
@@ -291,8 +292,8 @@
                                             <div v-if="group.children?.length" class="py-2">
                                                 <router-link
                                                     :to="group.path!"
-                                                    class="block py-2 text-stone-800 font-medium"
-                                                    :class="{ 'text-primary': route.path === group.path }"
+                                                    class="block py-2 px-3 text-navy font-medium"
+                                                    :class="{ 'text-burgundy': route.path === group.path }"
                                                     @click="mobileMenuOpen = false"
                                                 >
                                                     {{ group.label }}
@@ -301,8 +302,8 @@
                                                     v-for="child in group.children"
                                                     :key="child.path"
                                                     :to="child.path!"
-                                                    class="block py-1.5 text-stone-600 text-base"
-                                                    :class="{ 'text-primary': route.path === child.path }"
+                                                    class="block py-1.5 px-3 text-ink-soft text-sm"
+                                                    :class="{ 'text-burgundy': route.path === child.path }"
                                                     @click="mobileMenuOpen = false"
                                                 >
                                                     {{ child.label }}
@@ -311,8 +312,8 @@
                                             <router-link
                                                 v-else
                                                 :to="group.path!"
-                                                class="block py-2 text-stone-700"
-                                                :class="{ 'text-primary font-medium': route.path === group.path }"
+                                                class="block py-2 px-3 text-ink-soft"
+                                                :class="{ 'text-burgundy font-medium': route.path === group.path }"
                                                 @click="mobileMenuOpen = false"
                                             >
                                                 {{ group.label }}
@@ -324,10 +325,10 @@
                         </ul>
                     </div>
 
-                    <div v-if="isAuthenticated" class="pt-4 border-t border-stone-200/70">
+                    <div v-if="isAuthenticated" class="pt-4 border-t border-line">
                         <router-link
                             :to="{ name: 'dashboard' }"
-                            class="btn-accent w-full no-underline"
+                            class="flex items-center justify-center gap-2 w-full py-3 px-4 bg-navy text-cream font-semibold hover:bg-primary-hover"
                             @click="mobileMenuOpen = false"
                         >
                             <DashboardIcon class="w-5 h-5" />
@@ -335,9 +336,9 @@
                         </router-link>
                     </div>
 
-                    <div class="mt-auto pt-8 border-t border-stone-200/70">
+                    <div class="mt-auto pt-8 border-t border-line">
                         <a href="#" class="block text-center text-muted text-sm mb-2">{{ t('menu.privacy') }}</a>
-                        <div class="text-center text-stone-400 text-xs">{{ t('menu.copyright') }}</div>
+                        <div class="text-center text-muted/70 text-xs">{{ t('menu.copyright') }}</div>
                     </div>
                 </div>
             </div>
@@ -524,11 +525,11 @@ watch(lang, () => {
     right: 0;
     height: 2px;
     background: transparent;
-    margin: 0 24px;
+    margin: 0 16px;
 }
 .menu-list .menu-link.border-b-2::after,
 .menu-list .menu-dropdown-trigger.border-b-2::after {
-    background: var(--color-primary);
+    background: var(--color-gold);
 }
 .rotate-180 {
     transform: rotate(180deg);

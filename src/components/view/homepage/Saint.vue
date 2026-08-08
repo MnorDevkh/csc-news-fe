@@ -59,7 +59,7 @@ onMounted(() => {
             >
           </div>
           <div class="flex-1 min-w-0">
-            <h4 class="font-semibold text-gray-800 group-hover:text-amber-600 transition-colors">
+            <h4 class="font-semibold text-gray-800 group-hover:text-burgundy transition-colors">
               {{ saint.name }}
             </h4>
             <p class="text-sm text-gray-500">Feast Day: {{ saint.feast_day || '-' }}</p>
