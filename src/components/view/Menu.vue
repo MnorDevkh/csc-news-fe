@@ -413,8 +413,6 @@ const rawMenuItems = ref<MenuItem[]>([
     { labelKey: 'menu.messenger', label: '', path: '/the-messenger' },
     { labelKey: 'menu.sermon', label: '', path: '/the-sermon' },
     { labelKey: 'menu.churchHistory', label: '', path: '/church-history' },
-    { labelKey: 'menu.downloadApp', label: '', path: '/install-app' },
-    { labelKey: 'menu.links', label: '', href: 'https://antdv.com' },
 ]);
 
 const menuItems = computed(() =>
