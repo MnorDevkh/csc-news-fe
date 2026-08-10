@@ -1,5 +1,8 @@
 <script setup>
 import { RouterLink } from 'vue-router';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 defineProps({
   id: {
@@ -36,7 +39,7 @@ defineProps({
         <div>
           <h3 class="text-xl font-bold text-gray-800 group-hover:text-burgundy transition-colors">{{ title }}</h3>
           <p class="text-sm text-gray-500 mt-1">
-            <template v-if="preacher">by {{ preacher }}</template>
+            <template v-if="preacher">{{ t('dailySermon.byPreacher', { name: preacher }) }}</template>
             <template v-if="date">{{ preacher ? ' · ' : '' }}{{ date }}</template>
           </p>
         </div>
@@ -57,7 +60,7 @@ defineProps({
         <div>
           <h3 class="text-xl font-bold text-gray-800 group-hover:text-burgundy transition-colors">{{ title }}</h3>
           <p class="text-sm text-gray-500 mt-1">
-            <template v-if="preacher">by {{ preacher }}</template>
+            <template v-if="preacher">{{ t('dailySermon.byPreacher', { name: preacher }) }}</template>
             <template v-if="date">{{ preacher ? ' · ' : '' }}{{ date }}</template>
           </p>
         </div>

@@ -34,14 +34,14 @@
             <!-- Title -->
             <div class="mb-10">
               <input v-model="form.title" type="text" required placeholder="Enter article title..."
-                class="w-full bg-transparent border-0 border-b border-[#c6c6cd] focus:border-[#3755c3] pb-3 text-4xl font-bold tracking-tight text-[#0b1c30] placeholder:text-[#c6c6cd] focus:ring-0 outline-none transition-colors" />
+                class="w-full bg-transparent border-0 border-b border-[#c6c6cd] focus:border-[#4165d1] pb-3 text-4xl font-bold tracking-tight text-[#0b1c30] placeholder:text-[#c6c6cd] focus:ring-0 outline-none transition-colors" />
             </div>
 
             <!-- Excerpt -->
             <div class="mb-8">
               <label class="block text-xs font-semibold text-[#45464d] uppercase tracking-wider mb-2">Excerpt</label>
               <textarea v-model="form.excerpt" rows="2" placeholder="Brief summary used in listings..."
-                class="w-full px-4 py-3 border border-[#c6c6cd] bg-white rounded focus:ring-0 focus:border-[#3755c3] outline-none text-sm text-[#0b1c30] transition-colors resize-none"></textarea>
+                class="w-full px-4 py-3 border border-[#c6c6cd] bg-white rounded focus:ring-0 focus:border-[#4165d1] outline-none text-sm text-[#0b1c30] transition-colors resize-none"></textarea>
             </div>
 
 
@@ -59,7 +59,7 @@
                     class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-semibold bg-[#dde1ff] hover:bg-[#b8c4ff] text-[#173bab] border border-[#b8c4ff] transition-colors"
                     @click="openContentImageModal">&#128247; Image</button>
                   <button type="button"
-                    class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-semibold bg-[#e5eeff] hover:bg-[#dde1ff] text-[#3755c3] border border-[#b8c4ff] transition-colors"
+                    class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-semibold bg-[#e5eeff] hover:bg-[#dde1ff] text-[#4165d1] border border-[#b8c4ff] transition-colors"
                     @click="addMixedBlock">&#9638; Columns</button>
                 </div>
                 <div class="text-xs text-[#76777d]">{{ contentBlocks.length }} block{{ contentBlocks.length !== 1 ? 's'
@@ -78,11 +78,11 @@
                   </div>
                   <div class="relative flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                     <button type="button" title="Insert text" @click="insertBlock(0, 'text')"
-                      class="w-6 h-6 flex items-center justify-center rounded-full bg-white border border-[#c6c6cd] text-[#3755c3] hover:bg-[#3755c3] hover:text-white hover:border-[#3755c3] text-xs font-bold transition-all shadow-sm">+</button>
+                      class="w-6 h-6 flex items-center justify-center rounded-full bg-white border border-[#c6c6cd] text-[#4165d1] hover:bg-[#4165d1] hover:text-white hover:border-[#4165d1] text-xs font-bold transition-all shadow-sm">+</button>
                     <button type="button" title="Insert image" @click="insertImageBlock(0)"
                       class="w-6 h-6 flex items-center justify-center rounded-full bg-white border border-[#c6c6cd] text-[#76777d] hover:bg-[#dde1ff] hover:border-[#b8c4ff] hover:text-[#173bab] text-xs transition-all shadow-sm">&#128247;</button>
                     <button type="button" title="Insert columns" @click="insertBlock(0, 'mixed')"
-                      class="w-6 h-6 flex items-center justify-center rounded-full bg-white border border-[#c6c6cd] text-[#76777d] hover:bg-[#e5eeff] hover:border-[#b8c4ff] hover:text-[#3755c3] text-xs transition-all shadow-sm">&#9638;</button>
+                      class="w-6 h-6 flex items-center justify-center rounded-full bg-white border border-[#c6c6cd] text-[#76777d] hover:bg-[#e5eeff] hover:border-[#b8c4ff] hover:text-[#4165d1] text-xs transition-all shadow-sm">&#9638;</button>
                   </div>
                 </div>
 
@@ -144,7 +144,7 @@
                             class="absolute top-1 right-1 w-5 h-5 bg-black/60 text-white rounded-full text-[10px] flex items-center justify-center opacity-0 group-hover/img:opacity-100 transition-opacity">&#10005;</button>
                         </div>
                         <button type="button" @click="openAddMoreImages(index)"
-                          class="w-36 h-28 rounded border-2 border-dashed border-[#c6c6cd] bg-[#f8f9ff] hover:border-[#3755c3] hover:bg-[#eff4ff] flex flex-col items-center justify-center gap-1 text-[#76777d] hover:text-[#3755c3] transition-all">
+                          class="w-36 h-28 rounded border-2 border-dashed border-[#c6c6cd] bg-[#f8f9ff] hover:border-[#4165d1] hover:bg-[#eff4ff] flex flex-col items-center justify-center gap-1 text-[#76777d] hover:text-[#4165d1] transition-all">
                           <PictureOutlined class="text-xl" />
                           <span class="text-xs">Add more</span>
                         </button>
@@ -162,7 +162,7 @@
                           <img v-if="block.image" :src="block.image.url" alt=""
                             class="w-full h-full object-cover absolute inset-0" />
                           <div v-if="!block.image"
-                            class="flex flex-col items-center gap-2 text-[#76777d] group-hover/imgcol:text-[#3755c3] transition-colors z-10">
+                            class="flex flex-col items-center gap-2 text-[#76777d] group-hover/imgcol:text-[#4165d1] transition-colors z-10">
                             <PictureOutlined class="text-3xl" />
                             <span class="text-xs font-medium">Click to add image</span>
                           </div>
@@ -188,11 +188,11 @@
                     </div>
                     <div class="relative flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                       <button type="button" title="Insert text" @click="insertBlock(index + 1, 'text')"
-                        class="w-6 h-6 flex items-center justify-center rounded-full bg-white border border-[#c6c6cd] text-[#3755c3] hover:bg-[#3755c3] hover:text-white hover:border-[#3755c3] text-xs font-bold transition-all shadow-sm">+</button>
+                        class="w-6 h-6 flex items-center justify-center rounded-full bg-white border border-[#c6c6cd] text-[#4165d1] hover:bg-[#4165d1] hover:text-white hover:border-[#4165d1] text-xs font-bold transition-all shadow-sm">+</button>
                       <button type="button" title="Insert image" @click="insertImageBlock(index + 1)"
                         class="w-6 h-6 flex items-center justify-center rounded-full bg-white border border-[#c6c6cd] text-[#76777d] hover:bg-[#dde1ff] hover:border-[#b8c4ff] hover:text-[#173bab] text-xs transition-all shadow-sm">&#128247;</button>
                       <button type="button" title="Insert columns" @click="insertBlock(index + 1, 'mixed')"
-                        class="w-6 h-6 flex items-center justify-center rounded-full bg-white border border-[#c6c6cd] text-[#76777d] hover:bg-[#e5eeff] hover:border-[#b8c4ff] hover:text-[#3755c3] text-xs transition-all shadow-sm">&#9638;</button>
+                        class="w-6 h-6 flex items-center justify-center rounded-full bg-white border border-[#c6c6cd] text-[#76777d] hover:bg-[#e5eeff] hover:border-[#b8c4ff] hover:text-[#4165d1] text-xs transition-all shadow-sm">&#9638;</button>
                     </div>
                   </div>
                 </template>
@@ -211,7 +211,7 @@
                       class="inline-flex items-center gap-2 px-4 py-2 rounded text-sm font-medium bg-white text-[#0b1c30] hover:bg-[#eff4ff] border border-[#c6c6cd] transition-colors"
                       @click="openContentImageModal">&#128247; Add image</button>
                     <button type="button"
-                      class="inline-flex items-center gap-2 px-4 py-2 rounded text-sm font-medium bg-[#e5eeff] text-[#3755c3] hover:bg-[#dde1ff] border border-[#b8c4ff] transition-colors"
+                      class="inline-flex items-center gap-2 px-4 py-2 rounded text-sm font-medium bg-[#e5eeff] text-[#4165d1] hover:bg-[#dde1ff] border border-[#b8c4ff] transition-colors"
                       @click="addMixedBlock">&#9638; Columns</button>
                   </div>
                 </div>
@@ -230,7 +230,7 @@
                 <div>
                   <label class="block text-xs font-semibold text-[#45464d] uppercase tracking-wider mb-2">Language</label>
                   <select v-model="form.lang" @change="onLangChange" :disabled="langLocked"
-                    class="w-full px-4 py-2.5 border border-[#c6c6cd] bg-[#f8f9ff] rounded focus:ring-0 focus:border-[#3755c3] outline-none text-sm text-[#0b1c30] transition-colors cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed">
+                    class="w-full px-4 py-2.5 border border-[#c6c6cd] bg-[#f8f9ff] rounded focus:ring-0 focus:border-[#4165d1] outline-none text-sm text-[#0b1c30] transition-colors cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed">
                     <option value="km">ខ្មែរ (Khmer)</option>
                     <option value="en">English</option>
                   </select>
@@ -239,7 +239,7 @@
                 <div>
                   <label class="block text-xs font-semibold text-[#45464d] uppercase tracking-wider mb-2">Status</label>
                   <select v-model="form.status" @change="onStatusChange"
-                    class="w-full px-4 py-2.5 border border-[#c6c6cd] bg-[#f8f9ff] rounded focus:ring-0 focus:border-[#3755c3] outline-none text-sm text-[#0b1c30] transition-colors cursor-pointer">
+                    class="w-full px-4 py-2.5 border border-[#c6c6cd] bg-[#f8f9ff] rounded focus:ring-0 focus:border-[#4165d1] outline-none text-sm text-[#0b1c30] transition-colors cursor-pointer">
                     <option value="draft">Draft</option>
                     <option value="scheduled">Scheduled</option>
                     <option value="public">Public</option>
@@ -255,13 +255,13 @@
                   <label class="block text-xs font-semibold text-[#45464d] uppercase tracking-wider mb-2">Publish
                     at</label>
                   <input v-model="publishAtLocal" type="datetime-local" :required="form.status === 'scheduled'"
-                    class="w-full px-4 py-2.5 border border-[#c6c6cd] bg-[#f8f9ff] rounded focus:ring-0 focus:border-[#3755c3] outline-none text-sm text-[#0b1c30] transition-colors" />
+                    class="w-full px-4 py-2.5 border border-[#c6c6cd] bg-[#f8f9ff] rounded focus:ring-0 focus:border-[#4165d1] outline-none text-sm text-[#0b1c30] transition-colors" />
                   <p class="mt-1.5 text-xs text-[#76777d]">Required. The article goes live at this time.</p>
                 </div>
 
                 <label class="flex items-center gap-2.5 cursor-pointer pt-1">
                   <input type="checkbox" v-model="form.is_featured"
-                    class="w-4 h-4 rounded border-[#c6c6cd] text-[#3755c3] focus:ring-[#3755c3]/20" />
+                    class="w-4 h-4 rounded border-[#c6c6cd] text-[#4165d1] focus:ring-[#4165d1]/20" />
                   <span class="text-sm text-[#0b1c30]">Featured article</span>
                 </label>
 
@@ -292,7 +292,7 @@
                   <router-link
                     v-if="String(tr.id) !== String(route.params.id)"
                     :to="{ name: 'editNews', params: { id: tr.id } }"
-                    class="text-xs font-semibold text-[#3755c3] hover:underline shrink-0"
+                    class="text-xs font-semibold text-[#4165d1] hover:underline shrink-0"
                   >Edit</router-link>
                   <span v-else class="text-xs text-[#76777d] shrink-0">Current</span>
                 </li>
@@ -321,23 +321,23 @@
                 <div>
                   <label class="block text-xs font-semibold text-[#45464d] uppercase tracking-wider mb-2">URL slug</label>
                   <input v-model="form.slug" type="text" placeholder="auto-generated from title if empty"
-                    class="w-full px-4 py-2.5 border border-[#c6c6cd] bg-[#f8f9ff] rounded focus:ring-0 focus:border-[#3755c3] outline-none text-sm text-[#0b1c30] transition-colors" />
+                    class="w-full px-4 py-2.5 border border-[#c6c6cd] bg-[#f8f9ff] rounded focus:ring-0 focus:border-[#4165d1] outline-none text-sm text-[#0b1c30] transition-colors" />
                   <p class="mt-1 text-xs text-[#76777d]">Public URL: /{{ form.lang || 'km' }}/articles/{{ form.slug || '…' }}</p>
                 </div>
                 <div>
                   <label class="block text-xs font-semibold text-[#45464d] uppercase tracking-wider mb-2">Meta title</label>
                   <input v-model="form.meta_title" type="text"
-                    class="w-full px-4 py-2.5 border border-[#c6c6cd] bg-[#f8f9ff] rounded focus:ring-0 focus:border-[#3755c3] outline-none text-sm text-[#0b1c30] transition-colors" />
+                    class="w-full px-4 py-2.5 border border-[#c6c6cd] bg-[#f8f9ff] rounded focus:ring-0 focus:border-[#4165d1] outline-none text-sm text-[#0b1c30] transition-colors" />
                 </div>
                 <div>
                   <label class="block text-xs font-semibold text-[#45464d] uppercase tracking-wider mb-2">Meta description</label>
                   <textarea v-model="form.meta_description" rows="2"
-                    class="w-full px-4 py-2.5 border border-[#c6c6cd] bg-[#f8f9ff] rounded focus:ring-0 focus:border-[#3755c3] outline-none text-sm text-[#0b1c30] transition-colors resize-none"></textarea>
+                    class="w-full px-4 py-2.5 border border-[#c6c6cd] bg-[#f8f9ff] rounded focus:ring-0 focus:border-[#4165d1] outline-none text-sm text-[#0b1c30] transition-colors resize-none"></textarea>
                 </div>
                 <div>
                   <label class="block text-xs font-semibold text-[#45464d] uppercase tracking-wider mb-2">Meta keywords</label>
                   <input v-model="form.meta_keywords" type="text"
-                    class="w-full px-4 py-2.5 border border-[#c6c6cd] bg-[#f8f9ff] rounded focus:ring-0 focus:border-[#3755c3] outline-none text-sm text-[#0b1c30] transition-colors" />
+                    class="w-full px-4 py-2.5 border border-[#c6c6cd] bg-[#f8f9ff] rounded focus:ring-0 focus:border-[#4165d1] outline-none text-sm text-[#0b1c30] transition-colors" />
                 </div>
               </div>
             </div>
@@ -353,7 +353,7 @@
                 </button>
               </div>
               <button type="button" class="w-full rounded border-2 border-dashed overflow-hidden transition-all group"
-                :class="thumbnailUrl ? 'border-[#c6c6cd]' : 'border-[#c6c6cd] hover:border-[#3755c3] hover:bg-[#eff4ff]'"
+                :class="thumbnailUrl ? 'border-[#c6c6cd]' : 'border-[#c6c6cd] hover:border-[#4165d1] hover:bg-[#eff4ff]'"
                 @click="openThumbnailModal">
                 <div v-if="thumbnailUrl" class="aspect-video w-full relative">
                   <img :src="thumbnailUrl" alt="Thumbnail"
@@ -366,7 +366,7 @@
                   </div>
                 </div>
                 <div v-else
-                  class="flex flex-col items-center justify-center gap-2 py-10 text-[#76777d] group-hover:text-[#3755c3] transition-colors">
+                  class="flex flex-col items-center justify-center gap-2 py-10 text-[#76777d] group-hover:text-[#4165d1] transition-colors">
                   <PictureOutlined class="text-4xl" />
                   <span class="text-sm">Click to select thumbnail</span>
                 </div>
@@ -378,11 +378,11 @@
               <div class="p-5 border-b border-[#e5eeff]">
                 <div class="flex items-end justify-between gap-3">
                   <h3 class="text-xs font-semibold uppercase tracking-wider text-[#45464d]">Categories</h3>
-                  <span class="text-xs text-[#3755c3] font-semibold">{{ form.category_ids.length }} selected</span>
+                  <span class="text-xs text-[#4165d1] font-semibold">{{ form.category_ids.length }} selected</span>
                 </div>
                 <div class="mt-3">
                   <input v-model="categoryFilter" type="text" placeholder="Search categories..."
-                    class="w-full px-3 py-2.5 border border-[#c6c6cd] bg-[#f8f9ff] rounded focus:ring-0 focus:border-[#3755c3] outline-none text-sm text-[#0b1c30] transition-colors" />
+                    class="w-full px-3 py-2.5 border border-[#c6c6cd] bg-[#f8f9ff] rounded focus:ring-0 focus:border-[#4165d1] outline-none text-sm text-[#0b1c30] transition-colors" />
                 </div>
               </div>
 
@@ -390,7 +390,7 @@
                 <label v-for="cat in filteredCategories" :key="cat.id"
                   class="group flex items-center gap-3 px-3 py-2 rounded hover:bg-[#eff4ff] cursor-pointer select-none transition-colors">
                   <input type="checkbox" :value="cat.id" v-model="form.category_ids"
-                    class="w-4 h-4 rounded border-[#c6c6cd] text-[#3755c3] focus:ring-[#3755c3]/20" />
+                    class="w-4 h-4 rounded border-[#c6c6cd] text-[#4165d1] focus:ring-[#4165d1]/20" />
                   <span class="text-sm text-[#0b1c30] truncate flex-1">{{ cat.name }}</span>
                   <span
                     class="shrink-0 text-[10px] font-bold uppercase tracking-wide px-1.5 py-0.5 rounded"
@@ -411,7 +411,7 @@
                   @click="form.category_ids = []">
                   Clear all
                 </button>
-                <div v-if="form.category_ids.length" class="text-xs text-[#3755c3] font-medium truncate">
+                <div v-if="form.category_ids.length" class="text-xs text-[#4165d1] font-medium truncate">
                   {{ selectedCategoryNames }}
                 </div>
                 <div v-else class="text-xs text-[#76777d]">
@@ -1044,7 +1044,7 @@ const handleSubmit = async () => {
 
 /* Subtle blue outline on the editable area when focused */
 :deep(.ck-editor__editable.ck-focused) {
-  outline: 2px solid #3755c3 !important;
+  outline: 2px solid #4165d1 !important;
   outline-offset: -2px;
   box-shadow: none !important;
 }

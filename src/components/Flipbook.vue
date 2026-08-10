@@ -1,6 +1,9 @@
 <script setup>
 import { computed, nextTick, onMounted, onBeforeUnmount, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { PageFlip } from 'page-flip';
+
+const { t } = useI18n();
 
 const props = defineProps({
   pages: {
@@ -167,10 +170,10 @@ onBeforeUnmount(() => {
         >
           <div class="page-content">
             <div v-if="page.type === 'image'" class="image-container">
-              <img :src="page.url" :alt="`${props.title || 'Page'} ${index + 1}`" draggable="false" />
+              <img :src="page.url" :alt="t('bible.pageAlt', { title: props.title || t('common.page', { n: index + 1 }), n: index + 1 })" draggable="false" />
             </div>
             <div v-else class="text-content">
-              <h3 class="text-lg font-semibold">Page {{ index + 1 }}</h3>
+              <h3 class="text-lg font-semibold">{{ t('common.page', { n: index + 1 }) }}</h3>
               <p class="mt-2 text-sm text-gray-700">{{ page.content || '' }}</p>
               <span class="page-number">{{ index + 1 }}</span>
             </div>
@@ -184,7 +187,7 @@ onBeforeUnmount(() => {
         type="button"
         class="nav-btn"
         :disabled="!canGoPrev"
-        aria-label="Previous page"
+        :aria-label="t('bible.previousPage')"
         @click="goPrev"
       >
         <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
@@ -196,7 +199,7 @@ onBeforeUnmount(() => {
         type="button"
         class="nav-btn"
         :disabled="!canGoNext"
-        aria-label="Next page"
+        :aria-label="t('bible.nextPage')"
         @click="goNext"
       >
         <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
@@ -316,16 +319,16 @@ onBeforeUnmount(() => {
   width: 2.5rem;
   height: 2.5rem;
   border-radius: 9999px;
-  border: 1px solid rgba(26, 54, 93, 0.15);
+  border: 1px solid rgba(65, 101, 209, 0.15);
   background: #fff;
-  color: #1a365d;
+  color: #4165d1;
   transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease, opacity 0.15s ease;
 }
 
 .nav-btn:hover:not(:disabled) {
-  background: #1a365d;
+  background: #4165d1;
   color: #fff;
-  border-color: #1a365d;
+  border-color: #4165d1;
 }
 
 .nav-btn:disabled {
@@ -339,6 +342,6 @@ onBeforeUnmount(() => {
   font-size: 0.8125rem;
   font-weight: 600;
   letter-spacing: 0.02em;
-  color: #1a365d;
+  color: #4165d1;
 }
 </style>

@@ -2,11 +2,11 @@
   <div class="min-h-screen bg-gray-50 pt-4 pb-12 font-sans">
     <div class="max-w-5xl mx-auto">
       <div v-if="loading" class="py-16 text-center text-gray-500">
-        Loading daily readings...
+        {{ t('dailyBible.loadingList') }}
       </div>
 
       <div v-else-if="!readings.length" class="py-16 text-center text-gray-500">
-        No daily readings available yet.
+        {{ t('dailyBible.emptyList') }}
       </div>
 
       <div v-else class="grid gap-6 sm:gap-8 sm:grid-cols-2 lg:grid-cols-2">
@@ -34,7 +34,7 @@
             <div
               class="pt-4 border-t border-gray-50 flex items-center justify-between text-blue-600 font-medium"
             >
-              <span>Read Full Text</span>
+              <span>{{ t('dailyBible.readFull') }}</span>
               <ArrowRightOutlined />
             </div>
           </div>
@@ -57,8 +57,11 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 import { CalendarOutlined, ArrowRightOutlined } from '@ant-design/icons-vue';
 import { DailyReadingService } from '@/services/DailyReadingService';
+
+const { t } = useI18n();
 
 const props = defineProps({
   setPageMeta: {
@@ -69,7 +72,7 @@ const props = defineProps({
 
 const router = useRouter();
 
-const PAGE_TITLE = 'អត្ថបទព្រះគម្ពីរប្រចាំថ្ងៃ';
+const PAGE_TITLE = t('dailyBible.title');
 
 const readings = ref([]);
 const loading = ref(false);

@@ -1,7 +1,10 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { RouterLink } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 import { DailyReadingService } from '@/services/DailyReadingService';
+
+const { t } = useI18n();
 
 const props = defineProps({
   showControls: {
@@ -53,7 +56,7 @@ function mapReadingToCard(reading) {
 
   return {
     id: reading.id,
-    book: book || 'Daily Reading',
+    book: book || t('dailyBible.dailyReading'),
     chapter: chapter || '',
     verse: verse || '',
     text: extractPreviewText(reading),
@@ -100,10 +103,10 @@ onMounted(() => {
 <template>
   <div class="daily-bible-section">
     <div v-if="loading" class="text-sm text-gray-500 py-4 text-center">
-      Loading daily reading...
+      {{ t('dailyBible.loading') }}
     </div>
     <div v-else-if="!latestReading" class="text-sm text-gray-500 py-4 text-center">
-      No daily reading available yet.
+      {{ t('dailyBible.empty') }}
     </div>
     <div
       v-else
@@ -112,7 +115,7 @@ onMounted(() => {
       <div class="flex items-start gap-4">
         <div class="flex-1 min-w-0">
           <p class="text-xs font-semibold uppercase tracking-wide text-burgundy mb-1">
-            អត្ថបទព្រះគម្ពីរប្រចាំថ្ងៃ
+            {{ t('dailyBible.title') }}
           </p>
           <h3 class="text-lg font-bold text-gray-900">
             <span>{{ latestReading.book }}</span>
@@ -142,9 +145,9 @@ onMounted(() => {
               String(latestReading?.id).trim() !== ''
             "
           :to="{ name: 'dailyBibleDetail', params: { id: latestReading.id } }"
-          class="shrink-0 inline-flex items-center px-3 py-1.5 text-xs font-medium bg-accent-light text-burgundy hover:bg-gold-pale hover:text-navy transition-colors"
+          class="shrink-0 inline-flex items-center px-3 py-1.5 text-xs font-medium bg-primary-light text-primary hover:bg-primary hover:text-white transition-colors"
         >
-          អានលម្អិត
+          {{ t('dailyBible.readDetail') }}
         </RouterLink>
       </div>
 
@@ -161,13 +164,13 @@ onMounted(() => {
           :to="{ name: 'dailyBibleDetail', params: { id: latestReading.id } }"
           class="inline-flex items-center text-burgundy hover:text-navy font-medium"
         >
-          <span>អានអត្ថបទពេញ</span>
+          <span>{{ t('dailyBible.readFull') }}</span>
         </RouterLink>
         <RouterLink
           :to="{ name: 'dailyBibleList' }"
           class="inline-flex items-center text-gray-500 hover:text-gray-700"
         >
-          <span>មើលអត្ថបទទាំងអស់</span>
+          <span>{{ t('dailyBible.viewAll') }}</span>
         </RouterLink>
       </div>
     </div>

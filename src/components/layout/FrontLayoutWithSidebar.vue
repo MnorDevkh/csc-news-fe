@@ -84,7 +84,7 @@ watch(lang, () => {
                     >
                       <span>{{ category.name }}</span>
                       <ArrowRightOutlined
-                        class="text-xs text-gold opacity-0 group-hover:opacity-100 transition-opacity"
+                        class="text-xs text-primary opacity-0 group-hover:opacity-100 transition-opacity"
                       />
                     </RouterLink>
                   </li>

@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 import { PaperClipOutlined, DeleteOutlined } from '@ant-design/icons-vue';
 import { useAuth } from '@/composables/useAuth';
 import { CommentService } from '@/services/CommentService.js';
@@ -20,6 +21,7 @@ const props = defineProps({
 
 const router = useRouter();
 const route = useRoute();
+const { t } = useI18n();
 const { isAuthenticated, user } = useAuth();
 
 const comments = ref([]);
@@ -72,7 +74,7 @@ async function onFilesSelected(event) {
     const isImage = file.type.startsWith('image/');
     const isPdf = file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf');
     if (!isImage && !isPdf) {
-      submitError.value = 'Only images and PDF files are allowed.';
+      submitError.value = t('comments.onlyImagesPdf');
       continue;
     }
 
@@ -93,7 +95,7 @@ async function onFilesSelected(event) {
       entry.uploading = false;
     } catch (err) {
       entry.uploading = false;
-      entry.error = err.response?.data?.detail || 'Upload failed';
+      entry.error = err.response?.data?.detail || t('comments.uploadFailed');
     }
   }
 }
@@ -107,19 +109,19 @@ async function submitComment() {
   submitError.value = '';
   const text = body.value.trim();
   if (!text) {
-    submitError.value = 'Please enter a comment.';
+    submitError.value = t('comments.pleaseEnter');
     return;
   }
 
   const uploading = pendingFiles.value.some((f) => f.uploading);
   if (uploading) {
-    submitError.value = 'Please wait for uploads to finish.';
+    submitError.value = t('comments.waitUploads');
     return;
   }
 
   const failed = pendingFiles.value.filter((f) => f.error);
   if (failed.length) {
-    submitError.value = 'Remove failed uploads before submitting.';
+    submitError.value = t('comments.removeFailedUploads');
     return;
   }
 
@@ -143,7 +145,7 @@ async function submitComment() {
   } catch (err) {
     const detail = err.response?.data?.detail;
     submitError.value =
-      typeof detail === 'string' ? detail : err.message || 'Failed to post comment';
+      typeof detail === 'string' ? detail : err.message || t('comments.postFailed');
   } finally {
     isSubmitting.value = false;
   }
@@ -162,8 +164,8 @@ loadComments();
 
 <template>
   <section class="mt-12 pt-10 border-t border-gray-100">
-    <h2 class="text-lg font-bold text-[#1a365d] mb-6">
-      Comments
+    <h2 class="text-lg font-bold text-[#4165d1] mb-6">
+      {{ t('comments.title') }}
       <span v-if="total" class="text-sm font-normal text-gray-400 ml-2">({{ total }})</span>
     </h2>
 
@@ -172,25 +174,25 @@ loadComments();
     </div>
 
     <div v-else-if="hasError" class="text-sm text-red-600 mb-6">
-      Could not load comments. Please refresh the page.
+      {{ t('comments.loadFailed') }}
     </div>
 
     <template v-else>
       <div v-if="!isAuthenticated" class="mb-8 p-4 rounded-md bg-gray-50 border border-gray-100">
         <p class="text-sm text-gray-600 m-0">
-          <button type="button" class="text-[#1a365d] font-medium hover:underline" @click="goToLogin">
-            Sign in
+          <button type="button" class="text-[#4165d1] font-medium hover:underline" @click="goToLogin">
+            {{ t('comments.signIn') }}
           </button>
-          to leave a comment.
+          {{ t('comments.toLeaveComment') }}
         </p>
       </div>
 
       <div v-else class="mb-8">
         <textarea
           v-model="body"
-          placeholder="Write a comment..."
+          :placeholder="t('comments.writePlaceholder')"
           rows="3"
-          class="w-full p-3 border border-gray-200 rounded-md text-sm resize-y focus:outline-none focus:ring-2 focus:ring-[#1a365d]/20 focus:border-[#1a365d]/40"
+          class="w-full p-3 border border-gray-200 rounded-md text-sm resize-y focus:outline-none focus:ring-2 focus:ring-[#4165d1]/20 focus:border-[#4165d1]/40"
         />
 
         <div v-if="pendingFiles.length" class="mt-3 flex flex-wrap gap-3">
@@ -205,9 +207,9 @@ loadComments();
               :alt="file.name"
               class="w-10 h-10 object-cover rounded"
             />
-            <span v-else class="text-xs font-medium text-[#1a365d]">PDF</span>
+            <span v-else class="text-xs font-medium text-[#4165d1]">PDF</span>
             <span class="text-gray-600 max-w-[140px] truncate">{{ file.name }}</span>
-            <span v-if="file.uploading" class="text-xs text-gray-400">Uploading...</span>
+            <span v-if="file.uploading" class="text-xs text-gray-400">{{ t('comments.uploading') }}</span>
             <span v-else-if="file.error" class="text-xs text-red-500">{{ file.error }}</span>
             <button
               type="button"
@@ -231,18 +233,18 @@ loadComments();
           <button
             v-if="canAttachMore"
             type="button"
-            class="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-[#1a365d] transition-colors"
+            class="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-[#4165d1] transition-colors"
             @click="openFilePicker"
           >
-            <PaperClipOutlined /> Attach file
+            <PaperClipOutlined /> {{ t('comments.attachFile') }}
           </button>
           <button
             type="button"
             :disabled="isSubmitting"
-            class="ml-auto px-4 py-2 bg-[#1a365d] text-white text-sm font-medium rounded-md hover:bg-[#152a4a] disabled:opacity-50 transition-colors"
+            class="ml-auto px-4 py-2 bg-[#4165d1] text-white text-sm font-medium rounded-md hover:bg-[#152a4a] disabled:opacity-50 transition-colors"
             @click="submitComment"
           >
-            {{ isSubmitting ? 'Posting...' : 'Post comment' }}
+            {{ isSubmitting ? t('comments.posting') : t('comments.postComment') }}
           </button>
         </div>
 
@@ -250,7 +252,7 @@ loadComments();
       </div>
 
       <div v-if="!comments.length && !isLoading" class="text-sm text-gray-400 py-4">
-        No comments yet. Be the first to share your thoughts.
+        {{ t('comments.empty') }}
       </div>
 
       <div v-else class="space-y-2">

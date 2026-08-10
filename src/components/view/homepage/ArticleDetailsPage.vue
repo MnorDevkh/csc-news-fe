@@ -12,17 +12,14 @@ import {
   ReloadOutlined,
 } from '@ant-design/icons-vue';
 import { NewsService } from '@/services/NewsService.js';
+import { useI18n } from 'vue-i18n';
 import { useSiteLanguage } from '@/composables/useSiteLanguage';
 import { localizedArticleRoute } from '@/utils/articleRoutes';
 import ArticleCommentsSection from './ArticleCommentsSection.vue';
 
-const LANGUAGE_LABELS = {
-  en: 'English',
-  km: 'ខ្មែរ',
-};
-
 const route = useRoute();
 const router = useRouter();
+const { t } = useI18n();
 const { lang: siteLang, setLang } = useSiteLanguage();
 
 const article = ref(null);
@@ -54,7 +51,9 @@ const otherTranslations = computed(() => {
 });
 
 function languageLabel(code) {
-  return LANGUAGE_LABELS[code] || code?.toUpperCase?.() || code;
+  if (code === 'en') return t('lang.english');
+  if (code === 'km') return t('lang.km');
+  return code?.toUpperCase?.() || code;
 }
 
 const formatDate = (dateStr) => {
@@ -74,7 +73,7 @@ const articleCategories = computed(() => {
   return [];
 });
 
-const shareLabel = computed(() => (shareCopied.value ? 'Link copied!' : 'Share'));
+const shareLabel = computed(() => (shareCopied.value ? t('article.linkCopied') : t('article.share')));
 
 /** Parse article.content: if JSON array of blocks return blocks, else return null (legacy HTML). */
 function parseContentBlocks(content) {
@@ -402,7 +401,7 @@ onUnmounted(() => {
   <div class="w-full article-details min-h-screen bg-[#f8f9fa] flex items-center justify-center">
     <!-- Reading progress bar -->
     <div v-if="article" class="fixed top-0 left-0 right-0 h-1 bg-gray-200 z-10 " aria-hidden="true">
-      <div class="h-full bg-gradient-to-r from-[#1a365d] to-[#d4a853] transition-[width] duration-150"
+      <div class="h-full bg-gradient-to-r from-[#4165d1] to-[#e02838] transition-[width] duration-150"
         :style="{ width: readProgress + '%' }" />
     </div>
 
@@ -436,9 +435,9 @@ onUnmounted(() => {
       <!-- Error State -->
       <div v-else-if="notFound" class="py-12 sm:py-16">
         <div class="bg-white rounded-2xl shadow-sm ring-1 ring-gray-100 p-6 sm:p-10 md:p-12 text-center max-w-3xl mx-auto">
-          <p class="text-gray-700 text-lg font-medium mb-2">404 — Article not found</p>
-          <p class="text-gray-500 text-sm mb-6">This article is not available in this language.</p>
-          <router-link to="/" class="text-[#1a365d] font-medium hover:underline">Back to home</router-link>
+          <p class="text-gray-700 text-lg font-medium mb-2">{{ t('article.notFound') }}</p>
+          <p class="text-gray-500 text-sm mb-6">{{ t('article.notAvailableLang') }}</p>
+          <router-link to="/" class="text-[#4165d1] font-medium hover:underline">{{ t('article.backToHome') }}</router-link>
         </div>
       </div>
 
@@ -446,16 +445,16 @@ onUnmounted(() => {
       <div v-else-if="hasError" class="py-12 sm:py-16">
         <div class="bg-white rounded-2xl shadow-sm ring-1 ring-gray-100 p-6 sm:p-10 md:p-12 text-center max-w-3xl mx-auto">
           <ExclamationCircleOutlined class="text-5xl text-gray-300 mb-4 block mx-auto" aria-hidden="true" />
-          <p class="text-gray-700 text-lg font-medium mb-2">Failed to load article.</p>
-          <p class="text-gray-500 text-sm mb-6">The article may not exist or the connection failed.</p>
+          <p class="text-gray-700 text-lg font-medium mb-2">{{ t('article.loadFailed') }}</p>
+          <p class="text-gray-500 text-sm mb-6">{{ t('article.connectionFailed') }}</p>
           <div class="flex flex-wrap items-center justify-center gap-3">
             <button type="button" @click="loadArticle"
-              class="inline-flex items-center gap-2 px-5 py-2.5 bg-gray-50 text-gray-700 text-sm font-medium rounded-md hover:bg-gray-200 transition-colors focus:outline-none focus:ring-2 focus:ring-[#1a365d]/20 focus:ring-offset-2">
-              <ReloadOutlined /> Retry
+              class="inline-flex items-center gap-2 px-5 py-2.5 bg-gray-50 text-gray-700 text-sm font-medium rounded-md hover:bg-gray-200 transition-colors focus:outline-none focus:ring-2 focus:ring-[#4165d1]/20 focus:ring-offset-2">
+              <ReloadOutlined /> {{ t('common.retry') }}
             </button>
             <button type="button" @click="router.back()"
-              class="inline-flex items-center gap-2 px-5 py-2.5 bg-[#1a365d] text-white text-sm font-medium rounded-md hover:bg-[#2a4a7f] transition-colors focus:outline-none focus:ring-2 focus:ring-[#1a365d]/30 focus:ring-offset-2 shadow-sm">
-              <ArrowLeftOutlined /> Go Back
+              class="inline-flex items-center gap-2 px-5 py-2.5 bg-[#4165d1] text-white text-sm font-medium rounded-md hover:bg-[#3554b8] transition-colors focus:outline-none focus:ring-2 focus:ring-[#4165d1]/30 focus:ring-offset-2 shadow-sm">
+              <ArrowLeftOutlined /> {{ t('article.goBack') }}
             </button>
           </div>
         </div>
@@ -469,7 +468,7 @@ onUnmounted(() => {
             <div class="max-w-[1020px] mx-auto text-center">
               <div v-if="articleCategories.length" class="flex justify-center mb-6">
                 <span v-for="cat in articleCategories" :key="cat.id || cat.slug || cat.name"
-                  class="inline-flex items-center gap-1.5 bg-white text-[#1a365d] px-3 py-1 text-xs sm:text-sm uppercase tracking-widest rounded-full ring-1 ring-gray-200 shadow-sm">
+                  class="inline-flex items-center gap-1.5 bg-white text-[#4165d1] px-3 py-1 text-xs sm:text-sm uppercase tracking-widest rounded-full ring-1 ring-gray-200 shadow-sm">
                   <TagOutlined class="text-xs" /> {{ cat.name }}
                 </span>
               </div>
@@ -481,15 +480,15 @@ onUnmounted(() => {
                 v-if="otherTranslations.length"
                 class="flex flex-wrap items-center justify-center gap-2 mb-6"
               >
-                <span class="text-xs text-gray-500 uppercase tracking-wider">Read in:</span>
+                <span class="text-xs text-gray-500 uppercase tracking-wider">{{ t('article.readIn') }}</span>
                 <button
-                  v-for="t in otherTranslations"
-                  :key="t.lang"
+                  v-for="tr in otherTranslations"
+                  :key="tr.lang"
                   type="button"
-                  class="px-3 py-1 rounded-full text-sm font-medium bg-[#1a365d]/10 text-[#1a365d] hover:bg-[#1a365d]/15 transition"
-                  @click="switchLanguage(t)"
+                  class="px-3 py-1 rounded-full text-sm font-medium bg-[#4165d1]/10 text-[#4165d1] hover:bg-[#4165d1]/15 transition"
+                  @click="switchLanguage(tr)"
                 >
-                  {{ languageLabel(t.lang) }}
+                  {{ languageLabel(tr.lang) }}
                 </button>
               </div>
 
@@ -504,7 +503,7 @@ onUnmounted(() => {
                 </span>
                 <span v-if="article.reading_time" class="hidden md:block w-1 h-1 bg-gray-300 rounded-full" aria-hidden="true" />
                 <span v-if="article.reading_time" class="inline-flex items-center gap-1.5 text-xs sm:text-sm uppercase tracking-widest">
-                  <ClockCircleOutlined class="text-sm" /> {{ article.reading_time }} min read
+                  <ClockCircleOutlined class="text-sm" /> {{ article.reading_time }} {{ t('article.minRead') }}
                 </span>
                 <span v-if="article.view_count" class="hidden md:block w-1 h-1 bg-gray-300 rounded-full" aria-hidden="true" />
                 <span v-if="article.view_count" class="inline-flex items-center gap-1.5 text-xs sm:text-sm uppercase tracking-widest">
@@ -517,7 +516,7 @@ onUnmounted(() => {
             <div class="w-full h-[320px] sm:h-[520px] lg:h-[600px] mt-10 overflow-hidden rounded-md bg-gray-50">
               <img v-if="article.thumbnail" :src="article.thumbnail" :alt="article.title"
                 class="w-full h-full object-contain object-center" />
-              <div v-else class="w-full h-full bg-gradient-to-br from-[#1a365d] to-[#2a4a7f]" />
+              <div v-else class="w-full h-full bg-gradient-to-br from-[#4165d1] to-[#3554b8]" />
             </div>
           </header>
 
@@ -530,8 +529,8 @@ onUnmounted(() => {
                   {{ shareLabel }}
                 </span>
                 <button type="button" @click="handleShare"
-                  class="text-gray-500 hover:text-[#1a365d] transition-colors focus:outline-none focus:ring-2 focus:ring-[#1a365d]/20 focus:ring-offset-2 rounded-md p-1.5"
-                  :title="shareCopied ? 'Copied' : 'Share article'">
+                  class="text-gray-500 hover:text-[#4165d1] transition-colors focus:outline-none focus:ring-2 focus:ring-[#4165d1]/20 focus:ring-offset-2 rounded-md p-1.5"
+                  :title="shareCopied ? t('article.copied') : t('article.shareArticle')">
                   <ShareAltOutlined class="text-xl" />
                 </button>
               </div>
@@ -541,7 +540,7 @@ onUnmounted(() => {
             <article class="lg:col-span-8 lg:col-start-2 max-w-[920px]">
               <!-- Lead / Excerpt -->
               <p v-if="article.excerpt"
-                class="article-lead text-lg sm:text-xl text-gray-600 leading-relaxed mb-10 pl-4 border-l-4 border-[#d4a853]">
+                class="article-lead text-lg sm:text-xl text-gray-600 leading-relaxed mb-10 pl-4 border-l-4 border-[#e02838]">
                 {{ article.excerpt }}
               </p>
 
@@ -562,7 +561,7 @@ onUnmounted(() => {
                       <!-- Images array -->
                       <div v-else class="article-gallery-grid my-6" :style="galleryContainerStyle(block.images.length)">
                         <img v-for="(img, i) in block.images" :key="img.key || i" :src="img.url"
-                          :alt="article.title + ' image ' + (i + 1)" class="article-gallery-item"
+                          :alt="article.title + ' ' + t('article.imageNumber', { n: i + 1 })" class="article-gallery-item"
                           :style="galleryItemStyleAt(block.images.length, i)"
                           @click="openLightbox(block.images.map(m => m.url), i)" />
                       </div>
@@ -571,7 +570,7 @@ onUnmounted(() => {
                     <!-- Gallery block (new: urls array) -->
                     <div v-else-if="block.type === 'gallery' && block.urls && block.urls.length"
                       class="article-gallery-grid my-6" :style="galleryContainerStyle(block.urls.length)">
-                      <img v-for="(url, i) in block.urls" :key="i" :src="url" :alt="article.title + ' photo ' + (i + 1)"
+                      <img v-for="(url, i) in block.urls" :key="i" :src="url" :alt="article.title + ' ' + t('article.photoNumber', { n: i + 1 })"
                         class="article-gallery-item" :style="galleryItemStyleAt(block.urls.length, i)"
                         @click="openLightbox(block.urls, i)" />
                     </div>
@@ -588,7 +587,7 @@ onUnmounted(() => {
                           class="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover/miximg:scale-105" />
                         <div
                           class="absolute inset-0 flex items-end justify-end p-2 opacity-0 group-hover/miximg:opacity-100 transition-opacity pointer-events-none">
-                          <span class="bg-black/50 text-white text-xs px-2 py-1 rounded backdrop-blur-sm">🔍 View</span>
+                          <span class="bg-black/50 text-white text-xs px-2 py-1 rounded backdrop-blur-sm">{{ t('article.view') }}</span>
                         </div>
                       </div>
                       <div v-else class="article-mixed-img bg-gradient-to-br from-gray-100 to-gray-200 min-h-[200px]"></div>
@@ -603,11 +602,11 @@ onUnmounted(() => {
               <!-- Tags -->
               <div v-if="article.tags" class="mt-12 pt-10 border-t border-gray-100">
                 <span class="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-3 block">
-                  Tags
+                  {{ t('article.tags') }}
                 </span>
                 <div class="flex flex-wrap gap-2">
                   <span v-for="tag in article.tags.split(',')" :key="tag.trim()"
-                    class="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium bg-[#1a365d]/8 text-[#1a365d] hover:bg-[#1a365d]/12 transition-colors">
+                    class="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium bg-[#4165d1]/8 text-[#4165d1] hover:bg-[#4165d1]/12 transition-colors">
                     #{{ tag.trim() }}
                   </span>
                 </div>
@@ -618,14 +617,14 @@ onUnmounted(() => {
               <!-- Back + mobile share -->
               <footer class="mt-12 pt-10 border-t border-gray-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <button type="button" @click="router.back()"
-                  class="inline-flex items-center gap-2 text-gray-500 hover:text-[#1a365d] text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-[#1a365d]/20 focus:ring-offset-2 rounded-md px-3 py-1.5 hover:bg-[#1a365d]/5">
-                  <ArrowLeftOutlined class="text-xs" /> Back to list
+                  class="inline-flex items-center gap-2 text-gray-500 hover:text-[#4165d1] text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-[#4165d1]/20 focus:ring-offset-2 rounded-md px-3 py-1.5 hover:bg-[#4165d1]/5">
+                  <ArrowLeftOutlined class="text-xs" /> {{ t('article.backToList') }}
                 </button>
                 <div class="flex items-center gap-3 lg:hidden">
                   <span class="text-sm text-gray-500 font-medium">{{ shareLabel }}</span>
                   <button type="button" @click="handleShare"
-                    class="h-9 w-9 rounded-md bg-gray-100 text-gray-600 hover:bg-[#1a365d] hover:text-white flex items-center justify-center transition-all focus:outline-none focus:ring-2 focus:ring-[#1a365d]/30 focus:ring-offset-2"
-                    :title="shareCopied ? 'Copied' : 'Share article'">
+                    class="h-9 w-9 rounded-md bg-gray-100 text-gray-600 hover:bg-[#4165d1] hover:text-white flex items-center justify-center transition-all focus:outline-none focus:ring-2 focus:ring-[#4165d1]/30 focus:ring-offset-2"
+                    :title="shareCopied ? t('article.copied') : t('article.shareArticle')">
                     <ShareAltOutlined class="text-base" />
                   </button>
                 </div>
@@ -636,8 +635,8 @@ onUnmounted(() => {
             <aside class="hidden lg:block lg:col-span-3 lg:col-start-10">
               <div class="space-y-10">
                 <div>
-                  <h3 class="text-xs font-bold text-[#1a365d] uppercase tracking-widest border-b border-[#1a365d] pb-2 mb-5">
-                    Recommended
+                  <h3 class="text-xs font-bold text-[#4165d1] uppercase tracking-widest border-b border-[#4165d1] pb-2 mb-5">
+                    {{ t('article.recommended') }}
                   </h3>
 
                   <div v-if="isLoadingRecommended" class="space-y-5 animate-pulse">
@@ -653,16 +652,16 @@ onUnmounted(() => {
                       <span class="text-[11px] text-gray-400 uppercase block mb-1 tracking-widest">
                         <span v-if="rec.category?.name">{{ rec.category.name }}</span>
                         <span v-else-if="rec.categories?.length">{{ rec.categories[0]?.name }}</span>
-                        <span v-else>Featured</span>
-                        <span v-if="rec.reading_time"> • {{ rec.reading_time }} min read</span>
+                        <span v-else>{{ t('article.featured') }}</span>
+                        <span v-if="rec.reading_time"> • {{ rec.reading_time }} {{ t('article.minRead') }}</span>
                       </span>
-                      <h4 class="text-lg font-semibold text-gray-900 group-hover:text-[#1a365d] transition-colors leading-snug">
+                      <h4 class="text-lg font-semibold text-gray-900 group-hover:text-[#4165d1] transition-colors leading-snug">
                         {{ rec.title }}
                       </h4>
                     </RouterLink>
                   </div>
 
-                  <p v-else class="text-sm text-gray-400">No recommendations available.</p>
+                  <p v-else class="text-sm text-gray-400">{{ t('article.noRecommendations') }}</p>
                 </div>
               </div>
             </aside>
@@ -676,21 +675,21 @@ onUnmounted(() => {
       <transition name="lb">
         <div v-if="lightboxOpen" class="lightbox-overlay" @click.self="closeLightbox" role="dialog" aria-modal="true">
           <!-- Close -->
-          <button class="lightbox-close" @click="closeLightbox" aria-label="Close">&#10005;</button>
+          <button class="lightbox-close" @click="closeLightbox" :aria-label="t('article.close')">&#10005;</button>
 
           <!-- Prev -->
           <button v-if="lightboxUrls.length > 1" class="lightbox-nav lightbox-prev" @click="lightboxPrev"
-            aria-label="Previous">&#8249;</button>
+            :aria-label="t('article.previous')">&#8249;</button>
 
           <!-- Image -->
           <div class="lightbox-img-wrap">
-            <img :src="lightboxUrls[lightboxIndex]" :alt="'Image ' + (lightboxIndex + 1) + ' of ' + lightboxUrls.length"
+            <img :src="lightboxUrls[lightboxIndex]" :alt="t('article.imageOf', { n: lightboxIndex + 1, total: lightboxUrls.length })"
               class="lightbox-img" />
           </div>
 
           <!-- Next -->
           <button v-if="lightboxUrls.length > 1" class="lightbox-nav lightbox-next" @click="lightboxNext"
-            aria-label="Next">&#8250;</button>
+            :aria-label="t('article.next')">&#8250;</button>
 
           <!-- Counter -->
           <div v-if="lightboxUrls.length > 1" class="lightbox-counter">
@@ -743,13 +742,13 @@ onUnmounted(() => {
 }
 
 .article-body :deep(a) {
-  color: #1a365d;
+  color: #4165d1;
   text-decoration: underline;
   text-underline-offset: 2px;
 }
 
 .article-body :deep(a:hover) {
-  color: #d4a853;
+  color: #e02838;
 }
 
 .article-body :deep(ul),
@@ -773,7 +772,7 @@ onUnmounted(() => {
 }
 
 .article-body :deep(blockquote) {
-  border-left: 4px solid #d4a853;
+  border-left: 4px solid #e02838;
   padding-left: 1rem;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;

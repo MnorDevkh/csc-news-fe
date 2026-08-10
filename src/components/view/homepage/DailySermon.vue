@@ -1,7 +1,10 @@
 <script setup>
 import { ref, onMounted } from 'vue';
+import { useI18n } from 'vue-i18n';
 import SermonCard from '../sermon/SermonCard.vue';
 import { SermonService } from '@/services/SermonService';
+
+const { t } = useI18n();
 
 const sermons = ref([]);
 
@@ -34,7 +37,7 @@ onMounted(async () => {
       v-if="!sermons.length"
       class="text-center py-8 text-gray-500 text-sm"
     >
-      មិនមានធម្មទេសនានៅឡើយ
+      {{ t('dailySermon.empty') }}
     </div>
     <SermonCard
       v-for="sermon in sermons"

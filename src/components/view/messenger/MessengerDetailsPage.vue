@@ -1,8 +1,11 @@
 <script setup>
 import { computed, onMounted, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 import { MessengerService } from '@/services/MessengerService';
 import MessengerFlipbookViewer from '@/components/view/messenger/MessengerFlipbookViewer.vue';
+
+const { t } = useI18n();
 
 const route = useRoute();
 const router = useRouter();
@@ -35,7 +38,7 @@ async function loadIssue() {
     issue.value = data;
   } catch (e) {
     console.error('Failed to load messenger issue:', e);
-    error.value = 'Failed to load issue. Please try again later.';
+    error.value = t('messenger.loadFailed');
   } finally {
     loading.value = false;
   }
@@ -69,7 +72,7 @@ watch(slug, () => {
           >
             ←
           </span>
-          All issues
+          {{ t('messenger.allIssues') }}
         </button>
       </nav>
 
@@ -89,7 +92,7 @@ watch(slug, () => {
           class="text-sm font-semibold text-primary hover:text-primary-hover"
           @click="loadIssue"
         >
-          Retry
+          {{ t('common.retry') }}
         </button>
       </div>
 
@@ -99,7 +102,7 @@ watch(slug, () => {
             {{ issueDateLabel }}
           </p>
           <h1 class="issue-title">
-            {{ issue?.title || 'The Messenger' }}
+            {{ issue?.title || t('messenger.title') }}
           </h1>
           <div class="issue-rule" aria-hidden="true" />
           <p v-if="issue?.description" class="issue-desc">
@@ -110,14 +113,14 @@ watch(slug, () => {
         <MessengerFlipbookViewer
           v-if="issue?.pdf_url"
           :pdfUrl="issue.pdf_url"
-          :title="issue?.title || 'The Messenger'"
+          :title="issue?.title || t('messenger.title')"
         />
 
         <div
           v-else
           class="rounded-2xl border border-dashed border-primary/20 bg-white px-6 py-12 text-center text-sm text-muted"
         >
-          PDF not available for this issue.
+          {{ t('messenger.pdfNotAvailable') }}
         </div>
       </template>
     </div>
@@ -127,7 +130,7 @@ watch(slug, () => {
 <style scoped>
 .issue-reader {
   background:
-    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(26, 54, 93, 0.07), transparent 55%),
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(65, 101, 209, 0.07), transparent 55%),
     linear-gradient(180deg, #f4f6f9 0%, #f8f9fa 40%, #eef1f5 100%);
 }
 
@@ -137,7 +140,7 @@ watch(slug, () => {
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #d4a853;
+  color: #e02838;
 }
 
 .issue-title {
@@ -147,7 +150,7 @@ watch(slug, () => {
   font-weight: 700;
   line-height: 1.2;
   letter-spacing: -0.02em;
-  color: #1a365d;
+  color: #4165d1;
 }
 
 .issue-rule {
@@ -155,7 +158,7 @@ watch(slug, () => {
   height: 2px;
   margin: 1rem auto 0;
   border-radius: 9999px;
-  background: linear-gradient(90deg, transparent, #d4a853, transparent);
+  background: linear-gradient(90deg, transparent, #e02838, transparent);
 }
 
 .issue-desc {

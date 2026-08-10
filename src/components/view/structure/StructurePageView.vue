@@ -1,6 +1,7 @@
 ﻿<script setup>
 import { ref, computed, watch, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 import { ArrowLeftOutlined, ExclamationCircleOutlined, ReloadOutlined } from '@ant-design/icons-vue';
 import StructureContentBlocks from '@/components/content/StructureContentBlocks.vue';
 import PageRenderer from '@/components/structure-builder/renderer/PageRenderer.vue';
@@ -9,6 +10,7 @@ import { StructurePageService } from '@/services/StructurePageService';
 
 const route = useRoute();
 const router = useRouter();
+const { t } = useI18n();
 const content = ref(null);
 const isLoading = ref(true);
 const hasError = ref(false);
@@ -116,22 +118,22 @@ onMounted(() => {
         class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sm:p-10 md:p-12 text-center"
       >
         <ExclamationCircleOutlined class="text-5xl text-gray-300 mb-4 block mx-auto" aria-hidden="true" />
-        <p class="text-gray-700 text-lg font-medium mb-2">មិនអាចផ្ទុកទំព័របានទេ</p>
-        <p class="text-gray-500 text-sm mb-6">ទំព័រនេះមិនមាន ឬមានបញ្ហាតភ្ជាប់</p>
+        <p class="text-gray-700 text-lg font-medium mb-2">{{ t('structure.pageLoadFailed') }}</p>
+        <p class="text-gray-500 text-sm mb-6">{{ t('structure.connectionIssue') }}</p>
         <div class="flex flex-wrap items-center justify-center gap-3">
           <button
             type="button"
             class="inline-flex items-center gap-2 px-5 py-2.5 bg-gray-100 text-gray-700 text-sm font-medium rounded-md hover:bg-gray-200 transition-colors"
             @click="loadContent"
           >
-            <ReloadOutlined /> ព្យាយាមម្តងទៀត
+            <ReloadOutlined /> {{ t('common.tryAgain') }}
           </button>
           <button
             type="button"
             class="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 transition-colors"
             @click="router.push({ name: 'structureIndex' })"
           >
-            <ArrowLeftOutlined /> រចនាសម្ព័ន្ធ
+            <ArrowLeftOutlined /> {{ t('structure.breadcrumbStructure') }}
           </button>
         </div>
       </div>
@@ -149,9 +151,9 @@ onMounted(() => {
           <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" aria-hidden="true" />
           <div class="absolute bottom-0 left-0 right-0 p-6 sm:p-8 text-white">
             <nav class="text-xs sm:text-sm text-white/80 mb-2">
-              <router-link :to="{ name: 'home' }" class="hover:underline">ទំព័រដើម</router-link>
+              <router-link :to="{ name: 'home' }" class="hover:underline">{{ t('structure.breadcrumbHome') }}</router-link>
               <span class="mx-2">/</span>
-              <router-link :to="{ name: 'structureIndex' }" class="hover:underline">រចនាសម្ព័ន្ធ</router-link>
+              <router-link :to="{ name: 'structureIndex' }" class="hover:underline">{{ t('structure.breadcrumbStructure') }}</router-link>
             </nav>
             <h1
               class="text-2xl sm:text-4xl font-bold leading-tight tracking-tight drop-shadow-md [text-shadow:0_1px_2px_rgba(0,0,0,0.5)] m-0"
@@ -164,9 +166,9 @@ onMounted(() => {
         <div class="px-4 sm:px-10 py-6 sm:py-10">
           <header v-if="!content.thumbnail" class="mb-8 sm:mb-10">
             <nav class="text-xs sm:text-sm text-gray-500 mb-2">
-              <router-link :to="{ name: 'home' }" class="hover:underline">ទំព័រដើម</router-link>
+              <router-link :to="{ name: 'home' }" class="hover:underline">{{ t('structure.breadcrumbHome') }}</router-link>
               <span class="mx-2">/</span>
-              <router-link :to="{ name: 'structureIndex' }" class="hover:underline">រចនាសម្ព័ន្ធ</router-link>
+              <router-link :to="{ name: 'structureIndex' }" class="hover:underline">{{ t('structure.breadcrumbStructure') }}</router-link>
             </nav>
             <h1 class="text-2xl sm:text-4xl font-bold leading-tight tracking-tight text-gray-900 m-0">
               {{ pageTitle || route.params.slug }}
@@ -195,7 +197,7 @@ onMounted(() => {
               class="article-body ck-content prose prose-gray prose-lg max-w-none"
               v-html="content.content"
             />
-            <p v-else class="text-gray-500 text-center py-8">មិនទាន់មានខ្លឹមសារ</p>
+            <p v-else class="text-gray-500 text-center py-8">{{ t('structure.noContent') }}</p>
           </div>
 
           <footer class="mt-10 pt-8 border-t border-gray-100 flex flex-wrap gap-4">
@@ -204,14 +206,14 @@ onMounted(() => {
               class="inline-flex items-center gap-2 text-gray-500 hover:text-blue-600 text-sm font-medium transition-colors"
               @click="router.push({ name: 'structureIndex' })"
             >
-              <ArrowLeftOutlined class="text-xs" /> រចនាសម្ព័ន្ធ
+              <ArrowLeftOutlined class="text-xs" /> {{ t('structure.backToStructure') }}
             </button>
             <button
               type="button"
               class="inline-flex items-center gap-2 text-gray-500 hover:text-blue-600 text-sm font-medium transition-colors"
               @click="router.push({ name: 'home' })"
             >
-              ទំព័រដើម
+              {{ t('structure.breadcrumbHome') }}
             </button>
           </footer>
         </div>

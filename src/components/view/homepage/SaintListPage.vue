@@ -3,8 +3,8 @@
     <div class="max-w-6xl mx-auto px-3 sm:px-5">
       <div class="flex items-end justify-between gap-3 mb-5">
         <div class="min-w-0">
-          <h1 class="text-2xl sm:text-3xl font-bold text-stone-800 tracking-tight">All Saints</h1>
-          <p class="text-sm text-gray-600 mt-1">Stories and histories of Saints.</p>
+          <h1 class="text-2xl sm:text-3xl font-bold text-stone-800 tracking-tight">{{ t('saints.allSaints') }}</h1>
+          <p class="text-sm text-gray-600 mt-1">{{ t('saints.listSubtitle') }}</p>
         </div>
       </div>
 
@@ -19,12 +19,12 @@
           class="text-primary hover:text-burgundy font-medium"
           @click="loadSaints"
         >
-          Retry
+          {{ t('common.retry') }}
         </button>
       </div>
 
       <div v-else-if="!items.length" class="text-center py-12 text-gray-600">
-        No saints found.
+        {{ t('saints.notFoundList') }}
       </div>
 
       <div v-else class="bg-white rounded-2xl shadow-sm ring-1 ring-gray-100">
@@ -46,7 +46,7 @@
                   v-else
                   class="h-20 w-20 sm:h-24 sm:w-36 rounded-md bg-gray-100 flex items-center justify-center text-gray-400 text-xs"
                 >
-                  No image
+                  {{ t('common.noImage') }}
                 </div>
               </div>
 
@@ -75,10 +75,10 @@
           :disabled="pageIndex <= 1 || loading"
           @click="goToPage(pageIndex - 1)"
         >
-          Prev
+          {{ t('saints.previous') }}
         </button>
         <span class="text-sm text-gray-600">
-          Page {{ pageIndex }} of {{ totalPages }}
+          {{ t('common.pageOf', { n: pageIndex, total: totalPages }) }}
         </span>
         <button
           type="button"
@@ -86,7 +86,7 @@
           :disabled="pageIndex >= totalPages || loading"
           @click="goToPage(pageIndex + 1)"
         >
-          Next
+          {{ t('saints.next') }}
         </button>
       </div>
     </div>
@@ -96,7 +96,10 @@
 <script setup>
 import { computed, onMounted, ref } from 'vue';
 import { RouterLink } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 import { SaintService } from '@/services/SaintService';
+
+const { t } = useI18n();
 
 const loading = ref(true);
 const error = ref('');
@@ -126,7 +129,7 @@ async function loadSaints() {
     totalElements.value = data?.total_elements || 0;
   } catch (e) {
     console.error('Failed to load saints list:', e);
-    error.value = 'Failed to load saints. Please try again later.';
+    error.value = t('saints.loadFailedLater');
     items.value = [];
     totalPages.value = 0;
     totalElements.value = 0;

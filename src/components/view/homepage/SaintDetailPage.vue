@@ -1,10 +1,12 @@
 <script setup>
 import { computed, onMounted, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 import { SaintService } from '@/services/SaintService';
 
 const route = useRoute();
 const router = useRouter();
+const { t } = useI18n();
 
 const saint = ref(null);
 const loading = ref(true);
@@ -21,7 +23,7 @@ async function loadSaint() {
     saint.value = data;
   } catch (e) {
     console.error('Failed to load saint:', e);
-    error.value = 'Failed to load saint. Please try again later.';
+    error.value = t('saints.loadDetailFailed');
   } finally {
     loading.value = false;
   }
@@ -48,7 +50,7 @@ watch(slug, () => {
         class="text-sm text-gray-600 hover:text-gray-900 font-medium mb-5"
         @click="goBack"
       >
-        ← Back to saints
+        ← {{ t('saints.backToSaints') }}
       </button>
 
       <div v-if="loading" class="flex justify-center py-16">
@@ -62,12 +64,12 @@ watch(slug, () => {
           @click="goBack"
           class="text-blue-600 hover:text-blue-800 font-medium"
         >
-          Back to list
+          {{ t('saints.backToList') }}
         </button>
       </div>
 
       <div v-else-if="!saint" class="text-center py-12 text-gray-600">
-        Saint not found.
+        {{ t('saints.notFound') }}
       </div>
 
       <article v-else class="bg-white rounded-2xl shadow-sm ring-1 ring-gray-100 overflow-hidden">
@@ -81,7 +83,7 @@ watch(slug, () => {
               loading="lazy"
             >
             <div v-else class="w-full h-72 lg:h-full flex items-center justify-center text-gray-400">
-              No image
+              {{ t('common.noImage') }}
             </div>
           </div>
 
@@ -92,13 +94,13 @@ watch(slug, () => {
 
             <div class="mt-3 flex flex-wrap gap-3 text-sm text-gray-600">
               <span class="inline-flex items-center px-3 py-1 rounded-full bg-gray-50 ring-1 ring-gray-200">
-                Feast Day: {{ saint.feast_day || '-' }}
+                {{ t('saints.feastDay', { day: saint.feast_day || '-' }) }}
               </span>
               <span
                 v-if="saint.patron_of"
                 class="inline-flex items-center px-3 py-1 rounded-full bg-gray-50 ring-1 ring-gray-200"
               >
-                Patron of: {{ saint.patron_of }}
+                {{ t('saints.patronOf', { name: saint.patron_of }) }}
               </span>
             </div>
 
@@ -117,4 +119,3 @@ watch(slug, () => {
     </div>
   </div>
 </template>
-

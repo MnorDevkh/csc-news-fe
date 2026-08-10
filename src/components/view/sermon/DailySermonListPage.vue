@@ -54,7 +54,7 @@
               :to="{ name: 'dailySermonDetail', params: { id: sermon.id } }"
               class="inline-flex items-center gap-2 px-4 py-2 bg-purple-50 text-purple-700 rounded-md font-medium hover:bg-purple-100 transition-colors text-sm"
             >
-              Listen now
+              {{ t('dailySermon.listenNow') }}
               <SoundOutlined />
             </RouterLink>
           </div>
@@ -67,8 +67,11 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { RouterLink } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 import { PlayCircleOutlined, UserOutlined, SoundOutlined } from '@ant-design/icons-vue';
 import { SermonService } from '@/services/SermonService';
+
+const { t } = useI18n();
 
 const props = defineProps({
   setPageMeta: {
@@ -101,8 +104,7 @@ async function loadSermons() {
 onMounted(() => {
   if (props.setPageMeta) {
     props.setPageMeta({
-      title: 'ធម្មទេសនា​ប្រចាំថ្ងៃ',
-      // subtitle: 'Short reflections to accompany your daily walk with God.',
+      title: t('dailySermon.title'),
     });
   }
   loadSermons();

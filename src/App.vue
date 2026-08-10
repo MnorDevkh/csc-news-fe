@@ -1,6 +1,7 @@
 <script setup>
 import { computed } from 'vue';
 import { RouterView, useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import { ConfigProvider } from 'ant-design-vue'
 import { LoadingOutlined } from '@ant-design/icons-vue';
 import Menus from './components/view/Menu.vue'
@@ -10,18 +11,18 @@ import { usePullToRefresh, isPwaDisplayMode, isMobileTouch } from './composables
 
 const antdTheme = {
   token: {
-    colorPrimary: '#1a365d',
-    colorLink: '#1a365d',
-    colorInfo: '#1a365d',
+    colorPrimary: '#1e5a96',
+    colorLink: '#1e5a96',
+    colorInfo: '#1e5a96',
     colorSuccess: '#059669',
     colorWarning: '#d97706',
     colorError: '#dc2626',
-    colorLinkHover: '#b8954a',
-    colorPrimaryHover: '#2a4a7f',
-    colorPrimaryActive: '#142848',
-    controlOutline: 'rgba(26, 54, 93, 0.18)',
-    controlItemBgHover: '#e8edf5',
-    controlItemBgActive: '#e8edf5',
+    colorLinkHover: '#2f7fc1',
+    colorPrimaryHover: '#174a7c',
+    colorPrimaryActive: '#123a63',
+    controlOutline: 'rgba(30, 90, 150, 0.18)',
+    controlItemBgHover: '#e8f1f9',
+    controlItemBgActive: '#e8f1f9',
     borderRadiusLG: 8,
     borderRadius: 4,
     fontFamily: "'Kantumruy Pro', 'Khmer', 'Koh Santepheap', sans-serif",
@@ -30,6 +31,8 @@ const antdTheme = {
 }
 
 const route = useRoute();
+const { t } = useI18n();
+
 const isAdminOrLogin = computed(() => {
   const path = route.path;
   return path.startsWith('/login') || path.startsWith('/admin');
@@ -39,37 +42,37 @@ const showMobileTabBar = computed(
   () => !isAdminOrLogin.value && !route.path.startsWith('/read')
 );
 
-const mainMobileNavItems = [
-  { to: '/', label: 'Home', icon: 'home', accent: 'blue' },
+const mainMobileNavItems = computed(() => [
+  { to: '/', label: t('nav.home'), icon: 'home', accent: 'blue' },
   {
     to: { name: 'bibleReadHome' },
-    label: 'Bible',
+    label: t('nav.bible'),
     icon: 'book',
     accent: 'blue',
     pathPrefix: '/read',
   },
   {
     to: { name: 'searchResults', query: { q: '' } },
-    label: 'Search',
+    label: t('nav.search'),
     icon: 'search',
     accent: 'blue',
     routeNames: ['searchResults'],
   },
   {
     to: { name: 'messengerList' },
-    label: 'Messenger',
+    label: t('nav.messenger'),
     icon: 'messenger',
     accent: 'blue',
     pathPrefix: '/the-messenger',
   },
   {
     to: { name: 'sermonIssueList' },
-    label: 'Sermon',
+    label: t('nav.sermon'),
     icon: 'messenger',
     accent: 'blue',
     pathPrefix: '/the-sermon',
   },
-];
+]);
 
 const pullToRefreshEnabled = computed(() => {
   if (isAdminOrLogin.value) return false;

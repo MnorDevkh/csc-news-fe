@@ -1,9 +1,11 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 import { MediaService } from '../../services/MediaService';
 
 const route = useRoute();
+const { t } = useI18n();
 const gallery = ref(null);
 const loading = ref(true);
 
@@ -31,7 +33,7 @@ onMounted(async () => {
           </p>
           <div class="flex items-center justify-start gap-4 flex-wrap text-sm text-gray-400">
             <span>{{ gallery.date }}</span>
-            <span>{{ gallery.itemCount }} items</span>
+            <span>{{ t('gallery.itemsCount', { count: gallery.itemCount }) }}</span>
           </div>
         </header>
 
@@ -55,13 +57,13 @@ onMounted(async () => {
 
       <div v-else class="text-center py-12 px-4">
         <h2 class="text-xl sm:text-2xl font-bold text-gray-700 mb-4">
-          Gallery not found
+          {{ t('gallery.notFound') }}
         </h2>
         <router-link
           to="/galleries"
           class="text-blue-500 no-underline inline-block mt-2 hover:underline"
         >
-          Back to Galleries
+          {{ t('gallery.backToGalleries') }}
         </router-link>
       </div>
     </div>

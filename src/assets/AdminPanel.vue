@@ -25,7 +25,7 @@
           @click="activeTab = tab.id"
           :class="[
             activeTab === tab.id
-              ? 'bg-white text-[#1a365d] shadow-sm font-semibold'
+              ? 'bg-white text-[#4165d1] shadow-sm font-semibold'
               : 'text-gray-500 hover:text-gray-700',
             'px-4 py-2 rounded-md text-sm transition-all duration-200',
           ]"
@@ -78,7 +78,7 @@
               <td class="whitespace-nowrap py-4 pl-3 pr-6 text-right text-sm">
                 <button
                   type="button"
-                  class="p-2 text-gray-400 hover:text-[#1a365d] hover:bg-[#1a365d]/5 rounded-md transition-all"
+                  class="p-2 text-gray-400 hover:text-[#4165d1] hover:bg-[#4165d1]/5 rounded-md transition-all"
                   @click="openEditUser(u)"
                   title="Edit"
                 >

@@ -1,10 +1,12 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 import { RightOutlined, ExclamationCircleOutlined, ReloadOutlined } from '@ant-design/icons-vue';
 import { StructurePageService } from '@/services/StructurePageService';
 
 const router = useRouter();
+const { t } = useI18n();
 const pages = ref([]);
 const isLoading = ref(true);
 const hasError = ref(false);
@@ -34,10 +36,10 @@ onMounted(load);
     <div class="w-full max-w-7xl px-3 py-6 sm:px-4 sm:py-10">
       <header class="mb-8 sm:mb-10">
         <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight m-0">
-          រចនាសម្ព័ន្ធព្រះសហគមន៍
+          {{ t('structure.title') }}
         </h1>
         <p class="mt-2 text-gray-600 text-sm sm:text-base max-w-2xl leading-relaxed">
-          ព័ត៌មានអំពីក្រុមលោកអភិបាល និងរចនាសម្ព័ន្ធព្រះសហគមន៍កាតូលិកនៅកម្ពុជា
+          {{ t('structure.subtitle') }}
         </p>
       </header>
 
@@ -54,13 +56,13 @@ onMounted(load);
         class="rounded-2xl border border-gray-100 bg-white p-8 text-center shadow-sm"
       >
         <ExclamationCircleOutlined class="text-4xl text-gray-300 mb-3" />
-        <p class="text-gray-700 font-medium mb-4">មិនអាចផ្ទុកបញ្ជីទំព័របានទេ</p>
+        <p class="text-gray-700 font-medium mb-4">{{ t('structure.loadFailed') }}</p>
         <button
           type="button"
           class="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-gray-100 text-gray-800 text-sm font-medium hover:bg-gray-200"
           @click="load"
         >
-          <ReloadOutlined /> ព្យាយាមម្តងទៀត
+          <ReloadOutlined /> {{ t('common.tryAgain') }}
         </button>
       </div>
 
@@ -95,7 +97,7 @@ onMounted(load);
           class="text-sm text-gray-500 hover:text-primary font-medium"
           @click="router.push({ name: 'home' })"
         >
-          ← ត្រឡប់ទៅទំព័រដើម
+          ← {{ t('structure.backToHome') }}
         </button>
       </footer>
     </div>

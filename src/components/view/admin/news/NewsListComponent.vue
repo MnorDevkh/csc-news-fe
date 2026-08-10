@@ -21,7 +21,7 @@
                     v-model="searchQuery"
                     type="text"
                     placeholder="Search articles by title..."
-                    class="w-full pl-11 pr-4 py-2.5 border border-gray-200 bg-gray-50/80 rounded-md focus:ring-2 focus:ring-[#1a365d]/10 focus:border-[#1a365d] focus:bg-white outline-none transition-all text-sm"
+                    class="w-full pl-11 pr-4 py-2.5 border border-gray-200 bg-gray-50/80 rounded-md focus:ring-2 focus:ring-[#4165d1]/10 focus:border-[#4165d1] focus:bg-white outline-none transition-all text-sm"
                     @keyup.enter="onFilterChange"
                 >
             </div>
@@ -29,25 +29,25 @@
                 <button
                     type="button"
                     class="px-3 py-2 rounded text-xs font-semibold transition-all"
-                    :class="langFilter === '' ? 'bg-white text-[#1a365d] shadow-sm' : 'text-gray-500 hover:text-[#1a365d]'"
+                    :class="langFilter === '' ? 'bg-white text-[#4165d1] shadow-sm' : 'text-gray-500 hover:text-[#4165d1]'"
                     @click="setLangFilter('')"
                 >All</button>
                 <button
                     type="button"
                     class="px-3 py-2 rounded text-xs font-semibold transition-all"
-                    :class="langFilter === 'km' ? 'bg-white text-[#1a365d] shadow-sm' : 'text-gray-500 hover:text-[#1a365d]'"
+                    :class="langFilter === 'km' ? 'bg-white text-[#4165d1] shadow-sm' : 'text-gray-500 hover:text-[#4165d1]'"
                     @click="setLangFilter('km')"
                 >ខ្មែរ</button>
                 <button
                     type="button"
                     class="px-3 py-2 rounded text-xs font-semibold transition-all"
-                    :class="langFilter === 'en' ? 'bg-white text-[#1a365d] shadow-sm' : 'text-gray-500 hover:text-[#1a365d]'"
+                    :class="langFilter === 'en' ? 'bg-white text-[#4165d1] shadow-sm' : 'text-gray-500 hover:text-[#4165d1]'"
                     @click="setLangFilter('en')"
                 >EN</button>
             </div>
             <select
                 v-model="selectedCategoryId"
-                class="border border-gray-200 bg-gray-50/80 rounded-md px-4 py-2.5 focus:ring-2 focus:ring-[#1a365d]/10 focus:border-[#1a365d] focus:bg-white outline-none cursor-pointer text-sm transition-all"
+                class="border border-gray-200 bg-gray-50/80 rounded-md px-4 py-2.5 focus:ring-2 focus:ring-[#4165d1]/10 focus:border-[#4165d1] focus:bg-white outline-none cursor-pointer text-sm transition-all"
                 @change="onFilterChange"
             >
                 <option value="">All Categories</option>
@@ -87,8 +87,8 @@
                                 <div class="h-11 w-16 flex-shrink-0 rounded-md overflow-hidden ring-1 ring-gray-100" v-if="article.thumbnail">
                                     <img class="h-11 w-16 object-cover" :src="article.thumbnail" alt="" />
                                 </div>
-                                <div class="h-11 w-16 flex-shrink-0 rounded-md bg-[#1a365d]/5 flex items-center justify-center" v-else>
-                                    <FileTextOutlined class="text-[#1a365d]/40" />
+                                <div class="h-11 w-16 flex-shrink-0 rounded-md bg-[#4165d1]/5 flex items-center justify-center" v-else>
+                                    <FileTextOutlined class="text-[#4165d1]/40" />
                                 </div>
                                 <div class="min-w-0">
                                     <div class="flex items-center gap-2">
@@ -107,7 +107,7 @@
                                 <span
                                     v-for="cat in (article.categories?.length ? article.categories : (article.category ? [article.category] : []))"
                                     :key="cat.id || cat.slug || cat.name"
-                                    class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-[#1a365d]/8 text-[#1a365d]"
+                                    class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-[#4165d1]/8 text-[#4165d1]"
                                 >
                                     {{ cat.name }}
                                 </span>
@@ -135,9 +135,9 @@
                             </span>
                             <span
                                 v-else-if="articleEffectiveStatus(article) === 'scheduled'"
-                                class="inline-flex items-center gap-1.5 text-xs font-semibold text-[#1a365d] bg-[#1a365d]/8 px-2.5 py-1 rounded-full"
+                                class="inline-flex items-center gap-1.5 text-xs font-semibold text-[#4165d1] bg-[#4165d1]/8 px-2.5 py-1 rounded-full"
                             >
-                                <span class="w-1.5 h-1.5 rounded-full bg-[#1a365d]"></span>
+                                <span class="w-1.5 h-1.5 rounded-full bg-[#4165d1]"></span>
                                 Scheduled
                             </span>
                             <span
@@ -160,7 +160,7 @@
                                     +{{ (missingLang(article) || '').toUpperCase() }}
                                 </button>
                                 <button @click="$router.push({ name: 'editNews', params: { id: article.id } })"
-                                    class="p-2 text-gray-400 hover:text-[#1a365d] hover:bg-[#1a365d]/5 rounded-md transition-all">
+                                    class="p-2 text-gray-400 hover:text-[#4165d1] hover:bg-[#4165d1]/5 rounded-md transition-all">
                                     <EditOutlined />
                                 </button>
                                 <button @click="deleteArticle(article)"

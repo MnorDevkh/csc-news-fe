@@ -1,8 +1,11 @@
 <script setup>
 import { computed, onMounted, ref } from 'vue';
 import { RouterLink } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 import { ArrowRightOutlined } from '@ant-design/icons-vue';
 import { SaintService } from '@/services/SaintService';
+
+const { t } = useI18n();
 
 const loading = ref(true);
 const error = ref('');
@@ -18,7 +21,7 @@ async function loadSaints() {
     saints.value = data?.items || [];
   } catch (e) {
     console.error('Failed to load saints:', e);
-    error.value = 'Failed to load saints. Please try again later.';
+    error.value = t('saints.loadFailedLater');
     saints.value = [];
   } finally {
     loading.value = false;
@@ -33,7 +36,7 @@ onMounted(() => {
 <template>
   <div class="w-full">
     <div v-if="loading" class="py-6 text-sm text-gray-500">
-      Loading...
+      {{ t('common.loading') }}
     </div>
 
     <div v-else-if="error" class="py-6 text-sm text-red-600">
@@ -41,7 +44,7 @@ onMounted(() => {
     </div>
 
     <div v-else-if="!saintsList.length" class="py-6 text-sm text-gray-500">
-      No saints found.
+      {{ t('saints.notFoundList') }}
     </div>
 
     <ul v-else class="divide-y divide-gray-200">
@@ -62,7 +65,7 @@ onMounted(() => {
             <h4 class="font-semibold text-gray-800 group-hover:text-burgundy transition-colors">
               {{ saint.name }}
             </h4>
-            <p class="text-sm text-gray-500">Feast Day: {{ saint.feast_day || '-' }}</p>
+            <p class="text-sm text-gray-500">{{ t('saints.feastDay', { day: saint.feast_day || '-' }) }}</p>
             <p class="text-sm text-gray-600 mt-1 line-clamp-2">
               {{ saint.bio_snippet || '' }}
             </p>

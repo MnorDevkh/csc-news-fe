@@ -51,7 +51,7 @@ async function fetchArticlesByCategory() {
   const slug = route.params.name;
   if (!slug) {
     articles.value = [];
-    categoryName.value = 'All';
+    categoryName.value = t('menu.all');
     currentCategory.value = null;
     groupTranslations.value = [];
     isLoading.value = false;
@@ -162,9 +162,9 @@ watch(lang, (newLang) => {
 <template>
   <div class="w-full min-h-0 flex justify-center items-start py-2 box-border">
     <div class="w-full panel p-4 sm:p-6 lg:p-8">
-      <h1 class="mb-6 text-2xl sm:text-3xl font-bold text-[#1a365d] relative pb-3">
+      <h1 class="mb-6 text-2xl sm:text-3xl font-bold text-primary relative pb-3">
         {{ t('category.title', { name: categoryName }) }}
-        <span class="absolute bottom-0 left-0 w-12 h-0.5 bg-gradient-to-r from-[#d4a853] to-transparent rounded-full"></span>
+        <span class="absolute bottom-0 left-0 w-12 h-0.5 bg-gradient-to-r from-[#4165d1] to-transparent rounded-full"></span>
       </h1>
 
       <div v-if="isLoading" class="space-y-4 animate-pulse">
@@ -204,7 +204,7 @@ watch(lang, (newLang) => {
             />
           </div>
           <div class="flex-1 min-w-0 flex flex-col justify-center">
-            <h2 class="text-lg font-bold text-[#1a365d] group-hover:text-[#d4a853] transition-colors mb-1 line-clamp-2">
+            <h2 class="text-lg font-bold text-primary group-hover:text-primary-hover transition-colors mb-1 line-clamp-2">
               {{ article.title }}
             </h2>
             <p v-if="article.snippet" class="text-sm text-gray-500 line-clamp-2 mb-2">

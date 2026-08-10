@@ -4,7 +4,7 @@
     <button @click="$router.back()"
       class="flex items-center text-gray-500 hover:text-purple-600 transition-colors mb-6 group text-sm">
       <ArrowLeftOutlined class="mr-2 group-hover:-translate-x-1 transition-transform" />
-      Back to Sermons
+      {{ t('dailySermon.backToSermons') }}
     </button>
 
     <article class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
@@ -55,10 +55,10 @@
 
         <div class="mt-10 pt-6 border-t border-gray-100 flex justify-center text-xs text-gray-400">
           <span v-if="sermon.status === 'inactive'">
-            This sermon is currently inactive.
+            {{ t('dailySermon.inactive') }}
           </span>
           <span v-else>
-            Thank you for listening.
+            {{ t('dailySermon.thankYou') }}
           </span>
         </div>
       </div>
@@ -69,8 +69,11 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 import { ArrowLeftOutlined, CaretRightOutlined, UserOutlined, CalendarOutlined, ClockCircleOutlined } from '@ant-design/icons-vue';
 import { SermonService } from '@/services/SermonService';
+
+const { t } = useI18n();
 
 const props = defineProps({
   setPageMeta: {
@@ -118,8 +121,7 @@ onMounted(() => {
   loadSermon();
   if (props.setPageMeta) {
     props.setPageMeta({
-      title: 'ធម្មទេសនា​ប្រចាំថ្ងៃ',
-      // subtitle: 'Short reflections to accompany your daily walk with God.',
+      title: t('dailySermon.title'),
     });
   }
 });

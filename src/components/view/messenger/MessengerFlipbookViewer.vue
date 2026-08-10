@@ -1,11 +1,14 @@
 <script setup>
 import { computed, onBeforeUnmount, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import Flipbook from '@/components/Flipbook.vue';
 
 import * as pdfjsLib from 'pdfjs-dist';
 import pdfWorkerUrl from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = pdfWorkerUrl;
+
+const { t } = useI18n();
 
 const props = defineProps({
   pdfUrl: {
@@ -14,7 +17,7 @@ const props = defineProps({
   },
   title: {
     type: String,
-    default: 'The Messenger',
+    default: '',
   },
 });
 
@@ -119,7 +122,7 @@ async function renderPdfToPages(pdfUrl) {
     console.error('Failed to render PDF for flipbook:', e);
     error.value =
       e?.message ||
-      'Failed to load PDF. If this is a cross-origin URL, ensure it allows CORS for pdf.js.';
+      t('messenger.pdfLoadFailed');
   } finally {
     if (token === activeRenderToken) {
       isLoading.value = false;
@@ -156,17 +159,17 @@ onBeforeUnmount(() => {
       v-if="!hasPdf"
       class="rounded-2xl border border-dashed border-primary/20 bg-white px-5 py-10 text-center text-sm text-muted"
     >
-      PDF not available.
+      {{ t('messenger.pdfUnavailable') }}
     </div>
 
-    <div v-else class="overflow-hidden rounded-2xl border border-primary/8 bg-white/80 shadow-[0_20px_60px_-28px_rgba(26,54,93,0.35)] backdrop-blur-sm">
+    <div v-else class="overflow-hidden rounded-2xl border border-primary/8 bg-white/80 shadow-[0_20px_60px_-28px_rgba(65, 101, 209,0.35)] backdrop-blur-sm">
       <div class="flex items-center justify-between gap-3 px-4 py-3 sm:px-5">
         <div class="min-w-0 text-xs text-muted">
           <span v-if="isLoading && progress.total">
-            Loading {{ progress.current }}/{{ progress.total }}
+            {{ t('messenger.loadingProgress', { current: progress.current, total: progress.total }) }}
           </span>
-          <span v-else-if="isLoading">Opening PDF…</span>
-          <span v-else>Flipbook</span>
+          <span v-else-if="isLoading">{{ t('messenger.openingPdf') }}</span>
+          <span v-else>{{ t('messenger.flipbook') }}</span>
         </div>
 
         <div class="flex items-center gap-2">
@@ -177,7 +180,7 @@ onBeforeUnmount(() => {
             rel="noopener noreferrer"
             class="inline-flex items-center rounded-full border border-primary/15 bg-primary px-3.5 py-1.5 text-xs font-semibold text-white transition hover:bg-primary-hover"
           >
-            Open PDF
+            {{ t('messenger.openPdf') }}
           </a>
           <button
             v-if="error"
@@ -185,7 +188,7 @@ onBeforeUnmount(() => {
             class="text-sm font-medium text-primary hover:text-primary-hover"
             @click="renderPdfToPages(props.pdfUrl)"
           >
-            Retry
+            {{ t('common.retry') }}
           </button>
         </div>
       </div>
@@ -213,15 +216,15 @@ onBeforeUnmount(() => {
           class="h-9 w-9 animate-spin rounded-full border-2 border-primary/20 border-t-primary"
           aria-hidden="true"
         />
-        <div class="text-sm text-muted">Preparing your magazine…</div>
+        <div class="text-sm text-muted">{{ t('messenger.preparingMagazine') }}</div>
       </div>
 
       <div
         v-else
-        class="flex min-h-[min(72vh,820px)] items-center justify-center bg-[radial-gradient(ellipse_at_center,_#f8fafc_0%,_#e8edf5_70%)] p-3 sm:p-6"
+        class="flex min-h-[min(72vh,820px)] items-center justify-center bg-[radial-gradient(ellipse_at_center,_#f8fafc_0%,_#e9eefb_70%)] p-3 sm:p-6"
       >
         <div class="mx-auto flex h-[min(72vh,820px)] min-h-[420px] w-full max-w-5xl items-center justify-center">
-          <Flipbook :pages="pages" :title="props.title" :show-cover="true" />
+          <Flipbook :pages="pages" :title="props.title || t('messenger.title')" :show-cover="true" />
         </div>
       </div>
     </div>

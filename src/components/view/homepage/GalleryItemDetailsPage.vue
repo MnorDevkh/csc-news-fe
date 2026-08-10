@@ -1,11 +1,11 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 import { MediaService } from '../../../services/MediaService';
 import {
   ArrowLeftOutlined,
   DownloadOutlined,
-  ShareAltOutlined,
   CalendarOutlined,
   PictureOutlined,
   FolderOutlined,
@@ -15,6 +15,7 @@ import {
 
 const route = useRoute();
 const router = useRouter();
+const { t } = useI18n();
 
 const gallery = ref(null);
 const loading = ref(true);
@@ -56,7 +57,7 @@ onMounted(async () => {
     gallery.value = await MediaService.getGalleryAlbumById(route.params.galleryId);
   } catch (e) {
     console.error('Failed to load gallery item', e);
-    error.value = 'Failed to load image details.';
+    error.value = t('gallery.loadItemFailed');
   } finally {
     loading.value = false;
   }
@@ -72,7 +73,7 @@ onMounted(async () => {
           @click="router.push({ name: 'singleGalleryView', params: { id: route.params.galleryId } })"
           class="flex items-center gap-2 hover:text-blue-400 transition-colors"
         >
-          <ArrowLeftOutlined /> Back to Gallery
+          <ArrowLeftOutlined /> {{ t('gallery.backToGallery') }}
         </button>
         <div class="flex items-center gap-4">
           <span v-if="gallery && currentItem" class="text-sm text-gray-400">
@@ -84,7 +85,7 @@ onMounted(async () => {
             target="_blank"
             class="flex items-center gap-2 hover:text-blue-400 transition-colors text-white"
           >
-            <DownloadOutlined /> <span class="hidden sm:inline">Open Original</span>
+            <DownloadOutlined /> <span class="hidden sm:inline">{{ t('gallery.openOriginal') }}</span>
           </a>
         </div>
       </div>
@@ -97,12 +98,12 @@ onMounted(async () => {
       <!-- Error -->
       <div v-else-if="error || !currentItem" class="text-center py-20">
         <PictureOutlined class="text-5xl text-gray-600 mb-4" />
-        <p class="text-gray-400 text-lg">{{ error || 'Image not found in this album.' }}</p>
+        <p class="text-gray-400 text-lg">{{ error || t('gallery.imageNotFound') }}</p>
         <button
           @click="router.push({ name: 'singleGalleryView', params: { id: route.params.galleryId } })"
           class="mt-4 text-blue-400 hover:text-blue-300 transition-colors"
         >
-          Back to Gallery
+          {{ t('gallery.backToGallery') }}
         </button>
       </div>
 
@@ -113,7 +114,7 @@ onMounted(async () => {
           <div class="bg-black flex items-center justify-center rounded-md overflow-hidden shadow-2xl border border-gray-800">
             <img
               :src="currentItem.imageUrl"
-              :alt="currentItem.title || 'Gallery image'"
+              :alt="currentItem.title || t('gallery.galleryImage')"
               class="max-w-full max-h-[80vh] object-contain"
             />
           </div>
@@ -137,29 +138,29 @@ onMounted(async () => {
 
         <!-- Details Sidebar -->
         <div class="md:w-1/4 text-white p-4 md:p-0">
-          <h1 class="text-2xl font-bold mb-2">{{ currentItem.title || `Photo ${itemIndex + 1}` }}</h1>
+          <h1 class="text-2xl font-bold mb-2">{{ currentItem.title || t('gallery.photoN', { n: itemIndex + 1 }) }}</h1>
           <p v-if="gallery.description" class="text-gray-300 mb-6 leading-relaxed text-sm">{{ gallery.description }}</p>
 
           <div class="bg-gray-900 rounded-xl p-6 border border-gray-800">
             <h3 class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-4 border-b border-gray-800 pb-2">
-              Details
+              {{ t('common.details') }}
             </h3>
             <div class="space-y-4">
               <div class="flex flex-col">
                 <span class="text-xs text-gray-400 mb-1 flex items-center gap-1">
-                  <FolderOutlined /> Album
+                  <FolderOutlined /> {{ t('gallery.album') }}
                 </span>
                 <span class="text-sm font-medium">{{ gallery.title }}</span>
               </div>
               <div class="flex flex-col">
                 <span class="text-xs text-gray-400 mb-1 flex items-center gap-1">
-                  <CalendarOutlined /> Date
+                  <CalendarOutlined /> {{ t('common.date') }}
                 </span>
                 <span class="text-sm font-medium">{{ gallery.date }}</span>
               </div>
               <div class="flex flex-col">
                 <span class="text-xs text-gray-400 mb-1 flex items-center gap-1">
-                  <PictureOutlined /> Photos in Album
+                  <PictureOutlined /> {{ t('gallery.photosInAlbum') }}
                 </span>
                 <span class="text-sm font-medium">{{ gallery.itemCount }}</span>
               </div>
@@ -168,7 +169,7 @@ onMounted(async () => {
 
           <!-- Thumbnail strip -->
           <div v-if="gallery.itemList.length > 1" class="mt-6">
-            <h3 class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-3">More from this album</h3>
+            <h3 class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-3">{{ t('gallery.moreFromAlbum') }}</h3>
             <div class="flex gap-2 overflow-x-auto pb-2">
               <div
                 v-for="(img, idx) in gallery.itemList"

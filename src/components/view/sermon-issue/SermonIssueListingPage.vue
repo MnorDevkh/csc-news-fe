@@ -1,7 +1,10 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 import { SermonIssueService } from '@/services/SermonIssueService';
+
+const { t } = useI18n();
 
 const props = defineProps({
   /** When true, strip page chrome for use inside HomePage or other layouts */
@@ -50,7 +53,7 @@ async function loadIssues() {
     issues.value = data.items || [];
   } catch (e) {
     console.error('Failed to load sermon issues', e);
-    error.value = 'Failed to load issues. Please try again later.';
+    error.value = t('sermonIssue.loadListFailed');
   } finally {
     loading.value = false;
   }
@@ -69,9 +72,9 @@ onMounted(() => {
   <div :class="embed ? 'w-full' : 'min-h-screen bg-surface py-6 sm:py-10'">
     <div :class="embed ? 'w-full' : 'max-w-6xl mx-auto px-3 sm:px-5'">
       <header v-if="!embed" class="mb-6 sm:mb-8">
-        <h1 class="text-3xl font-bold text-stone-900 mb-2 tracking-tight">The Sermon</h1>
+        <h1 class="text-3xl font-bold text-stone-900 mb-2 tracking-tight">{{ t('sermonIssue.title') }}</h1>
         <p class="text-stone-600 text-sm">
-          Browse past issues of The Sermon magazine.
+          {{ t('sermonIssue.subtitle') }}
         </p>
       </header>
 
@@ -98,7 +101,7 @@ onMounted(() => {
         v-else-if="!issues.length"
         class="bg-surface-elevated rounded-2xl shadow-sm ring-1 ring-black/5 p-6 text-center"
       >
-        <p class="text-stone-500 text-sm mb-0">No issues available yet.</p>
+        <p class="text-stone-500 text-sm mb-0">{{ t('sermonIssue.noIssues') }}</p>
       </div>
 
       <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
@@ -119,7 +122,7 @@ onMounted(() => {
               v-else
               class="w-full h-full flex items-center justify-center text-stone-400 text-xs uppercase tracking-wide bg-gradient-to-br from-stone-100 to-stone-200"
             >
-              The Sermon
+              {{ t('sermonIssue.title') }}
             </div>
           </div>
           <div class="p-4 flex-1 flex flex-col">
@@ -133,7 +136,7 @@ onMounted(() => {
               {{ issue.description }}
             </p>
             <div class="mt-4 text-sm text-primary font-medium flex items-center">
-              View issue
+              {{ t('sermonIssue.viewIssue') }}
             </div>
           </div>
         </article>

@@ -1,10 +1,12 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 import { ArrowLeftOutlined, ExclamationCircleOutlined, ReloadOutlined } from '@ant-design/icons-vue';
 import { ChurchHistoryService } from '@/services/ChurchHistoryService.js';
 
 const router = useRouter();
+const { t } = useI18n();
 const content = ref(null);
 const isLoading = ref(true);
 const hasError = ref(false);
@@ -66,16 +68,16 @@ onMounted(() => {
       <!-- Error -->
       <div v-else-if="hasError" class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sm:p-10 md:p-12 text-center">
         <ExclamationCircleOutlined class="text-5xl text-gray-300 mb-4 block mx-auto" aria-hidden="true" />
-        <p class="text-gray-700 text-lg font-medium mb-2">Failed to load church history.</p>
-        <p class="text-gray-500 text-sm mb-6">The connection may have failed.</p>
+        <p class="text-gray-700 text-lg font-medium mb-2">{{ t('churchHistory.loadFailed') }}</p>
+        <p class="text-gray-500 text-sm mb-6">{{ t('churchHistory.connectionFailed') }}</p>
         <div class="flex flex-wrap items-center justify-center gap-3">
           <button type="button" @click="loadContent"
             class="inline-flex items-center gap-2 px-5 py-2.5 bg-gray-100 text-gray-700 text-sm font-medium rounded-md hover:bg-gray-200 transition-colors">
-            <ReloadOutlined /> Retry
+            <ReloadOutlined /> {{ t('common.retry') }}
           </button>
           <button type="button" @click="router.push({ name: 'home' })"
             class="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 transition-colors">
-            <ArrowLeftOutlined /> Home
+            <ArrowLeftOutlined /> {{ t('common.home') }}
           </button>
         </div>
       </div>
@@ -90,7 +92,7 @@ onMounted(() => {
           <div class="absolute bottom-0 left-0 right-0 p-6 sm:p-8 text-white">
             <h1
               class="text-2xl sm:text-4xl font-bold leading-tight tracking-tight drop-shadow-md [text-shadow:0_1px_2px_rgba(0,0,0,0.5)]">
-              {{ content.title || 'Church History' }}
+              {{ content.title || t('churchHistory.title') }}
             </h1>
           </div>
         </header>
@@ -133,7 +135,7 @@ onMounted(() => {
                             : 'xl:w-1/3'
                       "
                     >
-                      <img :src="block.image.url" :alt="block.caption || (content.title || 'Church History') + ' image'"
+                      <img :src="block.image.url" :alt="block.caption || t('churchHistory.imageAlt', { title: content.title || t('churchHistory.title'), n: 1 })"
                         class="rounded-md w-full h-auto max-h-[480px] object-contain mx-auto" />
                       <figcaption
                         v-if="block.caption"
@@ -172,7 +174,7 @@ onMounted(() => {
                     v-for="(img, i) in block.images"
                     :key="img.key || i"
                     :src="img.url"
-                    :alt="(content.title || 'Church History') + ' image ' + (i + 1)"
+                    :alt="t('churchHistory.imageAlt', { title: content.title || t('churchHistory.title'), n: i + 1 })"
                     class="rounded-md max-w-full h-auto object-contain"
                   />
                 </div>
@@ -185,7 +187,7 @@ onMounted(() => {
           <footer class="mt-10 pt-8 border-t border-gray-100">
             <button type="button" @click="router.push({ name: 'home' })"
               class="inline-flex items-center gap-2 text-gray-500 hover:text-blue-600 text-sm font-medium transition-colors">
-              <ArrowLeftOutlined class="text-xs" /> Back to home
+              <ArrowLeftOutlined class="text-xs" /> {{ t('churchHistory.backToHome') }}
             </button>
           </footer>
         </div>

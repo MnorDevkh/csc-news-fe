@@ -1,7 +1,10 @@
 <script setup>
 import { ref, onMounted } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { UploadOutlined, PictureOutlined } from '@ant-design/icons-vue';
 import { uploadPhoto, getPhotos } from '@/services/PhotoUploadService';
+
+const { t } = useI18n();
 
 const photos = ref([]);
 const loading = ref(false);
@@ -23,7 +26,7 @@ async function loadPhotos() {
   try {
     photos.value = await getPhotos();
   } catch (e) {
-    error.value = e.response?.data?.detail || e.message || 'Failed to load photos';
+    error.value = e.response?.data?.detail || e.message || t('gallery.loadPhotosFailed');
   } finally {
     loading.value = false;
   }
@@ -35,18 +38,18 @@ async function handleUpload() {
   const file = input.files[0];
   if (!file) return;
   if (!allowedTypes.includes(file.type)) {
-    error.value = 'Please choose a JPEG, PNG, or WebP image.';
+    error.value = t('gallery.invalidFileType');
     return;
   }
   uploading.value = true;
   clearMessages();
   try {
     await uploadPhoto(file);
-    successMessage.value = 'Photo uploaded successfully.';
+    successMessage.value = t('gallery.uploadSuccess');
     input.value = '';
     await loadPhotos();
   } catch (e) {
-    error.value = e.response?.data?.detail || e.message || 'Upload failed';
+    error.value = e.response?.data?.detail || e.message || t('gallery.uploadFailed');
   } finally {
     uploading.value = false;
   }
@@ -63,12 +66,11 @@ onMounted(loadPhotos);
   <div class="mx-auto p-4 sm:p-6 md:p-8 max-w-6xl">
     <div class="mb-6 sm:mb-8">
       <h1 class="text-2xl font-bold text-gray-800 border-l-4 border-indigo-500 pl-4 mb-2">
-        Photo upload
+        {{ t('gallery.uploadTitle') }}
       </h1>
-      <p class="text-gray-500 text-sm">Upload images to display in the gallery. JPEG, PNG, and WebP up to 30 MB.</p>
+      <p class="text-gray-500 text-sm">{{ t('gallery.uploadDesc') }}</p>
     </div>
 
-    <!-- Upload area -->
     <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-6 mb-6 sm:mb-8">
       <input
         ref="fileInput"
@@ -85,24 +87,23 @@ onMounted(loadPhotos);
           @click="triggerFileInput"
         >
           <UploadOutlined />
-          {{ uploading ? 'Uploading…' : 'Choose and upload' }}
+          {{ uploading ? t('comments.uploading') : t('gallery.chooseUpload') }}
         </button>
       </div>
       <p v-if="error" class="mt-3 text-sm text-red-600">{{ error }}</p>
       <p v-if="successMessage" class="mt-3 text-sm text-emerald-600">{{ successMessage }}</p>
     </div>
 
-    <!-- Gallery grid -->
     <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-6">
       <h2 class="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
         <PictureOutlined />
-        Uploaded images
+        {{ t('gallery.uploadedImages') }}
       </h2>
       <div v-if="loading" class="flex justify-center items-center py-16">
         <a-spin size="large" />
       </div>
       <div v-else-if="!photos.length" class="text-center py-16 text-gray-500">
-        No photos yet. Upload an image above.
+        {{ t('gallery.noPhotosYet') }}
       </div>
       <div v-else class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
         <div

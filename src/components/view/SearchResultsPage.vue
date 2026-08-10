@@ -36,7 +36,7 @@ const performSearch = async () => {
       title: a.title,
       snippet: a.excerpt || '',
       date: a.publish_at || a.created_at,
-      category: a.categories?.[0]?.name || 'News',
+      category: a.categories?.[0]?.name || t('menu.news'),
     }));
   } catch (err) {
     console.error('Search failed:', err);
@@ -100,7 +100,7 @@ watch(lang, () => {
               </p>
             </div>
             <div
-              class="hidden sm:flex h-10 w-10 border border-line items-center justify-center group-hover:border-gold shrink-0">
+              class="hidden sm:flex h-10 w-10 border border-line items-center justify-center group-hover:border-primary shrink-0">
               <ArrowRightOutlined class="text-muted group-hover:text-burgundy" />
             </div>
           </div>

@@ -11,7 +11,7 @@
 
       <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-10 md:p-12 min-w-0">
         <div v-if="loading" class="py-12 text-center text-gray-500">
-          Loading reading...
+          {{ t('dailyBible.loadingReading') }}
         </div>
 
         <div v-else-if="error" class="py-12 text-center">
@@ -20,14 +20,14 @@
           </p>
           <button @click="goBackToList"
             class="inline-flex items-center px-4 py-2 rounded-md bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 transition-colors">
-            Back to Daily Readings
+            {{ t('dailyBible.backToList') }}
           </button>
         </div>
 
         <div v-else class="space-y-10 min-w-0">
           <div class="text-center">
             <span class="inline-block px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-sm font-medium mb-4">
-              Daily Reading
+              {{ t('dailyBible.dailyReading') }}
             </span>
             <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight mb-4">
               {{ reading.reference || reading.title }}
@@ -49,14 +49,14 @@
                 class="h-12 w-12 rounded-md bg-gray-50 flex items-center justify-center text-xl group-hover:bg-blue-50">
                 <ShareAltOutlined />
               </div>
-              <span class="text-xs font-medium">Share</span>
+              <span class="text-xs font-medium">{{ t('dailyBible.share') }}</span>
             </button>
             <button class="flex flex-col items-center gap-2 text-gray-500 hover:text-blue-600 transition-colors">
               <div
                 class="h-12 w-12 rounded-md bg-gray-50 flex items-center justify-center text-xl group-hover:bg-blue-50">
                 <BookOutlined />
               </div>
-              <span class="text-xs font-medium">Bookmark</span>
+              <span class="text-xs font-medium">{{ t('dailyBible.bookmark') }}</span>
             </button>
           </div>
         </div>
@@ -68,8 +68,11 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 import { ArrowLeftOutlined, ShareAltOutlined, BookOutlined } from '@ant-design/icons-vue';
 import { DailyReadingService } from '@/services/DailyReadingService';
+
+const { t } = useI18n();
 
 const props = defineProps({
   setPageMeta: {
@@ -116,7 +119,7 @@ async function loadReading() {
     reading.value = data;
   } catch (err) {
     console.error('Failed to load daily reading', err);
-    error.value = 'Daily reading not found or failed to load.';
+    error.value = t('dailyBible.notFound');
   } finally {
     loading.value = false;
   }
@@ -130,8 +133,7 @@ onMounted(() => {
   loadReading();
   if (props.setPageMeta) {
     props.setPageMeta({
-      title: 'អត្ថបទព្រះគម្ពីរប្រចាំថ្ងៃ',
-      // subtitle: 'Short reflections to accompany your daily walk with God.',
+      title: t('dailyBible.title'),
     });
   }
 });

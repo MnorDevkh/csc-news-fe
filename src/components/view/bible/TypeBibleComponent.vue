@@ -1,9 +1,11 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import { BibleService } from '@/services/BibleService'
 
 const router = useRouter()
+const { t } = useI18n()
 
 const bibleTypeCards = ref([])
 
@@ -15,38 +17,38 @@ onMounted(async () => {
     const items = Array.isArray(data) ? data : Array.isArray(data?.items) ? data.items : []
     if (!items.length) return
 
-    bibleTypeCards.value = items.map((t, index) => {
-      const type = t.id || t.slug || `type-${index}`
+    bibleTypeCards.value = items.map((item, index) => {
+      const type = item.id || item.slug || `type-${index}`
       const isOT = type === 'OT'
       const isNT = type === 'NT'
       const isIntro = type === 'Introduction'
       const isPW = type === 'PW'
 
       return {
-        id: t.id || type,
+        id: item.id || type,
         type,
-        title: t.name || type,
+        title: item.name || type,
         subtitle:
           isOT
-            ? '39 សៀវភៅ'
+            ? t('bible.otBooks')
             : isNT
-              ? '27 សៀវភៅ'
+              ? t('bible.ntBooks')
               : isIntro
-                ? 'សេចក្ដីណែនាំទូទៅ'
+                ? t('bible.intro')
                 : isPW
-                  ? 'កាព្យ និងពាក្យប្រៀបប្រាស'
-                  : (t.slug || type),
-        description: t.description || '',
+                  ? t('bible.poetryWisdom')
+                  : (item.slug || type),
+        description: item.description || '',
         gradient: gradientForType(type, index),
         badge: isOT
-          ? 'OLD'
+          ? t('bible.badgeOld')
           : isNT
-            ? 'NEW'
+            ? t('bible.badgeNew')
             : isIntro
-              ? 'INTRODUCTION'
+              ? t('bible.badgeIntro')
               : isPW
-                ? 'POETRY & WISDOM'
-                : 'TYPE',
+                ? t('bible.badgePoetry')
+                : t('bible.badgeType'),
       }
     })
   } catch (error) {
@@ -66,13 +68,13 @@ const goToBibleType = (type) => {
       <!-- Hero copy -->
       <section class="text-center mb-6 sm:mb-10">
         <p class="text-xs font-semibold tracking-[0.25em] uppercase text-amber-700/80">
-          Bible Reading
+          {{ t('bible.reading') }}
         </p>
         <h1 class="mt-3 text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900">
-          ជ្រើសរើសប្រភេទព្រះគម្ពីរ
+          {{ t('bible.chooseType') }}
         </h1>
         <p class="mt-3 max-w-xl mx-auto text-sm sm:text-base text-slate-600 text-center">
-          ចាប់ផ្តើមដោយជ្រើសរើសប្រភេទ។ បន្ទាប់មក អ្នកអាចជ្រើសសៀវភៅ ជំពូក និងខណ្ឌបានយ៉ាងងាយស្រួល។
+          {{ t('bible.chooseTypeDesc') }}
         </p>
       </section>
 
@@ -124,7 +126,7 @@ const goToBibleType = (type) => {
                 </span>
               </span>
               <span class="inline-flex items-center gap-1 text-amber-50/90 group-hover:text-white transition-colors">
-                ចាប់ផ្តើមអាន
+                {{ t('bible.startReading') }}
                 <svg class="h-3.5 w-3.5 translate-x-0 group-hover:translate-x-0.5 transition-transform"
                   viewBox="0 0 24 24" fill="none" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />

@@ -78,44 +78,44 @@ const formatDate = (dateString) => {
   });
 };
 
-const featureCards = [
+const featureCards = computed(() => [
   {
     to: '/news',
     icon: TeamOutlined,
-    title: 'ពត៍មានព្រះសហគមន៍',
-    text: 'ពត៍មានភូមិភាគ និងសកម្មភាពផ្សេងៗក្នុងព្រះសហគមន៍កាតូលិក។',
+    title: t('home.cardNewsTitle'),
+    text: t('home.cardNewsText'),
   },
   {
     to: '/read',
     icon: ReadOutlined,
-    title: 'ព្រះគម្ពីរ',
-    text: 'អត្ថបទ និងការសិក្សាព្រះគម្ពីរសម្រាប់ការអានប្រចាំថ្ងៃ។',
+    title: t('home.cardBibleTitle'),
+    text: t('home.cardBibleText'),
   },
   {
     to: { name: 'saintList' },
     icon: FireOutlined,
-    title: 'សន្តសន្តី',
-    text: 'ប្រវត្តិ និងគំរូជីវិតសន្តបុគ្គលដែលបំភ្លឺផ្លូវជំនឿ។',
+    title: t('home.cardSaintsTitle'),
+    text: t('home.cardSaintsText'),
   },
   {
     to: { name: 'galleryGridView' },
     icon: PictureOutlined,
-    title: 'កម្រងរូបភាព',
-    text: 'រូបភាពសកម្មភាព និងពិធីបុណ្យក្នុងព្រះសហគមន៍។',
+    title: t('home.cardGalleryTitle'),
+    text: t('home.cardGalleryText'),
   },
   {
     to: { name: 'messengerList' },
     icon: ReadOutlined,
-    title: 'The Messenger',
-    text: 'ទស្សនាវដ្ដីឌីជីថលក្នុងទម្រង់ flipbook សម្រាប់ការអាន។',
+    title: t('home.cardMessengerTitle'),
+    text: t('home.cardMessengerText'),
   },
   {
     to: { name: 'sermonIssueList' },
     icon: ReadOutlined,
-    title: 'The Sermon',
-    text: 'ធម្មទេសនា និងទស្សនាវដ្ដីសម្រាប់ការសញ្ជឹងគិត។',
+    title: t('home.cardSermonTitle'),
+    text: t('home.cardSermonText'),
   },
-];
+]);
 </script>
 <template>
   <div class="homepage min-h-screen pb-10 sm:pb-14 flex flex-col items-center bg-transparent">
@@ -136,11 +136,11 @@ const featureCards = [
       <div v-else-if="hasError" class="py-16 flex flex-col items-center justify-center text-center">
         <div class="panel p-6 sm:p-10 max-w-md w-full">
           <div class="h-14 w-14 border border-danger/30 text-danger flex items-center justify-center mx-auto mb-5 text-2xl">!</div>
-          <h3 class="font-display text-xl text-navy mb-2">Something went wrong</h3>
-          <p class="text-ink-soft text-sm mb-6">Failed to load homepage content. Please check your connection and try again.</p>
+          <h3 class="font-display text-xl text-navy mb-2">{{ t('home.errorTitle') }}</h3>
+          <p class="text-ink-soft text-sm mb-6">{{ t('home.errorMessage') }}</p>
           <button @click="() => { hasError = false; isLoading = true; location.reload(); }"
             class="px-6 py-2.5 bg-navy text-cream text-sm font-semibold hover:bg-primary-hover transition-all">
-            Try Again
+            {{ t('home.tryAgain') }}
           </button>
         </div>
       </div>
@@ -157,14 +157,14 @@ const featureCards = [
               class="absolute inset-0 bg-gradient-to-t from-navy-deep via-navy/55 to-transparent flex flex-col justify-end p-5 sm:p-8 md:p-12">
               <div class="flex items-center gap-3 mb-3 flex-wrap">
                 <span v-if="article.category?.name"
-                  class="inline-flex items-center px-2.5 py-1 text-[11px] font-semibold tracking-wide bg-gold text-navy-deep">
+                  class="inline-flex items-center px-2.5 py-1 text-[11px] font-semibold tracking-wide bg-primary text-white">
                   {{ article.category.name }}
                 </span>
                 <span v-if="article.publish_at" class="text-cream/70 text-sm">
                   {{ formatDate(article.publish_at) }}
                 </span>
                 <span v-if="article.reading_time" class="text-cream/70 text-sm">
-                  · {{ article.reading_time }} min read
+                  · {{ article.reading_time }} {{ t('home.minRead') }}
                 </span>
               </div>
               <h3 class="font-display text-2xl md:text-4xl font-semibold text-cream mb-2 tracking-tight text-balance">{{ article.title }}</h3>
@@ -176,13 +176,6 @@ const featureCards = [
 
       <!-- Feature Cards — archive menu style -->
       <section class="border-y border-line bg-surface-soft mt-8 sm:mt-12 -mx-3 sm:-mx-5 md:-mx-6 lg:-mx-8 xl:-mx-10 px-3 sm:px-5 md:px-6 lg:px-8 xl:px-10 py-10 sm:py-14 animate-fade-up-delay">
-        <div class="mx-auto max-w-2xl text-center mb-8 sm:mb-10">
-          <h2 class="font-display text-3xl text-navy sm:text-4xl m-0">ស្វែងយល់បណ្ណសារ</h2>
-          <div class="gold-rule mx-auto mt-4"></div>
-          <p class="mt-4 text-base text-ink-soft sm:text-lg m-0">
-            ពីព័ត៌មានទៅព្រះគម្ពីរ ពីសន្តសន្តីទៅបណ្ដុំឌីជីថល — តាមល្បឿនផ្ទាល់ខ្លួនរបស់អ្នក។
-          </p>
-        </div>
         <ul class="grid list-none p-0 m-0 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
           <li v-for="(card, idx) in featureCards" :key="idx">
             <RouterLink :to="card.to" class="archive-card group">
@@ -190,7 +183,7 @@ const featureCards = [
               <h3 class="archive-card__title">{{ card.title }}</h3>
               <p class="archive-card__text">{{ card.text }}</p>
               <span class="archive-card__cta">
-                បើក
+                {{ t('home.open') }}
                 <ArrowRightOutlined class="archive-card__cta-icon text-xs" />
               </span>
             </RouterLink>
@@ -209,14 +202,14 @@ const featureCards = [
               <div class="gold-rule-left mt-3"></div>
             </div>
             <RouterLink to="/news" class="section-link shrink-0">
-              មើលទាំងអស់
+              {{ t('home.viewAll') }}
               <ArrowRightOutlined class="text-xs" />
             </RouterLink>
           </div>
 
           <div class="panel overflow-hidden">
             <div v-if="latestHeadlines.length === 0" class="p-6 text-center text-muted text-sm">
-              No latest news available.
+              {{ t('home.noLatestNews') }}
             </div>
             <ul v-else class="divide-y divide-line list-none p-0 m-0">
               <li v-for="headline in latestHeadlines" :key="headline.id" class="group">
@@ -237,7 +230,7 @@ const featureCards = [
                         {{ headline.category.name }}
                       </span>
                       <span class="text-xs text-muted">{{ formatDate(headline.publish_at) }}</span>
-                      <span v-if="headline.reading_time" class="text-xs text-muted">· {{ headline.reading_time }} min</span>
+                      <span v-if="headline.reading_time" class="text-xs text-muted">· {{ headline.reading_time }} {{ t('home.min') }}</span>
                     </div>
                   </div>
                 </RouterLink>
@@ -250,10 +243,10 @@ const featureCards = [
         <aside class="lg:col-span-1">
           <div class="sticky top-24">
             <div class="panel p-5 sm:p-6">
-              <h2 class="font-display text-lg text-navy mb-1 m-0">មាតិការ</h2>
+              <h2 class="font-display text-lg text-navy mb-1 m-0">{{ t('home.contents') }}</h2>
               <div class="gold-rule-left mt-2 mb-4"></div>
               <div v-if="hierarchicalCategories.length === 0" class="text-muted text-sm">
-                No categories available.
+                {{ t('home.noCategories') }}
               </div>
               <ul v-else class="space-y-1 list-none p-0 m-0">
                 <template v-for="({ parent, children }) in hierarchicalCategories" :key="parent.id">
@@ -264,7 +257,7 @@ const featureCards = [
                         <RouterLink :to="{ name: 'categoryView', params: { name: child.slug } }"
                           class="flex items-center justify-between py-1.5 px-2 text-ink-soft hover:bg-cream hover:text-burgundy duration-200 group text-sm no-underline">
                           <span>{{ child.name }}</span>
-                          <ArrowRightOutlined class="text-xs opacity-0 group-hover:opacity-100 duration-200 shrink-0 text-gold" />
+                          <ArrowRightOutlined class="text-xs opacity-0 group-hover:opacity-100 duration-200 shrink-0 text-primary" />
                         </RouterLink>
                       </li>
                     </ul>
@@ -273,7 +266,7 @@ const featureCards = [
                     <RouterLink :to="{ name: 'categoryView', params: { name: parent.slug } }"
                       class="flex items-center justify-between p-2 text-ink-soft hover:bg-cream hover:text-burgundy duration-200 group no-underline text-sm">
                       <span>{{ parent.name }}</span>
-                      <ArrowRightOutlined class="text-xs opacity-0 group-hover:opacity-100 duration-200 text-gold" />
+                      <ArrowRightOutlined class="text-xs opacity-0 group-hover:opacity-100 duration-200 text-primary" />
                     </RouterLink>
                   </li>
                 </template>
@@ -287,11 +280,11 @@ const featureCards = [
       <section class="mb-10 sm:mb-16">
         <div class="flex items-center justify-between mb-5 gap-3">
           <div class="min-w-0">
-            <h2 class="section-heading">សន្តសន្តី</h2>
+            <h2 class="section-heading">{{ t('home.saints') }}</h2>
             <div class="gold-rule-left mt-3"></div>
           </div>
           <RouterLink :to="{ name: 'saintList' }" class="section-link shrink-0">
-            មើលបន្ថែម
+            {{ t('home.viewMore') }}
             <ArrowRightOutlined class="text-xs" />
           </RouterLink>
         </div>
@@ -305,11 +298,11 @@ const featureCards = [
           <section>
             <div class="flex items-center justify-between mb-5 gap-3">
               <div class="min-w-0">
-                <h2 class="section-heading">អត្ថបទព្រះគម្ពីរប្រចាំថ្ងៃ</h2>
+                <h2 class="section-heading">{{ t('home.dailyBible') }}</h2>
                 <div class="gold-rule-left mt-3"></div>
               </div>
               <RouterLink :to="{ name: 'dailyBibleList' }" class="section-link shrink-0">
-                មើលបន្ថែម
+                {{ t('home.viewMore') }}
                 <ArrowRightOutlined class="text-xs" />
               </RouterLink>
             </div>
@@ -321,11 +314,11 @@ const featureCards = [
           <section>
             <div class="flex items-center justify-between mb-5 gap-3">
               <div class="min-w-0">
-                <h2 class="section-heading">ធម្មទេសនា​ប្រចាំថ្ងៃ</h2>
+                <h2 class="section-heading">{{ t('home.dailySermon') }}</h2>
                 <div class="gold-rule-left mt-3"></div>
               </div>
               <RouterLink :to="{ name: 'dailySermonList' }" class="section-link shrink-0">
-                មើលបន្ថែម
+                {{ t('home.viewMore') }}
                 <ArrowRightOutlined class="text-xs" />
               </RouterLink>
             </div>
@@ -338,11 +331,11 @@ const featureCards = [
         <section>
           <div class="flex items-center justify-between mb-5 gap-3">
             <div class="min-w-0">
-              <h2 class="section-heading">The Messenger</h2>
+              <h2 class="section-heading">{{ t('home.messenger') }}</h2>
               <div class="gold-rule-left mt-3"></div>
             </div>
             <RouterLink :to="{ name: 'messengerList' }" class="section-link shrink-0">
-              មើលបន្ថែម
+              {{ t('home.viewMore') }}
               <ArrowRightOutlined class="text-xs" />
             </RouterLink>
           </div>
@@ -354,11 +347,11 @@ const featureCards = [
         <section>
           <div class="flex items-center justify-between mb-5 gap-3">
             <div class="min-w-0">
-              <h2 class="section-heading">The Sermon</h2>
+              <h2 class="section-heading">{{ t('home.sermon') }}</h2>
               <div class="gold-rule-left mt-3"></div>
             </div>
             <RouterLink :to="{ name: 'sermonIssueList' }" class="section-link shrink-0">
-              មើលបន្ថែម
+              {{ t('home.viewMore') }}
               <ArrowRightOutlined class="text-xs" />
             </RouterLink>
           </div>
@@ -370,11 +363,11 @@ const featureCards = [
         <section>
           <div class="flex items-center justify-between mb-5 gap-3">
             <div class="min-w-0">
-              <h2 class="section-heading">កម្រងរូបភាព</h2>
+              <h2 class="section-heading">{{ t('home.gallery') }}</h2>
               <div class="gold-rule-left mt-3"></div>
             </div>
             <RouterLink :to="{ name: 'galleryGridView' }" class="section-link shrink-0">
-              មើលបន្ថែម
+              {{ t('home.viewMore') }}
               <ArrowRightOutlined class="text-xs" />
             </RouterLink>
           </div>
@@ -400,7 +393,7 @@ const featureCards = [
   height: 3px !important;
 }
 .home-hero-carousel :deep(.slick-dots li.slick-active button) {
-  background: #b8954a !important;
+  background: #e02838 !important;
   width: 24px !important;
 }
 </style>

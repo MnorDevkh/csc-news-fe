@@ -2,6 +2,7 @@
 import { BibleService } from '@/services/BibleService'
 import { ref, onMounted, onUnmounted, computed, watch } from 'vue'
 import { useRoute, useRouter, RouterLink } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import {
   ArrowLeftOutlined,
   BookOutlined,
@@ -13,6 +14,8 @@ import {
   SearchOutlined,
   UnorderedListOutlined,
 } from '@ant-design/icons-vue'
+
+const { t } = useI18n()
 
 const props = defineProps({
   setPageMeta: {
@@ -26,20 +29,20 @@ const isLoading = ref(false)
 const route = useRoute()
 const router = useRouter()
 
-const bibleTypeOptions = [
-  { value: 'NT', label: 'ព្រះគម្ពីរសម្ព័ន្ធមេត្រីថ្មី' },
-  { value: 'OT', label: 'ព្រះគម្ពីរសម្ព័ន្ធមេត្រីចាស់' },
-]
+const bibleTypeOptions = computed(() => [
+  { value: 'NT', label: t('bible.nt') },
+  { value: 'OT', label: t('bible.ot') },
+])
 
 const selectedType = computed(() => (route.params.type || route.query.bible_type_code || 'NT').toString().toUpperCase())
 
 const typeLabel = computed(() => {
   switch (selectedType.value) {
     case 'OT':
-      return 'ព្រះគម្ពីរសម្ព័ន្ធមេត្រីចាស់'
+      return t('bible.ot')
     case 'NT':
     default:
-      return 'ព្រះគម្ពីរសម្ព័ន្ធមេត្រីថ្មី'
+      return t('bible.nt')
   }
 })
 
@@ -117,8 +120,8 @@ const fetchBibles = async () => {
 
 const syncPageMeta = () => {
   props.setPageMeta?.({
-    title: `សៀវភៅព្រះគម្ពីរ (${typeLabel.value})`,
-    subtitle: 'ជ្រើសរើសសៀវភៅ ដើម្បីអានជំពូក និងខណ្ឌនៅខាងមុខ។',
+    title: t('bible.pageMetaTitle', { type: typeLabel.value }),
+    subtitle: t('bible.pageMetaSubtitle'),
   })
 }
 
@@ -148,7 +151,7 @@ const navigateToDetail = (id) => {
 const typeTabClass = (opt) => {
   const active = selectedType.value === opt.value
   if (opt.value === 'NT' && active) {
-    return 'bg-gradient-to-r from-sky-600 to-[#1a365d] text-white ring-sky-700/60 shadow-md'
+    return 'bg-gradient-to-r from-sky-600 to-[#4165d1] text-white ring-sky-700/60 shadow-md'
   }
   if (opt.value === 'OT' && active) {
     return 'bg-gradient-to-r from-amber-600 via-orange-600 to-rose-700 text-white ring-orange-800/50 shadow-md'
@@ -198,17 +201,17 @@ const cardAccentByIndex = (idx) => {
       <div class="mb-5 flex flex-wrap items-center gap-2">
         <RouterLink
           :to="{ name: 'bibleReadHome' }"
-          class="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-[#1a365d] to-[#234e7c] px-3.5 py-2 text-sm font-semibold text-white shadow-md shadow-[#1a365d]/25 ring-1 ring-[#163252] transition-all hover:brightness-110 hover:shadow-lg no-underline"
+          class="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-[#4165d1] to-[#234e7c] px-3.5 py-2 text-sm font-semibold text-white shadow-md shadow-[#4165d1]/25 ring-1 ring-[#163252] transition-all hover:brightness-110 hover:shadow-lg no-underline"
         >
           <ArrowLeftOutlined class="text-white/95" />
-          <span>ប្រភេទព្រះគម្ពីរ</span>
+          <span>{{ t('bible.bibleTypes') }}</span>
         </RouterLink>
         <RouterLink
           :to="{ name: 'bibleSearch' }"
           class="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-teal-600 to-emerald-600 px-3.5 py-2 text-sm font-semibold text-white shadow-md shadow-teal-600/25 ring-1 ring-teal-700/50 transition-all hover:brightness-110 hover:shadow-lg no-underline"
         >
           <SearchOutlined class="text-white/95" />
-          <span>ស្វែងរក</span>
+          <span>{{ t('bible.searchShort') }}</span>
         </RouterLink>
       </div>
 
@@ -217,27 +220,27 @@ const cardAccentByIndex = (idx) => {
       >
         <div class="flex min-w-0 flex-1 items-start gap-3">
           <span
-            class="mt-1 h-10 w-1.5 shrink-0 rounded-full bg-gradient-to-b from-[#1a365d] via-sky-500 to-[#d4a853]"
+            class="mt-1 h-10 w-1.5 shrink-0 rounded-full bg-gradient-to-b from-[#4165d1] via-sky-500 to-[#e02838]"
             aria-hidden="true"
           />
           <div
-            class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-[#d4a853] via-amber-300 to-amber-600 text-[#1a365d] shadow-md shadow-amber-600/20 ring-2 ring-amber-200/80"
+            class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-[#e02838] via-amber-300 to-amber-600 text-[#4165d1] shadow-md shadow-amber-600/20 ring-2 ring-amber-200/80"
           >
             <BookOutlined class="text-2xl" />
           </div>
           <div class="min-w-0">
             <h1
-              class="bg-gradient-to-r from-[#1a365d] via-sky-800 to-amber-900 bg-clip-text text-2xl font-bold tracking-tight text-transparent sm:text-3xl"
+              class="bg-gradient-to-r from-[#4165d1] via-sky-800 to-amber-900 bg-clip-text text-2xl font-bold tracking-tight text-transparent sm:text-3xl"
             >
-              សៀវភៅ {{ typeLabel }}
+              {{ t('bible.booksTitle', { type: typeLabel }) }}
             </h1>
             <p class="mt-1 text-sm text-slate-600">
-              ជ្រើសរើសសៀវភៅ ដើម្បីអានជំពូក និងខណ្ឌ។
+              {{ t('bible.selectBookHint') }}
             </p>
           </div>
         </div>
 
-        <div class="flex shrink-0 flex-wrap gap-2 sm:justify-end" role="tablist" aria-label="ប្រភេទព្រះគម្ពីរ">
+        <div class="flex shrink-0 flex-wrap gap-2 sm:justify-end" role="tablist" :aria-label="t('bible.bibleTypes')">
           <RouterLink
             v-for="opt in bibleTypeOptions"
             :key="opt.value"
@@ -258,7 +261,7 @@ const cardAccentByIndex = (idx) => {
 
       <div v-if="isLoading" class="flex flex-col items-center justify-center gap-5 py-14">
         <LoadingOutlined class="text-4xl text-sky-600" :spin="true" />
-        <p class="text-sm font-medium text-slate-600">កំពុងផ្ទុកសៀវភៅ…</p>
+        <p class="text-sm font-medium text-slate-600">{{ t('bible.loadingBooks') }}</p>
         <div class="grid w-full max-w-4xl grid-cols-2 gap-3 sm:grid-cols-4">
           <div
             v-for="n in 8"
@@ -320,11 +323,11 @@ const cardAccentByIndex = (idx) => {
                   {{ item.short_code || item.slug }}
                 </span>
                 <RightOutlined
-                  class="mt-0.5 shrink-0 text-slate-300 transition-all duration-200 group-hover:translate-x-0.5 group-hover:text-[#1a365d] opacity-0 group-hover:opacity-100"
+                  class="mt-0.5 shrink-0 text-slate-300 transition-all duration-200 group-hover:translate-x-0.5 group-hover:text-[#4165d1] opacity-0 group-hover:opacity-100"
                 />
               </div>
               <p
-                class="mt-2 line-clamp-2 text-sm font-semibold leading-snug text-slate-900 transition-colors group-hover:text-[#1a365d]"
+                class="mt-2 line-clamp-2 text-sm font-semibold leading-snug text-slate-900 transition-colors group-hover:text-[#4165d1]"
               >
                 {{ item.name }}
               </p>
@@ -333,11 +336,11 @@ const cardAccentByIndex = (idx) => {
               >
                 <span class="inline-flex items-center gap-1">
                   <UnorderedListOutlined class="text-sky-600/80" aria-hidden="true" />
-                  <span>{{ item.chapter_count }} ជំពូក</span>
+                  <span>{{ t('bible.chapterCount', { count: item.chapter_count }) }}</span>
                 </span>
                 <span class="inline-flex items-center gap-1">
                   <FileTextOutlined class="text-amber-700/75" aria-hidden="true" />
-                  <span>{{ item.verse_count }} ខណ្ឌ</span>
+                  <span>{{ t('bible.verseCount', { count: item.verse_count }) }}</span>
                 </span>
               </div>
             </div>
@@ -349,12 +352,12 @@ const cardAccentByIndex = (idx) => {
           class="mt-8 flex flex-col items-center justify-center rounded-2xl bg-gradient-to-br from-sky-50 via-white to-amber-50 px-6 py-16 ring-1 ring-sky-200/60 shadow-inner"
         >
           <div
-            class="mb-5 flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-br from-[#1a365d] via-sky-600 to-teal-600 shadow-lg shadow-sky-600/30"
+            class="mb-5 flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-br from-[#4165d1] via-sky-600 to-teal-600 shadow-lg shadow-sky-600/30"
           >
             <BookOutlined class="text-5xl text-white/95" />
           </div>
           <p class="text-center text-sm font-medium text-slate-600">
-            មិនទាន់មានសៀវភៅសម្រាប់សម្ព័ន្ធនេះទេ។
+            {{ t('bible.noBooksForType') }}
           </p>
         </div>
       </div>

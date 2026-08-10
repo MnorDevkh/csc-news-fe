@@ -99,16 +99,19 @@
 </template>
 
 <script setup>
-import { onMounted } from 'vue'
+import { computed, onMounted } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import MobileBottomNav from '@/components/layout/MobileBottomNav.vue'
 
-const bibleNavItems = [
-  { to: { name: 'bibleReadHome' }, label: 'Home', icon: 'home', accent: 'blue' },
-  { to: { name: 'bibleSearch' }, label: 'Search', icon: 'search', accent: 'blue' },
-  { to: { name: 'bibleBookmarks' }, label: 'Saves', icon: 'bookmark', accent: 'amber' },
-  { to: { name: 'bibleSettings' }, label: 'Settings', icon: 'settings', accent: 'indigo' },
-]
+const { t } = useI18n()
+
+const bibleNavItems = computed(() => [
+  { to: { name: 'bibleReadHome' }, label: t('nav.home'), icon: 'home', accent: 'blue' },
+  { to: { name: 'bibleSearch' }, label: t('nav.search'), icon: 'search', accent: 'blue' },
+  { to: { name: 'bibleBookmarks' }, label: t('nav.saves'), icon: 'bookmark', accent: 'amber' },
+  { to: { name: 'bibleSettings' }, label: t('nav.settings'), icon: 'settings', accent: 'indigo' },
+])
 
 onMounted(() => {
   if (typeof document !== 'undefined') {

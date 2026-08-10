@@ -82,7 +82,7 @@ function linkLabel(card) {
             </div>
             <div
               v-else-if="!card.image"
-              class="h-5 w-5 border border-gold/40"
+              class="h-5 w-5 border border-primary/30"
               aria-hidden="true"
             />
 

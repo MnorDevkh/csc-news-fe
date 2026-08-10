@@ -14,15 +14,15 @@
                         <p class="font-display m-0 truncate text-base font-semibold tracking-wide text-navy sm:text-xl">
                             CSC News
                         </p>
-                        <p class="m-0 hidden text-[10px] font-medium tracking-[0.18em] text-gold uppercase sm:block">
-                            Catholic Cambodia
+                        <p class="m-0 hidden text-[10px] font-medium tracking-[0.18em] text-primary uppercase sm:block">
+                            {{ t('menu.tagline') }}
                         </p>
                     </div>
                 </div>
 
                 <!-- Desktop Search & Actions -->
                 <div class="hidden md:flex flex-1 max-w-xl mx-8 justify-end items-center gap-3">
-                    <div class="flex flex-1 min-w-0 items-center border border-line bg-surface-elevated pl-4 pr-1 py-1 focus-within:border-gold transition-all">
+                    <div class="flex flex-1 min-w-0 items-center border border-line bg-surface-elevated pl-4 pr-1 py-1 focus-within:border-primary transition-all">
                         <input
                             v-model="searchQuery"
                             type="search"
@@ -43,18 +43,18 @@
                         <button
                             type="button"
                             class="px-2.5 py-1.5 text-xs font-semibold transition-all"
-                            :class="lang === 'km' ? 'bg-navy text-cream' : 'text-muted hover:text-navy'"
+                            :class="lang === 'km' ? 'bg-navy text-cream' : 'text-muted hover:text-primary'"
                             @click="setLang('km')"
-                        >ខ្មែរ</button>
+                        >{{ t('lang.km') }}</button>
                         <button
                             type="button"
                             class="px-2.5 py-1.5 text-xs font-semibold transition-all"
-                            :class="lang === 'en' ? 'bg-navy text-cream' : 'text-muted hover:text-navy'"
+                            :class="lang === 'en' ? 'bg-navy text-cream' : 'text-muted hover:text-primary'"
                             @click="setLang('en')"
-                        >EN</button>
+                        >{{ t('lang.en') }}</button>
                     </div>
                     <router-link v-if="isAuthenticated" :to="{ name: 'dashboard' }"
-                        class="flex items-center gap-2 px-4 py-2 bg-gold text-navy-deep text-sm font-semibold hover:bg-gold-soft shrink-0 transition-all">
+                        class="flex items-center gap-2 px-4 py-2 bg-primary text-white text-sm font-semibold hover:bg-primary-hover shrink-0 transition-all">
                         <DashboardIcon class="w-5 h-5" />
                         <span>{{ t('menu.dashboard') }}</span>
                     </router-link>
@@ -62,8 +62,8 @@
 
                 <button
                     type="button"
-                    class="md:hidden inline-flex h-11 w-11 items-center justify-center border border-navy/20 bg-surface-elevated text-navy hover:border-gold hover:text-burgundy transition-colors"
-                    aria-label="Open menu"
+                    class="md:hidden inline-flex h-11 w-11 items-center justify-center border border-navy/20 bg-surface-elevated text-navy hover:border-primary hover:text-primary transition-colors"
+                    :aria-label="t('menu.openMenu')"
                     @click="mobileMenuOpen = true"
                 >
                     <MenuIcon class="w-6 h-6" />
@@ -77,12 +77,12 @@
                         <!-- Simple link -->
                         <template v-if="!item.children?.length">
                             <a v-if="item.href" :href="item.href" target="_blank" rel="noopener"
-                                class="menu-link block px-4 lg:px-5 py-3 text-ink-soft hover:text-navy transition-colors">
+                                class="menu-link block px-4 lg:px-5 py-3 text-ink-soft hover:text-primary transition-colors">
                                 {{ item.label }}
                             </a>
                             <router-link v-else :to="item.path!"
-                                class="menu-link block px-4 lg:px-5 py-3 no-underline text-ink-soft hover:text-navy transition-colors"
-                                exact-active-class="!text-burgundy !font-semibold border-b-2 border-gold">
+                                class="menu-link block px-4 lg:px-5 py-3 no-underline text-ink-soft hover:text-primary transition-colors"
+                                exact-active-class="!text-primary !font-semibold border-b-2 border-primary">
                                 {{ item.label }}
                             </router-link>
                         </template>
@@ -93,8 +93,8 @@
                                 class="menu-link menu-dropdown-trigger flex items-center gap-1 px-4 lg:px-5 py-3 w-full text-left border-0 bg-transparent cursor-pointer transition-colors"
                                 :class="
                                     (itemDropdownKey(item) === 'news' ? isNewsActive : isStructureActive)
-                                        ? 'text-burgundy font-semibold border-b-2 border-gold'
-                                        : 'text-ink-soft hover:text-navy'
+                                        ? 'text-primary font-semibold border-b-2 border-primary'
+                                        : 'text-ink-soft hover:text-primary'
                                 "
                                 :aria-expanded="itemDropdownKey(item) === 'news' ? newsDropdownOpen : structureDropdownOpen"
                                 aria-haspopup="true"
@@ -126,16 +126,16 @@
                                 <router-link
                                     v-if="itemDropdownKey(item) === 'structure'"
                                     :to="item.path!"
-                                    class="block px-4 py-2.5 text-navy font-medium hover:bg-cream-dark hover:text-burgundy border-b border-line transition-colors"
+                                    class="block px-4 py-2.5 text-navy font-medium hover:bg-cream-dark hover:text-primary border-b border-line transition-colors"
                                     @click="structureDropdownOpen = false"
                                 >
-                                    ទាំងអស់
+                                    {{ t('menu.all') }}
                                 </router-link>
                                 <template v-for="group in item.children" :key="group.path || group.label">
                                     <div v-if="group.children?.length" class="py-1">
                                         <router-link
                                             :to="group.path!"
-                                            class="block px-4 py-2 text-navy font-medium hover:bg-cream-dark hover:text-burgundy transition-colors"
+                                            class="block px-4 py-2 text-navy font-medium hover:bg-cream-dark hover:text-primary transition-colors"
                                             @click="closeAllDesktopDropdowns"
                                         >
                                             {{ group.label }}
@@ -144,7 +144,7 @@
                                             v-for="child in group.children"
                                             :key="child.path"
                                             :to="child.path!"
-                                            class="block py-1.5 pl-6 pr-4 text-ink-soft hover:bg-cream-dark hover:text-navy text-sm transition-colors"
+                                            class="block py-1.5 pl-6 pr-4 text-ink-soft hover:bg-cream-dark hover:text-primary text-sm transition-colors"
                                             @click="closeAllDesktopDropdowns"
                                         >
                                             {{ child.label }}
@@ -153,7 +153,7 @@
                                     <router-link
                                         v-else
                                         :to="group.path!"
-                                        class="block px-4 py-2.5 text-ink-soft hover:bg-cream-dark hover:text-burgundy transition-colors"
+                                        class="block px-4 py-2.5 text-ink-soft hover:bg-cream-dark hover:text-primary transition-colors"
                                         @click="closeAllDesktopDropdowns"
                                     >
                                         {{ group.label }}
@@ -188,8 +188,8 @@
                     </div>
                     <button
                         type="button"
-                        class="inline-flex h-10 w-10 items-center justify-center border border-navy/15 text-navy hover:text-burgundy transition-colors"
-                        aria-label="Close menu"
+                        class="inline-flex h-10 w-10 items-center justify-center border border-navy/15 text-navy hover:text-primary transition-colors"
+                        :aria-label="t('menu.closeMenu')"
                         @click="mobileMenuOpen = false"
                     >
                         <CloseIcon class="w-6 h-6" />
@@ -198,8 +198,8 @@
 
                 <div class="flex-1 p-5 flex flex-col gap-8">
                     <div>
-                        <h3 class="text-xs font-semibold text-gold uppercase tracking-[0.2em] mb-3">{{ t('menu.search') }}</h3>
-                        <div class="flex flex-1 min-w-0 items-center border border-line bg-surface-elevated pl-4 pr-1 py-1 focus-within:border-gold transition-all">
+                        <h3 class="text-xs font-semibold text-primary uppercase tracking-[0.2em] mb-3">{{ t('menu.search') }}</h3>
+                        <div class="flex flex-1 min-w-0 items-center border border-line bg-surface-elevated pl-4 pr-1 py-1 focus-within:border-primary transition-all">
                             <input
                                 v-model="searchQuery"
                                 type="search"
@@ -222,25 +222,25 @@
                                     class="px-3 py-1.5 text-xs font-semibold transition-all"
                                     :class="lang === 'km' ? 'bg-navy text-cream' : 'text-muted'"
                                     @click="setLang('km')"
-                                >ខ្មែរ</button>
+                                >{{ t('lang.km') }}</button>
                                 <button
                                     type="button"
                                     class="px-3 py-1.5 text-xs font-semibold transition-all"
                                     :class="lang === 'en' ? 'bg-navy text-cream' : 'text-muted'"
                                     @click="setLang('en')"
-                                >EN</button>
+                                >{{ t('lang.en') }}</button>
                             </div>
                         </div>
                     </div>
 
                     <div class="flex-1">
-                        <h3 class="text-xs font-semibold text-gold uppercase tracking-[0.2em] mb-3">ម៉ឺនុយ</h3>
+                        <h3 class="text-xs font-semibold text-primary uppercase tracking-[0.2em] mb-3">{{ t('menu.navTitle') }}</h3>
                         <ul class="mobile-menu-list list-none p-0 m-0 flex flex-col text-base">
                             <template v-for="item in menuItems" :key="item.path || item.href">
                                 <template v-if="!item.children?.length">
                                     <li v-if="item.href">
                                         <a :href="item.href" target="_blank" rel="noopener"
-                                            class="block rounded-sm px-3 py-3.5 text-ink-soft hover:bg-cream hover:text-navy"
+                                            class="block rounded-sm px-3 py-3.5 text-ink-soft hover:bg-cream hover:text-primary"
                                             @click="mobileMenuOpen = false">
                                             {{ item.label }}
                                         </a>
@@ -248,8 +248,8 @@
                                     <li v-else>
                                         <router-link
                                             :to="item.path!"
-                                            class="block rounded-sm px-3 py-3.5 text-ink-soft hover:bg-cream hover:text-navy"
-                                            :class="{ 'bg-cream-dark text-burgundy font-medium': route.path === item.path }"
+                                            class="block rounded-sm px-3 py-3.5 text-ink-soft hover:bg-cream hover:text-primary"
+                                            :class="{ 'bg-cream-dark text-primary font-medium': route.path === item.path }"
                                             @click="mobileMenuOpen = false"
                                         >
                                             {{ item.label }}
@@ -259,7 +259,7 @@
                                 <li v-else>
                                     <button
                                         type="button"
-                                        class="flex items-center justify-between w-full rounded-sm px-3 py-3.5 text-left text-ink-soft hover:bg-cream hover:text-navy"
+                                        class="flex items-center justify-between w-full rounded-sm px-3 py-3.5 text-left text-ink-soft hover:bg-cream hover:text-primary"
                                         @click="
                                             itemDropdownKey(item) === 'news'
                                                 ? (mobileNewsOpen = !mobileNewsOpen)
@@ -283,17 +283,17 @@
                                             v-if="itemDropdownKey(item) === 'structure' && item.path"
                                             :to="item.path"
                                             class="block py-2 px-3 text-navy font-medium"
-                                            :class="{ 'text-burgundy': route.path === item.path }"
+                                            :class="{ 'text-primary': route.path === item.path }"
                                             @click="mobileMenuOpen = false"
                                         >
-                                            ទាំងអស់
+                                            {{ t('menu.all') }}
                                         </router-link>
                                         <template v-for="group in item.children" :key="group.path || group.label">
                                             <div v-if="group.children?.length" class="py-2">
                                                 <router-link
                                                     :to="group.path!"
                                                     class="block py-2 px-3 text-navy font-medium"
-                                                    :class="{ 'text-burgundy': route.path === group.path }"
+                                                    :class="{ 'text-primary': route.path === group.path }"
                                                     @click="mobileMenuOpen = false"
                                                 >
                                                     {{ group.label }}
@@ -303,7 +303,7 @@
                                                     :key="child.path"
                                                     :to="child.path!"
                                                     class="block py-1.5 px-3 text-ink-soft text-sm"
-                                                    :class="{ 'text-burgundy': route.path === child.path }"
+                                                    :class="{ 'text-primary': route.path === child.path }"
                                                     @click="mobileMenuOpen = false"
                                                 >
                                                     {{ child.label }}
@@ -313,7 +313,7 @@
                                                 v-else
                                                 :to="group.path!"
                                                 class="block py-2 px-3 text-ink-soft"
-                                                :class="{ 'text-burgundy font-medium': route.path === group.path }"
+                                                :class="{ 'text-primary font-medium': route.path === group.path }"
                                                 @click="mobileMenuOpen = false"
                                             >
                                                 {{ group.label }}
@@ -363,6 +363,7 @@ interface MenuChild {
     label: string;
     path: string;
     children?: MenuChild[];
+    labelKey?: string;
 }
 
 interface MenuItem {
@@ -390,11 +391,19 @@ const mobileNewsOpen = ref(false);
 const mobileStructureOpen = ref(false);
 
 const STRUCTURE_MENU_FALLBACK: MenuChild[] = [
-    { label: 'ក្រុមលោកអភិបាល', path: '/structure/bishops-council' },
-    { label: 'លោកអភិបាលទទួលបន្ទុក', path: '/structure/bishop-portfolios' },
-    { label: 'សភាលោកអភិបាល ឡាវ _កម្ពុជា', path: '/structure/bishops-conference-laos-cambodia' },
-    { label: 'គណៈកម្មការអន្តរភូមិភាគ', path: '/structure/inter-diocesan-committee' },
+    { labelKey: 'menu.structureBishopsCouncil', label: '', path: '/structure/bishops-council' },
+    { labelKey: 'menu.structureBishopPortfolios', label: '', path: '/structure/bishop-portfolios' },
+    { labelKey: 'menu.structureBishopsConference', label: '', path: '/structure/bishops-conference-laos-cambodia' },
+    { labelKey: 'menu.structureInterDiocesan', label: '', path: '/structure/inter-diocesan-committee' },
 ];
+
+function resolveMenuChildLabels(children: MenuChild[]): MenuChild[] {
+    return children.map((child) => ({
+        ...child,
+        label: child.labelKey ? t(child.labelKey) : child.label,
+        children: child.children ? resolveMenuChildLabels(child.children) : undefined,
+    }));
+}
 
 const rawMenuItems = ref<MenuItem[]>([
     { labelKey: 'menu.home', label: '', path: '/' },
@@ -412,6 +421,7 @@ const menuItems = computed(() =>
     rawMenuItems.value.map((item) => ({
         ...item,
         label: item.labelKey ? t(item.labelKey) : item.label,
+        children: item.children?.length ? resolveMenuChildLabels(item.children) : item.children,
     }))
 );
 
@@ -493,13 +503,13 @@ async function loadStructureMenu() {
         if (structureItem && Array.isArray(pages) && pages.length) {
             structureItem.children = buildStructureMenuChildren(pages);
         } else if (structureItem) {
-            structureItem.children = [...STRUCTURE_MENU_FALLBACK];
+            structureItem.children = STRUCTURE_MENU_FALLBACK.map((item) => ({ ...item }));
         }
     } catch (error) {
         console.error('Failed to load structure menu:', error);
         const structureItem = rawMenuItems.value.find(item => item.dropdown === 'structure');
         if (structureItem) {
-            structureItem.children = [...STRUCTURE_MENU_FALLBACK];
+            structureItem.children = STRUCTURE_MENU_FALLBACK.map((item) => ({ ...item }));
         }
     }
 }

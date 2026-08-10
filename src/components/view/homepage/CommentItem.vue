@@ -1,5 +1,6 @@
 <script setup>
 import { ref, computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 import {
   PaperClipOutlined,
   DeleteOutlined,
@@ -34,6 +35,7 @@ const props = defineProps({
 
 const emit = defineEmits(['reply-submitted', 'comment-deleted']);
 
+const { t } = useI18n();
 const { isAuthenticated } = useAuth();
 
 const showReplyForm = ref(false);
@@ -82,7 +84,7 @@ async function onFilesSelected(event) {
     const isImage = file.type.startsWith('image/');
     const isPdf = file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf');
     if (!isImage && !isPdf) {
-      submitError.value = 'Only images and PDF files are allowed.';
+      submitError.value = t('comments.onlyImagesPdf');
       continue;
     }
 
@@ -103,7 +105,7 @@ async function onFilesSelected(event) {
       entry.uploading = false;
     } catch (err) {
       entry.uploading = false;
-      entry.error = err.response?.data?.detail || 'Upload failed';
+      entry.error = err.response?.data?.detail || t('comments.uploadFailed');
     }
   }
 }
@@ -117,12 +119,12 @@ async function submitReply() {
   submitError.value = '';
   const text = replyBody.value.trim();
   if (!text) {
-    submitError.value = 'Please enter a reply.';
+    submitError.value = t('comments.pleaseEnterReply');
     return;
   }
 
   if (pendingFiles.value.some((f) => f.uploading)) {
-    submitError.value = 'Please wait for uploads to finish.';
+    submitError.value = t('comments.waitUploads');
     return;
   }
 
@@ -148,7 +150,7 @@ async function submitReply() {
   } catch (err) {
     const detail = err.response?.data?.detail;
     submitError.value =
-      typeof detail === 'string' ? detail : err.message || 'Failed to post reply';
+      typeof detail === 'string' ? detail : err.message || t('comments.replyFailed');
   } finally {
     isSubmitting.value = false;
   }
@@ -182,7 +184,7 @@ async function deleteComment() {
         :disabled="isDeleting"
         @click="deleteComment"
       >
-        {{ isDeleting ? 'Deleting...' : 'Delete' }}
+        {{ isDeleting ? t('comments.deleting') : t('comments.delete') }}
       </button>
     </div>
 
@@ -202,7 +204,7 @@ async function deleteComment() {
         >
           <img
             :src="att.url"
-            :alt="att.filename || 'Attachment'"
+            :alt="att.filename || t('comments.attachment')"
             class="max-w-[200px] max-h-[160px] rounded-md border border-gray-100 object-cover"
           />
         </a>
@@ -211,10 +213,10 @@ async function deleteComment() {
           :href="att.url"
           target="_blank"
           rel="noopener noreferrer"
-          class="inline-flex items-center gap-2 px-3 py-2 bg-gray-50 border border-gray-100 rounded-md text-sm text-[#1a365d] hover:bg-gray-100 transition-colors"
+          class="inline-flex items-center gap-2 px-3 py-2 bg-gray-50 border border-gray-100 rounded-md text-sm text-[#4165d1] hover:bg-gray-100 transition-colors"
         >
           <FilePdfOutlined />
-          {{ att.filename || 'PDF attachment' }}
+          {{ att.filename || t('comments.pdfAttachment') }}
         </a>
       </template>
     </div>
@@ -222,19 +224,19 @@ async function deleteComment() {
     <div v-if="canReply" class="mt-2">
       <button
         type="button"
-        class="bg-transparent border-none text-[#1a365d] cursor-pointer text-sm hover:underline p-0"
+        class="bg-transparent border-none text-[#4165d1] cursor-pointer text-sm hover:underline p-0"
         @click="showReplyForm = !showReplyForm"
       >
-        Reply
+        {{ t('comments.reply') }}
       </button>
     </div>
 
     <div v-if="showReplyForm" class="mt-3">
       <textarea
         v-model="replyBody"
-        placeholder="Write a reply..."
+        :placeholder="t('comments.replyPlaceholder')"
         rows="2"
-        class="w-full p-2 border border-gray-200 rounded-md text-sm resize-y focus:outline-none focus:ring-2 focus:ring-[#1a365d]/20"
+        class="w-full p-2 border border-gray-200 rounded-md text-sm resize-y focus:outline-none focus:ring-2 focus:ring-[#4165d1]/20"
       />
 
       <div v-if="pendingFiles.length" class="mt-2 flex flex-wrap gap-2">
@@ -262,18 +264,18 @@ async function deleteComment() {
         <button
           v-if="pendingFiles.length < 5"
           type="button"
-          class="inline-flex items-center gap-1 text-xs text-gray-500 hover:text-[#1a365d]"
+          class="inline-flex items-center gap-1 text-xs text-gray-500 hover:text-[#4165d1]"
           @click="openFilePicker"
         >
-          <PaperClipOutlined /> Attach
+          <PaperClipOutlined /> {{ t('comments.attach') }}
         </button>
         <button
           type="button"
           :disabled="isSubmitting"
-          class="ml-auto px-3 py-1.5 bg-[#1a365d] text-white text-xs rounded-md hover:bg-[#152a4a] disabled:opacity-50"
+          class="ml-auto px-3 py-1.5 bg-[#4165d1] text-white text-xs rounded-md hover:bg-[#152a4a] disabled:opacity-50"
           @click="submitReply"
         >
-          {{ isSubmitting ? 'Posting...' : 'Submit reply' }}
+          {{ isSubmitting ? t('comments.posting') : t('comments.submitReply') }}
         </button>
       </div>
       <p v-if="submitError" class="mt-1 text-xs text-red-600 m-0">{{ submitError }}</p>

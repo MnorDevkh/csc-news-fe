@@ -2,7 +2,7 @@
   <div class="relative min-h-screen w-full font-sans overflow-hidden flex items-center justify-center">
 
     <!-- Background: Deep Navy Gradient -->
-    <div class="absolute inset-0 bg-gradient-to-br from-[#0a1628] via-[#1a365d] to-[#0f2447]"></div>
+    <div class="absolute inset-0 bg-gradient-to-br from-[#0a1628] via-[#4165d1] to-[#0f2447]"></div>
 
     <!-- Decorative Pattern Overlay -->
     <div class="absolute inset-0 opacity-[0.03]"
@@ -10,16 +10,16 @@
     </div>
 
     <!-- Ambient light blobs -->
-    <div class="absolute top-1/4 -left-32 w-96 h-96 bg-[#d4a853]/10 rounded-full blur-[120px]"></div>
-    <div class="absolute bottom-1/4 -right-32 w-80 h-80 bg-[#2a4a7f]/20 rounded-full blur-[100px]"></div>
-    <div class="absolute top-0 right-1/3 w-64 h-64 bg-[#d4a853]/5 rounded-full blur-[80px]"></div>
+    <div class="absolute top-1/4 -left-32 w-96 h-96 bg-[#e02838]/10 rounded-full blur-[120px]"></div>
+    <div class="absolute bottom-1/4 -right-32 w-80 h-80 bg-[#3554b8]/20 rounded-full blur-[100px]"></div>
+    <div class="absolute top-0 right-1/3 w-64 h-64 bg-[#e02838]/5 rounded-full blur-[80px]"></div>
 
     <!-- Floating star dots -->
     <div class="absolute top-16 left-20 w-1 h-1 bg-white/40 rounded-full animate-pulse"></div>
-    <div class="absolute top-32 right-32 w-1.5 h-1.5 bg-[#d4a853]/50 rounded-full animate-pulse"
+    <div class="absolute top-32 right-32 w-1.5 h-1.5 bg-[#e02838]/50 rounded-full animate-pulse"
       style="animation-delay: 0.7s"></div>
     <div class="absolute top-1/3 left-1/4 w-1 h-1 bg-white/30 rounded-full"></div>
-    <div class="absolute bottom-1/3 right-1/4 w-0.5 h-0.5 bg-[#d4a853]/40 rounded-full animate-pulse"
+    <div class="absolute bottom-1/3 right-1/4 w-0.5 h-0.5 bg-[#e02838]/40 rounded-full animate-pulse"
       style="animation-delay: 1.2s"></div>
     <div class="absolute top-1/2 left-10 w-0.5 h-0.5 bg-white/50 rounded-full"></div>
 
@@ -32,9 +32,9 @@
 
         <!-- Header Section -->
         <div
-          class="relative bg-gradient-to-br from-[#1a365d] via-[#1e3f6e] to-[#2a4a7f] px-8 pt-10 pb-12 text-center overflow-hidden">
+          class="relative bg-gradient-to-br from-[#4165d1] via-[#1e3f6e] to-[#3554b8] px-8 pt-10 pb-12 text-center overflow-hidden">
           <!-- Decorative gold line -->
-          <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#d4a853] to-transparent">
+          <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#e02838] to-transparent">
           </div>
 
           <!-- Logo area -->
@@ -50,7 +50,7 @@
 
           <!-- Decorative gold accent -->
           <div
-            class="absolute bottom-0 left-1/2 -translate-x-1/2 w-16 h-0.5 bg-gradient-to-r from-transparent via-[#d4a853] to-transparent">
+            class="absolute bottom-0 left-1/2 -translate-x-1/2 w-16 h-0.5 bg-gradient-to-r from-transparent via-[#e02838] to-transparent">
           </div>
         </div>
 
@@ -75,7 +75,7 @@
                   <UserOutlined class="text-gray-400" />
                 </div>
                 <input v-model="email" type="text" placeholder="Enter your username"
-                  class="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-md text-sm text-gray-800 placeholder-gray-400 focus:ring-2 focus:ring-[#1a365d]/20 focus:border-[#1a365d] focus:bg-white transition-all outline-none">
+                  class="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-md text-sm text-gray-800 placeholder-gray-400 focus:ring-2 focus:ring-[#4165d1]/20 focus:border-[#4165d1] focus:bg-white transition-all outline-none">
               </div>
             </div>
 
@@ -87,7 +87,7 @@
                   <LockOutlined class="text-gray-400" />
                 </div>
                 <input v-model="password" type="password" placeholder="Enter your password"
-                  class="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-md text-sm text-gray-800 placeholder-gray-400 focus:ring-2 focus:ring-[#1a365d]/20 focus:border-[#1a365d] focus:bg-white transition-all outline-none">
+                  class="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-md text-sm text-gray-800 placeholder-gray-400 focus:ring-2 focus:ring-[#4165d1]/20 focus:border-[#4165d1] focus:bg-white transition-all outline-none">
               </div>
             </div>
 
@@ -95,10 +95,10 @@
             <div class="flex items-center justify-between text-xs text-gray-500 px-0.5 py-2">
               <label class="flex items-center gap-2 cursor-pointer hover:text-gray-700 transition-colors">
                 <input type="checkbox" id="remember"
-                  class="w-3.5 h-3.5 rounded text-[#1a365d] border-gray-300 focus:ring-[#1a365d]/30">
+                  class="w-3.5 h-3.5 rounded text-[#4165d1] border-gray-300 focus:ring-[#4165d1]/30">
                 <span>Remember me</span>
               </label>
-              <a href="#" class="text-[#1a365d] hover:text-[#d4a853] font-medium transition-colors">Forgot password?</a>
+              <a href="#" class="text-[#4165d1] hover:text-[#4165d1] font-medium transition-colors">Forgot password?</a>
             </div>
 
             <!-- Button -->
@@ -115,7 +115,7 @@
         </div>
 
         <!-- Bottom accent -->
-        <div class="h-1 bg-gradient-to-r from-[#1a365d] via-[#d4a853] to-[#1a365d]"></div>
+        <div class="h-1 bg-gradient-to-r from-[#4165d1] via-[#e02838] to-[#4165d1]"></div>
       </div>
 
       <!-- Footer Credit -->
